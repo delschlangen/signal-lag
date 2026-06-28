@@ -305,3 +305,12 @@ python -m pytest tests/ -q
   so recent-quarter citation signals are noisier than older ones.
 - The bundled fixtures are synthetic — useful for verifying the pipeline and for demos,
   not for drawing real conclusions. Use live ingestion for that.
+- **Semantic Scholar enrichment needs an API key.** The keyless pool is rate-limited
+  and usually returns nothing, so TLDR/influential-citation/venue fields stay empty
+  until you add a free key as the repo secret `SEMANTIC_SCHOLAR_API_KEY` (the refresh
+  workflow already passes it through). Everything else works without it.
+- **Velocity is a temporally-stratified sample**, and the **current incomplete quarter
+  is dropped** from trend math so a mid-quarter refresh doesn't read as a slowdown —
+  i.e. divergence/inflections reflect the last *complete* quarter.
+- OpenReview papers are dated by submission, so they cluster around venue cycles; their
+  review scores are captured but not yet surfaced prominently in the UI.
