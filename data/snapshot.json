@@ -22,7 +22,8 @@
    "arxiv": 9104,
    "openreview": 1200
   },
-  "n_posts": 60
+  "n_posts": 70,
+  "s2_enriched": 8344
  },
  "label_map": {
   "interpretability": "Mechanistic Interpretability",
@@ -337,6 +338,12 @@
  "signals": [
   {
    "severity": "high",
+   "category": "sentiment",
+   "headline": "Confidence may be eroding in Scalable Oversight",
+   "detail": "Critical/negative papers rose from 22% to 31% of recent work (+9 pts) while volume is flat/declining — an early sign the field may be hitting limits."
+  },
+  {
+   "severity": "high",
    "category": "divergence",
    "headline": "Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight",
    "detail": "Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume."
@@ -354,7 +361,7 @@
    "detail": "Submission rate inflected +35% (now ~29.0/quarter)."
   }
  ],
- "brief": "# Signal-Lag Foresight Brief\n\n_Generated 2026-06-28 · 10304 papers · embedding backend: sentence-transformers_\n\n## BLUF\n\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** — Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Capability vs. Safety Divergence\n\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** (high): Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Topic Velocity\n\n- **Agentic / Autonomy Capability is accelerating** (medium): Submission rate inflected +39% (now ~115.0/quarter).\n- **Chain-of-Thought Faithfulness is accelerating** (medium): Submission rate inflected +35% (now ~29.0/quarter).\n",
+ "brief": "# Signal-Lag Foresight Brief\n\n_Generated 2026-06-28 · 10304 papers · embedding backend: sentence-transformers_\n\n## BLUF\n\n- **Confidence may be eroding in Scalable Oversight** — Critical/negative papers rose from 22% to 31% of recent work (+9 pts) while volume is flat/declining — an early sign the field may be hitting limits.\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** — Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Capability vs. Safety Divergence\n\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** (high): Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Confidence / Negative Signals\n\n- **Confidence may be eroding in Scalable Oversight** (high): Critical/negative papers rose from 22% to 31% of recent work (+9 pts) while volume is flat/declining — an early sign the field may be hitting limits.\n\n## Topic Velocity\n\n- **Agentic / Autonomy Capability is accelerating** (medium): Submission rate inflected +39% (now ~115.0/quarter).\n- **Chain-of-Thought Faithfulness is accelerating** (medium): Submission rate inflected +35% (now ~29.0/quarter).\n",
  "timeseries": [
   {
    "topic_key": "agentic_capability",
@@ -1197,6 +1204,1130 @@
    "count": 100
   }
  ],
+ "sentiment": {
+  "agentic_capability": {
+   "critical_share": 0.053,
+   "recent_share": 0.067,
+   "prior_share": 0.048,
+   "trend": 0.019,
+   "n_recent": 225,
+   "rising": false
+  },
+  "agentic_monitoring": {
+   "critical_share": 0.049,
+   "recent_share": 0.069,
+   "prior_share": 0.051,
+   "trend": 0.018,
+   "n_recent": 259,
+   "rising": false
+  },
+  "cot_faithfulness": {
+   "critical_share": 0.341,
+   "recent_share": 0.356,
+   "prior_share": 0.367,
+   "trend": -0.011,
+   "n_recent": 59,
+   "rising": false
+  },
+  "deceptive_alignment": {
+   "critical_share": 0.225,
+   "recent_share": 0.23,
+   "prior_share": 0.198,
+   "trend": 0.032,
+   "n_recent": 209,
+   "rising": false
+  },
+  "evals_benchmarks": {
+   "critical_share": 0.23,
+   "recent_share": 0.212,
+   "prior_share": 0.213,
+   "trend": -0.002,
+   "n_recent": 104,
+   "rising": false
+  },
+  "frontier_scaling": {
+   "critical_share": 0.296,
+   "recent_share": 0.277,
+   "prior_share": 0.291,
+   "trend": -0.014,
+   "n_recent": 159,
+   "rising": false
+  },
+  "interpretability": {
+   "critical_share": 0.242,
+   "recent_share": 0.254,
+   "prior_share": 0.261,
+   "trend": -0.007,
+   "n_recent": 386,
+   "rising": false
+  },
+  "multiagent_tooluse": {
+   "critical_share": 0.052,
+   "recent_share": 0.027,
+   "prior_share": 0.061,
+   "trend": -0.034,
+   "n_recent": 111,
+   "rising": false
+  },
+  "reasoning_cot": {
+   "critical_share": 0.283,
+   "recent_share": 0.345,
+   "prior_share": 0.28,
+   "trend": 0.064,
+   "n_recent": 293,
+   "rising": false
+  },
+  "reward_hacking": {
+   "critical_share": 0.214,
+   "recent_share": 0.19,
+   "prior_share": 0.129,
+   "trend": 0.061,
+   "n_recent": 42,
+   "rising": false
+  },
+  "rl_rlhf": {
+   "critical_share": 0.238,
+   "recent_share": 0.184,
+   "prior_share": 0.219,
+   "trend": -0.035,
+   "n_recent": 179,
+   "rising": false
+  },
+  "rsi_control": {
+   "critical_share": 0.095,
+   "recent_share": 0.071,
+   "prior_share": 0.079,
+   "trend": -0.009,
+   "n_recent": 184,
+   "rising": false
+  },
+  "scalable_oversight": {
+   "critical_share": 0.272,
+   "recent_share": 0.314,
+   "prior_share": 0.225,
+   "trend": 0.089,
+   "n_recent": 455,
+   "rising": true
+  },
+  "self_improvement": {
+   "critical_share": 0.325,
+   "recent_share": 0.354,
+   "prior_share": 0.332,
+   "trend": 0.022,
+   "n_recent": 195,
+   "rising": false
+  }
+ },
+ "sentiment_timeseries": [
+  {
+   "topic_key": "agentic_capability",
+   "period": "2023Q2",
+   "critical_share": 0.046511627906976744,
+   "n": 43
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2023Q3",
+   "critical_share": 0.044444444444444446,
+   "n": 90
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2023Q4",
+   "critical_share": 0.016666666666666666,
+   "n": 60
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2024Q1",
+   "critical_share": 0.05454545454545454,
+   "n": 55
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2024Q2",
+   "critical_share": 0.045454545454545456,
+   "n": 88
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2024Q3",
+   "critical_share": 0.05454545454545454,
+   "n": 110
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2024Q4",
+   "critical_share": 0.06060606060606061,
+   "n": 66
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q1",
+   "critical_share": 0.05714285714285714,
+   "n": 70
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q2",
+   "critical_share": 0.06666666666666667,
+   "n": 75
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q3",
+   "critical_share": 0.054945054945054944,
+   "n": 91
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q4",
+   "critical_share": 0.042735042735042736,
+   "n": 117
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2026Q1",
+   "critical_share": 0.05309734513274336,
+   "n": 113
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2023Q2",
+   "critical_share": 0.07692307692307693,
+   "n": 26
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2023Q3",
+   "critical_share": 0.06329113924050633,
+   "n": 79
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2023Q4",
+   "critical_share": 0.029411764705882353,
+   "n": 68
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2024Q1",
+   "critical_share": 0.03278688524590164,
+   "n": 61
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2024Q2",
+   "critical_share": 0.05194805194805195,
+   "n": 77
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2024Q3",
+   "critical_share": 0.044642857142857144,
+   "n": 112
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2024Q4",
+   "critical_share": 0.025,
+   "n": 80
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2025Q1",
+   "critical_share": 0.0297029702970297,
+   "n": 101
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2025Q2",
+   "critical_share": 0.030927835051546393,
+   "n": 97
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2025Q3",
+   "critical_share": 0.058333333333333334,
+   "n": 120
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2025Q4",
+   "critical_share": 0.043859649122807015,
+   "n": 114
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2026Q1",
+   "critical_share": 0.05263157894736842,
+   "n": 133
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2023Q2",
+   "critical_share": 0.14285714285714285,
+   "n": 7
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2023Q3",
+   "critical_share": 0.30434782608695654,
+   "n": 23
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2023Q4",
+   "critical_share": 0.25,
+   "n": 12
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q1",
+   "critical_share": 0.36363636363636365,
+   "n": 11
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q2",
+   "critical_share": 0.35,
+   "n": 20
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q3",
+   "critical_share": 0.36363636363636365,
+   "n": 22
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q4",
+   "critical_share": 0.5,
+   "n": 18
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q1",
+   "critical_share": 0.3157894736842105,
+   "n": 19
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q2",
+   "critical_share": 0.23809523809523808,
+   "n": 21
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q3",
+   "critical_share": 0.3181818181818182,
+   "n": 22
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q4",
+   "critical_share": 0.4074074074074074,
+   "n": 27
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2026Q1",
+   "critical_share": 0.25806451612903225,
+   "n": 31
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2023Q2",
+   "critical_share": 0.23076923076923078,
+   "n": 26
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2023Q3",
+   "critical_share": 0.25925925925925924,
+   "n": 81
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2023Q4",
+   "critical_share": 0.23333333333333334,
+   "n": 60
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q1",
+   "critical_share": 0.21794871794871795,
+   "n": 78
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q2",
+   "critical_share": 0.2892561983471074,
+   "n": 121
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q3",
+   "critical_share": 0.27184466019417475,
+   "n": 103
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q4",
+   "critical_share": 0.136986301369863,
+   "n": 73
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2025Q1",
+   "critical_share": 0.19540229885057472,
+   "n": 87
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2025Q2",
+   "critical_share": 0.18947368421052632,
+   "n": 95
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2025Q3",
+   "critical_share": 0.20833333333333334,
+   "n": 96
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2025Q4",
+   "critical_share": 0.18309859154929578,
+   "n": 71
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2026Q1",
+   "critical_share": 0.17142857142857143,
+   "n": 105
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2023Q2",
+   "critical_share": 0.2222222222222222,
+   "n": 9
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2023Q3",
+   "critical_share": 0.35,
+   "n": 40
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2023Q4",
+   "critical_share": 0.11428571428571428,
+   "n": 35
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q1",
+   "critical_share": 0.2727272727272727,
+   "n": 22
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q2",
+   "critical_share": 0.41935483870967744,
+   "n": 31
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q3",
+   "critical_share": 0.32653061224489793,
+   "n": 49
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q4",
+   "critical_share": 0.2,
+   "n": 30
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q1",
+   "critical_share": 0.1794871794871795,
+   "n": 39
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q2",
+   "critical_share": 0.058823529411764705,
+   "n": 34
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q3",
+   "critical_share": 0.30952380952380953,
+   "n": 42
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q4",
+   "critical_share": 0.1276595744680851,
+   "n": 47
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2026Q1",
+   "critical_share": 0.15217391304347827,
+   "n": 46
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2023Q2",
+   "critical_share": 0.2894736842105263,
+   "n": 38
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2023Q3",
+   "critical_share": 0.35514018691588783,
+   "n": 107
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2023Q4",
+   "critical_share": 0.2711864406779661,
+   "n": 59
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q1",
+   "critical_share": 0.35294117647058826,
+   "n": 51
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q2",
+   "critical_share": 0.3644067796610169,
+   "n": 118
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q3",
+   "critical_share": 0.304635761589404,
+   "n": 151
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q4",
+   "critical_share": 0.29310344827586204,
+   "n": 58
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q1",
+   "critical_share": 0.2054794520547945,
+   "n": 73
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q2",
+   "critical_share": 0.21428571428571427,
+   "n": 70
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q3",
+   "critical_share": 0.30851063829787234,
+   "n": 94
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q4",
+   "critical_share": 0.2727272727272727,
+   "n": 88
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2026Q1",
+   "critical_share": 0.24358974358974358,
+   "n": 78
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2023Q2",
+   "critical_share": 0.16417910447761194,
+   "n": 134
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2023Q3",
+   "critical_share": 0.2557544757033248,
+   "n": 391
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2023Q4",
+   "critical_share": 0.17525773195876287,
+   "n": 194
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2024Q1",
+   "critical_share": 0.2702702702702703,
+   "n": 185
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2024Q2",
+   "critical_share": 0.29441624365482233,
+   "n": 394
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2024Q3",
+   "critical_share": 0.24033149171270718,
+   "n": 362
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2024Q4",
+   "critical_share": 0.19254658385093168,
+   "n": 161
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2025Q1",
+   "critical_share": 0.19428571428571428,
+   "n": 175
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2025Q2",
+   "critical_share": 0.23170731707317074,
+   "n": 164
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2025Q3",
+   "critical_share": 0.24193548387096775,
+   "n": 186
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2025Q4",
+   "critical_share": 0.2847682119205298,
+   "n": 151
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2026Q1",
+   "critical_share": 0.23684210526315788,
+   "n": 190
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2023Q2",
+   "critical_share": 0.0,
+   "n": 11
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2023Q3",
+   "critical_share": 0.02857142857142857,
+   "n": 35
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2023Q4",
+   "critical_share": 0.023809523809523808,
+   "n": 42
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2024Q1",
+   "critical_share": 0.05555555555555555,
+   "n": 36
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2024Q2",
+   "critical_share": 0.16666666666666666,
+   "n": 36
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2024Q3",
+   "critical_share": 0.07272727272727272,
+   "n": 55
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2024Q4",
+   "critical_share": 0.08888888888888889,
+   "n": 45
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2025Q1",
+   "critical_share": 0.02857142857142857,
+   "n": 35
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2025Q2",
+   "critical_share": 0.0,
+   "n": 32
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2025Q3",
+   "critical_share": 0.09090909090909091,
+   "n": 55
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2025Q4",
+   "critical_share": 0.022727272727272728,
+   "n": 44
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2026Q1",
+   "critical_share": 0.01639344262295082,
+   "n": 61
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2023Q2",
+   "critical_share": 0.18181818181818182,
+   "n": 66
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2023Q3",
+   "critical_share": 0.2824074074074074,
+   "n": 216
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2023Q4",
+   "critical_share": 0.1532258064516129,
+   "n": 124
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2024Q1",
+   "critical_share": 0.28688524590163933,
+   "n": 122
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2024Q2",
+   "critical_share": 0.31363636363636366,
+   "n": 220
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2024Q3",
+   "critical_share": 0.3135593220338983,
+   "n": 236
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2024Q4",
+   "critical_share": 0.22580645161290322,
+   "n": 124
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2025Q1",
+   "critical_share": 0.3181818181818182,
+   "n": 132
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2025Q2",
+   "critical_share": 0.23134328358208955,
+   "n": 134
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2025Q3",
+   "critical_share": 0.29012345679012347,
+   "n": 162
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2025Q4",
+   "critical_share": 0.2710843373493976,
+   "n": 166
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2026Q1",
+   "critical_share": 0.28104575163398693,
+   "n": 153
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2023Q2",
+   "critical_share": 0.42857142857142855,
+   "n": 14
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2023Q3",
+   "critical_share": 0.24193548387096775,
+   "n": 62
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2023Q4",
+   "critical_share": 0.1,
+   "n": 20
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q1",
+   "critical_share": 0.23529411764705882,
+   "n": 17
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q2",
+   "critical_share": 0.24193548387096775,
+   "n": 62
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q3",
+   "critical_share": 0.2,
+   "n": 40
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q4",
+   "critical_share": 0.15384615384615385,
+   "n": 13
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q1",
+   "critical_share": 0.3,
+   "n": 10
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q2",
+   "critical_share": 0.19230769230769232,
+   "n": 26
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q3",
+   "critical_share": 0.06666666666666667,
+   "n": 15
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q4",
+   "critical_share": 0.1875,
+   "n": 16
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2026Q1",
+   "critical_share": 0.05555555555555555,
+   "n": 18
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2023Q2",
+   "critical_share": 0.2413793103448276,
+   "n": 58
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2023Q3",
+   "critical_share": 0.22279792746113988,
+   "n": 193
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2023Q4",
+   "critical_share": 0.2,
+   "n": 60
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2024Q1",
+   "critical_share": 0.16981132075471697,
+   "n": 53
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2024Q2",
+   "critical_share": 0.273972602739726,
+   "n": 219
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2024Q3",
+   "critical_share": 0.25925925925925924,
+   "n": 189
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2024Q4",
+   "critical_share": 0.38235294117647056,
+   "n": 68
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2025Q1",
+   "critical_share": 0.22033898305084745,
+   "n": 59
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2025Q2",
+   "critical_share": 0.25862068965517243,
+   "n": 58
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2025Q3",
+   "critical_share": 0.26,
+   "n": 100
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2025Q4",
+   "critical_share": 0.1724137931034483,
+   "n": 87
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2026Q1",
+   "critical_share": 0.15789473684210525,
+   "n": 76
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2023Q2",
+   "critical_share": 0.12903225806451613,
+   "n": 31
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2023Q3",
+   "critical_share": 0.10344827586206896,
+   "n": 116
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2023Q4",
+   "critical_share": 0.10714285714285714,
+   "n": 84
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2024Q1",
+   "critical_share": 0.12658227848101267,
+   "n": 79
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2024Q2",
+   "critical_share": 0.1487603305785124,
+   "n": 121
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2024Q3",
+   "critical_share": 0.14414414414414414,
+   "n": 111
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2024Q4",
+   "critical_share": 0.047058823529411764,
+   "n": 85
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2025Q1",
+   "critical_share": 0.05434782608695652,
+   "n": 92
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2025Q2",
+   "critical_share": 0.0707070707070707,
+   "n": 99
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2025Q3",
+   "critical_share": 0.11458333333333333,
+   "n": 96
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2025Q4",
+   "critical_share": 0.043010752688172046,
+   "n": 93
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2026Q1",
+   "critical_share": 0.07608695652173914,
+   "n": 92
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2023Q2",
+   "critical_share": 0.22794117647058823,
+   "n": 136
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2023Q3",
+   "critical_share": 0.2970027247956403,
+   "n": 367
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2023Q4",
+   "critical_share": 0.19760479041916168,
+   "n": 167
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2024Q1",
+   "critical_share": 0.25274725274725274,
+   "n": 182
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2024Q2",
+   "critical_share": 0.32981530343007914,
+   "n": 379
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2024Q3",
+   "critical_share": 0.30978260869565216,
+   "n": 368
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2024Q4",
+   "critical_share": 0.22279792746113988,
+   "n": 193
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2025Q1",
+   "critical_share": 0.23684210526315788,
+   "n": 190
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2025Q2",
+   "critical_share": 0.2583732057416268,
+   "n": 209
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2025Q3",
+   "critical_share": 0.2450592885375494,
+   "n": 253
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2025Q4",
+   "critical_share": 0.2026431718061674,
+   "n": 227
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2026Q1",
+   "critical_share": 0.2631578947368421,
+   "n": 209
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2023Q2",
+   "critical_share": 0.23595505617977527,
+   "n": 89
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2023Q3",
+   "critical_share": 0.3333333333333333,
+   "n": 282
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2023Q4",
+   "critical_share": 0.2558139534883721,
+   "n": 129
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2024Q1",
+   "critical_share": 0.36153846153846153,
+   "n": 130
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2024Q2",
+   "critical_share": 0.34334763948497854,
+   "n": 233
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2024Q3",
+   "critical_share": 0.3333333333333333,
+   "n": 252
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2024Q4",
+   "critical_share": 0.3482142857142857,
+   "n": 112
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2025Q1",
+   "critical_share": 0.2358490566037736,
+   "n": 106
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2025Q2",
+   "critical_share": 0.3619047619047619,
+   "n": 105
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2025Q3",
+   "critical_share": 0.30833333333333335,
+   "n": 120
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2025Q4",
+   "critical_share": 0.3584905660377358,
+   "n": 106
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2026Q1",
+   "critical_share": 0.32,
+   "n": 100
+  }
+ ],
  "sources": {
   "interpretability": [
    {
@@ -1208,6 +2339,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Large language models (LLMs) can make scientific software easier to use. However, a general model does not automatically know which measurements a particular sensor can support, which algorithms are implemented in the current software, or which conclusions are justified by a computed result. These d",
+    "source": "arxiv",
     "score": 0.294
    },
    {
@@ -1219,6 +2352,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "LLMs fine-tuned for security classification are usually evaluated on held-out examples from the same distribution as their training data. We show that this can miss vulnerabilities introduced by fine-tuning itself: models can learn token-level indicator semantics that preserve canonical accuracy whi",
+    "source": "arxiv",
     "score": 0.39
    },
    {
@@ -1230,6 +2365,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Current VLM evaluations often conflate language priors with genuine spatial reasoning. To address this, we introduce CRISP, a novel structural-diagnostic evaluation paradigm that assesses visual spatial intelligence through consistency, the alignment between implicit perception and explicit reasonin",
+    "source": "arxiv",
     "score": 0.411
    },
    {
@@ -1241,6 +2378,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Recursive reasoning models can solve complex structured tasks with only a few million parameters by repeatedly updating a latent state. Deploying these models on edge hardware requires significant compression, but unlike conventional sequence models, quantization errors compound across recursive rea",
+    "source": "arxiv",
     "score": 0.401
    },
    {
@@ -1252,6 +2391,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Language models (LMs) capture large amounts of factual knowledge applicable to a wide range of tasks, motivating the view of their parameters as a knowledge base. An important property of knowledge bases is that different queries for the same fact return consistent results, drawing on a single sourc",
+    "source": "arxiv",
     "score": 0.438
    },
    {
@@ -1263,6 +2404,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Deep learning models have achieved impressive performance across various fields but remain vulnerable to adversarial inputs, particularly in NLP, where such attacks can have significant real-world consequences. Adversarial attacks often involve small, semantically similar token replacements to fool ",
+    "source": "arxiv",
     "score": 0.381
    },
    {
@@ -1274,6 +2417,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Recent work identified emotion vectors in Claude Sonnet 4.5, which are internal representations that encode emotion concepts, causally influence behavior, and exhibit geometry mirroring human psychological structure. We test the generality of these findings in two open-weight models, Apertus-8B-Inst",
+    "source": "arxiv",
     "score": 0.365
    },
    {
@@ -1285,6 +2430,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Large language models (LLMs) are increasingly being integrated into mental health support tools and other psychologically sensitive conversational applications. In such settings, behavioral stability and consistency are important for trustworthy human-AI interaction. However, semantically similar co",
+    "source": "arxiv",
     "score": 0.375
    }
   ],
@@ -1298,6 +2445,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Root cause analysis (RCA) poses a holistic test of LLM agentic capabilities, such as long-context understanding, multi-step reasoning, and tool use. However, existing datasets suffer from a fundamental gap: they label only the root cause, not the propagation path connecting it to the observed sympto",
+    "source": "arxiv",
     "score": 0.398
    },
    {
@@ -1309,6 +2458,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "In order to screen a prompt or a response, the recent guardrail methods generate a chain-of-thought (CoT) before they issue a verdict. This design follows a common belief that step-by-step reasoning improves a decision. However, CoT also makes the guard heavy and slow, because the model must generat",
+    "source": "arxiv",
     "score": 0.444
    },
    {
@@ -1320,6 +2471,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Does intelligence require the ability to reason about phenomena beyond direct experience? It is natural to suspect that some complex thought cannot be captured through language alone. However, of particular concern to this work, is whether visualising counterfactual events can complement language as",
+    "source": "arxiv",
     "score": 0.482
    },
    {
@@ -1331,6 +2484,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Chain-of-thought (CoT) reasoning is widely used in language-model agents, but prior work has shown that verbalized CoT is not always faithful and may instead reflect post-hoc reasoning, which means the model already knows the answer before reasoning. We therefore ask what CoT training is actually im",
+    "source": "arxiv",
     "score": 0.502
    },
    {
@@ -1342,6 +2497,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Video reasoning language models implicitly assume that every input frame is equally reliable. This leads to what we term the Blind Trust Problem: under realistic perturbations such as motion blur, glare, or occlusion, frontier video reasoning models can suffer 15-30%p accuracy drops on real-world em",
+    "source": "arxiv",
     "score": 0.41
    },
    {
@@ -1353,6 +2510,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "With the gradual introduction of AI into telescope scheduling, AI-based decision-making has shown advantages in handling complex multi-constraint problems. However, its outputs often suffer from inconsistent data references, reasoning errors, and non-executable decisions, limiting applicability in h",
+    "source": "arxiv",
     "score": 0.44
    },
    {
@@ -1364,6 +2523,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Current VLM evaluations often conflate language priors with genuine spatial reasoning. To address this, we introduce CRISP, a novel structural-diagnostic evaluation paradigm that assesses visual spatial intelligence through consistency, the alignment between implicit perception and explicit reasonin",
+    "source": "arxiv",
     "score": 0.373
    },
    {
@@ -1375,6 +2536,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Large reasoning models (LRMs) take longer on harder problems, just as humans do. This surface similarity hides an opposite pattern within items. When an LRM gets a problem wrong, it spends more tokens than when it gets the same problem right; humans do the reverse, spending less time on the trials t",
+    "source": "arxiv",
     "score": 0.42
    }
   ],
@@ -1388,6 +2551,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Multimodal web agents can assist humans in operating repetitive GUI tasks, where effective task planning is essential for decomposing complex tasks into executable actions. While small open source MLLMs are cost efficient and privacy preserving compared with commercial large models, they suffer from",
+    "source": "arxiv",
     "score": 0.434
    },
    {
@@ -1399,6 +2564,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Recently, a few works have made early attempts to study test-time scaling for embodied tasks. However, two major challenges remain unsolved: (1) reasoning can effectively improve the performance of the policy, but its scaling mechanism has seldom been studied; (2) historical information is essential",
+    "source": "arxiv",
     "score": 0.425
    },
    {
@@ -1410,6 +2577,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "I describe my solution to the LeHome Challenge 2026, an ICRA 2026 competition on bimanual garment folding. The system placed 1st of 62 teams in the online (simulation) round and 2nd in the real-world final. It improves a vision-language-action (VLA) policy with a reinforcement-learning loop. The pol",
+    "source": "arxiv",
     "score": 0.379
    },
    {
@@ -1421,6 +2590,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "For LLM agents in multi-step interactive environments, a key challenge is to make effective use of accumulated interaction experience. Existing work has typically separated two uses of such experience: keeping it outside the model as natural-language rules for later prompting, or using trajectories ",
+    "source": "arxiv",
     "score": 0.502
    },
    {
@@ -1432,6 +2603,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "AI coding agents dramatically accelerate implementation speed but introduce two structural failure modes that existing spec-driven approaches do not fully solve: (1) context explosion -- the agent must reason over an entire repository at once, degrading output quality as the context window fills; an",
+    "source": "arxiv",
     "score": 0.326
    },
    {
@@ -1443,6 +2616,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Multi-agent large language model (LLM) loops, for example a Writer that drafts and a Critic that revises, are almost always terminated by a fixed iteration cap (max_iterations). This is a syntactic kill-switch: it is blind to whether the answer is still improving, so it over-spends tokens on easy in",
+    "source": "arxiv",
     "score": 0.413
    },
    {
@@ -1454,6 +2629,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Multimodal agentic retrieval-augmented generation (RAG) systems expand the attack surface beyond prompt injection to include text poisoning, image injection, direct-query attacks, and orchestrator-level tool manipulation. Existing red-teaming approaches are typically surface-specific and often recyc",
+    "source": "arxiv",
     "score": 0.366
    },
    {
@@ -1465,6 +2642,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "High-performance GPU kernels are critical for reducing the exponentially growing computational costs of large language models (LLMs), but their development heavily relies on manual tuning by domain experts. While recent advances in LLM-based approaches show promise for automating kernel generation, ",
+    "source": "arxiv",
     "score": 0.393
    }
   ],
@@ -1478,6 +2657,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Retrieval-augmented generation (RAG) gives agents access to accumulated knowledge, but has no model of time. When a fact changes (e.g., a function is renamed or API restructured), RAG retrieves both the stale and current value with near-identical embedding similarity. The agent then either abstains ",
+    "source": "arxiv",
     "score": 0.335
    },
    {
@@ -1489,6 +2670,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "AI-assisted vulnerability discovery has proven effective for bug classes like memory safety, where instrumentation confirms memory violations and efficiently filters false positives. Many dangerous vulnerability classes, such as cryptographic misuse, however, lack any comparable instrumentation. In ",
+    "source": "arxiv",
     "score": 0.313
    },
    {
@@ -1500,6 +2683,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Security misconfigurations in Terraform Infrastructure-as-Code are a growing risk in cloud deployments, and large language models are increasingly used as automated repair agents. Existing evaluations often treat a repair as successful when the targeted static-analysis finding disappears, without ch",
+    "source": "arxiv",
     "score": 0.329
    },
    {
@@ -1511,6 +2696,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Large reasoning models (LRMs) take longer on harder problems, just as humans do. This surface similarity hides an opposite pattern within items. When an LRM gets a problem wrong, it spends more tokens than when it gets the same problem right; humans do the reverse, spending less time on the trials t",
+    "source": "arxiv",
     "score": 0.424
    },
    {
@@ -1522,6 +2709,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Impagliazzo's five worlds classify computational assumptions along a single axis, the existence of cryptographic primitives. All five worlds implicitly assume that every party, including the adversary, observes the full input, that the observer is always $O_{top}$. This assumption is so natural that",
+    "source": "arxiv",
     "score": 0.382
    },
    {
@@ -1533,6 +2722,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Multi-model LLM systems such as routing, voting, cascades, fusion, and mixture-of-agents are used to beat single-model accuracy. We show that their gain is capped by a quantity the field rarely reports. For any policy whose output is one member model answer, accuracy cannot exceed one minus beta, wh",
+    "source": "arxiv",
     "score": 0.367
    },
    {
@@ -1544,6 +2735,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Large language models (LLMs) are increasingly used to screen and rank job applicants, creating incentives for candidates to strategically manipulate algorithmic hiring systems. We study prompt injection in automated résumé screening, defined as subtle self-promotional text that introduces no new qua",
+    "source": "arxiv",
     "score": 0.356
    },
    {
@@ -1555,6 +2748,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "AI nudification uses generative models to create synthetic non-consensual sexually explicit imagery (SNEACI) of real individuals. Prior work has examined dedicated nudification platforms and model repositories, finding that most targets are female celebrities. However, the anonymous content communit",
+    "source": "arxiv",
     "score": 0.406
    }
   ],
@@ -1568,6 +2763,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "The promotion of betting applications on social media platforms has increased significantly in recent years. Many of these advertisements use persuasive techniques that may mislead users, encourage risky behavior, and potentially influence users' mental well-being. However, research on the automated",
+    "source": "arxiv",
     "score": 0.28
    },
    {
@@ -1579,6 +2776,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Sparse rewards are inherently challenging for reinforcement learning agents as they lack intermediate feedback to guide exploration and to correctly attribute the sparse success rewards to relevant parts of the trajectory. Naive reward shaping can induce reward hacking, yielding policies that exploi",
+    "source": "arxiv",
     "score": 0.429
    },
    {
@@ -1590,6 +2789,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "This paper proposes a corrected heavy-ball Q-learning method for reinforcement learning (RL) and establishes its convergence. It also identifies conditions under which the method is theoretically guaranteed to converge faster than standard Q-learning. The same construction is then extended to Q-lear",
+    "source": "arxiv",
     "score": 0.332
    },
    {
@@ -1601,6 +2802,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Open-source game theory studies agents whose behavior may depend on one another's decision procedures, but most existing models use discrete or symbolic programs. We introduce parametric open-source games, a continuous analogue of program equilibria in which players choose parameter vectors and sema",
+    "source": "arxiv",
     "score": 0.486
    },
    {
@@ -1612,6 +2815,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Energy trading decisions depend not only on current market prices, but also on expected future market conditions, and operational constraints. This makes the state representation given to a reinforcement learning agent an important design choice. We study this in HydroDam, a pumped-storage arbitrage",
+    "source": "arxiv",
     "score": 0.316
    },
    {
@@ -1623,6 +2828,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Online reinforcement learning is widely used to align large language models (LLMs) with reward signals, yet training can be unstable under noisy or misspecified rewards. We identify a failure mode we call directional inconsistency: within a batch, a small set of high-reward rollouts induces represen",
+    "source": "arxiv",
     "score": 0.412
    },
    {
@@ -1634,6 +2841,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Reinforcement learning with verifiable rewards (RLVR) for training LLMs typically rely on ground-truth answers to assign rewards, limiting their applicability to tasks where the ground-truth solution is unknown. We introduce a \\textbf{R}anking-\\textbf{i}nduced \\textbf{VER}ifiable framework (RiVER) t",
+    "source": "arxiv",
     "score": 0.441
    },
    {
@@ -1645,6 +2854,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Gradient equilibrium (GEQ) is a recently introduced online optimization framework that generalizes first-order stationarity from offline optimization and abstracts problems like online conformal prediction. While GEQ has curious similarities with known online learning frameworks, namely regret minim",
+    "source": "arxiv",
     "score": 0.399
    }
   ],
@@ -1658,6 +2869,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Third-party vendors, such as analytics platforms, cloud services, identity providers, and software suppliers, are increasingly embedded in digital service delivery. While these arrangements enable scale and specialization, they also move customer data and security-relevant practices into environment",
+    "source": "arxiv",
     "score": 0.318
    },
    {
@@ -1669,6 +2882,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Recent work (2024 to 2026) has converged on a strategy for defending tool-using LLM agents against indirect prompt injection: rather than training the model to refuse malicious instructions, enforce security outside the model with a deterministic policy that mediates the agent's actions. Systems suc",
+    "source": "arxiv",
     "score": 0.405
    },
    {
@@ -1680,6 +2895,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "With a profusion of jailbreaks for LLMs now widely known, a growing concern is that non-expert malicious actors (\"the average Jane\") could elicit actionable responses to malicious requests. In this work, we examine whether this concern is justified. A non-expert malicious actor requires two ingredie",
+    "source": "arxiv",
     "score": 0.383
    },
    {
@@ -1691,6 +2908,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Wildfire monitoring from UAVs requires reliable reasoning over complex aerial scenes, where smoke, scale variation, and occlusions often limit RGB-only interpretation. We introduce FlameVQA, a multiple-choice visual question answering benchmark for UAV-based wildfire intelligence built on FLAME 3, l",
+    "source": "arxiv",
     "score": 0.331
    },
    {
@@ -1702,6 +2921,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "We present a novel approach for applying Large Language Models (LLMs) to threat assessment in the context of foreign peacekeeping missions. Building on the PINPOINT project and its use case, the EU Monitoring Mission in Georgia, we combine an interdisciplinary risk-model with OSINT-based media colle",
+    "source": "arxiv",
     "score": 0.35
    },
    {
@@ -1713,6 +2934,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Speech-capable models are increasingly deployed in real-world applications across languages. Yet their safety and fairness beyond English settings and under naturalistic conditions remain understudied. We survey safety reporting practices across state-of-the-art speech model releases, finding that o",
+    "source": "arxiv",
     "score": 0.388
    },
    {
@@ -1724,6 +2947,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Uncertainty estimates in machine learning are typically evaluated using generic metrics such as the negative log-likelihood and expected calibration error, yet good performance on such metrics does not necessarily imply high utility in downstream decisions. We introduce decision-alignment, a criteri",
+    "source": "arxiv",
     "score": 0.407
    },
    {
@@ -1735,6 +2960,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Existing benchmarks typically report accuracy for a single model on a single run. This systematically understates real-world LLM capabilities, particularly under heterogeneous data distributions: (i) different models get different questions correct according to their specializations, and (ii) given ",
+    "source": "arxiv",
     "score": 0.486
    }
   ],
@@ -1748,6 +2975,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Building persistent embodied agents in unstructured environments demands unified orchestration of heterogeneous tools spanning both cyber (APIs, IoT) and physical (manipulation, navigation) domains, coupled with autonomous recovery from physical failures that inevitably arise over extended operation",
+    "source": "arxiv",
     "score": 0.396
    },
    {
@@ -1759,6 +2988,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "AI coding agents dramatically accelerate implementation speed but introduce two structural failure modes that existing spec-driven approaches do not fully solve: (1) context explosion -- the agent must reason over an entire repository at once, degrading output quality as the context window fills; an",
+    "source": "arxiv",
     "score": 0.331
    },
    {
@@ -1770,6 +3001,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "With the rapid evolution of LLM-driven agents, Model Context Protocol (MCP), an open protocol bridging LLMs with external tools, has quickly become foundational to modern agent ecosystems. However, the expanding adoption of MCP has also introduced novel security concerns such as Tool Poisoning Attac",
+    "source": "arxiv",
     "score": 0.399
    },
    {
@@ -1781,6 +3014,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Medical AI remains organized around isolated models, whereas clinical care requires accountable capabilities that persist across time. We propose clinical AI skills and the Clinical Harness: a runtime governance architecture for registering, orchestrating, guarding and monitoring AI-enabled clinical",
+    "source": "arxiv",
     "score": 0.391
    },
    {
@@ -1792,6 +3027,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "This paper addresses model-free continuous-time mean-field control in a setting where the population dynamics evolve continuously according to an unknown McKean-Vlasov stochastic differential equation, while only discrete-time transition data are available. In the model-based formulation, policy eva",
+    "source": "arxiv",
     "score": 0.28
    },
    {
@@ -1803,6 +3040,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Agentic systems increasingly act through third-party skills, allowing model-generated decisions to affect files, communication channels, and cyber-physical devices. These skills often include natural-language specifications that define access permissions, disclosure limits, execution privileges, and",
+    "source": "arxiv",
     "score": 0.509
    },
    {
@@ -1814,6 +3053,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "AI-assisted vulnerability discovery has proven effective for bug classes like memory safety, where instrumentation confirms memory violations and efficiently filters false positives. Many dangerous vulnerability classes, such as cryptographic misuse, however, lack any comparable instrumentation. In ",
+    "source": "arxiv",
     "score": 0.366
    },
    {
@@ -1825,6 +3066,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "The rapid advancement of generative models presents a significant challenge to existing deepfake detection methods, particularly given the widespread dissemination of highly realistic AI-generated images. Although Multimodal Large Language Models (MLLMs) show strong potential for this task, existing",
+    "source": "arxiv",
     "score": 0.38
    }
   ],
@@ -1838,6 +3081,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Multimodal web agents can assist humans in operating repetitive GUI tasks, where effective task planning is essential for decomposing complex tasks into executable actions. While small open source MLLMs are cost efficient and privacy preserving compared with commercial large models, they suffer from",
+    "source": "arxiv",
     "score": 0.381
    },
    {
@@ -1849,6 +3094,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Building persistent embodied agents in unstructured environments demands unified orchestration of heterogeneous tools spanning both cyber (APIs, IoT) and physical (manipulation, navigation) domains, coupled with autonomous recovery from physical failures that inevitably arise over extended operation",
+    "source": "arxiv",
     "score": 0.449
    },
    {
@@ -1860,6 +3107,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "We introduce the process harness, a new mechanism for uplifting legacy workflows into Agentic Business Process Management (Agentic BPM) without replacing the underlying workflow engine. A process harness places a policy-governed agentic layer around a deterministic workflow engine, intercepting desi",
+    "source": "arxiv",
     "score": 0.523
    },
    {
@@ -1871,6 +3120,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "With the rapid evolution of LLM-driven agents, Model Context Protocol (MCP), an open protocol bridging LLMs with external tools, has quickly become foundational to modern agent ecosystems. However, the expanding adoption of MCP has also introduced novel security concerns such as Tool Poisoning Attac",
+    "source": "arxiv",
     "score": 0.493
    },
    {
@@ -1882,6 +3133,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "LLM coding harnesses grant agents broad file and shell access, yet the configuration layer that steers them -- rules files, agent definitions, IDE-specific markdown -- is largely unmanaged. A prevalence study of 10,008 public GitHub repositories (n=6,145 agent config files) finds that agent configur",
+    "source": "arxiv",
     "score": 0.493
    },
    {
@@ -1893,6 +3146,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Recommendation algorithm iteration is moving from an artisanal, engineer-bound process toward an industrialized research loop, but this transition remains blocked by a structural execution bottleneck: the idea-to-launch cycle still depends on human engineers to generate hypotheses, modify production",
+    "source": "arxiv",
     "score": 0.53
    },
    {
@@ -1904,6 +3159,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Multimodal agentic retrieval-augmented generation (RAG) systems expand the attack surface beyond prompt injection to include text poisoning, image injection, direct-query attacks, and orchestrator-level tool manipulation. Existing red-teaming approaches are typically surface-specific and often recyc",
+    "source": "arxiv",
     "score": 0.35
    },
    {
@@ -1915,6 +3172,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "The automation of scientific discovery has reached an inflection point. While AI systems now operate instruments, optimize parameters and generate hypotheses, most remain procedural: they execute workflows fixed by human designers. True autonomous science demands epistemic autonomy--the capacity to ",
+    "source": "arxiv",
     "score": 0.343
    }
   ],
@@ -1928,6 +3187,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Multimodal web agents can assist humans in operating repetitive GUI tasks, where effective task planning is essential for decomposing complex tasks into executable actions. While small open source MLLMs are cost efficient and privacy preserving compared with commercial large models, they suffer from",
+    "source": "arxiv",
     "score": 0.532
    },
    {
@@ -1939,6 +3200,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Recently, a few works have made early attempts to study test-time scaling for embodied tasks. However, two major challenges remain unsolved: (1) reasoning can effectively improve the performance of the policy, but its scaling mechanism has seldom been studied; (2) historical information is essential",
+    "source": "arxiv",
     "score": 0.36
    },
    {
@@ -1950,6 +3213,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Building persistent embodied agents in unstructured environments demands unified orchestration of heterogeneous tools spanning both cyber (APIs, IoT) and physical (manipulation, navigation) domains, coupled with autonomous recovery from physical failures that inevitably arise over extended operation",
+    "source": "arxiv",
     "score": 0.549
    },
    {
@@ -1961,6 +3226,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "We present a conceptual framework for analyzing dialogue in collaborative problem-solving contexts, with an emphasis on the emerging dynamics of human-AI and multi-agent collaboration. As intelligent systems become active agents capable of autonomous reasoning and strategic cooperation, understandin",
+    "source": "arxiv",
     "score": 0.399
    },
    {
@@ -1972,6 +3239,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "We introduce the process harness, a new mechanism for uplifting legacy workflows into Agentic Business Process Management (Agentic BPM) without replacing the underlying workflow engine. A process harness places a policy-governed agentic layer around a deterministic workflow engine, intercepting desi",
+    "source": "arxiv",
     "score": 0.592
    },
    {
@@ -1983,6 +3252,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "I describe my solution to the LeHome Challenge 2026, an ICRA 2026 competition on bimanual garment folding. The system placed 1st of 62 teams in the online (simulation) round and 2nd in the real-world final. It improves a vision-language-action (VLA) policy with a reinforcement-learning loop. The pol",
+    "source": "arxiv",
     "score": 0.437
    },
    {
@@ -1994,6 +3265,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "For LLM agents in multi-step interactive environments, a key challenge is to make effective use of accumulated interaction experience. Existing work has typically separated two uses of such experience: keeping it outside the model as natural-language rules for later prompting, or using trajectories ",
+    "source": "arxiv",
     "score": 0.51
    },
    {
@@ -2005,6 +3278,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "AI coding agents dramatically accelerate implementation speed but introduce two structural failure modes that existing spec-driven approaches do not fully solve: (1) context explosion -- the agent must reason over an entire repository at once, degrading output quality as the context window fills; an",
+    "source": "arxiv",
     "score": 0.342
    }
   ],
@@ -2018,6 +3293,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "I describe my solution to the LeHome Challenge 2026, an ICRA 2026 competition on bimanual garment folding. The system placed 1st of 62 teams in the online (simulation) round and 2nd in the real-world final. It improves a vision-language-action (VLA) policy with a reinforcement-learning loop. The pol",
+    "source": "arxiv",
     "score": 0.432
    },
    {
@@ -2029,6 +3306,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "For LLM agents in multi-step interactive environments, a key challenge is to make effective use of accumulated interaction experience. Existing work has typically separated two uses of such experience: keeping it outside the model as natural-language rules for later prompting, or using trajectories ",
+    "source": "arxiv",
     "score": 0.576
    },
    {
@@ -2040,6 +3319,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Synthesizing human motion from textual descriptions is essential for immersive digital applications, yet existing methods face a persistent trade-off between semantic fidelity and physical realism. Large language model (LLM)-based approaches can interpret diverse open-vocabulary instructions and com",
+    "source": "arxiv",
     "score": 0.343
    },
    {
@@ -2051,6 +3332,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Motion forecasting is essential for autonomous driving systems to enable safe decision-making and planning in complex driving scenarios. While existing predictors excel at minimizing standard displacement errors, they often overlook the adherence to lane topology of multimodal predictions, particula",
+    "source": "arxiv",
     "score": 0.294
    },
    {
@@ -2062,6 +3345,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Complex multi-agent control tasks remain challenging for traditional rule-based and model-based approaches, motivating the adoption of learning-based methods. However, learning-based methods often struggle with sim-to-real transfer because they rely on accurate dynamics modeling or system identifica",
+    "source": "arxiv",
     "score": 0.399
    },
    {
@@ -2073,6 +3358,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Many real-world control problems involve hybrid discrete-continuous action spaces. For example, steering and signaling in autonomous driving, and aiming and firing in robotics or video-games. Despite real-world hybrid factorization and reinforcement learning framework support for complex action spac",
+    "source": "arxiv",
     "score": 0.438
    },
    {
@@ -2084,6 +3371,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "This paper addresses model-free continuous-time mean-field control in a setting where the population dynamics evolve continuously according to an unknown McKean-Vlasov stochastic differential equation, while only discrete-time transition data are available. In the model-based formulation, policy eva",
+    "source": "arxiv",
     "score": 0.361
    },
    {
@@ -2095,6 +3384,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Outcome-based reinforcement learning provides a stable optimization backbone for language agents, but its sparse trajectory-level rewards provide little guidance on which intermediate decisions should be reinforced or suppressed. On-policy self-distillation offers dense token-level supervision, yet ",
+    "source": "arxiv",
     "score": 0.494
    }
   ],
@@ -2108,6 +3399,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Recently, a few works have made early attempts to study test-time scaling for embodied tasks. However, two major challenges remain unsolved: (1) reasoning can effectively improve the performance of the policy, but its scaling mechanism has seldom been studied; (2) historical information is essential",
+    "source": "arxiv",
     "score": 0.43
    },
    {
@@ -2119,6 +3412,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "We present a conceptual framework for analyzing dialogue in collaborative problem-solving contexts, with an emphasis on the emerging dynamics of human-AI and multi-agent collaboration. As intelligent systems become active agents capable of autonomous reasoning and strategic cooperation, understandin",
+    "source": "arxiv",
     "score": 0.394
    },
    {
@@ -2130,6 +3425,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Multi-agent large language model (LLM) loops, for example a Writer that drafts and a Critic that revises, are almost always terminated by a fixed iteration cap (max_iterations). This is a syntactic kill-switch: it is blind to whether the answer is still improving, so it over-spends tokens on easy in",
+    "source": "arxiv",
     "score": 0.523
    },
    {
@@ -2141,6 +3438,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Synthesizing human motion from textual descriptions is essential for immersive digital applications, yet existing methods face a persistent trade-off between semantic fidelity and physical realism. Large language model (LLM)-based approaches can interpret diverse open-vocabulary instructions and com",
+    "source": "arxiv",
     "score": 0.338
    },
    {
@@ -2152,6 +3451,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Auto-formalization is critical for scalable formal verification, but existing progress largely focuses on isolated statements, while theory-scale auto-formalization, which coherently translates hundreds of interdependent definitions, lemmas, and theorems, remains open due to challenges in consistenc",
+    "source": "arxiv",
     "score": 0.484
    },
    {
@@ -2163,6 +3464,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "While text-to-image (T2I) models have achieved remarkable progress, they struggle with real-world requests that are often underspecified, implicit, or dependent on up-to-date knowledge. We identify this challenge as the Context Gap: the mismatch between the user context and the sufficient generation",
+    "source": "arxiv",
     "score": 0.341
    },
    {
@@ -2174,6 +3477,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Root cause analysis (RCA) poses a holistic test of LLM agentic capabilities, such as long-context understanding, multi-step reasoning, and tool use. However, existing datasets suffer from a fundamental gap: they label only the root cause, not the propagation path connecting it to the observed sympto",
+    "source": "arxiv",
     "score": 0.423
    },
    {
@@ -2185,6 +3490,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "In order to screen a prompt or a response, the recent guardrail methods generate a chain-of-thought (CoT) before they issue a verdict. This design follows a common belief that step-by-step reasoning improves a decision. However, CoT also makes the guard heavy and slow, because the model must generat",
+    "source": "arxiv",
     "score": 0.504
    }
   ],
@@ -2198,6 +3505,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Multi-model LLM systems such as routing, voting, cascades, fusion, and mixture-of-agents are used to beat single-model accuracy. We show that their gain is capped by a quantity the field rarely reports. For any policy whose output is one member model answer, accuracy cannot exceed one minus beta, wh",
+    "source": "arxiv",
     "score": 0.388
    },
    {
@@ -2209,6 +3518,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "AI nudification uses generative models to create synthetic non-consensual sexually explicit imagery (SNEACI) of real individuals. Prior work has examined dedicated nudification platforms and model repositories, finding that most targets are female celebrities. However, the anonymous content communit",
+    "source": "arxiv",
     "score": 0.306
    },
    {
@@ -2220,6 +3531,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Recent work identified emotion vectors in Claude Sonnet 4.5, which are internal representations that encode emotion concepts, causally influence behavior, and exhibit geometry mirroring human psychological structure. We test the generality of these findings in two open-weight models, Apertus-8B-Inst",
+    "source": "arxiv",
     "score": 0.288
    },
    {
@@ -2231,6 +3544,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Existing benchmarks typically report accuracy for a single model on a single run. This systematically understates real-world LLM capabilities, particularly under heterogeneous data distributions: (i) different models get different questions correct according to their specializations, and (ii) given ",
+    "source": "arxiv",
     "score": 0.442
    },
    {
@@ -2242,6 +3557,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Reliably quantifying predictive uncertainty is difficult for complex, high-dimensional, or misspecified models. Both fully Bayesian and bootstrap resampling methods provide principled uncertainty estimates but are often too expensive for modern machine-learning models because they require posterior ",
+    "source": "arxiv",
     "score": 0.345
    },
    {
@@ -2253,6 +3570,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Efficient sampling of molecular systems at thermodynamic equilibrium is a hallmark challenge in statistical physics. This challenge has driven the development of Boltzmann Generators (BGs), which allow rapid generation of uncorrelated equilibrium samples by combining a generative model with exact li",
+    "source": "arxiv",
     "score": 0.352
    },
    {
@@ -2264,6 +3583,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Entity Matching (EM) is a core operation in the data integration pipeline, where records from different sources are compared to determine whether they refer to the same real-world entity. Recent work has incorporated domain information and low-resource learning techniques to better adapt EM systems ",
+    "source": "arxiv",
     "score": 0.281
    },
    {
@@ -2275,6 +3596,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Sparse autoencoders (SAEs) have become a leading tool for interpreting the representations of vision foundation models, decomposing their polysemantic activations into a larger set of sparse, more monosemantic features. The Top-$k$ SAE, a now-standard variant, enforces sparsity architecturally throu",
+    "source": "arxiv",
     "score": 0.379
    }
   ],
@@ -2288,6 +3611,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "We present a conceptual framework for analyzing dialogue in collaborative problem-solving contexts, with an emphasis on the emerging dynamics of human-AI and multi-agent collaboration. As intelligent systems become active agents capable of autonomous reasoning and strategic cooperation, understandin",
+    "source": "arxiv",
     "score": 0.443
    },
    {
@@ -2299,6 +3624,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "We introduce the process harness, a new mechanism for uplifting legacy workflows into Agentic Business Process Management (Agentic BPM) without replacing the underlying workflow engine. A process harness places a policy-governed agentic layer around a deterministic workflow engine, intercepting desi",
+    "source": "arxiv",
     "score": 0.519
    },
    {
@@ -2310,6 +3637,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "LLM coding harnesses grant agents broad file and shell access, yet the configuration layer that steers them -- rules files, agent definitions, IDE-specific markdown -- is largely unmanaged. A prevalence study of 10,008 public GitHub repositories (n=6,145 agent config files) finds that agent configur",
+    "source": "arxiv",
     "score": 0.5
    },
    {
@@ -2321,6 +3650,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Recommendation algorithm iteration is moving from an artisanal, engineer-bound process toward an industrialized research loop, but this transition remains blocked by a structural execution bottleneck: the idea-to-launch cycle still depends on human engineers to generate hypotheses, modify production",
+    "source": "arxiv",
     "score": 0.481
    },
    {
@@ -2332,6 +3663,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "High-performance GPU kernels are critical for reducing the exponentially growing computational costs of large language models (LLMs), but their development heavily relies on manual tuning by domain experts. While recent advances in LLM-based approaches show promise for automating kernel generation, ",
+    "source": "arxiv",
     "score": 0.415
    },
    {
@@ -2343,6 +3676,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Agents often repeatedly solve similar task instances from scratch, leading to unnecessary reasoning cost and long execution traces. Prior work has explored workflow reuse and executable skill induction, but it remains unclear which task scenarios admit procedural skills and how the shared procedural",
+    "source": "arxiv",
     "score": 0.503
    },
    {
@@ -2354,6 +3689,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Agent safety in high-stakes domains requires formal policy enforcement, but most existing approaches either rely on probabilistic guardrails (fine-tuned classifiers, prompt-based steering) that offer no formal guarantees, or on hand-coded symbolic enforcement that does not scale to the breadth of re",
+    "source": "arxiv",
     "score": 0.525
    },
    {
@@ -2365,6 +3702,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Large language model agents increasingly query databases, search document collections, call external APIs, remember past interactions, and act on a user's behalf. As they move from answering questions to operating over sensitive data, privacy becomes harder to enforce. An agent touches many data sou",
+    "source": "arxiv",
     "score": 0.476
    }
   ],
@@ -2378,6 +3717,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Email communication has become an integral part of personal and professional life, but handling its vast volume is still a significant issue for large organisations. Manual perusal of emails and forwarding their contents and attachments to intended recipients using other instant messaging platforms ",
+    "source": "arxiv",
     "score": 0.328
    },
    {
@@ -2389,6 +3730,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Chain-of-thought (CoT) reasoning is widely used in language-model agents, but prior work has shown that verbalized CoT is not always faithful and may instead reflect post-hoc reasoning, which means the model already knows the answer before reasoning. We therefore ask what CoT training is actually im",
+    "source": "arxiv",
     "score": 0.445
    },
    {
@@ -2400,6 +3743,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Large language models (LLMs) are increasingly used to screen and rank job applicants, creating incentives for candidates to strategically manipulate algorithmic hiring systems. We study prompt injection in automated résumé screening, defined as subtle self-promotional text that introduces no new qua",
+    "source": "arxiv",
     "score": 0.349
    },
    {
@@ -2411,6 +3756,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "In today's fast-paced information era, logical fallacies, defined as defective patterns of reasoning, inevitably contribute to the growth of information disorder. However, often fallacies appear in nuanced forms that complicate automated classification. In this study, we investigate whether merging ",
+    "source": "arxiv",
     "score": 0.364
    },
    {
@@ -2422,6 +3769,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Modern generative world models render increasingly realistic action-controllable futures, yet they frequently hallucinate: rollouts remain visually fluent while drifting from the ground-truth dynamics. We hypothesize that hallucination concentrates in low-coverage regions of the state-action space, ",
+    "source": "arxiv",
     "score": 0.346
    },
    {
@@ -2433,6 +3782,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Uplift modeling, crucial for estimating individual treatment effects (ITE), faces dual challenges: flexibly leveraging inter-group similarity to enhance discriminative power and debiasing under unobserved confounding scenarios. In this paper, we propose the Cross-Head Attention Uplift Network (CHAUN",
+    "source": "arxiv",
     "score": 0.315
    },
    {
@@ -2444,6 +3795,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "We argue that safety classifiers should model user intent as an explicit signal between the prompt and the final label. To study this, we introduce AIMS, a human-annotated dataset of 1,724 difficult safety prompts, each paired with an intent description and harm label. We use AIMS to evaluate intent",
+    "source": "arxiv",
     "score": 0.371
    },
    {
@@ -2455,6 +3808,8 @@
     "influential_citations": null,
     "venue": null,
     "tldr": null,
+    "abstract": "Unlike diffusion-based models that operate in continuous latent spaces, autoregressive unified multimodal models produce images by sequentially predicting discretized visual tokens. These tokens are derived from a codebook that maps embeddings to quantized visual patterns. The language-like architec",
+    "source": "arxiv",
     "score": 0.349
    }
   ]
@@ -2466,7 +3821,9 @@
    "title": "Previewing GPT-5.6 Sol: a next-generation model",
    "summary": "OpenAI previews GPT-5.6 Sol, a next-generation model with stronger capabilities in coding, science, and cybersecurity, paired with its most advanced safety stack.",
    "url": "https://openai.com/index/previewing-gpt-5-6-sol",
-   "published": "2026-06-26"
+   "published": "2026-06-26",
+   "topic": "agentic_monitoring",
+   "topic_score": 0.272
   },
   {
    "id": "https://www.microsoft.com/en-us/research/?p=1176573",
@@ -2474,7 +3831,9 @@
    "title": "Understanding the brain with AI-driven explanations and experiments",
    "summary": "Researchers introduce generative causal testing, which translates black box models into clear hypotheses and verifies them in the scanner, revealing what specific brain regions respond to in language.\nThe post Understanding the brain with AI-driven explanations and experiments appeared first on Microsoft Research.",
    "url": "https://www.microsoft.com/en-us/research/blog/understanding-the-brain-with-ai-driven-explanations-and-experiments/",
-   "published": "2026-06-25"
+   "published": "2026-06-25",
+   "topic": "reasoning_cot",
+   "topic_score": 0.509
   },
   {
    "id": "https://openai.com/index/how-agents-are-transforming-work",
@@ -2482,7 +3841,9 @@
    "title": "How agents are transforming work",
    "summary": "A new OpenAI research paper shows how AI agents are transforming work, enabling longer, more complex tasks and expanding productivity across roles.",
    "url": "https://openai.com/index/how-agents-are-transforming-work",
-   "published": "2026-06-25"
+   "published": "2026-06-25",
+   "topic": "agentic_capability",
+   "topic_score": 0.53
   },
   {
    "id": "https://www.microsoft.com/en-us/research/blog/talos-scaling-rare-disease-diagnosis-with-automated-iterative-genomic-reanalysis/",
@@ -2490,7 +3851,9 @@
    "title": "Talos: Scaling rare disease diagnosis with automated, iterative genomic reanalysis",
    "summary": "Talos was built to help resolve a major bottleneck in genomic medicine: human review time. The open-source system recovered 90% of in-scope diagnoses while surfacing just 1.3 candidate variants per patient for expert review. \nThe post Talos: Scaling rare disease diagnosis with automated, iterative genomic reanalysis appeared first on Microsoft Research.",
    "url": "https://www.microsoft.com/en-us/research/blog/talos-scaling-rare-disease-diagnosis-with-automated-iterative-genomic-reanalysis/",
-   "published": "2026-06-24"
+   "published": "2026-06-24",
+   "topic": "frontier_scaling",
+   "topic_score": 0.188
   },
   {
    "id": "https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/",
@@ -2498,7 +3861,9 @@
    "title": "Introducing computer use in Gemini 3.5 Flash",
    "summary": "",
    "url": "https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/",
-   "published": "2026-06-24"
+   "published": "2026-06-24",
+   "topic": null,
+   "topic_score": 0.106
   },
   {
    "id": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
@@ -2506,7 +3871,9 @@
    "title": "OpenAI and Broadcom unveil LLM-optimized inference chip",
    "summary": "OpenAI and Broadcom introduce Jalapeño, a custom AI chip built for LLM inference to improve performance, efficiency, and scale across AI systems.",
    "url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
-   "published": "2026-06-24"
+   "published": "2026-06-24",
+   "topic": "agentic_capability",
+   "topic_score": 0.346
   },
   {
    "id": "https://openai.com/index/omio",
@@ -2514,7 +3881,9 @@
    "title": "How Omio is building the future of conversational travel",
    "summary": "Discover how Omio uses OpenAI to power conversational travel experiences, accelerate product development, and transform into an AI-native company.",
    "url": "https://openai.com/index/omio",
-   "published": "2026-06-23"
+   "published": "2026-06-23",
+   "topic": "agentic_capability",
+   "topic_score": 0.285
   },
   {
    "id": "https://openai.com/index/gpt-5-immunology-mystery",
@@ -2522,7 +3891,9 @@
    "title": "How GPT-5 helped immunologist Derya Unutmaz solve a 3-year-old mystery",
    "summary": "GPT-5 Pro helped solve a 3-year-old immunology mystery, offering insights into T cell behavior. The breakthrough could support cancer and autoimmune research.",
    "url": "https://openai.com/index/gpt-5-immunology-mystery",
-   "published": "2026-06-23"
+   "published": "2026-06-23",
+   "topic": null,
+   "topic_score": 0.093
   },
   {
    "id": "https://openai.com/index/helping-build-shared-standards-for-advanced-ai",
@@ -2530,7 +3901,9 @@
    "title": "Helping build shared standards for advanced AI",
    "summary": "OpenAI helps build shared standards for advanced AI, supporting evaluation frameworks, safety practices, and global cooperation through the Appia Foundation.",
    "url": "https://openai.com/index/helping-build-shared-standards-for-advanced-ai",
-   "published": "2026-06-23"
+   "published": "2026-06-23",
+   "topic": "agentic_monitoring",
+   "topic_score": 0.394
   },
   {
    "id": "https://openai.com/index/codex-maxxing-long-running-work",
@@ -2538,7 +3911,9 @@
    "title": "Codex-maxxing for long-running work",
    "summary": "Learn how Jason Liu uses Codex to preserve context, manage complex projects, and help work continue beyond a single prompt.",
    "url": "https://openai.com/index/codex-maxxing-long-running-work",
-   "published": "2026-06-22"
+   "published": "2026-06-22",
+   "topic": "agentic_capability",
+   "topic_score": 0.358
   },
   {
    "id": "https://openai.com/index/daybreak-securing-the-world",
@@ -2546,7 +3921,9 @@
    "title": "Daybreak: Tools for securing every organization in the world",
    "summary": "OpenAI introduces new Daybreak tools, including Codex Security and GPT-5.5-Cyber, to help organizations find, validate, and patch vulnerabilities at scale.",
    "url": "https://openai.com/index/daybreak-securing-the-world",
-   "published": "2026-06-22"
+   "published": "2026-06-22",
+   "topic": "agentic_monitoring",
+   "topic_score": 0.285
   },
   {
    "id": "https://openai.com/index/patch-the-planet",
@@ -2554,7 +3931,9 @@
    "title": "Patch the Planet: a Daybreak initiative to support open source maintainers",
    "summary": "OpenAI introduces Patch the Planet, a Daybreak initiative helping open-source maintainers find, validate, and fix vulnerabilities with AI and expert review.",
    "url": "https://openai.com/index/patch-the-planet",
-   "published": "2026-06-22"
+   "published": "2026-06-22",
+   "topic": "agentic_capability",
+   "topic_score": 0.288
   },
   {
    "id": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
@@ -2562,7 +3941,9 @@
    "title": "Samsung Electronics brings ChatGPT and Codex to employees",
    "summary": "Samsung Electronics deploys ChatGPT Enterprise and Codex to employees worldwide, marking one of OpenAI’s largest enterprise AI rollouts.",
    "url": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
-   "published": "2026-06-21"
+   "published": "2026-06-21",
+   "topic": "multiagent_tooluse",
+   "topic_score": 0.269
   },
   {
    "id": "https://openai.com/index/diagnose-rare-childhood-diseases",
@@ -2570,7 +3951,9 @@
    "title": "Using AI to help physicians diagnose rare genetic diseases affecting children",
    "summary": "Researchers used an OpenAI reasoning model to help diagnose rare diseases, identifying 18 new diagnoses in previously unsolved cases.",
    "url": "https://openai.com/index/diagnose-rare-childhood-diseases",
-   "published": "2026-06-18"
+   "published": "2026-06-18",
+   "topic": "scalable_oversight",
+   "topic_score": 0.416
   },
   {
    "id": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
@@ -2578,7 +3961,9 @@
    "title": "Improving health intelligence in ChatGPT",
    "summary": "Learn how GPT-5.5 Instant improves ChatGPT’s health and wellness responses with stronger reasoning, better context, clearer communication, and physician-informed evaluations.",
    "url": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
-   "published": "2026-06-18"
+   "published": "2026-06-18",
+   "topic": "reasoning_cot",
+   "topic_score": 0.207
   },
   {
    "id": "https://openai.com/index/chatgpt-enterprise-spend-controls",
@@ -2586,7 +3971,9 @@
    "title": "New usage analytics and updated spend controls for enterprises",
    "summary": "OpenAI introduces new spend controls and usage analytics for ChatGPT Enterprise, helping organizations manage costs and scale AI with confidence.",
    "url": "https://openai.com/index/chatgpt-enterprise-spend-controls",
-   "published": "2026-06-18"
+   "published": "2026-06-18",
+   "topic": "agentic_capability",
+   "topic_score": 0.271
   },
   {
    "id": "https://openai.com/index/introducing-life-sci-bench",
@@ -2594,7 +3981,9 @@
    "title": "Introducing LifeSciBench",
    "summary": "Introducing LifeSciBench, an expert-authored, expert-reviewed benchmark for evaluating how AI systems handle real-world life science research tasks and decisions.",
    "url": "https://openai.com/index/introducing-life-sci-bench",
-   "published": "2026-06-17"
+   "published": "2026-06-17",
+   "topic": "scalable_oversight",
+   "topic_score": 0.347
   },
   {
    "id": "https://openai.com/index/ai-chemist-improves-reaction",
@@ -2602,7 +3991,9 @@
    "title": "A near-autonomous AI chemist improves a challenging reaction in medicinal chemistry",
    "summary": "OpenAI and Molecule.one show how a near-autonomous AI chemist using GPT-5.4 improved a key drug-making reaction, advancing medicinal chemistry research.",
    "url": "https://openai.com/index/ai-chemist-improves-reaction",
-   "published": "2026-06-17"
+   "published": "2026-06-17",
+   "topic": "rsi_control",
+   "topic_score": 0.334
   },
   {
    "id": "https://deepmind.google/blog/securing-the-future-of-ai-agents/",
@@ -2610,7 +4001,9 @@
    "title": "Securing the future of AI agents",
    "summary": "Securing internal systems with an AI Control Roadmap, combining traditional safeguards and real-time monitoring.",
    "url": "https://deepmind.google/blog/securing-the-future-of-ai-agents/",
-   "published": "2026-06-16"
+   "published": "2026-06-16",
+   "topic": "agentic_monitoring",
+   "topic_score": 0.678
   },
   {
    "id": "https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/",
@@ -2618,7 +4011,9 @@
    "title": "Unlocking UK house-building with AI-accelerated planning",
    "summary": "UK government partners with Google DeepMind to build a new AI-powered prototype aimed at faster housing decisions.",
    "url": "https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/",
-   "published": "2026-06-16"
+   "published": "2026-06-16",
+   "topic": "agentic_capability",
+   "topic_score": 0.41
   },
   {
    "id": "https://openai.com/index/deployment-simulation",
@@ -2626,7 +4021,9 @@
    "title": "Predicting model behavior before release by simulating deployment",
    "summary": "OpenAI introduces Deployment Simulation, a method to predict AI model behavior before deployment using real conversation data to improve safety and evaluation accuracy.",
    "url": "https://openai.com/index/deployment-simulation",
-   "published": "2026-06-16"
+   "published": "2026-06-16",
+   "topic": "agentic_monitoring",
+   "topic_score": 0.458
   },
   {
    "id": "https://openai.com/index/introducing-openai-partner-network",
@@ -2634,7 +4031,9 @@
    "title": "Introducing the OpenAI Partner Network",
    "summary": "OpenAI launches the Partner Network, investing $150M to help global partners accelerate enterprise AI adoption, deployment, and transformation.",
    "url": "https://openai.com/index/introducing-openai-partner-network",
-   "published": "2026-06-14"
+   "published": "2026-06-14",
+   "topic": "frontier_scaling",
+   "topic_score": 0.303
   },
   {
    "id": "https://www.microsoft.com/en-us/research/?p=1175369",
@@ -2642,7 +4041,9 @@
    "title": "Ire identifies another LOTUSLITE specimen",
    "summary": "Project Ire examined a timely malware sample and determined its intent through reverse engineering—identifying LOTUSLITE characteristics even as most major EDR tools did not detect it.\nThe post Ire identifies another LOTUSLITE specimen appeared first on Microsoft Research.",
    "url": "https://www.microsoft.com/en-us/research/blog/ire-identifies-another-lotuslite-specimen/",
-   "published": "2026-06-12"
+   "published": "2026-06-12",
+   "topic": "agentic_monitoring",
+   "topic_score": 0.214
   },
   {
    "id": "https://openai.com/index/preply",
@@ -2650,7 +4051,9 @@
    "title": "How Preply combines AI and human tutors to personalize learning",
    "summary": "Preply uses OpenAI to launch AI-generated lesson summaries, providing personalised feedback and language learning exercises.",
    "url": "https://openai.com/index/preply",
-   "published": "2026-06-12"
+   "published": "2026-06-12",
+   "topic": "self_improvement",
+   "topic_score": 0.418
   },
   {
    "id": "https://openai.com/index/academy-courses-applying-ai-at-work",
@@ -2658,7 +4061,9 @@
    "title": "New OpenAI Academy courses for the next era of work",
    "summary": "OpenAI introduces three Academy courses that help people build practical AI skills, create repeatable workflows, and apply agents in everyday work.",
    "url": "https://openai.com/index/academy-courses-applying-ai-at-work",
-   "published": "2026-06-12"
+   "published": "2026-06-12",
+   "topic": "agentic_capability",
+   "topic_score": 0.379
   },
   {
    "id": "https://openai.com/index/openai-to-acquire-ona",
@@ -2666,7 +4071,9 @@
    "title": "OpenAI to acquire Ona",
    "summary": "OpenAI plans to acquire Ona to expand Codex with secure, persistent cloud environments, enabling long-running AI agents across enterprise workflows.",
    "url": "https://openai.com/index/openai-to-acquire-ona",
-   "published": "2026-06-11"
+   "published": "2026-06-11",
+   "topic": "agentic_capability",
+   "topic_score": 0.466
   },
   {
    "id": "https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem",
@@ -2674,7 +4081,9 @@
    "title": "Supporting Europe’s work in ensuring a trustworthy AI ecosystem",
    "summary": "OpenAI supports the EU Code of Practice on AI content transparency, advancing provenance standards and tools to help people understand AI-generated content.",
    "url": "https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem",
-   "published": "2026-06-11"
+   "published": "2026-06-11",
+   "topic": "rsi_control",
+   "topic_score": 0.405
   },
   {
    "id": "https://openai.com/index/using-codex-to-simulate-black-holes",
@@ -2682,7 +4091,9 @@
    "title": "How an astrophysicist uses Codex to help simulate black holes",
    "summary": "Discover how astrophysicist Chi-kwan Chan uses Codex to build black hole simulations, helping scientists study extreme physics and test Einstein’s theory of general relativity.",
    "url": "https://openai.com/index/using-codex-to-simulate-black-holes",
-   "published": "2026-06-11"
+   "published": "2026-06-11",
+   "topic": "interpretability",
+   "topic_score": 0.206
   },
   {
    "id": "https://openai.com/index/bbva",
@@ -2690,7 +4101,9 @@
    "title": "BBVA puts AI at the core of banking with OpenAI",
    "summary": "Learn how BBVA scaled ChatGPT Enterprise to 100,000 employees and partnered with OpenAI to accelerate AI-powered banking transformation worldwide.",
    "url": "https://openai.com/index/bbva",
-   "published": "2026-06-11"
+   "published": "2026-06-11",
+   "topic": "agentic_capability",
+   "topic_score": 0.293
   },
   {
    "id": "https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/",
@@ -2698,7 +4111,9 @@
    "title": "Investing in multi-agent AI safety research",
    "summary": "Google DeepMind and partners announce a $10M funding call for multi-agent safety research.",
    "url": "https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/",
-   "published": "2026-06-10"
+   "published": "2026-06-10",
+   "topic": "agentic_monitoring",
+   "topic_score": 0.566
   },
   {
    "id": "https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/",
@@ -2706,7 +4121,9 @@
    "title": "DiffusionGemma: 4x faster text generation",
    "summary": "",
    "url": "https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/",
-   "published": "2026-06-10"
+   "published": "2026-06-10",
+   "topic": "rl_rlhf",
+   "topic_score": 0.334
   },
   {
    "id": "https://openai.com/index/lseg",
@@ -2714,7 +4131,9 @@
    "title": "From data to decisions: how LSEG is scaling trusted AI",
    "summary": "See how LSEG uses OpenAI to scale trusted AI across its global business, accelerating insights, shrinking release cycles, and empowering 4,000 employees.",
    "url": "https://openai.com/index/lseg",
-   "published": "2026-06-10"
+   "published": "2026-06-10",
+   "topic": "agentic_monitoring",
+   "topic_score": 0.396
   },
   {
    "id": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
@@ -2722,7 +4141,9 @@
    "title": "PRC-linked influence operations are targeting AI debates in the US",
    "summary": "A new report from OpenAI details PRC-linked influence operations using AI to target U.S. tech debates, data center narratives, tariffs, and false claims  about ChatGPT.",
    "url": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
-   "published": "2026-06-10"
+   "published": "2026-06-10",
+   "topic": "scalable_oversight",
+   "topic_score": 0.345
   },
   {
    "id": "https://openai.com/index/openai-on-oracle-cloud",
@@ -2730,7 +4151,9 @@
    "title": "Access OpenAI models and Codex through your Oracle cloud commitment",
    "summary": "Access OpenAI models and Codex through Oracle Cloud, using existing commitments to build and deploy AI with enterprise security and governance.",
    "url": "https://openai.com/index/openai-on-oracle-cloud",
-   "published": "2026-06-10"
+   "published": "2026-06-10",
+   "topic": "agentic_capability",
+   "topic_score": 0.36
   },
   {
    "id": "https://deepmind.google/blog/powering-the-future-of-robotics-in-europe/",
@@ -2738,7 +4161,9 @@
    "title": "Powering the future of robotics in Europe",
    "summary": "",
    "url": "https://deepmind.google/blog/powering-the-future-of-robotics-in-europe/",
-   "published": "2026-06-09"
+   "published": "2026-06-09",
+   "topic": "agentic_capability",
+   "topic_score": 0.365
   },
   {
    "id": "https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model/",
@@ -2746,7 +4171,9 @@
    "title": "Introducing Gemma 4 12B: a unified, encoder-free multimodal model",
    "summary": "",
    "url": "https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model/",
-   "published": "2026-06-09"
+   "published": "2026-06-09",
+   "topic": "interpretability",
+   "topic_score": 0.393
   },
   {
    "id": "https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/",
@@ -2754,7 +4181,9 @@
    "title": "Fluid, natural voice translation with Gemini 3.5 Live Translate",
    "summary": "Gemini 3.5 Live Translate brings near real-time, natural speech translation to Google AI Studio, Google Translate and Google Meet.",
    "url": "https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/",
-   "published": "2026-06-09"
+   "published": "2026-06-09",
+   "topic": "multiagent_tooluse",
+   "topic_score": 0.2
   },
   {
    "id": "https://openai.com/index/industrial-policy-for-the-intelligence-age",
@@ -2762,7 +4191,9 @@
    "title": "Industrial policy for the Intelligence Age",
    "summary": "Explore our ambitious, people-first industrial policy ideas for the AI era—focused on expanding opportunity, sharing prosperity, and building resilient institutions as advanced intelligence evolves.",
    "url": "https://openai.com/index/industrial-policy-for-the-intelligence-age",
-   "published": "2026-06-09"
+   "published": "2026-06-09",
+   "topic": "agentic_capability",
+   "topic_score": 0.372
   },
   {
    "id": "https://openai.com/index/notion",
@@ -2770,7 +4201,9 @@
    "title": "What Codex unlocks for Notion",
    "summary": "How Notion uses Codex to one-shot specs, build AI Voice Input for the web, and multiply engineering power across small teams.",
    "url": "https://openai.com/index/notion",
-   "published": "2026-06-09"
+   "published": "2026-06-09",
+   "topic": "agentic_capability",
+   "topic_score": 0.349
   },
   {
    "id": "https://openai.com/index/nextdoor",
@@ -2778,7 +4211,9 @@
    "title": "How engineers at Nextdoor use Codex to build without limits",
    "summary": "How engineers at Nextdoor use Codex with GPT-5.5 to investigate hard-to-reproduce issues, build across platforms, and focus on product outcomes.",
    "url": "https://openai.com/index/nextdoor",
-   "published": "2026-06-09"
+   "published": "2026-06-09",
+   "topic": "reasoning_cot",
+   "topic_score": 0.264
   },
   {
    "id": "https://deepmind.google/blog/measuring-the-impact-of-learning-with-ai-in-sierra-leone-and-beyond/",
@@ -2786,7 +4221,9 @@
    "title": "Measuring the impact of learning with AI in Sierra Leone and beyond",
    "summary": "Results from a randomized controlled trial show the potential of Gemini’s Guided Learning feature to boost engagement and accelerate learning.",
    "url": "https://deepmind.google/blog/measuring-the-impact-of-learning-with-ai-in-sierra-leone-and-beyond/",
-   "published": "2026-06-08"
+   "published": "2026-06-08",
+   "topic": "scalable_oversight",
+   "topic_score": 0.335
   },
   {
    "id": "https://openai.com/index/openai-submits-confidential-s-1",
@@ -2794,7 +4231,9 @@
    "title": "Confidential submission of draft S-1 to the SEC",
    "summary": "OpenAI confirms a confidential S-1 submission to the SEC and has not yet determined timing for further action.",
    "url": "https://openai.com/index/openai-submits-confidential-s-1",
-   "published": "2026-06-08"
+   "published": "2026-06-08",
+   "topic": null,
+   "topic_score": 0.157
   },
   {
    "id": "https://www.microsoft.com/en-us/research/?p=1173479",
@@ -2802,7 +4241,9 @@
    "title": "Data Formulator 0.7: AI-powered data analytics for enterprise data",
    "summary": "Data Formulator introduces AI-powered analytics for enterprise data workflows. Data teams can easily bring enterprise data into an AI-ready workspace where users can explore, analyze, and visualize data with AI agents to turn raw data into actionable insights.\nThe post Data Formulator 0.7: AI-powered data analytics for enterprise data appeared first on Microsoft Research.",
    "url": "https://www.microsoft.com/en-us/research/blog/data-formulator-0-7-ai-powered-data-analytics-for-enterprise-data/",
-   "published": "2026-05-28"
+   "published": "2026-05-28",
+   "topic": "agentic_capability",
+   "topic_score": 0.38
   },
   {
    "id": "https://www.microsoft.com/en-us/research/blog/extending-human-intelligence-through-ai/",
@@ -2810,7 +4251,9 @@
    "title": "Extending Human Intelligence Through AI",
    "summary": "Understanding AI as an extension of human intelligence—not a replacement for it—offers a more grounded path for building trustworthy AI systems.\nThe post Extending Human Intelligence Through AI appeared first on Microsoft Research.",
    "url": "https://www.microsoft.com/en-us/research/blog/extending-human-intelligence-through-ai/",
-   "published": "2026-05-27"
+   "published": "2026-05-27",
+   "topic": "scalable_oversight",
+   "topic_score": 0.416
   },
   {
    "id": "https://www.microsoft.com/en-us/research/?p=1171880",
@@ -2818,7 +4261,9 @@
    "title": "Vega: Zero-knowledge proofs for digital identity in the age of AI",
    "summary": "Vega turns a full credential into a single proof, sharing only what is needed and nothing more, with performance that works in real apps. \nThe post Vega: Zero-knowledge proofs for digital identity in the age of AI appeared first on Microsoft Research.",
    "url": "https://www.microsoft.com/en-us/research/blog/vega-zero-knowledge-proofs-for-digital-identity-in-the-age-of-ai/",
-   "published": "2026-05-21"
+   "published": "2026-05-21",
+   "topic": "rsi_control",
+   "topic_score": 0.43
   },
   {
    "id": "https://www.microsoft.com/en-us/research/blog/magenticlite-magenticbrain-fara1-5-an-agentic-experience-optimized-for-small-models/",
@@ -2826,7 +4271,9 @@
    "title": "MagenticLite, MagenticBrain, Fara1.5: An agentic experience optimized for small models",
    "summary": "MagenticLite is an agentic system for small models that works across the browser and local file system in a single workflow. It combines specialized models and orchestration to support efficient agentic performance on everyday tasks.\nThe post MagenticLite, MagenticBrain, Fara1.5: An agentic experience optimized for small models appeared first on Microsoft Research.",
    "url": "https://www.microsoft.com/en-us/research/blog/magenticlite-magenticbrain-fara1-5-an-agentic-experience-optimized-for-small-models/",
-   "published": "2026-05-21"
+   "published": "2026-05-21",
+   "topic": "agentic_capability",
+   "topic_score": 0.507
   },
   {
    "id": "https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/",
@@ -2834,7 +4281,9 @@
    "title": "We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks",
    "summary": "",
    "url": "https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/",
-   "published": "2026-05-21"
+   "published": "2026-05-21",
+   "topic": "agentic_capability",
+   "topic_score": 0.247
   },
   {
    "id": "https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/",
@@ -2842,7 +4291,9 @@
    "title": "Fast-tracking genetic leads to reverse cellular aging",
    "summary": "Biologists use Co-Scientist to find novel factors that successfully rejuvenate human cells.",
    "url": "https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/",
-   "published": "2026-05-18"
+   "published": "2026-05-18",
+   "topic": null,
+   "topic_score": 0.118
   },
   {
    "id": "https://deepmind.google/blog/making-it-easier-to-understand-how-content-was-created-and-edited/",
@@ -2850,7 +4301,9 @@
    "title": "Making it easier to understand how content was created and edited",
    "summary": "We're expanding our tools to help you understand how content was created and edited across the web.",
    "url": "https://deepmind.google/blog/making-it-easier-to-understand-how-content-was-created-and-edited/",
-   "published": "2026-05-17"
+   "published": "2026-05-17",
+   "topic": null,
+   "topic_score": 0.175
   },
   {
    "id": "https://deepmind.google/blog/gemini-for-science-ai-experiments-and-tools-for-a-new-era-of-discovery/",
@@ -2858,7 +4311,9 @@
    "title": "Gemini for Science: AI experiments and tools for a new era of discovery",
    "summary": "A collection of science tools and experiments to expand the scale and precision of scientific exploration.",
    "url": "https://deepmind.google/blog/gemini-for-science-ai-experiments-and-tools-for-a-new-era-of-discovery/",
-   "published": "2026-05-17"
+   "published": "2026-05-17",
+   "topic": "scalable_oversight",
+   "topic_score": 0.381
   },
   {
    "id": "https://deepmind.google/blog/introducing-google-antigravity-2-0/",
@@ -2866,7 +4321,9 @@
    "title": "Introducing Google Antigravity 2.0",
    "summary": "",
    "url": "https://deepmind.google/blog/introducing-google-antigravity-2-0/",
-   "published": "2026-05-17"
+   "published": "2026-05-17",
+   "topic": "reward_hacking",
+   "topic_score": 0.204
   },
   {
    "id": "https://deepmind.google/blog/introducing-gemini-omni/",
@@ -2874,7 +4331,9 @@
    "title": "Introducing Gemini Omni",
    "summary": "",
    "url": "https://deepmind.google/blog/introducing-gemini-omni/",
-   "published": "2026-05-17"
+   "published": "2026-05-17",
+   "topic": null,
+   "topic_score": 0.142
   },
   {
    "id": "https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/",
@@ -2882,7 +4341,9 @@
    "title": "Simulate real-world places with Project Genie and Street View",
    "summary": "We’re expanding access to Google AI Ultra subscribers globally and introducing a new capability powered by Street View.",
    "url": "https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/",
-   "published": "2026-05-17"
+   "published": "2026-05-17",
+   "topic": "agentic_capability",
+   "topic_score": 0.361
   },
   {
    "id": "https://deepmind.google/blog/how-weathernext-helped-the-national-hurricane-center-better-predict-hurricane-melissas-historic-landfall-in-jamaica/",
@@ -2890,7 +4351,9 @@
    "title": "How WeatherNext helped the National Hurricane Center better predict Hurricane Melissa’s historic landfall in Jamaica",
    "summary": "Learn how our WeatherNext AI model help forecasters give communities unprecedented time to prepare ahead of  the historic Hurricane Melissa.",
    "url": "https://deepmind.google/blog/how-weathernext-helped-the-national-hurricane-center-better-predict-hurricane-melissas-historic-landfall-in-jamaica/",
-   "published": "2026-05-16"
+   "published": "2026-05-16",
+   "topic": "self_improvement",
+   "topic_score": 0.19
   },
   {
    "id": "https://deepmind.google/blog/uncovering-repurposed-medicines-to-fight-liver-fibrosis/",
@@ -2898,7 +4361,9 @@
    "title": "Uncovering repurposed medicines to fight liver fibrosis",
    "summary": "Stanford geneticist uses Co-Scientist to help find new treatments for chronic liver disease and liver fibrosis.",
    "url": "https://deepmind.google/blog/uncovering-repurposed-medicines-to-fight-liver-fibrosis/",
-   "published": "2026-05-16"
+   "published": "2026-05-16",
+   "topic": null,
+   "topic_score": 0.141
   },
   {
    "id": "https://deepmind.google/blog/uniting-biological-toolkits-for-a-new-approach-to-als/",
@@ -2906,7 +4371,9 @@
    "title": "Uniting biological toolkits for a new approach to ALS",
    "summary": "Co-Scientist unites Boston Children’s Hospital and MIT’s labs to explore new RNA-based treatments for ALS.",
    "url": "https://deepmind.google/blog/uniting-biological-toolkits-for-a-new-approach-to-als/",
-   "published": "2026-05-16"
+   "published": "2026-05-16",
+   "topic": null,
+   "topic_score": 0.104
   },
   {
    "id": "https://deepmind.google/blog/accelerating-discovery-of-liver-disease-mechanisms/",
@@ -2914,7 +4381,9 @@
    "title": "Accelerating discovery of liver disease mechanisms",
    "summary": "Filippo Menolascina uses Co-Scientist to identify new liver disease treatments and explain why existing drugs only help certain patients.",
    "url": "https://deepmind.google/blog/accelerating-discovery-of-liver-disease-mechanisms/",
-   "published": "2026-05-16"
+   "published": "2026-05-16",
+   "topic": null,
+   "topic_score": 0.162
   },
   {
    "id": "https://deepmind.google/blog/opening-new-paths-in-aging-research/",
@@ -2922,7 +4391,9 @@
    "title": "Opening new paths in aging research",
    "summary": "Calico Life Sciences uses Co-Scientist to connect scattered findings and generate new leads in aging research.",
    "url": "https://deepmind.google/blog/opening-new-paths-in-aging-research/",
-   "published": "2026-05-16"
+   "published": "2026-05-16",
+   "topic": null,
+   "topic_score": 0.139
   },
   {
    "id": "https://deepmind.google/blog/finding-the-molecular-switches-behind-new-infectious-diseases/",
@@ -2930,7 +4401,9 @@
    "title": "Finding the molecular switches behind new infectious diseases",
    "summary": "Clare Bryant uses Co-Scientist to identify genetic triggers in emerging infectious diseases.",
    "url": "https://deepmind.google/blog/finding-the-molecular-switches-behind-new-infectious-diseases/",
-   "published": "2026-05-16"
+   "published": "2026-05-16",
+   "topic": null,
+   "topic_score": 0.162
   },
   {
    "id": "https://deepmind.google/blog/strengthening-singapores-ai-future-a-new-national-partnership/",
@@ -2938,7 +4411,109 @@
    "title": "Strengthening Singapore’s AI Future: A New National Partnership",
    "summary": "Google DeepMind and Singapore partner to apply frontier AI to address complex challenges across health, education, and sustainability and more.",
    "url": "https://deepmind.google/blog/strengthening-singapores-ai-future-a-new-national-partnership/",
-   "published": "2026-05-16"
+   "published": "2026-05-16",
+   "topic": "frontier_scaling",
+   "topic_score": 0.327
+  },
+  {
+   "id": "https://www.microsoft.com/en-us/research/?p=1172154",
+   "source": "Microsoft Research",
+   "title": "Further Notes on Our Recent Research on AI Delegation and Long-Horizon Reliability",
+   "summary": "Our recent paper, “LLMs Corrupt Your Documents When You Delegate”, has generated discussion about the reliability of AI systems in delegated workflows. We appreciate the interest in this work and want to clarify several important points about what the paper does—and does not—claim. The research aims to develop robust evaluation methods for long-horizon delegated and [&#8230;]\nThe post Further Notes on Our Recent Research on AI Delegation and Long-Horizon Reliability appeared first on Microsoft Research.",
+   "url": "https://www.microsoft.com/en-us/research/blog/further-notes-on-our-recent-research-on-ai-delegation-and-long-horizon-reliability/",
+   "published": "2026-05-15",
+   "topic": "scalable_oversight",
+   "topic_score": 0.548
+  },
+  {
+   "id": "https://deepmind.google/blog/gemini-3-5-frontier-intelligence-with-action/",
+   "source": "Google DeepMind",
+   "title": "Gemini 3.5: frontier intelligence with action",
+   "summary": "Gemini 3.5 is built to help you execute complex, agentic workflows.",
+   "url": "https://deepmind.google/blog/gemini-3-5-frontier-intelligence-with-action/",
+   "published": "2026-05-15",
+   "topic": "agentic_capability",
+   "topic_score": 0.378
+  },
+  {
+   "id": "https://www.microsoft.com/en-us/research/?p=1171470",
+   "source": "Microsoft Research",
+   "title": "GridSFM: A new, small foundation model for the electric grid",
+   "summary": "Introducing GridSFM, a small foundation model that can predict AC optimal power flow in milliseconds, boosting efficiency and unlocking cost savings. Learn how GridSFM gives grid operators direct visibility into congestion, stability, and system health.\nThe post GridSFM: A new, small foundation model for the electric grid appeared first on Microsoft Research.",
+   "url": "https://www.microsoft.com/en-us/research/blog/gridsfm-a-new-small-foundation-model-for-the-electric-grid/",
+   "published": "2026-05-13",
+   "topic": "frontier_scaling",
+   "topic_score": 0.284
+  },
+  {
+   "id": "https://www.microsoft.com/en-us/research/?p=1171325",
+   "source": "Microsoft Research",
+   "title": "mimalloc: A new, high-performance, scalable memory allocator for the modern era",
+   "summary": "mimalloc is an open-source, modern, scalable memory allocator that is a drop-in replacement for malloc and free. It is relatively small (~12K lines), with clear internal data structures, and is easy to build and integrate into other projects. It provides bounded worst-case allocation times (up to OS primitives), bounded space overhead, low internal fragmentation, and minimal contention by relying almost exclusively on atomic operations.\nThe post mimalloc: A new, high-performance, scalable memory allocator for the modern era appeared first on Microsoft Research.",
+   "url": "https://www.microsoft.com/en-us/research/blog/mimalloc-a-high-performance-scalable-memory-allocator-for-the-modern-era/",
+   "published": "2026-05-13",
+   "topic": null,
+   "topic_score": 0.129
+  },
+  {
+   "id": "https://deepmind.google/blog/co-scientist-a-multi-agent-ai-partner-to-accelerate-research/",
+   "source": "Google DeepMind",
+   "title": "Co-Scientist: A multi-agent AI partner to accelerate research",
+   "summary": "Introducing Co-Scientist, a collaborative AI partner built with Gemini to help researchers accelerate scientific breakthroughs.",
+   "url": "https://deepmind.google/blog/co-scientist-a-multi-agent-ai-partner-to-accelerate-research/",
+   "published": "2026-05-12",
+   "topic": "agentic_capability",
+   "topic_score": 0.401
+  },
+  {
+   "id": "https://deepmind.google/blog/alphaevolve-impact/",
+   "source": "Google DeepMind",
+   "title": "AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields",
+   "summary": "Explore how AlphaEvolve's Gemini-powered algorithms are driving impact across business, infrastructure, and science.",
+   "url": "https://deepmind.google/blog/alphaevolve-impact/",
+   "published": "2026-05-06",
+   "topic": "agentic_capability",
+   "topic_score": 0.392
+  },
+  {
+   "id": "https://deepmind.google/blog/ai-co-clinician/",
+   "source": "Google DeepMind",
+   "title": "Enabling a new model for healthcare with AI co-clinician",
+   "summary": "Researching the path to AI-augmented care and development of an AI co-clinician.",
+   "url": "https://deepmind.google/blog/ai-co-clinician/",
+   "published": "2026-04-30",
+   "topic": "agentic_capability",
+   "topic_score": 0.328
+  },
+  {
+   "id": "https://deepmind.google/blog/announcing-our-partnership-with-the-republic-of-korea/",
+   "source": "Google DeepMind",
+   "title": "Announcing our partnership with the Republic of Korea",
+   "summary": "Google DeepMind and Korea partner to accelerate scientific breakthroughs using frontier AI models",
+   "url": "https://deepmind.google/blog/announcing-our-partnership-with-the-republic-of-korea/",
+   "published": "2026-04-27",
+   "topic": "frontier_scaling",
+   "topic_score": 0.38
+  },
+  {
+   "id": "https://deepmind.google/blog/decoupled-diloco/",
+   "source": "Google DeepMind",
+   "title": "Decoupled DiLoCo: A new frontier for resilient, distributed AI training",
+   "summary": "",
+   "url": "https://deepmind.google/blog/decoupled-diloco/",
+   "published": "2026-04-22",
+   "topic": "rsi_control",
+   "topic_score": 0.475
+  },
+  {
+   "id": "https://deepmind.google/blog/partnering-with-industry-leaders-to-accelerate-ai-transformation/",
+   "source": "Google DeepMind",
+   "title": "Partnering with industry leaders to accelerate AI transformation",
+   "summary": "Google DeepMind partners with global consultancies to bring the power of frontier AI to organizations around the world.",
+   "url": "https://deepmind.google/blog/partnering-with-industry-leaders-to-accelerate-ai-transformation/",
+   "published": "2026-04-21",
+   "topic": "agentic_capability",
+   "topic_score": 0.409
   }
  ]
 }
