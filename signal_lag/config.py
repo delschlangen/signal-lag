@@ -44,6 +44,7 @@ class Taxonomy:
     safety_topics: list[Topic]
     capability_topics: list[Topic]
     pairings: list[Pairing]
+    negativity_seeds: list[str] = field(default_factory=list)
     tag_threshold: float = 0.28
     max_tags_per_paper: int = 3
 
@@ -160,6 +161,7 @@ def load_taxonomy(path: Path | None = None) -> Taxonomy:
             Pairing(name=p["name"], capability=p["capability"], safety=p["safety"])
             for p in raw.get("pairings", [])
         ],
+        negativity_seeds=list(raw.get("negativity_seeds", [])),
         tag_threshold=float(tax_cfg.get("tag_threshold", 0.28)),
         max_tags_per_paper=int(tax_cfg.get("max_tags_per_paper", 3)),
     )

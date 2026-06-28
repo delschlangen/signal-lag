@@ -1,11 +1,10 @@
 """Streamlit dashboard for signal-lag.
 
 Reads a precomputed snapshot (``data/snapshot.json``) produced weekly from real
-arXiv + OpenAlex data by the refresh GitHub Action. If no snapshot exists yet
-(e.g. first deploy, or local dev), it falls back to building one from the bundled
-synthetic fixtures so the app always renders.
+arXiv + OpenAlex (+ OpenReview, lab blogs) data by the refresh GitHub Action.
 
-Tabs: Weekly Summary (default) · Divergence · Velocity · Quadrant · Sources · Signals.
+It only ever renders **real** data: if no live snapshot is present, it shows an
+honest "data not available yet" message rather than any synthetic/demo content.
 
 Run: streamlit run signal_lag/dashboard/app.py
 """
@@ -21,12 +20,7 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from signal_lag.config import load_all  # noqa: E402
-from signal_lag.snapshot import (  # noqa: E402
-    build_snapshot,
-    diff_snapshots,
-    load_snapshot,
-)
+from signal_lag.snapshot import diff_snapshots, load_snapshot  # noqa: E402
 
 st.set_page_config(page_title="signal-lag", layout="wide", page_icon="📡")
 
@@ -38,16 +32,7 @@ PREV_SNAPSHOT = SNAPSHOT.with_name("snapshot_prev.json")
 # snapshot is always picked up, even if the app container isn't redeployed.
 @st.cache_data(ttl=1800, show_spinner="Loading foresight snapshot...")
 def _load(_cache_key: float):
-    snap = load_snapshot(SNAPSHOT)
-    if snap is None:
-        # No published snapshot yet -> build a demo one from fixtures in-memory.
-        from signal_lag.ingest.pipeline import ingest
-
-        settings, taxonomy = load_all()
-        ingest(settings, use_fixtures=True, enrich=False)
-        snap = build_snapshot(settings, taxonomy, mode="fixtures")
-    prev = load_snapshot(PREV_SNAPSHOT)
-    return snap, prev
+    return load_snapshot(SNAPSHOT), load_snapshot(PREV_SNAPSHOT)
 
 
 def lbl(snap, key):
@@ -56,32 +41,42 @@ def lbl(snap, key):
 
 _key = SNAPSHOT.stat().st_mtime if SNAPSHOT.exists() else 0.0
 snap, prev = _load(_key)
-meta = snap["meta"]
-live = meta.get("mode") == "live"
 
-# ----------------------------------------------------------------- header
 st.title("📡 signal-lag — AI safety research foresight")
 st.caption(
-    "Patent-landscape-style foresight: topic velocity, citation dynamics, and the "
-    "gap where safety attention lags capability."
+    "Patent-landscape-style foresight: topic velocity, sentiment, citation dynamics, "
+    "and the gap where safety attention lags capability."
 )
 
-if live:
-    st.success(
-        f"🟢 **Live arXiv + OpenAlex data** · refreshed **{meta['refreshed_at']}** · "
-        f"{meta['n_papers']:,} papers ({meta['date_start']} → {meta['date_end']}) · "
-        f"categories {', '.join(meta['categories'])} · auto-refreshes weekly."
+# Only ever show real data. No synthetic/demo fallback, ever.
+if snap is None or snap.get("meta", {}).get("mode") != "live":
+    st.error(
+        "**Live data isn't available yet.** The weekly refresh hasn't published a "
+        "snapshot to this branch. This dashboard only ever shows real arXiv / OpenAlex / "
+        "OpenReview / lab data — no synthetic or demo content is shown. "
+        "Run **Actions → Weekly data refresh → Run workflow** (or wait for the Monday run)."
     )
-else:
-    st.warning(
-        "🟡 **Demo data (synthetic).** A live snapshot from real arXiv + OpenAlex data "
-        "appears automatically once the weekly refresh job has run.",
-        icon="🧪",
-    )
+    st.stop()
 
-tabs = st.tabs(
-    ["📋 Weekly Summary", "⚖️ Divergence", "📈 Velocity", "🧭 Quadrant",
-     "🔍 Sources", "🚨 Signals", "📖 Methodology"]
+meta = snap["meta"]
+st.success(
+    f"🟢 **Live data** · refreshed **{meta['refreshed_at']}** · {meta['n_papers']:,} papers "
+    f"({meta['date_start']} → {meta['date_end']}) · {', '.join(meta['categories'])} · weekly."
+)
+
+# Analyst's note — front and centre, not buried.
+st.info(
+    "🧭 **Analyst's note — read me.** signal-lag measures *research attention*, not "
+    "*research success*. A spike can mean a breakthrough **or** a field thrashing against "
+    "a wall — so treat this as a **triage instrument** that shows *where to investigate*, "
+    "not *what to conclude*. The Sentiment tab helps tell those two cases apart.",
+    icon="🧭",
+)
+
+(tab_summary, tab_div, tab_vel, tab_sentiment, tab_quad,
+ tab_sources, tab_signals, tab_method) = st.tabs(
+    ["📋 Weekly Summary", "⚖️ Divergence", "📈 Velocity", "🔬 Sentiment",
+     "🧭 Quadrant", "🔍 Sources", "🚨 Signals", "📖 Methodology"]
 )
 
 
@@ -95,8 +90,28 @@ def topic_links(snap, topic_key, n=3):
     )
 
 
+def week_note(text: str):
+    """Render a short 'this week / what you're looking at' note atop a tab."""
+    st.caption(f"📅 **This week** — {text}")
+
+
+def paper_signal(p: dict, topic_label: str) -> str:
+    """A short, data-derived 'what it signals' line for a paper (no LLM, no fabrication)."""
+    bits = []
+    if p.get("influential_citations"):
+        bits.append(f"{p['influential_citations']} influential citations (real downstream uptake)")
+    elif p.get("cited_by_count"):
+        bits.append(f"{p['cited_by_count']} citations so far")
+    if p.get("venue"):
+        bits.append(f"peer-reviewed at {p['venue']}")
+    if p.get("source") == "openreview":
+        bits.append("from a venue submission")
+    why = "; ".join(bits) if bits else "recent work in this area"
+    return f"Signals activity in **{topic_label}** — {why}."
+
+
 # ============================================================ Weekly Summary
-with tabs[0]:
+with tab_summary:
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Papers", f"{meta['n_papers']:,}")
     c2.metric("Window", f"{meta['date_start'][:7]} → {meta['date_end'][:7]}")
@@ -159,25 +174,57 @@ with tabs[0]:
     lab = snap.get("lab_activity") or []
     if lab:
         st.divider()
-        st.subheader("🏢 Recent lab activity (capability-leading signal)")
-        st.caption("Posts from major lab blogs — capability news often precedes papers.")
-        for post in lab[:12]:
-            when = f" · {post['published']}" if post.get("published") else ""
-            title = post.get("title") or "(untitled)"
-            if post.get("url"):
-                st.markdown(f"- **{post['source']}**: [{title}]({post['url']}){when}")
-            else:
-                st.markdown(f"- **{post['source']}**: {title}{when}")
+        st.subheader("🏢 Labs announce → safety research responds (the lag)")
+        st.caption(
+            "Labs announce new capability directions in blog posts/system cards *before* "
+            "the safety literature responds. That lead time is the risk window this tool "
+            "is built to measure."
+        )
+        # Map capability topic -> its pairing row (for the paired safety response level).
+        cap_pair = {d["capability_topic"]: d for d in snap.get("divergence", [])}
+        # Count recent announcements per topic.
+        from collections import Counter
+        ann = Counter(p.get("topic") for p in lab if p.get("topic"))
+        shown = 0
+        for cap_key, d in cap_pair.items():
+            n_ann = ann.get(cap_key, 0)
+            if n_ann == 0:
+                continue
+            shown += 1
+            st.markdown(
+                f"- **{lbl(snap, cap_key)}** — {n_ann} recent lab announcement(s) → "
+                f"paired safety response **{lbl(snap, d['safety_topic'])}** running at "
+                f"~{d['saf_recent']:.0f} papers/qtr "
+                f"(growth {d['saf_growth']*100:+.0f}%)."
+            )
+        if not shown:
+            st.caption("No recent lab announcements mapped to a tracked capability topic.")
+
+        with st.expander(f"Recent lab posts ({len(lab)})"):
+            for post in lab[:20]:
+                when = f" · {post['published']}" if post.get("published") else ""
+                tp = f" · _{lbl(snap, post['topic'])}_" if post.get("topic") else ""
+                title = post.get("title") or "(untitled)"
+                if post.get("url"):
+                    st.markdown(f"- **{post['source']}**: [{title}]({post['url']}){when}{tp}")
+                else:
+                    st.markdown(f"- **{post['source']}**: {title}{when}{tp}")
 
     st.divider()
     st.download_button("⬇️ Download full markdown brief", data=snap["brief"],
                        file_name="foresight_brief.md", mime="text/markdown")
 
 # ================================================================ Divergence
-with tabs[1]:
+with tab_div:
     st.subheader("Capability vs. safety velocity gap")
-    st.caption("Recent growth rate of each capability topic and its paired safety topic. "
-               "A long blue bar with a short orange bar = safety lagging.")
+    _nflag = meta.get("n_flagged", 0)
+    week_note(
+        "recent growth of each **capability** topic vs its paired **safety** topic. "
+        "A long blue bar (capability) next to a short orange bar (safety) = safety lagging. "
+        f"**{_nflag} of {meta.get('n_pairings','?')} pairings** cross the safety-lag threshold "
+        "this week — those are where capability is pulling ahead of the safety response."
+    )
+    st.caption("A long blue bar with a short orange bar = safety lagging.")
     div = pd.DataFrame(snap["divergence"]).sort_values("gap")
     if not div.empty:
         names = [n.replace(" vs. ", "<br>vs. ") for n in div["pairing"]]
@@ -199,8 +246,13 @@ with tabs[1]:
         st.info("No pairings configured.")
 
 # ================================================================== Velocity
-with tabs[2]:
+with tab_vel:
     st.subheader("Topic submission velocity (papers per quarter)")
+    week_note(
+        "how many papers per quarter each topic is producing, and whether that rate is "
+        "**accelerating or decelerating** (inflection table below). This is *attention*, "
+        "not success — pair it with the Sentiment tab to read what a spike means."
+    )
     ts = pd.DataFrame(snap["timeseries"])
     if not ts.empty:
         ts["topic"] = ts["topic_key"].map(lambda k: lbl(snap, k))
@@ -220,9 +272,61 @@ with tabs[2]:
     st.markdown("**Velocity inflections**")
     st.dataframe(pd.DataFrame(snap["inflections"]), use_container_width=True, hide_index=True)
 
+# ================================================================== Sentiment
+with tab_sentiment:
+    st.subheader("Confidence / negative-signal tracker")
+    sent = snap.get("sentiment") or {}
+    rising = [(k, v) for k, v in sent.items() if v.get("rising")]
+    week_note(
+        "the **share of critical / limitation-focused papers** within each topic. "
+        "Volume tells you how *much* a field is working; this tells you whether it may be "
+        "**hitting a wall**. A rising critical share — especially when volume is flat — is an "
+        "early warning that confidence in an approach is eroding before it hits headlines. "
+        + (f"**{len(rising)} topic(s) flagged this week.**" if rising else
+           "No topics cross the rising-critical threshold this week.")
+    )
+    if sent:
+        rows = []
+        for k, v in sent.items():
+            rows.append({
+                "topic": lbl(snap, k),
+                "critical_share": round(v.get("critical_share", 0) * 100, 1),
+                "recent_share": round(v.get("recent_share", 0) * 100, 1),
+                "prior_share": round(v.get("prior_share", 0) * 100, 1),
+                "trend_pts": round(v.get("trend", 0) * 100, 1),
+                "n_recent": v.get("n_recent", 0),
+                "rising_⚠": "⚠️" if v.get("rising") else "",
+            })
+        sdf = pd.DataFrame(rows).sort_values("trend_pts", ascending=False)
+        fig = px.bar(sdf, x="trend_pts", y="topic", orientation="h",
+                     color="trend_pts", color_continuous_scale="Reds",
+                     labels={"trend_pts": "Critical-share change (pts, recent vs prior)",
+                             "topic": ""},
+                     height=120 + 26 * len(sdf), template="plotly_dark")
+        fig.update_layout(margin=dict(l=10, r=10, t=10, b=30), coloraxis_showscale=False)
+        st.plotly_chart(fig, use_container_width=True)
+        if rising:
+            st.markdown("**⚠️ Eroding-confidence warnings:**")
+            for k, v in rising:
+                st.markdown(
+                    f"- **{lbl(snap, k)}** — critical share {v['prior_share']*100:.0f}% → "
+                    f"{v['recent_share']*100:.0f}% (+{v['trend']*100:.0f} pts, {v['n_recent']} recent papers)"
+                )
+        st.dataframe(sdf, use_container_width=True, hide_index=True)
+        st.caption("Critical detection is embedding-based (cosine similarity to negative/"
+                   "limitation seed phrases), not keyword matching — and it's a proxy, "
+                   "so use it to decide where to read, not as a verdict.")
+    else:
+        st.info("No sentiment data in this snapshot.")
+
 # ================================================================== Quadrant
-with tabs[3]:
+with tab_quad:
     st.subheader("Emerging / hot / cooling / white-space")
+    week_note(
+        "a strategic map of every topic by **recent volume** (x) vs **growth** (y): "
+        "*emerging* (small but surging — worth watching), *hot* (big and growing), "
+        "*cooling* (shrinking), *white-space* (quiet — potential gaps)."
+    )
     st.caption("X = recent volume (papers/quarter), Y = growth rate. Hover for topic names.")
     quad = pd.DataFrame(snap["quadrant"])
     if not quad.empty:
@@ -250,11 +354,16 @@ with tabs[3]:
             st.write(f"- {c}")
 
 # =================================================================== Sources
-with tabs[4]:
+with tab_sources:
     st.subheader("Source papers")
-    st.caption("Representative recent papers behind each tracked topic. Click through to arXiv.")
+    week_note(
+        "the actual papers behind each topic — with a short description and a "
+        "**what-it-signals** line so you can see *why* each one is in the picture. "
+        "Everything links out to the real source."
+    )
     keys = list(snap["label_map"].keys())
     pick = st.selectbox("Topic", keys, format_func=lambda k: lbl(snap, k))
+    topic_label = lbl(snap, pick)
     for p in snap["sources"].get(pick, []):
         bits = [p["published"]]
         if p.get("venue"):
@@ -263,9 +372,12 @@ with tabs[4]:
             bits.append(f"{p['cited_by_count']} cites")
         if p.get("influential_citations"):
             bits.append(f"{p['influential_citations']} influential")
-        st.markdown(f"- [{p['title']}]({p['url']}) · " + " · ".join(bits))
-        if p.get("tldr"):
-            st.caption(f"  TL;DR: {p['tldr']}")
+        with st.container(border=True):
+            st.markdown(f"**[{p['title']}]({p['url']})**  \n" + " · ".join(bits))
+            desc = p.get("tldr") or p.get("abstract")
+            if desc:
+                st.markdown(f"*{desc.rstrip('.')}.*")
+            st.markdown(f"**What it signals:** {paper_signal(p, topic_label)}")
     if not snap["sources"].get(pick):
         st.write("No tagged papers for this topic in the current snapshot.")
 
@@ -286,7 +398,7 @@ with tabs[4]:
             st.markdown(_cite_line(r))
 
 # =================================================================== Signals
-with tabs[5]:
+with tab_signals:
     st.subheader("All signals (BLUF)")
     sev = {"high": "🔴", "medium": "🟠", "low": "🟡"}
     for s in snap["signals"]:
@@ -295,7 +407,7 @@ with tabs[5]:
         st.markdown(snap["brief"])
 
 # =============================================================== Methodology
-with tabs[6]:
+with tab_method:
     st.subheader("How signal-lag works")
     cats = ", ".join(meta.get("categories", []) or [])
     srcs = meta.get("source_counts") or {}

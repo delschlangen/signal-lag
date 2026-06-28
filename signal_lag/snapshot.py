@@ -48,7 +48,8 @@ def build_snapshot(
     store = Store(settings.path("db_path"))
     papers = store.get_papers()
     tax_tags = store.get_tags("taxonomy")
-    posts = store.get_posts(limit=60)
+    # Prefer topic-tagged posts from the analysis; fall back to raw posts.
+    posts = results.get("lab_posts") or store.get_posts(limit=60)
     store.close()
 
     # Provenance breakdown (arxiv / openreview / ...).
@@ -83,6 +84,8 @@ def build_snapshot(
                     "influential_citations": p.s2_influential_citations,
                     "venue": p.venue,
                     "tldr": p.s2_tldr,
+                    "abstract": (p.abstract or "")[:300],
+                    "source": p.source,
                     "score": round(float(score), 3),
                 }
             )
@@ -132,6 +135,8 @@ def build_snapshot(
         "signals": results["signals"],
         "brief": results["brief"],
         "timeseries": _records(results["taxonomy_timeseries"]),
+        "sentiment": results.get("sentiment", {}),
+        "sentiment_timeseries": _records(results.get("sentiment_timeseries")),
         "sources": per_topic,
         "lab_activity": posts,
     }

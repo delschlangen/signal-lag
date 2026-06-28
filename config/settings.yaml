@@ -90,6 +90,17 @@ citations:
   recent_window_periods: 4
   recent_share_threshold: 0.5
 
+sentiment:
+  # A paper counts as "critical/negative" when cosine similarity of its abstract
+  # to the negativity centroid (config/taxonomy.yaml: negativity_seeds) >= this.
+  critical_threshold: 0.22
+  # Window (quarters) for the recent-vs-prior critical-share trend.
+  window: 2
+  # Rise in critical share (percentage points, absolute) that triggers a warning.
+  rising_share_threshold: 0.08
+  # Min papers in a topic's recent window for a sentiment signal to be trusted.
+  min_recent_papers: 8
+
 divergence:
   # Relative-velocity gap (capability minus safety) that triggers a signal.
   gap_threshold: 0.25

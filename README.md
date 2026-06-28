@@ -9,6 +9,14 @@ The headline output is the **capability-vs-safety divergence**: for paired topic
 (e.g. *agentic/autonomy capability* ↔ *agentic monitoring*), it measures whether
 capability research is accelerating while the paired safety work stays flat.
 
+> ### 🧭 Analyst's note — read this first
+> signal-lag measures **research attention, not research success.** A spike in a topic
+> can mean a *breakthrough* **or** a field *thrashing against a wall* — those look
+> identical in volume. So treat this as a **triage instrument** that shows you *where to
+> investigate*, not *what to conclude*. The **Sentiment** layer (share of critical /
+> limitation-focused papers) exists specifically to help tell those two cases apart.
+> Everything shown is **real data** — there is no synthetic or demo content anywhere.
+
 ## 🚀 Try it live
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://signal-lag-aw6rmrmp65nit9m9f8wmcq.streamlit.app)
@@ -118,6 +126,14 @@ threshold — both tunable in YAML.
 - **Why embeddings, not keywords:** keyword filters can only find topics you already
   named. Embedding clusters surface *emergent* directions; the supervised taxonomy is
   an overlay on top, not a replacement.
+- **Negative/sentiment signal:** a "negativity" centroid is built from limitation/
+  failure seed phrases (`negativity_seeds` in `taxonomy.yaml`). A paper is *critical*
+  when its abstract embedding is close to that centroid; per topic we track the
+  critical **share** and its quarter-over-quarter trend. Rising critical share (esp.
+  with flat volume) is flagged as eroding confidence.
+- **Labs-lead signal:** lab/blog posts are embedded and tagged to topics, then shown
+  against the paired safety topic's velocity — "labs announce → safety responds on a
+  delay → the delay is the risk window."
 - **Velocity & inflection:** counts are bucketed by calendar quarter. An inflection
   compares the mean of the last *N* quarters against the prior *N* (default N=2); a
   relative change beyond ±30% is an acceleration/deceleration.
@@ -205,7 +221,12 @@ python scripts/generate_fixtures.py
   side as horizontal bars. A long capability bar next to a short safety bar = safety
   lagging. This is the core product.
 - **📈 Velocity** — papers per quarter per topic over time, plus an inflection table of
-  which topics accelerated or decelerated. Momentum.
+  which topics accelerated or decelerated. Momentum (attention, not success).
+- **🔬 Sentiment** — the **negative-signal layer**: the share of *critical / negative /
+  limitation-focused* papers within each topic, and whether that share is **rising**.
+  A rising critical share while volume is flat is an early warning that a field may be
+  losing confidence in an approach — detected via embeddings (cosine similarity to
+  negativity seed phrases), not keywords.
 - **🧭 Quadrant** — topics plotted by recent volume (x) vs. growth (y): *emerging*
   (small but surging), *hot* (big and growing), *cooling* (shrinking), *white-space*
   (quiet). A strategic map of the field.
@@ -303,8 +324,15 @@ python -m pytest tests/ -q
   serviceable but the sentence-transformers path is materially better.
 - arXiv covers preprints only; OpenAlex citation coverage lags for very recent papers,
   so recent-quarter citation signals are noisier than older ones.
-- The bundled fixtures are synthetic — useful for verifying the pipeline and for demos,
-  not for drawing real conclusions. Use live ingestion for that.
+- **No synthetic data on the live tool, ever.** The dashboard only renders a real,
+  published snapshot; if none is present it shows an honest "data not available yet"
+  message rather than any demo content. Synthetic fixtures exist *solely* for the
+  automated test suite (`tests/`) and never reach the site.
+- **Sentiment is a proxy.** The critical/negative share is embedding-based and
+  approximate — a triage signal for where to read, not a verdict on a field.
+- **Lab-announcement history is shallow.** RSS feeds only expose recent posts, so the
+  announce-vs-response view reflects current announcements against the paired safety
+  topic's velocity, rather than a deep historical lead-time series.
 - **Semantic Scholar enrichment needs an API key.** The keyless pool is rate-limited
   and usually returns nothing, so TLDR/influential-citation/venue fields stay empty
   until you add a free key as the repo secret `SEMANTIC_SCHOLAR_API_KEY` (the refresh

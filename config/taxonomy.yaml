@@ -11,6 +11,24 @@
 # Edit/extend freely. The clustering layer ALSO discovers emergent topics that
 # are not in this list — this taxonomy is the supervised overlay.
 
+# Seed phrases for the "negative / critical / limitation-focused" signal. A paper
+# is counted as critical when its abstract embedding is close to this centroid.
+# A rising critical share within a topic (especially while volume is flat) is an
+# early warning that a field may be losing confidence in an approach.
+negativity_seeds:
+  - "this approach does not scale to larger models"
+  - "fails to generalize beyond the training distribution"
+  - "we find no evidence that"
+  - "limitations of current methods"
+  - "negative results: the method does not work"
+  - "does not reliably improve performance"
+  - "performance degrades significantly"
+  - "we were unable to reproduce"
+  - "contrary to expectations, results show no improvement"
+  - "remains an unsolved open problem"
+  - "brittle and sensitive to small changes"
+  - "the proposed technique underperforms baselines"
+
 safety_topics:
   - key: interpretability
     label: "Mechanistic Interpretability"

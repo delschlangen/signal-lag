@@ -12,7 +12,12 @@ import numpy as np
 
 from ..config import Settings, Taxonomy
 from ..ingest.store import Store
-from . import authors, citations, cluster, divergence, signals, taxonomy as tax_mod, velocity
+import pandas as pd
+
+from . import (
+    authors, citations, cluster, divergence, sentiment, signals,
+    taxonomy as tax_mod, velocity,
+)
 from .embeddings import Embedder, save_embeddings
 
 log = logging.getLogger("signal_lag.runner")
@@ -82,6 +87,37 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
 
     new_clusters = [_clab(k) for k in new_cluster_keys]
 
+    # --- negative / critical-signal layer ---
+    scfg = settings.section("sentiment")
+    neg_centroid = sentiment.build_negativity_centroid(taxonomy, embedder)
+    crit = sentiment.critical_scores(vecs, neg_centroid)
+    periods = {p.arxiv_id: pd.Period(p.published, freq="Q") for p in papers}
+    topic_sent = sentiment.topic_sentiment(ids, crit, periods, tax_tags, taxonomy, scfg)
+    sent_ts = velocity.drop_incomplete_tail(
+        sentiment.sentiment_timeseries(
+            ids, crit, periods, tax_tags, float(scfg.get("critical_threshold", 0.22))
+        ),
+        today,
+    )
+
+    # --- lab/blog posts tagged to topics (capability-leading signal) ---
+    lab_posts = []
+    posts = store.get_posts(limit=80)
+    if posts and centroids:
+        ptexts = [f"{p.get('title','')}. {p.get('summary','')}" for p in posts]
+        pvecs = embedder.embed(ptexts)
+        ckeys = list(centroids.keys())
+        cmat = np.vstack([centroids[k] for k in ckeys])
+        psims = pvecs @ cmat.T
+        for i, p in enumerate(posts):
+            j = int(psims[i].argmax())
+            score = float(psims[i][j])
+            lab_posts.append({
+                **p,
+                "topic": ckeys[j] if score >= 0.18 else None,
+                "topic_score": round(score, 3),
+            })
+
     # --- citation dynamics ---
     cite = citations.citation_signals(papers, settings.section("citations"))
 
@@ -102,7 +138,8 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
 
     # --- signals + brief ---
     sigs = signals.generate_signals(
-        taxonomy, div, inflections, new_clusters, {}, cite, inst_trends
+        taxonomy, div, inflections, new_clusters, {}, cite, inst_trends,
+        sentiment=topic_sent,
     )
     meta = {"n_papers": len(papers), "backend": embedder.backend}
     brief = signals.render_brief(sigs, meta)
@@ -119,6 +156,9 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
         "divergence": div,
         "quadrant": quad,
         "institution_trends": inst_trends,
+        "sentiment": topic_sent,
+        "sentiment_timeseries": sent_ts,
+        "lab_posts": lab_posts,
         "signals": sigs,
         "brief": brief,
     }

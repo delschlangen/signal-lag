@@ -19,9 +19,36 @@ def generate_signals(
     cluster_labels: dict,
     citations: dict,
     institution_trends,
+    sentiment: dict | None = None,
 ) -> list[dict]:
     """Return a ranked list of {severity, headline, detail} findings."""
     signals: list[dict] = []
+    inflection_by_topic = {i["topic_key"]: i for i in inflections}
+
+    # 0. Negative-signal early warnings: critical share rising (esp. if volume flat).
+    for topic_key, s in (sentiment or {}).items():
+        if not s.get("rising"):
+            continue
+        inf = inflection_by_topic.get(topic_key, {})
+        vol_dir = inf.get("direction", "steady")
+        flat = vol_dir != "acceleration"  # not clearly growing
+        sev = "high" if flat else "medium"
+        vol_phrase = (
+            "while volume is flat/declining" if flat
+            else "even as volume rises"
+        )
+        signals.append(
+            {
+                "severity": sev,
+                "category": "sentiment",
+                "headline": f"Confidence may be eroding in {_label(taxonomy, topic_key)}",
+                "detail": (
+                    f"Critical/negative papers rose from {s['prior_share']*100:.0f}% to "
+                    f"{s['recent_share']*100:.0f}% of recent work (+{s['trend']*100:.0f} pts) "
+                    f"{vol_phrase} — an early sign the field may be hitting limits."
+                ),
+            }
+        )
 
     # 1. Divergence (headline product).
     for d in divergence:
@@ -133,6 +160,7 @@ def render_brief(signals: list[dict], meta: dict, today: dt.date | None = None) 
 
     pretty = {
         "divergence": "Capability vs. Safety Divergence",
+        "sentiment": "Confidence / Negative Signals",
         "velocity": "Topic Velocity",
         "emerging": "Emerging Topics",
         "citation": "Citation Dynamics",
