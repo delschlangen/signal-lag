@@ -62,18 +62,21 @@ class ArxivClient:
         end_date: dt.date,
         max_results: int,
     ) -> Iterator[Paper]:
-        """Yield papers in a category, newest first, stopping at the date floor.
+        """Yield up to ``max_results`` papers in a category within [start, end].
 
-        arXiv's date filtering in the query string is unreliable, so we sort by
-        submission date descending and filter client-side, halting once we fall
-        past ``start_date``.
+        Uses arXiv's server-side ``submittedDate`` range filter, sorted newest
+        first, with a client-side date check as a backstop. Callers cap the count
+        per window so that pulling across many windows yields even time coverage.
         """
+        s = start_date.strftime("%Y%m%d0000")
+        e = end_date.strftime("%Y%m%d2359")
+        date_filter = f"submittedDate:[{s} TO {e}]"
         fetched = 0
         start = 0
         while fetched < max_results:
             page = min(self.page_size, max_results - fetched)
             params = {
-                "search_query": f"cat:{category}",
+                "search_query": f"cat:{category} AND {date_filter}",
                 "start": start,
                 "max_results": page,
                 "sortBy": "submittedDate",

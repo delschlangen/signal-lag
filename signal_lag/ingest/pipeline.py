@@ -69,20 +69,24 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
         request_delay=settings.arxiv_request_delay_seconds,
         backoff_schedule=settings.backoff_schedule,
     )
+    # arXiv publishes hundreds of papers/day, so "newest N" would only span days.
+    # Instead we stratify by quarter: pull up to `max_per_period` per category per
+    # quarter, giving even coverage across the whole window so velocity has a real
+    # time axis. (This is a temporally-stratified sample; topic *shares* per quarter
+    # are preserved, which is what the velocity/divergence trends rely on.)
+    windows = _quarter_windows(start_date, end_date)
+    max_per_period = settings.max_per_period
+    log.info("Sampling %d quarters x %d categories, up to %d papers each",
+             len(windows), len(settings.arxiv_categories), max_per_period)
     for category in settings.arxiv_categories:
-        log.info("Fetching %s (%s..%s)", category, start_date, end_date)
-        batch: list[Paper] = []
-        for paper in client.search_category(
-            category, start_date, end_date, settings.max_results_per_category
-        ):
-            batch.append(paper)
-            if len(batch) >= 200:
+        for (qs, qe) in windows:
+            batch: list[Paper] = []
+            for paper in client.search_category(category, qs, qe, max_per_period):
+                batch.append(paper)
+            if batch:
                 store.upsert_papers(batch)
-                log.info("  cached %d (running total %d)", len(batch), store.count_papers())
-                batch = []
-        if batch:
-            store.upsert_papers(batch)
-        log.info("  %s done; cache now %d papers", category, store.count_papers())
+            log.info("  %s %s..%s: +%d (total %d)", category, qs, qe,
+                     len(batch), store.count_papers())
 
     if enrich:
         enrich_citations(settings, store)
@@ -90,6 +94,20 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
     total = store.count_papers()
     store.close()
     return total
+
+
+def _quarter_windows(start: dt.date, end: dt.date) -> list[tuple[dt.date, dt.date]]:
+    """Inclusive list of (quarter_start, quarter_end) covering [start, end]."""
+    windows: list[tuple[dt.date, dt.date]] = []
+    q_start_month = ((start.month - 1) // 3) * 3 + 1
+    y, m = start.year, q_start_month
+    while dt.date(y, m, 1) <= end:
+        qs = dt.date(y, m, 1)
+        nm, ny = (m + 3, y) if m + 3 <= 12 else (m + 3 - 12, y + 1)
+        qe = dt.date(ny, nm, 1) - dt.timedelta(days=1)
+        windows.append((max(qs, start), min(qe, end)))
+        y, m = ny, nm
+    return windows
 
 
 def enrich_citations(settings: Settings, store: Store | None = None) -> int:

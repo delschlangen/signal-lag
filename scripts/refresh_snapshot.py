@@ -4,9 +4,9 @@ Run by the weekly GitHub Action (and usable locally). Pulls real arXiv +
 OpenAlex data unless --use-fixtures is passed. Volume caps can be overridden via
 env vars so CI runs stay within reasonable time:
 
-  SIGNAL_LAG_MAX_PER_CAT   per-category arXiv cap (default: settings.yaml)
-  SIGNAL_LAG_OPENALEX_MAX  max papers to enrich via OpenAlex (default: settings.yaml)
-  SIGNAL_LAG_YEARS_BACK    rolling window length in years
+  SIGNAL_LAG_MAX_PER_PERIOD  arXiv papers per category per quarter (default: settings.yaml)
+  SIGNAL_LAG_OPENALEX_MAX    max papers to enrich via OpenAlex (default: settings.yaml)
+  SIGNAL_LAG_YEARS_BACK      rolling window length in years
 """
 from __future__ import annotations
 
@@ -30,8 +30,8 @@ log = logging.getLogger("refresh")
 
 def _apply_env_overrides(settings) -> None:
     ing = settings.raw["ingestion"]
-    if os.getenv("SIGNAL_LAG_MAX_PER_CAT"):
-        ing["max_results_per_category"] = int(os.environ["SIGNAL_LAG_MAX_PER_CAT"])
+    if os.getenv("SIGNAL_LAG_MAX_PER_PERIOD"):
+        ing["max_per_period"] = int(os.environ["SIGNAL_LAG_MAX_PER_PERIOD"])
     if os.getenv("SIGNAL_LAG_OPENALEX_MAX"):
         ing["openalex_max_enrich"] = int(os.environ["SIGNAL_LAG_OPENALEX_MAX"])
     if os.getenv("SIGNAL_LAG_YEARS_BACK"):

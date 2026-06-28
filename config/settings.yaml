@@ -9,7 +9,11 @@ ingestion:
     years_back: 3
     start: null            # e.g. "2022-01-01"
     end: null              # e.g. "2025-01-01"
-  # Per-category cap on papers fetched (moderate default ~1-2k each).
+  # arXiv publishes hundreds of papers/day, so ingestion is stratified by quarter:
+  # we pull up to `max_per_period` papers per category per quarter, giving even
+  # coverage across the whole date window (so velocity has a real time axis).
+  max_per_period: 150
+  # Legacy overall per-category cap (no longer the primary control).
   max_results_per_category: 1500
   # arXiv asks for <= 1 request / 3s; we page in chunks of this size.
   arxiv_page_size: 200

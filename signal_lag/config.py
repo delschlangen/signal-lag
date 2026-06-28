@@ -84,7 +84,12 @@ class Settings:
 
     @property
     def max_results_per_category(self) -> int:
-        return int(self.raw["ingestion"]["max_results_per_category"])
+        return int(self.raw["ingestion"].get("max_results_per_category", 1500))
+
+    @property
+    def max_per_period(self) -> int:
+        """Papers per category per quarter for temporally-stratified sampling."""
+        return int(self.raw["ingestion"].get("max_per_period", 150))
 
     @property
     def arxiv_page_size(self) -> int:

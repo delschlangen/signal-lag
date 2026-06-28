@@ -9,9 +9,9 @@ on:
     - cron: "0 6 * * 1"   # Mondays 06:00 UTC
   workflow_dispatch:
     inputs:
-      max_per_cat:
-        description: "Max papers per arXiv category"
-        default: "800"
+      max_per_period:
+        description: "Max papers per arXiv category per quarter"
+        default: "150"
       openalex_max:
         description: "Max papers to enrich via OpenAlex (citations/affiliations)"
         default: "500"
@@ -42,7 +42,7 @@ jobs:
 
       - name: Refresh snapshot (real arXiv + OpenAlex)
         env:
-          SIGNAL_LAG_MAX_PER_CAT: ${{ github.event.inputs.max_per_cat || '800' }}
+          SIGNAL_LAG_MAX_PER_PERIOD: ${{ github.event.inputs.max_per_period || '150' }}
           SIGNAL_LAG_OPENALEX_MAX: ${{ github.event.inputs.openalex_max || '500' }}
         run: |
           python scripts/refresh_snapshot.py --fresh
@@ -51,10 +51,13 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/snapshot.json data/snapshot_prev.json
+          git add data/snapshot.json
+          [ -f data/snapshot_prev.json ] && git add data/snapshot_prev.json || true
           if git diff --cached --quiet; then
             echo "No snapshot changes."
           else
             git commit -m "chore: weekly data refresh $(date -u +%Y-%m-%d)"
+            # Rebase onto any concurrent pushes (e.g. docs) before pushing.
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
             git push
           fi
