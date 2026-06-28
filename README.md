@@ -151,6 +151,43 @@ threshold — both tunable in YAML.
   range, caps, thresholds, and clustering choice all live in `config/*.yaml` — no code
   edits needed to retune.
 
+### 10. Foresight Gap synthesis (the 🔮 tab)
+
+A **second weekly Claude pass** (`claude-opus-4-8`, using the Claude API exactly like the
+analysis layer in “Data sources” — same client, same fail-soft, same baked-into-snapshot,
+no page-load calls). Its job is to surface **novel, not-yet-in-the-news risks** that live
+in the **seam between AI research and broader societal forces** — risks no single community
+is tracking because they sit between domains.
+
+How it works:
+1. **Signal digest** — it pulls the strongest signals already computed this week: flagged
+   capability-vs-safety divergences, velocity inflections, rising critical-share
+   (eroding-confidence) flags, quadrant emerging/white-space topics, citation sleepers &
+   rapid-growth papers, new emergent clusters, recent lab activity, **and what changed
+   week-over-week** (so it weights *movement*, not just static state).
+2. **Scanning framework** — a fixed STEEP/PESTLE-plus taxonomy of *domains* (Social,
+   Technological, Economic, Environmental, Political, Legal/Regulatory,
+   Security/Geopolitical, Demographic) so the synthesis is comprehensive by construction
+   and never tunnels on technology alone. It defines *dimensions*, never specific trends.
+3. **Living societal context** — `config/context.md`, a **user-maintained** file where
+   *you* paste the current real-world state across those domains and keep it updated week
+   to week. It is **not** baked into code, so it never goes stale; any examples in it are
+   **illustrative of the format only — not a prescribed or exhaustive list**, and the
+   synthesis is explicitly told never to treat them as the only factors that matter. If
+   the file is missing/empty the pass still runs (just without the societal layer).
+4. **Synthesis** — Claude returns 2–4 candidate risks, each with a fixed six-part
+   structure: **risk statement · derived-from (citing the actual digest signals, so it's
+   traceable) · why it's under-discussed · mechanism · leading indicator · calibration ·
+   extrapolation** (an honest flag of what goes beyond the data). It's instructed to
+   ground every claim in the provided signals and to refuse to restate well-known AI risks.
+
+**These are AI-surfaced candidate hypotheses for an analyst to pressure-test — not
+predictions.** The model widens the aperture; human judgment goes on top. The tab shows
+the digest, context, and framework that fed each synthesis, so the reasoning is fully
+transparent. Config lives under `analysis.foresight` in `settings.yaml` (enable, number of
+risks, context-file path). Like the rest of the Claude layer it needs the
+`ANTHROPIC_API_KEY` repo secret; without it the tab shows an honest "unavailable" message.
+
 ---
 
 ## Install
@@ -238,6 +275,12 @@ python scripts/generate_fixtures.py
 - **🧭 Quadrant** — topics plotted by recent volume (x) vs. growth (y): *emerging*
   (small but surging), *hot* (big and growing), *cooling* (shrinking), *white-space*
   (quiet). A strategic map of the field.
+- **🔮 Foresight Gap** — a second Claude pass that crosses this week's signals with
+  broader societal forces to surface **novel, not-yet-in-the-news risks** living in the
+  *seam between domains*. Each is a candidate hypothesis (not a prediction) with a six-part
+  structure — statement, derived-from, why-under-discussed, mechanism, leading indicator,
+  calibration, extrapolation — and it shows the signal digest + societal context + scanning
+  framework that fed it. See methodology section 10. Exportable as a brief.
 - **🔍 Sources** — the receipts: actual arXiv papers behind each topic (each with a
   short *what-it-does / why-it-matters* note — written by Claude when the analysis
   layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,
@@ -300,23 +343,27 @@ You'll get a URL like `https://<your-app>.streamlit.app`; paste it into the
 - `config/taxonomy.yaml` — the safety taxonomy, capability topics (each with seed
   phrases), and the **capability↔safety pairings** that drive the divergence layer.
   Edit these to change what the tool tracks.
+- `config/context.md` — the **living societal-context file for the Foresight Gap tab**,
+  which *you maintain*. Paste the current real-world state across the STEEP/PESTLE-plus
+  domains and keep it updated week to week; the weekly synthesis crosses it with the
+  research signals. Examples in it are illustrative of the format only, never exhaustive.
 
 ---
 
 ## Project structure
 
 ```
-config/                 settings.yaml + taxonomy.yaml (all tunables)
+config/                 settings.yaml + taxonomy.yaml + context.md (all tunables)
 signal_lag/
   config.py             YAML -> dataclasses
   models.py             Paper / Author
   cli.py                ingest | enrich | analyze | signals | dashboard
   ingest/               arxiv_client, openalex_client, store (SQLite), pipeline
   analysis/             embeddings, taxonomy, cluster, velocity, citations,
-                        divergence, authors, signals, runner
+                        divergence, authors, signals, runner, llm, foresight
   dashboard/app.py      Streamlit dashboard
   fixtures/             sample_papers.json (offline dataset)
-scripts/generate_fixtures.py
+scripts/                generate_fixtures, refresh_snapshot, foresight_preview
 tests/                  velocity / divergence / taxonomy logic
 ```
 
@@ -342,6 +389,10 @@ python -m pytest tests/ -q
   automated test suite (`tests/`) and never reach the site.
 - **Sentiment is a proxy.** The critical/negative share is embedding-based and
   approximate — a triage signal for where to read, not a verdict on a field.
+- **Foresight-Gap risks are hypotheses, not predictions.** They are AI-surfaced
+  candidate risks for an analyst to pressure-test — the model widens the aperture, human
+  judgment goes on top. Each card flags its own extrapolation beyond the data, and the
+  quality depends on how current you keep `config/context.md`. Needs `ANTHROPIC_API_KEY`.
 - **Lab-announcement history is shallow.** RSS feeds only expose recent posts, so the
   announce-vs-response view reflects current announcements against the paired safety
   topic's velocity, rather than a deep historical lead-time series.
