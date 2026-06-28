@@ -52,7 +52,51 @@ first refresh runs it shows a bundled synthetic demo dataset. Hosting is free on
 
 ---
 
+## Data sources & coverage
+
+signal-lag currently pulls from **two free sources**:
+
+- **arXiv** — the papers themselves (title, abstract, authors, dates), from the
+  `cs.AI`, `cs.LG`, `cs.CL` categories.
+- **OpenAlex** — the enrichment layer matched to those papers: citation counts,
+  year-by-year citation series, and author institutions.
+
+**What this covers well:** arXiv is where the large majority of frontier AI/ML/NLP
+research appears first, so coverage of the fast-moving preprint literature is high.
+
+**What it does _not_ cover (yet):** other arXiv categories (`cs.CV`, `cs.CR`,
+`cs.RO`, `stat.ML`, …), venues that don't post to arXiv (OpenReview / ICLR / NeurIPS,
+ACL Anthology, PMLR, journals), and industry tech reports or lab blog posts. So treat
+it as **high coverage of the AI preprint literature, not "everything published."**
+The arXiv categories are config-driven (add more in `config/settings.yaml`); adding a
+genuinely new source (e.g. OpenReview, Semantic Scholar) means adding a small
+ingestion client alongside `arxiv_client.py`.
+
+---
+
 ## Methodology notes
+
+### How papers are categorized
+
+Two complementary layers, both **semantic (embedding-based), not keyword matching**:
+
+1. **Supervised tagging against the taxonomy.** Each topic in `taxonomy.yaml` has a
+   few **seed phrases**. Those are embedded and averaged into a **centroid** vector per
+   topic. Every paper's title+abstract is embedded into the same space, and its
+   **cosine similarity** to each centroid is computed; if it clears `tag_threshold`
+   (default 0.28) the paper gets that tag (up to `max_tags_per_paper`). Because it's
+   semantic, a paper about "models that strategically hide their objectives" tags to
+   *deceptive alignment* even without those literal words.
+2. **Unsupervised clustering for emergent topics.** All paper embeddings are clustered
+   with **HDBSCAN** (auto-discovers the cluster count, marks outliers as noise). Each
+   cluster is auto-labeled by its most distinctive terms (c-TF-IDF). This surfaces
+   directions that *aren't* in the predefined taxonomy.
+
+Embeddings use `all-MiniLM-L6-v2` (sentence-transformers); offline it falls back to a
+TF-IDF + SVD vectorizer. Categorization quality depends on the seed phrases and
+threshold — both tunable in YAML.
+
+### Other definitions
 
 - **Why embeddings, not keywords:** keyword filters can only find topics you already
   named. Embedding clusters surface *emergent* directions; the supervised taxonomy is
@@ -132,6 +176,26 @@ Regenerate the fixtures (deterministic) with:
 ```bash
 python scripts/generate_fixtures.py
 ```
+
+---
+
+## Dashboard tabs explained
+
+- **📋 Weekly Summary** — the BLUF page. Data freshness, *what changed since the last
+  refresh* (new safety-lag alerts, newly accelerating topics, new citation sleepers),
+  and the headline pairings where safety is lagging, each with source links.
+- **⚖️ Divergence** — for every capability↔safety pair, the recent growth rate of each
+  side as horizontal bars. A long capability bar next to a short safety bar = safety
+  lagging. This is the core product.
+- **📈 Velocity** — papers per quarter per topic over time, plus an inflection table of
+  which topics accelerated or decelerated. Momentum.
+- **🧭 Quadrant** — topics plotted by recent volume (x) vs. growth (y): *emerging*
+  (small but surging), *hot* (big and growing), *cooling* (shrinking), *white-space*
+  (quiet). A strategic map of the field.
+- **🔍 Sources** — the receipts: actual arXiv papers behind each topic, plus
+  rapid-citation-growth and "sleeper" papers, all linked.
+- **🚨 Signals** — the full ranked list of auto-generated BLUF findings, with the
+  downloadable markdown brief.
 
 ---
 
