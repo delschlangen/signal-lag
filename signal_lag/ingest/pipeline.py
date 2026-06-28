@@ -96,6 +96,18 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
     if failures:
         log.warning("%d window(s) failed and were skipped", failures)
 
+    # Optional extra paper source: OpenReview venues (added as papers).
+    try:
+        ingest_openreview(settings, store)
+    except Exception as e:
+        log.warning("OpenReview ingestion skipped: %s", e)
+
+    # Optional non-paper source: lab/blog RSS (separate posts table).
+    try:
+        ingest_blogs(settings, store)
+    except Exception as e:
+        log.warning("Blog ingestion skipped: %s", e)
+
     if enrich:
         enrich_citations(settings, store)
         try:
@@ -128,6 +140,45 @@ def enrich_semantic_scholar(settings: Settings, store: Store | None = None) -> i
         if p.s2_tldr is not None or p.s2_influential_citations is not None or p.venue:
             store.update_s2_enrichment(p)
     log.info("Semantic Scholar: enriched %d papers", n)
+    if own:
+        store.close()
+    return n
+
+
+def ingest_openreview(settings: Settings, store: Store | None = None) -> int:
+    """Add OpenReview venue papers (with review scores) to the cache."""
+    cfg = settings.openreview
+    if not cfg.get("enabled") or not cfg.get("venues"):
+        return 0
+    from .openreview_client import OpenReviewClient
+
+    own = store is None
+    store = store or Store(settings.path("db_path"))
+    client = OpenReviewClient()
+    added = 0
+    for venue in cfg["venues"]:
+        papers = client.fetch_venue(venue, int(cfg.get("max_per_venue", 400)))
+        if papers:
+            added += store.upsert_papers(papers)
+    log.info("OpenReview: added %d papers", added)
+    if own:
+        store.close()
+    return added
+
+
+def ingest_blogs(settings: Settings, store: Store | None = None) -> int:
+    """Pull lab/blog RSS posts into the posts table (capability signal)."""
+    cfg = settings.blogs
+    if not cfg.get("enabled") or not cfg.get("feeds"):
+        return 0
+    from .blog_rss_client import BlogRSSClient
+
+    own = store is None
+    store = store or Store(settings.path("db_path"))
+    client = BlogRSSClient(max_per_feed=int(cfg.get("max_per_feed", 30)))
+    posts = client.fetch(cfg["feeds"])
+    n = store.upsert_posts(posts) if posts else 0
+    log.info("Blogs: stored %d posts", n)
     if own:
         store.close()
     return n

@@ -59,6 +59,17 @@ CREATE TABLE IF NOT EXISTS topic_tags (
     PRIMARY KEY (arxiv_id, source, topic_key)
 );
 CREATE INDEX IF NOT EXISTS idx_tags_topic ON topic_tags(source, topic_key);
+
+-- Lab/blog posts (capability-leading signal); kept separate from papers.
+CREATE TABLE IF NOT EXISTS posts (
+    id         TEXT PRIMARY KEY,
+    source     TEXT NOT NULL,
+    title      TEXT,
+    summary    TEXT,
+    url        TEXT,
+    published  TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_posts_published ON posts(published);
 """
 
 
@@ -184,6 +195,26 @@ class Store:
             [(aid, source, key, score) for (aid, key, score) in rows],
         )
         self.conn.commit()
+
+    def upsert_posts(self, posts: Iterable[dict]) -> int:
+        rows = [
+            (p["id"], p["source"], p.get("title"), p.get("summary"),
+             p.get("url"), p.get("published"))
+            for p in posts
+        ]
+        self.conn.executemany(
+            "INSERT OR REPLACE INTO posts (id, source, title, summary, url, published)"
+            " VALUES (?,?,?,?,?,?)",
+            rows,
+        )
+        self.conn.commit()
+        return len(rows)
+
+    def get_posts(self, limit: int = 0) -> list[dict]:
+        q = "SELECT * FROM posts ORDER BY published DESC"
+        if limit:
+            q += f" LIMIT {int(limit)}"
+        return [dict(r) for r in self.conn.execute(q).fetchall()]
 
     # ------------------------------------------------------------------- reads
     def count_papers(self) -> int:

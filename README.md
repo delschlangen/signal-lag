@@ -54,12 +54,23 @@ first refresh runs it shows a bundled synthetic demo dataset. Hosting is free on
 
 ## Data sources & coverage
 
-signal-lag currently pulls from **two free sources**:
+signal-lag pulls from several free sources (all config-driven, all fail-soft — a
+source being down or rate-limited just omits its signal):
 
 - **arXiv** — the papers themselves (title, abstract, authors, dates), from the
-  `cs.AI`, `cs.LG`, `cs.CL` categories.
-- **OpenAlex** — the enrichment layer matched to those papers: citation counts,
-  year-by-year citation series, and author institutions.
+  `cs.AI`, `cs.LG`, `cs.CL` categories (extendable in config).
+- **OpenAlex** — enrichment matched to those papers: citation counts, year-by-year
+  citation series, and author institutions.
+- **Semantic Scholar** — enrichment: TLDR summaries, **influential**-citation counts
+  (a sharper heat signal than raw counts), venue, and fields of study.
+- **OpenReview** *(optional, config-gated)* — venue papers (e.g. ICLR/NeurIPS) added
+  as records with peer-**review scores**, a quality/heat signal papers-only sources lack.
+- **Lab/blog RSS** *(optional, config-gated)* — posts from major labs (Anthropic,
+  OpenAI, DeepMind, …) as a **capability-leading** signal, shown separately from paper
+  velocity since they aren't papers.
+
+Each source is an isolated client; new ones slot in alongside `arxiv_client.py`
+without touching the rest of the pipeline.
 
 **What this covers well:** arXiv is where the large majority of frontier AI/ML/NLP
 research appears first, so coverage of the fast-moving preprint literature is high.

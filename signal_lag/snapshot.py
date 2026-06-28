@@ -48,7 +48,13 @@ def build_snapshot(
     store = Store(settings.path("db_path"))
     papers = store.get_papers()
     tax_tags = store.get_tags("taxonomy")
+    posts = store.get_posts(limit=60)
     store.close()
+
+    # Provenance breakdown (arxiv / openreview / ...).
+    source_counts: dict[str, int] = {}
+    for p in papers:
+        source_counts[p.source] = source_counts.get(p.source, 0) + 1
 
     by_id = {p.arxiv_id: p for p in papers}
     label_map = {t.key: t.label for t in taxonomy.all_topics}
@@ -96,6 +102,8 @@ def build_snapshot(
         "topics_tracked": len(taxonomy.all_topics),
         "n_pairings": len(taxonomy.pairings),
         "n_flagged": sum(1 for d in results["divergence"] if d["lagging"]),
+        "source_counts": source_counts,
+        "n_posts": len(posts),
     }
 
     return {
@@ -111,6 +119,7 @@ def build_snapshot(
         "brief": results["brief"],
         "timeseries": _records(results["taxonomy_timeseries"]),
         "sources": per_topic,
+        "lab_activity": posts,
     }
 
 

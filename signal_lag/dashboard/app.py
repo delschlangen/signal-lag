@@ -145,6 +145,19 @@ with tabs[0]:
                 + topic_links(snap, a["capability_topic"], 3)
             )
 
+    lab = snap.get("lab_activity") or []
+    if lab:
+        st.divider()
+        st.subheader("🏢 Recent lab activity (capability-leading signal)")
+        st.caption("Posts from major lab blogs — capability news often precedes papers.")
+        for post in lab[:12]:
+            when = f" · {post['published']}" if post.get("published") else ""
+            title = post.get("title") or "(untitled)"
+            if post.get("url"):
+                st.markdown(f"- **{post['source']}**: [{title}]({post['url']}){when}")
+            else:
+                st.markdown(f"- **{post['source']}**: {title}{when}")
+
     st.divider()
     st.download_button("⬇️ Download full markdown brief", data=snap["brief"],
                        file_name="foresight_brief.md", mime="text/markdown")
