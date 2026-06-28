@@ -131,6 +131,13 @@ analysis:
     # societal domains). Edited week-to-week; if missing/empty the pass still runs
     # without the societal layer.
     context_path: "config/context.md"
+    # Novelty verification: after synthesis, web-search each candidate risk to check
+    # whether it's already publicly discussed and whether any claim it rests on is
+    # disputed. Baked into the snapshot (so it's cached, not re-run at page load).
+    verify_novelty: true
+    # Server-side web search tool version (falls back to web_search_20250305 if the
+    # account/platform lacks the newer one).
+    web_search_tool: "web_search_20260209"
 
 paths:
   db_path: "data/signal_lag.sqlite"

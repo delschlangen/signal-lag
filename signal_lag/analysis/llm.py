@@ -81,11 +81,14 @@ _extract_json = extract_json
 def call_claude(
     system: str, user: str, api_key: str | None,
     model: str = "claude-opus-4-8", max_tokens: int = 8000,
+    tools: list | None = None,
 ) -> str | None:
-    """Single Claude message call. Returns the text, or None on any failure.
+    """Single Claude message call. Returns the concatenated text, or None on failure.
 
-    Shared by every LLM pass (weekly analysis, foresight) so there is exactly one
-    client/call pattern. Fail-soft: missing key, missing SDK, or any API error -> None.
+    Shared by every LLM pass (weekly analysis, foresight, novelty verification) so
+    there is exactly one client/call pattern. Pass ``tools`` to enable server-side
+    tools (e.g. web search); those run on Anthropic's side and the final answer comes
+    back as text blocks. Fail-soft: missing key, missing SDK, or any API error -> None.
     """
     if not api_key:
         log.info("No ANTHROPIC_API_KEY; skipping LLM call")
@@ -97,10 +100,13 @@ def call_claude(
         return None
     try:
         client = anthropic.Anthropic(api_key=api_key)
-        resp = client.messages.create(
+        kwargs = dict(
             model=model, max_tokens=max_tokens, system=system,
             messages=[{"role": "user", "content": user}],
         )
+        if tools:
+            kwargs["tools"] = tools
+        resp = client.messages.create(**kwargs)
         return "".join(b.text for b in resp.content if getattr(b, "type", None) == "text")
     except Exception as e:  # any API failure -> fail soft
         log.warning("Claude call failed: %s", e)

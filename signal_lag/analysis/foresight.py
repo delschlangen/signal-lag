@@ -243,6 +243,77 @@ preamble) with exactly this shape:
 Output must be valid JSON and nothing else."""
 
 
+VERIFY_SYSTEM = (
+    "You are a skeptical fact-checking research analyst. Given a candidate foresight "
+    "risk, you SEARCH THE WEB to determine two things: (1) whether this risk — or a "
+    "close version of it — is already being publicly discussed (news, research, "
+    "commentary), and (2) whether any claim the risk depends on is itself disputed, "
+    "unverified, or contested. You deliberately search for BOTH confirming AND "
+    "disputing coverage. Your job is to stop an over-claimed 'novel' risk from being "
+    "briefed as novel when it is already front-page, and to surface disputes that "
+    "undercut a confident-sounding claim. Be honest and calibrated, not generous."
+)
+
+VERIFY_INSTRUCTIONS = """\
+Verify the candidate risk below. Run a few targeted web searches:
+- Is this specific risk / the specific cross-domain seam already being written about?
+  Search for the risk's core claim and its named components.
+- Does the risk rest on any claim that is contested, disputed, or thinly evidenced?
+  Actively search for sources that DISPUTE or complicate it (e.g. "<claim> disputed",
+  "<claim> skeptics", "<claim> debunked"), not only sources that confirm it.
+
+Then return ONLY a JSON object (no markdown, no preamble) with exactly this shape:
+
+{
+  "prior_coverage": "1-3 sentences: what already exists publicly on this risk/seam, honestly stated",
+  "sources": [{"title": "...", "url": "..."}],   // real URLs you found (may be empty)
+  "disputed_claims": "any claim the risk depends on that is contested/unverified, and WHO disputes it — or 'none found'",
+  "novelty_rating": "genuinely_unsurfaced | partially_anticipated | already_widely_discussed",
+  "recommended_action": "surface | flag | drop",
+  "recalibrated_calibration": "a revised, honest calibration that reflects the prior coverage AND any dispute you found"
+}
+
+Rules:
+- "genuinely_unsurfaced": you found little/nothing publicly connecting these elements.
+- "partially_anticipated": the components exist in public discussion but the specific seam is fresh.
+- "already_widely_discussed": this risk (or a close version) is already prominent — recommend "drop" or "flag".
+- If the risk depends on a contested claim, the recalibrated_calibration MUST say so explicitly and lower confidence; never launder a disputed claim into a confident risk.
+Output must be valid JSON and nothing else."""
+
+
+def verify_novelty(
+    risk: dict, api_key: str | None, model: str = "claude-opus-4-8",
+    tool_version: str = "web_search_20260209",
+) -> dict | None:
+    """Web-search a single candidate risk for prior coverage + disputes.
+
+    Returns a dict (prior_coverage, sources, disputed_claims, novelty_rating,
+    recommended_action, recalibrated_calibration) or None on any failure (fail-soft).
+    Uses Claude's server-side web search via the shared client; tries the current tool
+    version and falls back to the older one if the account/platform lacks it.
+    """
+    risk_blob = json.dumps({
+        "risk": risk.get("risk"),
+        "derived_from": risk.get("derived_from"),
+        "mechanism": risk.get("mechanism"),
+        "domains_crossed": risk.get("domains_crossed"),
+        "calibration": risk.get("calibration"),
+    }, ensure_ascii=False)
+    user = VERIFY_INSTRUCTIONS + "\n\nCANDIDATE RISK:\n" + risk_blob
+    for tv in (tool_version, "web_search_20250305"):
+        text = llm.call_claude(
+            VERIFY_SYSTEM, user, api_key, model,
+            tools=[{"type": tv, "name": "web_search"}],
+        )
+        if text:
+            result = llm.extract_json(text)
+            if result:
+                return result
+        # else try the fallback tool version
+    log.warning("Novelty verification failed for risk: %s", (risk.get("risk") or "")[:60])
+    return None
+
+
 def synthesize_foresight_gap(
     digest: dict, context: str, api_key: str | None,
     model: str = "claude-opus-4-8", max_risks: int = 4,

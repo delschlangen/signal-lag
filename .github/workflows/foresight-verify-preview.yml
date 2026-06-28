@@ -1,0 +1,35 @@
+name: Foresight verify preview
+
+# Runs the novelty-verification step (web search) against the foresight-gap risks
+# already in the committed snapshot, and prints the prior-coverage / dispute / novelty
+# results to the job log. Read-only — does not commit. Used to tune the verification
+# before it's wired into the snapshot and dashboard. Manual trigger only.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt anthropic
+
+      - name: Verify current risks against web coverage
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python scripts/foresight_verify_preview.py
