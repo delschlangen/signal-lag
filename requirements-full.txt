@@ -13,3 +13,7 @@ hdbscan>=0.8.33
 
 # Lab/blog RSS ingestion (capability-leading signal).
 feedparser>=6.0
+
+# Weekly Claude analysis layer (Anthropic SDK). Only used when ANTHROPIC_API_KEY
+# is set; fail-soft otherwise.
+anthropic>=0.40

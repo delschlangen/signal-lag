@@ -40,6 +40,10 @@ def _apply_env_overrides(settings) -> None:
     key = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
     if key:
         ing.setdefault("semantic_scholar", {})["api_key"] = key
+    # Optional Anthropic key enables the weekly Claude analysis layer.
+    akey = os.getenv("ANTHROPIC_API_KEY")
+    if akey:
+        settings.raw.setdefault("analysis", {})["api_key"] = akey
 
 
 def main(argv=None) -> int:

@@ -47,6 +47,9 @@ jobs:
           # Optional: add a free key as repo secret SEMANTIC_SCHOLAR_API_KEY for
           # reliable Semantic Scholar enrichment (the keyless pool is rate-limited).
           SEMANTIC_SCHOLAR_API_KEY: ${{ secrets.SEMANTIC_SCHOLAR_API_KEY }}
+          # Optional: add repo secret ANTHROPIC_API_KEY to enable the weekly Claude
+          # analysis layer (genuine analytical narrative baked into the snapshot).
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           python scripts/refresh_snapshot.py --fresh
 

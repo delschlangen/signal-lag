@@ -15,12 +15,125 @@ from ..ingest.store import Store
 import pandas as pd
 
 from . import (
-    authors, citations, cluster, divergence, sentiment, signals,
+    authors, citations, cluster, divergence, llm, sentiment, signals,
     taxonomy as tax_mod, velocity,
 )
 from .embeddings import Embedder, save_embeddings
 
 log = logging.getLogger("signal_lag.runner")
+
+
+def _excerpt(text: str | None, limit: int = 420) -> str:
+    text = " ".join((text or "").split())
+    return text[:limit].rstrip() + ("…" if len(text) > limit else "")
+
+
+def _build_llm_payload(
+    taxonomy, div, inflections, quad, topic_sent, cite, lab_posts,
+    by_id, tax_tags, label_map, n_per_side: int,
+) -> dict:
+    """Assemble a compact, fully-real payload for the weekly LLM analysis.
+
+    Grounds Claude in: the widest capability/safety pairing + representative real
+    abstracts on each side, every pairing's growth, velocity inflections, rising
+    critical-share topics, the quadrant map, citation movers, lab announcements,
+    and a deduplicated `papers` list (id+title+abstract) for per-paper notes.
+    """
+    # Recent representative papers per topic (newest first).
+    reps: dict[str, list] = {}
+    for aid, tags in tax_tags.items():
+        p = by_id.get(aid)
+        if not p:
+            continue
+        for topic_key, _score in tags:
+            reps.setdefault(topic_key, []).append(p)
+    for k, lst in reps.items():
+        lst.sort(key=lambda p: p.published, reverse=True)
+
+    def topic_papers(key: str, n: int) -> list[dict]:
+        return [
+            {"arxiv_id": p.arxiv_id, "title": p.title, "abstract": _excerpt(p.abstract)}
+            for p in reps.get(key, [])[:n]
+        ]
+
+    papers: dict[str, dict] = {}
+
+    def add_paper(p_like) -> None:
+        aid = p_like.get("arxiv_id") if isinstance(p_like, dict) else p_like.arxiv_id
+        if not aid or aid in papers:
+            return
+        if isinstance(p_like, dict):
+            papers[aid] = {"arxiv_id": aid, "title": p_like.get("title", ""),
+                           "abstract": _excerpt(p_like.get("abstract"))}
+        else:
+            papers[aid] = {"arxiv_id": aid, "title": p_like.title,
+                           "abstract": _excerpt(p_like.abstract)}
+
+    pairings = []
+    for d in div:
+        cap_reps = topic_papers(d["capability_topic"], n_per_side)
+        saf_reps = topic_papers(d["safety_topic"], n_per_side)
+        for r in cap_reps + saf_reps:
+            add_paper(by_id.get(r["arxiv_id"]) or r)
+        pairings.append({
+            "pairing": d["pairing"],
+            "capability_topic": label_map.get(d["capability_topic"], d["capability_topic"]),
+            "safety_topic": label_map.get(d["safety_topic"], d["safety_topic"]),
+            "capability_growth_pct_per_qtr": round(d["cap_growth"] * 100, 1),
+            "safety_growth_pct_per_qtr": round(d["saf_growth"] * 100, 1),
+            "gap": d["gap"],
+            "volume_ratio_cap_over_saf": d["volume_ratio"],
+            "flagged_safety_lagging": d["lagging"],
+            "capability_papers": cap_reps,
+            "safety_papers": saf_reps,
+        })
+
+    # Citation movers also get per-paper notes.
+    for bucket in ("rapid_growth", "sleepers"):
+        for r in cite.get(bucket, [])[:5]:
+            src = by_id.get(r["arxiv_id"])
+            if src:
+                add_paper(src)
+
+    velocity_rows = [
+        {"topic": label_map.get(i["topic_key"], i["topic_key"]),
+         "change_pct": round(i["change"] * 100, 1),
+         "recent_per_qtr": round(i["recent_mean"], 1)}
+        for i in sorted(inflections, key=lambda i: i.get("change", 0), reverse=True)
+    ]
+    sentiment_rows = [
+        {"topic": label_map.get(k, k),
+         "recent_critical_share_pct": round(v.get("recent_share", 0) * 100, 1),
+         "trend_pts": round(v.get("trend", 0) * 100, 1),
+         "rising": bool(v.get("rising")), "n_recent": v.get("n_recent", 0)}
+        for k, v in sorted(topic_sent.items(),
+                           key=lambda kv: kv[1].get("trend", 0), reverse=True)
+    ]
+    quadrant_rows = [
+        {"topic": label_map.get(q["topic_key"], q["topic_key"]), "quadrant": q["quadrant"]}
+        for q in quad
+    ]
+    citation_rows = {
+        b: [{"arxiv_id": r["arxiv_id"], "title": r["title"],
+             "cited_by_count": r.get("cited_by_count")} for r in cite.get(b, [])[:5]]
+        for b in ("rapid_growth", "sleepers")
+    }
+    lab_rows = [
+        {"source": p.get("source"), "title": p.get("title"),
+         "topic": label_map.get(p.get("topic"), p.get("topic")) if p.get("topic") else None,
+         "published": p.get("published"), "summary": _excerpt(p.get("summary"), 240)}
+        for p in (lab_posts or [])[:12]
+    ]
+
+    return {
+        "pairings": pairings,
+        "velocity_inflections": velocity_rows,
+        "sentiment": sentiment_rows,
+        "quadrant": quadrant_rows,
+        "citation_movers": citation_rows,
+        "lab_announcements": lab_rows,
+        "papers": list(papers.values()),
+    }
 
 
 def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
@@ -144,6 +257,20 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
     meta = {"n_papers": len(papers), "backend": embedder.backend}
     brief = signals.render_brief(sigs, meta)
 
+    # --- optional weekly LLM analysis (Anthropic / Claude) ---
+    analysis = None
+    acfg = settings.analysis
+    if acfg.get("enabled"):
+        by_id = {p.arxiv_id: p for p in papers}
+        label_map = {t.key: t.label for t in taxonomy.all_topics}
+        payload = _build_llm_payload(
+            taxonomy, div, inflections, quad, topic_sent, cite, lab_posts,
+            by_id, tax_tags, label_map, int(acfg.get("papers_per_side", 3)),
+        )
+        analysis = llm.analyze_weekly(
+            payload, acfg.get("api_key"), acfg.get("model", "claude-opus-4-8")
+        )
+
     store.close()
     return {
         "meta": meta,
@@ -161,4 +288,5 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
         "lab_posts": lab_posts,
         "signals": sigs,
         "brief": brief,
+        "analysis": analysis,
     }

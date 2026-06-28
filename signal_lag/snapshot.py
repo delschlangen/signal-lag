@@ -140,6 +140,7 @@ def build_snapshot(
         "sentiment_timeseries": _records(results.get("sentiment_timeseries")),
         "sources": per_topic,
         "lab_activity": posts,
+        "analysis": results.get("analysis"),
     }
 
 

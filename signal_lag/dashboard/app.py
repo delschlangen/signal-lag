@@ -39,6 +39,20 @@ def lbl(snap, key):
     return snap["label_map"].get(key, key)
 
 
+def get_analysis(snap):
+    return snap.get("analysis") or {}
+
+
+def tab_analysis(snap, key):
+    """The LLM's read of a tab, or None if the analysis layer didn't run."""
+    return (get_analysis(snap).get("tabs") or {}).get(key)
+
+
+def paper_notes(snap):
+    """arxiv_id -> {summary, why_it_matters} from the LLM analysis (may be empty)."""
+    return {p.get("arxiv_id"): p for p in get_analysis(snap).get("papers", [])}
+
+
 _key = SNAPSHOT.stat().st_mtime if SNAPSHOT.exists() else 0.0
 snap, prev = _load(_key)
 
@@ -72,6 +86,10 @@ st.info(
     "conclude*. The Sentiment tab helps tell those two cases apart.",
     icon="🧭",
 )
+
+if get_analysis(snap):
+    st.caption("🧠 This week's figures were analyzed by **Claude** — look for *Claude's read* "
+               "on each tab and the narrative headline below.")
 
 (tab_summary, tab_div, tab_vel, tab_sentiment, tab_quad,
  tab_sources, tab_method) = st.tabs(
@@ -207,7 +225,11 @@ def paper_signal(p: dict, topic_label: str) -> str:
 
 
 def render_paper_card(p, topic_label):
-    """A paper as a bordered card: link + date + metrics, summary, why it matters."""
+    """A paper as a bordered card: link + date + metrics, summary, why it matters.
+
+    Prefers the LLM's per-paper summary + 'why it matters' when the weekly Claude
+    analysis ran; otherwise falls back to the abstract + a data-derived signal line.
+    """
     bits = [p.get("published", "")]
     if p.get("venue"):
         bits.append(p["venue"])
@@ -215,12 +237,14 @@ def render_paper_card(p, topic_label):
         bits.append(f"{p['cited_by_count']} cites")
     if p.get("influential_citations"):
         bits.append(f"{p['influential_citations']} influential")
+    note = paper_notes(snap).get(p.get("arxiv_id")) or {}
     with st.container(border=True):
         st.markdown(f"**[{p['title']}]({p['url']})**  \n" + " · ".join(b for b in bits if b))
-        d = short_desc(p, 240)
-        if d:
-            st.markdown(f"*{d}*")
-        st.markdown(f"**Why it matters:** {paper_signal(p, topic_label)}")
+        summary = note.get("summary") or short_desc(p, 240)
+        if summary:
+            st.markdown(f"*{summary}*")
+        why = note.get("why_it_matters") or paper_signal(p, topic_label)
+        st.markdown(f"**Why it matters:** {why}")
 
 
 def citation_finding(snap) -> str:
@@ -279,6 +303,7 @@ with tab_summary:
 
     st.divider()
     st.subheader("📌 Headline")
+    hl = get_analysis(snap).get("headline") or {}
     alerts = sorted([x for x in snap["divergence"] if x["lagging"]],
                     key=lambda a: a["gap"], reverse=True)
     if alerts:
@@ -286,32 +311,52 @@ with tab_summary:
         cap, saf = lbl(snap, a["capability_topic"]), lbl(snap, a["safety_topic"])
         ratio = (f" — capability is running about **{a['volume_ratio']:.1f}× the volume** of "
                  f"the safety work" if a.get("volume_ratio") else "")
+        meaning = f" {hl['meaning']}" if hl.get("meaning") else ""
+        cap_focus = f" (focused on {hl['capability_focus']})" if hl.get("capability_focus") else ""
+        saf_focus = f", which covers {hl['safety_focus']}" if hl.get("safety_focus") else ""
         st.markdown(
-            f"**The biggest safety gap this week is {cap} vs {saf}.** Capability research "
-            f"there is growing **{a['cap_growth']*100:+.0f}%/quarter** while the paired safety "
-            f"topic ({saf}) is at **{a['saf_growth']*100:+.0f}%**{ratio}. "
+            f"**The biggest safety gap this week is {cap} vs {saf}.**{meaning} Capability "
+            f"research there{cap_focus} is growing **{a['cap_growth']*100:+.0f}%/quarter** while "
+            f"the paired safety topic ({saf}{saf_focus}) is at **{a['saf_growth']*100:+.0f}%**{ratio}. "
             + (f"In all, **{len(alerts)} of {meta['n_pairings']} pairings** show safety lagging. "
                if len(alerts) > 1 else "")
-            + "The papers driving the capability side:"
         )
+        if hl.get("why_it_matters"):
+            st.markdown(f"**Why this matters:** {hl['why_it_matters']}")
+        st.markdown("**The papers driving the capability side:**")
         for p in snap["sources"].get(a["capability_topic"], [])[:3]:
             render_paper_card(p, cap)
     else:
-        sig = (snap.get("signals") or [None])[0]
-        if sig:
-            st.markdown(f"**{sig['headline']}.** {sig['detail']}")
+        if hl.get("meaning") or hl.get("why_it_matters"):
+            st.markdown(
+                "**No capability/safety pairing crosses the safety-lag threshold this week.** "
+                + (hl.get("meaning") or ""))
+            if hl.get("why_it_matters"):
+                st.markdown(f"**Why this matters:** {hl['why_it_matters']}")
         else:
-            st.write("No capability/safety divergence crosses the alert threshold this week — "
-                     "safety research is broadly keeping pace.")
+            sig = (snap.get("signals") or [None])[0]
+            if sig:
+                st.markdown(f"**{sig['headline']}.** {sig['detail']}")
+            else:
+                st.write("No capability/safety divergence crosses the alert threshold this "
+                         "week — safety research is broadly keeping pace.")
 
     st.divider()
     st.subheader("🗞️ This week across the board")
-    st.caption("Plain-language read of every section — open a tab only if you want the detail.")
-    st.markdown(f"**⚖️ Capability vs. safety —** {divergence_finding(snap)}")
-    st.markdown(f"**📈 Velocity —** {velocity_finding(snap)}")
-    st.markdown(f"**🔬 Sentiment / confidence —** {sentiment_finding(snap)}")
-    st.markdown(f"**🧭 Landscape —** {quadrant_finding(snap)}")
-    st.markdown(f"**🔥 Citations —** {citation_finding(snap)}")
+    if get_analysis(snap).get("tabs"):
+        st.caption("Claude's analytical read of each section, grounded in this week's data — "
+                   "open a tab only if you want the underlying charts.")
+    else:
+        st.caption("Plain-language read of every section — open a tab only if you want the detail.")
+
+    def board(label, fallback, key):
+        st.markdown(f"**{label} —** {tab_analysis(snap, key) or fallback}")
+
+    board("⚖️ Capability vs. safety", divergence_finding(snap), "divergence")
+    board("📈 Velocity", velocity_finding(snap), "velocity")
+    board("🔬 Sentiment / confidence", sentiment_finding(snap), "sentiment")
+    board("🧭 Landscape", quadrant_finding(snap), "quadrant")
+    board("🔥 Citations", citation_finding(snap), "citations")
 
     lab = snap.get("lab_activity") or []
     if lab:
@@ -384,6 +429,8 @@ with tab_div:
         "(long blue + short orange = safety lagging).",
         divergence_finding(snap),
     )
+    if tab_analysis(snap, "divergence"):
+        st.markdown(f"**🧠 Claude's read:** {tab_analysis(snap, 'divergence')}")
     div = pd.DataFrame(snap["divergence"]).sort_values("gap")
     if not div.empty:
         names = [n.replace(" vs. ", "<br>vs. ") for n in div["pairing"]]
@@ -412,6 +459,8 @@ with tab_vel:
         "decelerating (table below). Attention, not success — cross-read with Sentiment.",
         velocity_finding(snap),
     )
+    if tab_analysis(snap, "velocity"):
+        st.markdown(f"**🧠 Claude's read:** {tab_analysis(snap, 'velocity')}")
     ts = pd.DataFrame(snap["timeseries"])
     if not ts.empty:
         ts["topic"] = ts["topic_key"].map(lambda k: lbl(snap, k))
@@ -441,6 +490,8 @@ with tab_sentiment:
         "(especially when volume is flat) is an early warning that confidence is eroding.",
         sentiment_finding(snap),
     )
+    if tab_analysis(snap, "sentiment"):
+        st.markdown(f"**🧠 Claude's read:** {tab_analysis(snap, 'sentiment')}")
     if sent:
         rows = []
         for k, v in sent.items():
@@ -483,6 +534,8 @@ with tab_quad:
         "cooling, white-space.",
         quadrant_finding(snap),
     )
+    if tab_analysis(snap, "quadrant"):
+        st.markdown(f"**🧠 Claude's read:** {tab_analysis(snap, 'quadrant')}")
     st.caption("Hover points for topic names.")
     quad = pd.DataFrame(snap["quadrant"])
     if not quad.empty:
@@ -526,6 +579,8 @@ with tab_sources:
         st.write("No tagged papers for this topic in the current snapshot.")
 
     st.divider()
+    if tab_analysis(snap, "citations"):
+        st.markdown(f"**🧠 Claude's read:** {tab_analysis(snap, 'citations')}")
     ccol, scol = st.columns(2)
     def _cite_line(r):
         extra = f" · {r['influential_citations']} influential" if r.get("influential_citations") else ""
@@ -606,7 +661,17 @@ leading indicator.
 
 ### 8. Signals & brief
 Computed metrics are templated into ranked **BLUF findings**, exportable as a
-markdown brief (see the Signals tab).
+markdown brief.
+
+### 9. Weekly Claude analysis
+Once per refresh, the computed metrics **plus the real paper abstracts** are sent
+to **Claude** (`claude-opus-4-8`), which returns a genuine analytical read: what the
+widest capability↔safety gap actually *means* and why it matters, a per-tab
+interpretation of the week, and a one-line *what-it-does* / *why-it-matters* for
+each driving paper. This is computed once and baked into the snapshot (no API calls
+at page-load). It's fully **fail-soft** — with no `ANTHROPIC_API_KEY` the layer is
+skipped and the dashboard falls back to its data-derived templated text. Claude only
+interprets the real metrics and abstracts; it does not invent data.
 
 ### Caveats
 - High coverage of the **AI preprint literature**, not every publisher.

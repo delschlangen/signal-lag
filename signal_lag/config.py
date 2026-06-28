@@ -124,6 +124,11 @@ class Settings:
     def blogs(self) -> dict[str, Any]:
         return self.raw["ingestion"].get("blogs", {"enabled": False})
 
+    @property
+    def analysis(self) -> dict[str, Any]:
+        """Optional weekly LLM analysis (Anthropic / Claude) config."""
+        return self.raw.get("analysis", {"enabled": False})
+
     # --- generic section accessor ---
     def section(self, name: str) -> dict[str, Any]:
         return self.raw.get(name, {})

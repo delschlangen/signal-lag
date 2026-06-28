@@ -76,6 +76,11 @@ source being down or rate-limited just omits its signal):
 - **Lab/blog RSS** *(optional, config-gated)* — posts from major labs (Anthropic,
   OpenAI, DeepMind, …) as a **capability-leading** signal, shown separately from paper
   velocity since they aren't papers.
+- **Claude (Anthropic API)** *(optional, config-gated)* — not a data source but an
+  **analysis layer**: once per refresh the computed metrics + the real abstracts are
+  sent to `claude-opus-4-8`, which writes the analytical headline, the per-tab read,
+  and the per-paper *what-it-does / why-it-matters*. Baked into the snapshot; fail-soft
+  (skipped with no `ANTHROPIC_API_KEY`).
 
 Each source is an isolated client; new ones slot in alongside `arxiv_client.py`
 without touching the rest of the pipeline.
@@ -214,9 +219,12 @@ python scripts/generate_fixtures.py
 
 ## Dashboard tabs explained
 
-- **📋 Weekly Summary** — the BLUF page. Data freshness, *what changed since the last
-  refresh* (new safety-lag alerts, newly accelerating topics, new citation sleepers),
-  and the headline pairings where safety is lagging, each with source links.
+- **📋 Weekly Summary** — the self-contained briefing. Data freshness, *what changed
+  since the last refresh* (new safety-lag alerts, newly accelerating topics, new
+  citation sleepers), the **Claude-written analytical headline** (what the widest gap
+  means and why it matters) with the driving papers, a plain-language read of every
+  other tab so you needn't open them, and the labs-announce→safety-responds view. The
+  former *Signals* tab is folded in here (full ranked list + downloadable brief).
 - **⚖️ Divergence** — for every capability↔safety pair, the recent growth rate of each
   side as horizontal bars. A long capability bar next to a short safety bar = safety
   lagging. This is the core product.
@@ -230,10 +238,11 @@ python scripts/generate_fixtures.py
 - **🧭 Quadrant** — topics plotted by recent volume (x) vs. growth (y): *emerging*
   (small but surging), *hot* (big and growing), *cooling* (shrinking), *white-space*
   (quiet). A strategic map of the field.
-- **🔍 Sources** — the receipts: actual arXiv papers behind each topic, plus
-  rapid-citation-growth and "sleeper" papers, all linked.
-- **🚨 Signals** — the full ranked list of auto-generated BLUF findings, with the
-  downloadable markdown brief.
+- **🔍 Sources** — the receipts: actual arXiv papers behind each topic (each with a
+  short *what-it-does / why-it-matters* note — written by Claude when the analysis
+  layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,
+  all linked.
+- **📖 Methodology** — how every layer works, on the live data behind the current snapshot.
 
 ---
 
@@ -243,7 +252,8 @@ The dashboard never pulls data at page-load time — that would be slow and
 network-dependent. Instead:
 
 1. **`.github/workflows/refresh.yml`** runs weekly (Mondays 06:00 UTC) and on demand.
-2. It pulls real arXiv + OpenAlex data, runs the full analysis, and writes
+2. It pulls real arXiv + OpenAlex data, runs the full analysis (including the optional
+   Claude analysis layer when `ANTHROPIC_API_KEY` is set), and writes
    **`data/snapshot.json`** via `scripts/refresh_snapshot.py`.
 3. It commits that snapshot; Streamlit Community Cloud redeploys on the push.
 4. The app reads the snapshot — fast — and the **Weekly Summary** tab diffs it against
@@ -268,8 +278,10 @@ The dashboard hosts well on **[Streamlit Community Cloud](https://share.streamli
 2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub.
 3. Click **New app**, pick this repo/branch, and set the main file to
    `signal_lag/dashboard/app.py` (the [badge above](#-try-it-live) pre-fills this).
-4. Deploy. The app installs `requirements.txt` and **auto-seeds the bundled demo
-   dataset** on first load — no cache or ingestion step required.
+4. Deploy. The app installs `requirements.txt` and reads the committed
+   `data/snapshot.json`. It only ever renders a **real, published snapshot** — if none
+   is present it shows an honest "data not available yet" message (run the refresh
+   workflow to publish one). No synthetic/demo content is ever shown on the site.
 
 You'll get a URL like `https://<your-app>.streamlit.app`; paste it into the
 **Live demo** line near the top of this README.
@@ -340,5 +352,11 @@ python -m pytest tests/ -q
 - **Velocity is a temporally-stratified sample**, and the **current incomplete quarter
   is dropped** from trend math so a mid-quarter refresh doesn't read as a slowdown —
   i.e. divergence/inflections reflect the last *complete* quarter.
+- **The Claude analysis layer needs an API key.** The analytical headline, per-tab
+  reads, and per-paper notes are written by `claude-opus-4-8` once per refresh, only
+  when the repo secret `ANTHROPIC_API_KEY` is set (the refresh workflow passes it
+  through). Without it the layer is skipped and the dashboard falls back to its
+  data-derived templated text — everything else works unchanged. Claude only interprets
+  the real metrics and abstracts; it never invents data.
 - OpenReview papers are dated by submission, so they cluster around venue cycles; their
   review scores are captured but not yet surfaced prominently in the UI.

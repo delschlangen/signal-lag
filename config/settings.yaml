@@ -108,6 +108,18 @@ divergence:
   # topics can't produce noisy alerts.
   min_recent_volume: 3
 
+analysis:
+  # Optional weekly LLM analysis (Anthropic / Claude). When enabled AND an
+  # ANTHROPIC_API_KEY is present (env var, set into api_key by the refresh script),
+  # the computed metrics + real paper abstracts are sent to Claude once per refresh
+  # to produce genuine analytical narrative baked into the snapshot. Entirely
+  # fail-soft: with no key it's skipped and the dashboard uses its templated text.
+  enabled: true
+  model: "claude-opus-4-8"
+  api_key: null
+  # How many representative papers per pairing side to send for grounding.
+  papers_per_side: 3
+
 paths:
   db_path: "data/signal_lag.sqlite"
   embeddings_path: "data/embeddings.npz"
