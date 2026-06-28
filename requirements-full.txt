@@ -10,3 +10,6 @@ sentence-transformers>=2.2
 
 # Preferred clustering backend (density-based; auto cluster count + noise).
 hdbscan>=0.8.33
+
+# Lab/blog RSS ingestion (capability-leading signal).
+feedparser>=6.0

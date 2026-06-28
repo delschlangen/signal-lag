@@ -25,7 +25,8 @@ def _recent_velocity(s: pd.Series, window: int) -> tuple[float, float]:
 
 
 def compute_divergence(
-    ts: pd.DataFrame, taxonomy: Taxonomy, window: int, gap_threshold: float
+    ts: pd.DataFrame, taxonomy: Taxonomy, window: int, gap_threshold: float,
+    min_recent_volume: float = 3.0,
 ) -> list[dict]:
     out = []
     for pair in taxonomy.pairings:
@@ -39,7 +40,13 @@ def compute_divergence(
         # Ratio of recent absolute volumes (how lopsided the field is right now).
         ratio = cap_recent / saf_recent if saf_recent > 0 else float("inf")
 
-        flag = gap >= gap_threshold and cap_growth > 0
+        # Flag only when capability is meaningfully active and outpacing safety,
+        # so tiny-count topics can't produce noisy alerts.
+        flag = (
+            gap >= gap_threshold
+            and cap_growth > 0
+            and cap_recent >= min_recent_volume
+        )
         out.append(
             {
                 "pairing": pair.name,

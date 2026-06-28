@@ -34,6 +34,19 @@ def topic_timeseries(
     return out.sort_values(["topic_key", "period"]).reset_index(drop=True)
 
 
+def drop_incomplete_tail(ts: pd.DataFrame, today: dt.date) -> pd.DataFrame:
+    """Remove the current (incomplete) quarter so it can't fake a deceleration.
+
+    A refresh almost always runs mid-quarter; that partial quarter has fewer
+    papers, which would otherwise read as every topic decelerating. Trend math
+    (inflection/divergence) should only see complete quarters.
+    """
+    if ts.empty:
+        return ts
+    current = pd.Period(today, freq="Q")
+    return ts[ts["period"] != current].reset_index(drop=True)
+
+
 def _full_period_index(ts: pd.DataFrame) -> pd.PeriodIndex:
     pmin, pmax = ts["period"].min(), ts["period"].max()
     return pd.period_range(pmin, pmax, freq="Q")

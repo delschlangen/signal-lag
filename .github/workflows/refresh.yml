@@ -44,6 +44,9 @@ jobs:
         env:
           SIGNAL_LAG_MAX_PER_PERIOD: ${{ github.event.inputs.max_per_period || '150' }}
           SIGNAL_LAG_OPENALEX_MAX: ${{ github.event.inputs.openalex_max || '500' }}
+          # Optional: add a free key as repo secret SEMANTIC_SCHOLAR_API_KEY for
+          # reliable Semantic Scholar enrichment (the keyless pool is rate-limited).
+          SEMANTIC_SCHOLAR_API_KEY: ${{ secrets.SEMANTIC_SCHOLAR_API_KEY }}
         run: |
           python scripts/refresh_snapshot.py --fresh
 

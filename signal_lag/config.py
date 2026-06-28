@@ -115,6 +115,14 @@ class Settings:
     def semantic_scholar(self) -> dict[str, Any]:
         return self.raw["ingestion"].get("semantic_scholar", {"enabled": False})
 
+    @property
+    def openreview(self) -> dict[str, Any]:
+        return self.raw["ingestion"].get("openreview", {"enabled": False})
+
+    @property
+    def blogs(self) -> dict[str, Any]:
+        return self.raw["ingestion"].get("blogs", {"enabled": False})
+
     # --- generic section accessor ---
     def section(self, name: str) -> dict[str, Any]:
         return self.raw.get(name, {})

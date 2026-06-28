@@ -36,6 +36,10 @@ def _apply_env_overrides(settings) -> None:
         ing["openalex_max_enrich"] = int(os.environ["SIGNAL_LAG_OPENALEX_MAX"])
     if os.getenv("SIGNAL_LAG_YEARS_BACK"):
         ing["date_range"]["years_back"] = int(os.environ["SIGNAL_LAG_YEARS_BACK"])
+    # Optional Semantic Scholar API key (greatly improves enrichment reliability).
+    key = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
+    if key:
+        ing.setdefault("semantic_scholar", {})["api_key"] = key
 
 
 def main(argv=None) -> int:

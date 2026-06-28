@@ -49,9 +49,11 @@ def cluster_embeddings(matrix: np.ndarray, cfg: dict) -> np.ndarray:
         labels = clusterer.fit_predict(reduced.astype(np.float64))
         n = len(set(labels)) - (1 if -1 in labels else 0)
         log.info("HDBSCAN: %d clusters, %d noise", n, int((labels == -1).sum()))
-        # If it still collapses to noise, fall back to k-means for usable clusters.
-        if n == 0:
-            log.warning("HDBSCAN found 0 clusters; falling back to k-means")
+        # Transformer embeddings often leave HDBSCAN with too few/large-noise
+        # clusters to be useful for emergent-topic discovery; fall back then.
+        min_clusters = int(cfg.get("min_clusters_else_kmeans", 5))
+        if n < min_clusters:
+            log.warning("HDBSCAN found %d clusters (<%d); falling back to k-means", n, min_clusters)
             return cluster_embeddings(matrix, {**cfg, "algorithm": "kmeans"})
         return labels
     except Exception as e:
