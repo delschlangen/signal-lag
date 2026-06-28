@@ -19,9 +19,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+import json  # noqa: E402
+
 from signal_lag.config import load_all  # noqa: E402
 from signal_lag.ingest.pipeline import ingest  # noqa: E402
-from signal_lag.snapshot import build_snapshot, save_snapshot  # noqa: E402
+from signal_lag.snapshot import (  # noqa: E402
+    augment_foresight, build_snapshot, load_snapshot, save_snapshot,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s",
                     datefmt="%H:%M:%S")
@@ -52,10 +56,30 @@ def main(argv=None) -> int:
                     help="build from bundled fixtures instead of live data")
     ap.add_argument("--fresh", action="store_true",
                     help="delete the cache before ingesting")
+    ap.add_argument("--foresight-only", action="store_true",
+                    help="re-run ONLY the Foresight Gap pass against the existing "
+                         "snapshot + current config/context.md (no data pull)")
     args = ap.parse_args(argv)
 
     settings, taxonomy = load_all()
     _apply_env_overrides(settings)
+
+    out = ROOT / "data" / "snapshot.json"
+
+    if args.foresight_only:
+        snap = load_snapshot(out)
+        if snap is None:
+            log.error("No snapshot at %s — run a full refresh first.", out)
+            return 1
+        prev = load_snapshot(out.with_name("snapshot_prev.json"))
+        snap = augment_foresight(settings, snap, prev)
+        fg = (snap.get("analysis") or {}).get("foresight_gap")
+        # Write in place WITHOUT archiving (don't disturb snapshot_prev.json).
+        out.write_text(json.dumps(snap, indent=1, ensure_ascii=False), encoding="utf-8")
+        n = len(fg.get("risks", [])) if fg else 0
+        log.info("Foresight-only refresh wrote %s (%d risks, %d context chars)",
+                 out, n, fg.get("n_context_chars", 0) if fg else 0)
+        return 0 if fg else 1
 
     if args.fresh:
         db = settings.path("db_path")
@@ -69,7 +93,6 @@ def main(argv=None) -> int:
 
     mode = "fixtures" if args.use_fixtures else "live"
     snapshot = build_snapshot(settings, taxonomy, mode=mode)
-    out = ROOT / "data" / "snapshot.json"
     save_snapshot(snapshot, out)
     m = snapshot["meta"]
     log.info("Wrote %s: %d papers, %s..%s, %d/%d pairings flagged, backend=%s",

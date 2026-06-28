@@ -144,31 +144,43 @@ def build_snapshot(
     }
 
     # --- Foresight Gap: second Claude pass crossing this week's signals with the
-    # living societal context. Same fail-soft, baked-into-snapshot architecture as the
-    # primary analysis (no page-load API calls).
-    acfg = settings.analysis or {}
-    fcfg = acfg.get("foresight") or {}
-    if fcfg.get("enabled"):
-        from .analysis import foresight
-
-        try:
-            prev_snap = load_snapshot(settings.path("snapshot_path"))
-        except Exception:
-            prev_snap = None
-        diff = diff_snapshots(snap_out, prev_snap)
-        ctx = foresight.load_context(settings.root / fcfg.get("context_path", "config/context.md"))
-        digest = foresight.build_signal_digest(snap_out, diff)
-        fg = foresight.synthesize_foresight_gap(
-            digest, ctx, acfg.get("api_key"),
-            acfg.get("model", "claude-opus-4-8"),
-            int(fcfg.get("max_risks", 4)),
-        )
-        if fg:
-            if snap_out.get("analysis") is None:
-                snap_out["analysis"] = {}
-            snap_out["analysis"]["foresight_gap"] = fg
+    # living societal context. At full-build time the on-disk snapshot is last week's,
+    # so it's the right baseline for the week-over-week diff.
+    try:
+        prev_on_disk = load_snapshot(settings.path("snapshot_path"))
+    except Exception:
+        prev_on_disk = None
+    snap_out = augment_foresight(settings, snap_out, prev_on_disk)
 
     return snap_out
+
+
+def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | None) -> dict:
+    """Run the Foresight Gap pass and attach analysis["foresight_gap"] to ``snapshot``.
+
+    Same fail-soft, baked-into-snapshot architecture as the primary analysis (no
+    page-load API calls). Reusable so the synthesis can be re-run against an updated
+    ``config/context.md`` without re-pulling data (see refresh_snapshot --foresight-only).
+    """
+    acfg = settings.analysis or {}
+    fcfg = acfg.get("foresight") or {}
+    if not fcfg.get("enabled"):
+        return snapshot
+    from .analysis import foresight
+
+    diff = diff_snapshots(snapshot, prev_snapshot)
+    ctx = foresight.load_context(settings.root / fcfg.get("context_path", "config/context.md"))
+    digest = foresight.build_signal_digest(snapshot, diff)
+    fg = foresight.synthesize_foresight_gap(
+        digest, ctx, acfg.get("api_key"),
+        acfg.get("model", "claude-opus-4-8"),
+        int(fcfg.get("max_risks", 4)),
+    )
+    if fg:
+        if snapshot.get("analysis") is None:
+            snapshot["analysis"] = {}
+        snapshot["analysis"]["foresight_gap"] = fg
+    return snapshot
 
 
 def save_snapshot(snapshot: dict, path: Path) -> None:

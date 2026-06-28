@@ -1,0 +1,55 @@
+name: Foresight refresh (context-only)
+
+# Re-runs ONLY the Foresight Gap synthesis against the already-committed snapshot and
+# the current config/context.md, then commits the updated snapshot. No data pull — use
+# this for a fast turnaround after editing config/context.md (the weekly full refresh
+# regenerates everything, including foresight, on its own).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-snapshot       # share with the weekly refresh so they never race
+  cancel-in-progress: false
+
+jobs:
+  foresight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt anthropic
+
+      - name: Re-run foresight against current context.md
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python scripts/refresh_snapshot.py --foresight-only
+
+      - name: Commit updated snapshot
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/snapshot.json
+          if git diff --cached --quiet; then
+            echo "No snapshot changes."
+          else
+            git commit -m "chore: foresight refresh (context) $(date -u +%Y-%m-%d)"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push
+            # Mirror to the dev branch too (fast-forward only).
+            git push origin "HEAD:claude/ai-safety-foresight-analysis-fletm1" || \
+              echo "feature branch not fast-forwardable; skipped"
+          fi
