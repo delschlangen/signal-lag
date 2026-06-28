@@ -74,9 +74,9 @@ st.info(
 )
 
 (tab_summary, tab_div, tab_vel, tab_sentiment, tab_quad,
- tab_sources, tab_signals, tab_method) = st.tabs(
+ tab_sources, tab_method) = st.tabs(
     ["📋 Weekly Summary", "⚖️ Divergence", "📈 Velocity", "🔬 Sentiment",
-     "🧭 Quadrant", "🔍 Sources", "🚨 Signals", "📖 Methodology"]
+     "🧭 Quadrant", "🔍 Sources", "📖 Methodology"]
 )
 
 
@@ -206,6 +206,35 @@ def paper_signal(p: dict, topic_label: str) -> str:
     return f"Signals activity in **{topic_label}** — {why}."
 
 
+def render_paper_card(p, topic_label):
+    """A paper as a bordered card: link + date + metrics, summary, why it matters."""
+    bits = [p.get("published", "")]
+    if p.get("venue"):
+        bits.append(p["venue"])
+    if p.get("cited_by_count"):
+        bits.append(f"{p['cited_by_count']} cites")
+    if p.get("influential_citations"):
+        bits.append(f"{p['influential_citations']} influential")
+    with st.container(border=True):
+        st.markdown(f"**[{p['title']}]({p['url']})**  \n" + " · ".join(b for b in bits if b))
+        d = short_desc(p, 240)
+        if d:
+            st.markdown(f"*{d}*")
+        st.markdown(f"**Why it matters:** {paper_signal(p, topic_label)}")
+
+
+def citation_finding(snap) -> str:
+    c = snap.get("citations", {})
+    rg, sl = c.get("rapid_growth", []), c.get("sleepers", [])
+    parts = []
+    if rg:
+        parts.append(f"Fastest-rising by citations: **{rg[0]['title']}** "
+                     f"({rg[0]['cited_by_count']} cites).")
+    if sl:
+        parts.append(f"A previously-quiet 'sleeper' now heating up: **{sl[0]['title']}**.")
+    return " ".join(parts) if parts else "No standout citation movers this week."
+
+
 # ============================================================ Weekly Summary
 with tab_summary:
     c1, c2, c3, c4 = st.columns(4)
@@ -249,23 +278,40 @@ with tab_summary:
             st.write("No major new signals since the last refresh.")
 
     st.divider()
-    st.subheader("Headline: where safety attention is lagging")
-    alerts = [x for x in snap["divergence"] if x["lagging"]]
-    if not alerts:
-        st.write("No capability/safety divergences cross the alert threshold this period.")
-    for a in alerts:
-        with st.container(border=True):
-            st.markdown(
-                f"**{lbl(snap, a['capability_topic'])} → {lbl(snap, a['safety_topic'])}**  \n"
-                f"Capability velocity **{a['cap_growth']*100:+.0f}%** vs safety "
-                f"**{a['saf_growth']*100:+.0f}%** "
-                + (f"· capability runs ~{a['volume_ratio']:.1f}× the safety volume."
-                   if a.get("volume_ratio") else "")
-            )
-            st.markdown(
-                "Recent capability papers driving this:"
-                + topic_links(snap, a["capability_topic"], 3)
-            )
+    st.subheader("📌 Headline")
+    alerts = sorted([x for x in snap["divergence"] if x["lagging"]],
+                    key=lambda a: a["gap"], reverse=True)
+    if alerts:
+        a = alerts[0]
+        cap, saf = lbl(snap, a["capability_topic"]), lbl(snap, a["safety_topic"])
+        ratio = (f" — capability is running about **{a['volume_ratio']:.1f}× the volume** of "
+                 f"the safety work" if a.get("volume_ratio") else "")
+        st.markdown(
+            f"**The biggest safety gap this week is {cap} vs {saf}.** Capability research "
+            f"there is growing **{a['cap_growth']*100:+.0f}%/quarter** while the paired safety "
+            f"topic ({saf}) is at **{a['saf_growth']*100:+.0f}%**{ratio}. "
+            + (f"In all, **{len(alerts)} of {meta['n_pairings']} pairings** show safety lagging. "
+               if len(alerts) > 1 else "")
+            + "The papers driving the capability side:"
+        )
+        for p in snap["sources"].get(a["capability_topic"], [])[:3]:
+            render_paper_card(p, cap)
+    else:
+        sig = (snap.get("signals") or [None])[0]
+        if sig:
+            st.markdown(f"**{sig['headline']}.** {sig['detail']}")
+        else:
+            st.write("No capability/safety divergence crosses the alert threshold this week — "
+                     "safety research is broadly keeping pace.")
+
+    st.divider()
+    st.subheader("🗞️ This week across the board")
+    st.caption("Plain-language read of every section — open a tab only if you want the detail.")
+    st.markdown(f"**⚖️ Capability vs. safety —** {divergence_finding(snap)}")
+    st.markdown(f"**📈 Velocity —** {velocity_finding(snap)}")
+    st.markdown(f"**🔬 Sentiment / confidence —** {sentiment_finding(snap)}")
+    st.markdown(f"**🧭 Landscape —** {quadrant_finding(snap)}")
+    st.markdown(f"**🔥 Citations —** {citation_finding(snap)}")
 
     lab = snap.get("lab_activity") or []
     if lab:
@@ -296,7 +342,18 @@ with tab_summary:
         if not shown:
             st.caption("No recent lab announcements mapped to a tracked capability topic.")
 
-        with st.expander(f"Recent lab posts ({len(lab)})"):
+        st.markdown("**Latest lab announcements:**")
+        for post in lab[:5]:
+            when = f" · {post['published']}" if post.get("published") else ""
+            tp = f" · _{lbl(snap, post['topic'])}_" if post.get("topic") else ""
+            title = post.get("title") or "(untitled)"
+            link = f"[{title}]({post['url']})" if post.get("url") else title
+            st.markdown(f"- **{post['source']}**: {link}{when}{tp}")
+            dsum = short_desc(post, 200)
+            if dsum:
+                st.caption(dsum)
+
+        with st.expander(f"All recent lab posts ({len(lab)})"):
             for post in lab[:20]:
                 when = f" · {post['published']}" if post.get("published") else ""
                 tp = f" · _{lbl(snap, post['topic'])}_" if post.get("topic") else ""
@@ -310,6 +367,12 @@ with tab_summary:
                     st.caption(d)
 
     st.divider()
+    with st.expander("🚨 All signals (full ranked list)"):
+        sev = {"high": "🔴", "medium": "🟠", "low": "🟡"}
+        for s in snap["signals"]:
+            st.markdown(f"{sev.get(s['severity'], '⚪')} **{s['headline']}**  \n{s['detail']}")
+    with st.expander("📄 Full markdown brief"):
+        st.markdown(snap["brief"])
     st.download_button("⬇️ Download full markdown brief", data=snap["brief"],
                        file_name="foresight_brief.md", mime="text/markdown")
 
@@ -458,19 +521,7 @@ with tab_sources:
     pick = st.selectbox("Topic", keys, format_func=lambda k: lbl(snap, k))
     topic_label = lbl(snap, pick)
     for p in snap["sources"].get(pick, []):
-        bits = [p["published"]]
-        if p.get("venue"):
-            bits.append(p["venue"])
-        if p.get("cited_by_count"):
-            bits.append(f"{p['cited_by_count']} cites")
-        if p.get("influential_citations"):
-            bits.append(f"{p['influential_citations']} influential")
-        with st.container(border=True):
-            st.markdown(f"**[{p['title']}]({p['url']})**  \n" + " · ".join(bits))
-            desc = p.get("tldr") or p.get("abstract")
-            if desc:
-                st.markdown(f"*{desc.rstrip('.')}.*")
-            st.markdown(f"**What it signals:** {paper_signal(p, topic_label)}")
+        render_paper_card(p, topic_label)
     if not snap["sources"].get(pick):
         st.write("No tagged papers for this topic in the current snapshot.")
 
@@ -494,15 +545,6 @@ with tab_sources:
     with scol:
         st.markdown("**💤 Sleepers (early-heat)**")
         _render_cites("sleepers")
-
-# =================================================================== Signals
-with tab_signals:
-    st.subheader("All signals (BLUF)")
-    sev = {"high": "🔴", "medium": "🟠", "low": "🟡"}
-    for s in snap["signals"]:
-        st.markdown(f"{sev.get(s['severity'], '⚪')} **{s['headline']}**  \n{s['detail']}")
-    with st.expander("Preview full brief"):
-        st.markdown(snap["brief"])
 
 # =============================================================== Methodology
 with tab_method:
