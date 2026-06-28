@@ -78,15 +78,23 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
     max_per_period = settings.max_per_period
     log.info("Sampling %d quarters x %d categories, up to %d papers each",
              len(windows), len(settings.arxiv_categories), max_per_period)
+    failures = 0
     for category in settings.arxiv_categories:
         for (qs, qe) in windows:
-            batch: list[Paper] = []
-            for paper in client.search_category(category, qs, qe, max_per_period):
-                batch.append(paper)
+            try:
+                batch: list[Paper] = list(
+                    client.search_category(category, qs, qe, max_per_period)
+                )
+            except Exception as e:  # one window failing must not abort the run
+                failures += 1
+                log.warning("  %s %s..%s FAILED: %s", category, qs, qe, e)
+                continue
             if batch:
                 store.upsert_papers(batch)
             log.info("  %s %s..%s: +%d (total %d)", category, qs, qe,
                      len(batch), store.count_papers())
+    if failures:
+        log.warning("%d window(s) failed and were skipped", failures)
 
     if enrich:
         enrich_citations(settings, store)

@@ -19,7 +19,8 @@ ingestion:
   arxiv_page_size: 200
   arxiv_request_delay_seconds: 3.0
   # Exponential backoff schedule (seconds) on 429/503/transient errors.
-  backoff_schedule: [2, 4, 8, 16]
+  # arXiv throttles bursts hard, so we back off generously.
+  backoff_schedule: [5, 15, 30, 60]
   # OpenAlex "polite pool" contact (faster, friendlier rate limits).
   openalex_mailto: "delschlangen@gmail.com"
   # Cap OpenAlex enrichment calls per run (0 = enrich all cached papers).
