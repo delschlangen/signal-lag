@@ -1,0 +1,2524 @@
+{
+ "meta": {
+  "version": 1,
+  "refreshed_at": "2026-06-28",
+  "mode": "live",
+  "backend": "sentence-transformers",
+  "n_papers": 4542,
+  "date_start": "2023-06-28",
+  "date_end": "2026-06-25",
+  "categories": [
+   "cs.AI",
+   "cs.LG",
+   "cs.CL"
+  ],
+  "topics_tracked": 14,
+  "n_pairings": 6,
+  "n_flagged": 0
+ },
+ "label_map": {
+  "interpretability": "Mechanistic Interpretability",
+  "cot_faithfulness": "Chain-of-Thought Faithfulness",
+  "scalable_oversight": "Scalable Oversight",
+  "deceptive_alignment": "Deceptive Alignment",
+  "reward_hacking": "Reward Hacking",
+  "evals_benchmarks": "Evals & Dangerous-Capability Benchmarks",
+  "rsi_control": "Self-Improvement Risk & Control",
+  "agentic_monitoring": "Agentic Behavior Monitoring",
+  "agentic_capability": "Agentic / Autonomy Capability",
+  "rl_rlhf": "RL / RLHF Capability",
+  "reasoning_cot": "Reasoning / Chain-of-Thought Capability",
+  "frontier_scaling": "Frontier / Scaling Capability",
+  "multiagent_tooluse": "Multi-Agent / Tool-Use Capability",
+  "self_improvement": "Self-Improvement / RSI Capability"
+ },
+ "divergence": [
+  {
+   "pairing": "Multi-agent/tool-use vs. scalable oversight",
+   "capability_topic": "multiagent_tooluse",
+   "safety_topic": "scalable_oversight",
+   "cap_recent": 32.5,
+   "saf_recent": 136.0,
+   "cap_growth": -0.085,
+   "saf_growth": -0.018,
+   "gap": -0.066,
+   "volume_ratio": 0.24,
+   "lagging": false
+  },
+  {
+   "pairing": "Agentic capability vs. agentic monitoring",
+   "capability_topic": "agentic_capability",
+   "safety_topic": "agentic_monitoring",
+   "cap_recent": 58.0,
+   "saf_recent": 43.5,
+   "cap_growth": -0.033,
+   "saf_growth": 0.208,
+   "gap": -0.242,
+   "volume_ratio": 1.33,
+   "lagging": false
+  },
+  {
+   "pairing": "Frontier scaling vs. evals & dangerous-capability benchmarks",
+   "capability_topic": "frontier_scaling",
+   "safety_topic": "evals_benchmarks",
+   "cap_recent": 58.0,
+   "saf_recent": 17.5,
+   "cap_growth": -0.134,
+   "saf_growth": 0.207,
+   "gap": -0.341,
+   "volume_ratio": 3.31,
+   "lagging": false
+  },
+  {
+   "pairing": "RL/RLHF vs. reward hacking",
+   "capability_topic": "rl_rlhf",
+   "safety_topic": "reward_hacking",
+   "cap_recent": 75.0,
+   "saf_recent": 14.0,
+   "cap_growth": -0.057,
+   "saf_growth": 0.4,
+   "gap": -0.457,
+   "volume_ratio": 5.36,
+   "lagging": false
+  },
+  {
+   "pairing": "Reasoning/CoT vs. CoT faithfulness",
+   "capability_topic": "reasoning_cot",
+   "safety_topic": "cot_faithfulness",
+   "cap_recent": 95.5,
+   "saf_recent": 19.0,
+   "cap_growth": -0.151,
+   "saf_growth": 0.652,
+   "gap": -0.803,
+   "volume_ratio": 5.03,
+   "lagging": false
+  },
+  {
+   "pairing": "Self-improvement/RSI vs. deceptive alignment",
+   "capability_topic": "self_improvement",
+   "safety_topic": "deceptive_alignment",
+   "cap_recent": 66.0,
+   "saf_recent": 40.0,
+   "cap_growth": -0.17,
+   "saf_growth": 0.702,
+   "gap": -0.872,
+   "volume_ratio": 1.65,
+   "lagging": false
+  }
+ ],
+ "inflections": [
+  {
+   "topic_key": "deceptive_alignment",
+   "recent_mean": 40.0,
+   "prior_mean": 23.5,
+   "change": 0.702,
+   "direction": "acceleration"
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "recent_mean": 19.0,
+   "prior_mean": 11.5,
+   "change": 0.652,
+   "direction": "acceleration"
+  },
+  {
+   "topic_key": "reward_hacking",
+   "recent_mean": 14.0,
+   "prior_mean": 10.0,
+   "change": 0.4,
+   "direction": "acceleration"
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "recent_mean": 43.5,
+   "prior_mean": 36.0,
+   "change": 0.208,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "recent_mean": 17.5,
+   "prior_mean": 14.5,
+   "change": 0.207,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "interpretability",
+   "recent_mean": 127.0,
+   "prior_mean": 114.0,
+   "change": 0.114,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "rsi_control",
+   "recent_mean": 19.0,
+   "prior_mean": 19.0,
+   "change": 0.0,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "recent_mean": 136.0,
+   "prior_mean": 138.5,
+   "change": -0.018,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "agentic_capability",
+   "recent_mean": 58.0,
+   "prior_mean": 60.0,
+   "change": -0.033,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "recent_mean": 75.0,
+   "prior_mean": 79.5,
+   "change": -0.057,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "recent_mean": 32.5,
+   "prior_mean": 35.5,
+   "change": -0.085,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "recent_mean": 58.0,
+   "prior_mean": 67.0,
+   "change": -0.134,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "recent_mean": 95.5,
+   "prior_mean": 112.5,
+   "change": -0.151,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "self_improvement",
+   "recent_mean": 66.0,
+   "prior_mean": 79.5,
+   "change": -0.17,
+   "direction": "steady"
+  }
+ ],
+ "quadrant": [
+  {
+   "topic_key": "deceptive_alignment",
+   "recent_mean": 40.0,
+   "prior_mean": 23.5,
+   "change": 0.702,
+   "direction": "acceleration",
+   "quadrant": "hot"
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "recent_mean": 19.0,
+   "prior_mean": 11.5,
+   "change": 0.652,
+   "direction": "acceleration",
+   "quadrant": "hot"
+  },
+  {
+   "topic_key": "reward_hacking",
+   "recent_mean": 14.0,
+   "prior_mean": 10.0,
+   "change": 0.4,
+   "direction": "acceleration",
+   "quadrant": "hot"
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "recent_mean": 43.5,
+   "prior_mean": 36.0,
+   "change": 0.208,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "recent_mean": 17.5,
+   "prior_mean": 14.5,
+   "change": 0.207,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "interpretability",
+   "recent_mean": 127.0,
+   "prior_mean": 114.0,
+   "change": 0.114,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "rsi_control",
+   "recent_mean": 19.0,
+   "prior_mean": 19.0,
+   "change": 0.0,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "recent_mean": 136.0,
+   "prior_mean": 138.5,
+   "change": -0.018,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "agentic_capability",
+   "recent_mean": 58.0,
+   "prior_mean": 60.0,
+   "change": -0.033,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "recent_mean": 75.0,
+   "prior_mean": 79.5,
+   "change": -0.057,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "recent_mean": 32.5,
+   "prior_mean": 35.5,
+   "change": -0.085,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "recent_mean": 58.0,
+   "prior_mean": 67.0,
+   "change": -0.134,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "recent_mean": 95.5,
+   "prior_mean": 112.5,
+   "change": -0.151,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "self_improvement",
+   "recent_mean": 66.0,
+   "prior_mean": 79.5,
+   "change": -0.17,
+   "direction": "steady",
+   "quadrant": "established"
+  }
+ ],
+ "new_clusters": [],
+ "citations": {
+  "rapid_growth": [],
+  "sleepers": []
+ },
+ "institution_trends": [],
+ "signals": [
+  {
+   "severity": "medium",
+   "category": "velocity",
+   "headline": "Deceptive Alignment is accelerating",
+   "detail": "Submission rate inflected +70% (now ~40.0/quarter)."
+  },
+  {
+   "severity": "medium",
+   "category": "velocity",
+   "headline": "Chain-of-Thought Faithfulness is accelerating",
+   "detail": "Submission rate inflected +65% (now ~19.0/quarter)."
+  },
+  {
+   "severity": "medium",
+   "category": "velocity",
+   "headline": "Reward Hacking is accelerating",
+   "detail": "Submission rate inflected +40% (now ~14.0/quarter)."
+  }
+ ],
+ "brief": "# Signal-Lag Foresight Brief\n\n_Generated 2026-06-28 · 4542 papers · embedding backend: sentence-transformers_\n\n## BLUF\n\n- No high-severity capability/safety divergences flagged this run.\n\n## Topic Velocity\n\n- **Deceptive Alignment is accelerating** (medium): Submission rate inflected +70% (now ~40.0/quarter).\n- **Chain-of-Thought Faithfulness is accelerating** (medium): Submission rate inflected +65% (now ~19.0/quarter).\n- **Reward Hacking is accelerating** (medium): Submission rate inflected +40% (now ~14.0/quarter).\n",
+ "timeseries": [
+  {
+   "topic_key": "agentic_capability",
+   "period": "2023Q2",
+   "count": 37
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2023Q3",
+   "count": 42
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2023Q4",
+   "count": 33
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2024Q1",
+   "count": 31
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2024Q2",
+   "count": 42
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2024Q3",
+   "count": 36
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2024Q4",
+   "count": 35
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q1",
+   "count": 46
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q2",
+   "count": 45
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q3",
+   "count": 54
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q4",
+   "count": 66
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2026Q1",
+   "count": 58
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2026Q2",
+   "count": 58
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2023Q2",
+   "count": 16
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2023Q3",
+   "count": 19
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2023Q4",
+   "count": 20
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2024Q1",
+   "count": 20
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2024Q2",
+   "count": 18
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2024Q3",
+   "count": 23
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2024Q4",
+   "count": 24
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2025Q1",
+   "count": 31
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2025Q2",
+   "count": 40
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2025Q3",
+   "count": 39
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2025Q4",
+   "count": 33
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2026Q1",
+   "count": 44
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2026Q2",
+   "count": 43
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2023Q2",
+   "count": 7
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2023Q3",
+   "count": 8
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2023Q4",
+   "count": 8
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q1",
+   "count": 7
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q2",
+   "count": 9
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q3",
+   "count": 9
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q4",
+   "count": 14
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q1",
+   "count": 16
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q2",
+   "count": 15
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q3",
+   "count": 11
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q4",
+   "count": 12
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2026Q1",
+   "count": 19
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2026Q2",
+   "count": 19
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2023Q2",
+   "count": 21
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2023Q3",
+   "count": 21
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2023Q4",
+   "count": 24
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q1",
+   "count": 24
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q2",
+   "count": 27
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q3",
+   "count": 28
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q4",
+   "count": 17
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2025Q1",
+   "count": 31
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2025Q2",
+   "count": 32
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2025Q3",
+   "count": 27
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2025Q4",
+   "count": 20
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2026Q1",
+   "count": 38
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2026Q2",
+   "count": 42
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2023Q2",
+   "count": 3
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2023Q3",
+   "count": 6
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2023Q4",
+   "count": 8
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q1",
+   "count": 1
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q2",
+   "count": 3
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q3",
+   "count": 6
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q4",
+   "count": 9
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q1",
+   "count": 11
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q2",
+   "count": 14
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q3",
+   "count": 14
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q4",
+   "count": 15
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2026Q1",
+   "count": 19
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2026Q2",
+   "count": 16
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2023Q2",
+   "count": 35
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2023Q3",
+   "count": 43
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2023Q4",
+   "count": 47
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q1",
+   "count": 36
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q2",
+   "count": 48
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q3",
+   "count": 46
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q4",
+   "count": 46
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q1",
+   "count": 50
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q2",
+   "count": 50
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q3",
+   "count": 64
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q4",
+   "count": 70
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2026Q1",
+   "count": 59
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2026Q2",
+   "count": 57
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2023Q2",
+   "count": 107
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2023Q3",
+   "count": 127
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2023Q4",
+   "count": 138
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2024Q1",
+   "count": 113
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2024Q2",
+   "count": 124
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2024Q3",
+   "count": 132
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2024Q4",
+   "count": 113
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2025Q1",
+   "count": 120
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2025Q2",
+   "count": 110
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2025Q3",
+   "count": 119
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2025Q4",
+   "count": 109
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2026Q1",
+   "count": 125
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2026Q2",
+   "count": 129
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2023Q2",
+   "count": 11
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2023Q3",
+   "count": 22
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2023Q4",
+   "count": 30
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2024Q1",
+   "count": 23
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2024Q2",
+   "count": 21
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2024Q3",
+   "count": 16
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2024Q4",
+   "count": 31
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2025Q1",
+   "count": 23
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2025Q2",
+   "count": 22
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2025Q3",
+   "count": 38
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2025Q4",
+   "count": 33
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2026Q1",
+   "count": 35
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2026Q2",
+   "count": 30
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2023Q2",
+   "count": 62
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2023Q3",
+   "count": 93
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2023Q4",
+   "count": 98
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2024Q1",
+   "count": 86
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2024Q2",
+   "count": 102
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2024Q3",
+   "count": 75
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2024Q4",
+   "count": 99
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2025Q1",
+   "count": 104
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2025Q2",
+   "count": 93
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2025Q3",
+   "count": 112
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2025Q4",
+   "count": 113
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2026Q1",
+   "count": 95
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2026Q2",
+   "count": 96
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2023Q2",
+   "count": 12
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2023Q3",
+   "count": 16
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2023Q4",
+   "count": 11
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q1",
+   "count": 8
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q2",
+   "count": 12
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q3",
+   "count": 7
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q4",
+   "count": 5
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q1",
+   "count": 6
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q2",
+   "count": 12
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q3",
+   "count": 8
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q4",
+   "count": 12
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2026Q1",
+   "count": 8
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2026Q2",
+   "count": 20
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2023Q2",
+   "count": 56
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2023Q3",
+   "count": 56
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2023Q4",
+   "count": 53
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2024Q1",
+   "count": 44
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2024Q2",
+   "count": 60
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2024Q3",
+   "count": 61
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2024Q4",
+   "count": 55
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2025Q1",
+   "count": 52
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2025Q2",
+   "count": 51
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2025Q3",
+   "count": 82
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2025Q4",
+   "count": 77
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2026Q1",
+   "count": 66
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "period": "2026Q2",
+   "count": 84
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2023Q2",
+   "count": 20
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2023Q3",
+   "count": 20
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2023Q4",
+   "count": 17
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2024Q1",
+   "count": 21
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2024Q2",
+   "count": 13
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2024Q3",
+   "count": 18
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2024Q4",
+   "count": 16
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2025Q1",
+   "count": 17
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2025Q2",
+   "count": 22
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2025Q3",
+   "count": 22
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2025Q4",
+   "count": 16
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2026Q1",
+   "count": 19
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2026Q2",
+   "count": 19
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2023Q2",
+   "count": 116
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2023Q3",
+   "count": 127
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2023Q4",
+   "count": 98
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2024Q1",
+   "count": 90
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2024Q2",
+   "count": 109
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2024Q3",
+   "count": 107
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2024Q4",
+   "count": 108
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2025Q1",
+   "count": 106
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2025Q2",
+   "count": 127
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2025Q3",
+   "count": 147
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2025Q4",
+   "count": 130
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2026Q1",
+   "count": 130
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2026Q2",
+   "count": 142
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2023Q2",
+   "count": 78
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2023Q3",
+   "count": 116
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2023Q4",
+   "count": 99
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2024Q1",
+   "count": 93
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2024Q2",
+   "count": 99
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2024Q3",
+   "count": 95
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2024Q4",
+   "count": 88
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2025Q1",
+   "count": 75
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2025Q2",
+   "count": 73
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2025Q3",
+   "count": 83
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2025Q4",
+   "count": 76
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2026Q1",
+   "count": 71
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2026Q2",
+   "count": 61
+  }
+ ],
+ "sources": {
+  "interpretability": [
+   {
+    "arxiv_id": "2606.26519",
+    "title": "Boundary-Aware Context Grounding for A Low-Channel EEG Agent",
+    "url": "https://arxiv.org/abs/2606.26519",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.294
+   },
+   {
+    "arxiv_id": "2606.27091",
+    "title": "Inherited Circuits, Learned Semantics: How Fine-Tuning Creates Evasion Vulnerabilities Invisible to Standard Evaluation",
+    "url": "https://arxiv.org/abs/2606.27091",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.39
+   },
+   {
+    "arxiv_id": "2606.26535",
+    "title": "From Hallucination to Grounding: Diagnosing Visual Spatial Intelligence via CRISP",
+    "url": "https://arxiv.org/abs/2606.26535",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.411
+   },
+   {
+    "arxiv_id": "2606.26488",
+    "title": "What Survives When You Compress a Recursive Reasoner for the Edge?",
+    "url": "https://arxiv.org/abs/2606.26488",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.401
+   },
+   {
+    "arxiv_id": "2606.27237",
+    "title": "LMs as Task-Specific Knowledge Bases: An Interpretability Analysis",
+    "url": "https://arxiv.org/abs/2606.27237",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.438
+   },
+   {
+    "arxiv_id": "2606.27215",
+    "title": "Vulnerability of Natural Language Classifiers to Evolutionary Generated Adversarial Text",
+    "url": "https://arxiv.org/abs/2606.27215",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.381
+   },
+   {
+    "arxiv_id": "2606.26987",
+    "title": "Where Do Models Find Happiness? Emotion Vectors in Open-Source LLMs",
+    "url": "https://arxiv.org/abs/2606.26987",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.365
+   },
+   {
+    "arxiv_id": "2606.26982",
+    "title": "Auditing Framing-Sensitive Behavioral Instability in Large Language Models for Mental Health Interactions",
+    "url": "https://arxiv.org/abs/2606.26982",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.375
+   }
+  ],
+  "cot_faithfulness": [
+   {
+    "arxiv_id": "2606.27154",
+    "title": "OpenRCA 2.0: From Outcome Labels to Causal Process Supervision",
+    "url": "https://arxiv.org/abs/2606.27154",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.398
+   },
+   {
+    "arxiv_id": "2606.26686",
+    "title": "Do Safety Guardrails Need to Reason? LeanGuard: A Fast and Light Approach for Robust Moderation",
+    "url": "https://arxiv.org/abs/2606.26686",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.444
+   },
+   {
+    "arxiv_id": "2606.26969",
+    "title": "Einstein World Models",
+    "url": "https://arxiv.org/abs/2606.26969",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.482
+   },
+   {
+    "arxiv_id": "2606.26935",
+    "title": "Where Do CoT Training Gains Land in LLM based Agents?",
+    "url": "https://arxiv.org/abs/2606.26935",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.502
+   },
+   {
+    "arxiv_id": "2606.26904",
+    "title": "Confidence-Aware Tool Orchestration for Robust Video Understanding",
+    "url": "https://arxiv.org/abs/2606.26904",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.41
+   },
+   {
+    "arxiv_id": "2606.26585",
+    "title": "A Multi-Level Validation and Traceability Framework for AI-Generated Telescope Scheduling Decisions",
+    "url": "https://arxiv.org/abs/2606.26585",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.44
+   },
+   {
+    "arxiv_id": "2606.26535",
+    "title": "From Hallucination to Grounding: Diagnosing Visual Spatial Intelligence via CRISP",
+    "url": "https://arxiv.org/abs/2606.26535",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.373
+   },
+   {
+    "arxiv_id": "2606.26502",
+    "title": "Humans Disengage, Reasoning Models Persist: Separating Difficulty Registration from Deliberation Allocation",
+    "url": "https://arxiv.org/abs/2606.26502",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.42
+   }
+  ],
+  "scalable_oversight": [
+   {
+    "arxiv_id": "2606.27330",
+    "title": "Empowering GUI Agents via Autonomous Experience Exploration and Hindsight Experience Utilization for Task Planning",
+    "url": "https://arxiv.org/abs/2606.27330",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.434
+   },
+   {
+    "arxiv_id": "2606.27268",
+    "title": "E-TTS: A New Embodied Test-Time Scaling Framework for Robotic Manipulation",
+    "url": "https://arxiv.org/abs/2606.27268",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.425
+   },
+   {
+    "arxiv_id": "2606.27163",
+    "title": "Learning to Fold: prizewinning solution at LeHome Challenge 2026 (1st place online, 2nd offline)",
+    "url": "https://arxiv.org/abs/2606.27163",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.379
+   },
+   {
+    "arxiv_id": "2606.27136",
+    "title": "Joint Learning of Experiential Rules and Policies for Large Language Model Agents",
+    "url": "https://arxiv.org/abs/2606.27136",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.502
+   },
+   {
+    "arxiv_id": "2606.27045",
+    "title": "The Spec Growth Engine: Spec-Anchored, Code-Coupled, Drift-Enforced Architecture for AI-Assisted Software Development",
+    "url": "https://arxiv.org/abs/2606.27045",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.326
+   },
+   {
+    "arxiv_id": "2606.27009",
+    "title": "Semantic Early-Stopping for Iterative LLM Agent Loops",
+    "url": "https://arxiv.org/abs/2606.27009",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.413
+   },
+   {
+    "arxiv_id": "2606.26793",
+    "title": "MIRROR: Novelty-Constrained Memory-Guided MCTS Red-Teaming for Agentic RAG",
+    "url": "https://arxiv.org/abs/2606.26793",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.366
+   },
+   {
+    "arxiv_id": "2606.26758",
+    "title": "EGG: An Expert-Guided Agent Framework for Kernel Generation",
+    "url": "https://arxiv.org/abs/2606.26758",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.393
+   }
+  ],
+  "deceptive_alignment": [
+   {
+    "arxiv_id": "2606.26511",
+    "title": "Temporal Validity in Retrieval Memory: Eliminating Stale-Fact Errors for AI Agents over Evolving Knowledge",
+    "url": "https://arxiv.org/abs/2606.26511",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.335
+   },
+   {
+    "arxiv_id": "2606.26933",
+    "title": "Chai: Agentic Discovery of Cryptographic Misuse Vulnerabilities",
+    "url": "https://arxiv.org/abs/2606.26933",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.313
+   },
+   {
+    "arxiv_id": "2606.26590",
+    "title": "Empirical Software Engineering TerraProbe: A Layered-Oracle Framework for Detecting Deceptive Fixes in LLM-Assisted Terraform",
+    "url": "https://arxiv.org/abs/2606.26590",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.329
+   },
+   {
+    "arxiv_id": "2606.26502",
+    "title": "Humans Disengage, Reasoning Models Persist: Separating Difficulty Registration from Deliberation Allocation",
+    "url": "https://arxiv.org/abs/2606.26502",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.424
+   },
+   {
+    "arxiv_id": "2606.27288",
+    "title": "When Does Combining Language Models Help? A Co-Failure Ceiling on Routing, Voting, and Mixture-of-Agents Across 67 Frontier Models",
+    "url": "https://arxiv.org/abs/2606.27288",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.367
+   },
+   {
+    "arxiv_id": "2606.27287",
+    "title": "Prompt Injection in Automated Résumé Screening with Large Language Models: Single and Multi-Injection Settings",
+    "url": "https://arxiv.org/abs/2606.27287",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.356
+   },
+   {
+    "arxiv_id": "2606.27234",
+    "title": "From Celebrities to Anyone: Characterizing AI Nudification Content, Technology, and Community Dynamics on 4chan",
+    "url": "https://arxiv.org/abs/2606.27234",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.406
+   },
+   {
+    "arxiv_id": "2606.27215",
+    "title": "Vulnerability of Natural Language Classifiers to Evolutionary Generated Adversarial Text",
+    "url": "https://arxiv.org/abs/2606.27215",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.403
+   }
+  ],
+  "reward_hacking": [
+   {
+    "arxiv_id": "2606.27274",
+    "title": "BetXplain: An Explanation-Annotated Dataset for Detecting Manipulative Betting Advertisements on Social Media",
+    "url": "https://arxiv.org/abs/2606.27274",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.28
+   },
+   {
+    "arxiv_id": "2606.27180",
+    "title": "Automating Potential-based Reward Shaping with Vision Language Model Guidance",
+    "url": "https://arxiv.org/abs/2606.27180",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.429
+   },
+   {
+    "arxiv_id": "2606.27112",
+    "title": "Heavy-Ball Q-Learning with Residual Weighting Correction",
+    "url": "https://arxiv.org/abs/2606.27112",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.332
+   },
+   {
+    "arxiv_id": "2606.27068",
+    "title": "Parametric Open Source Games",
+    "url": "https://arxiv.org/abs/2606.27068",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.486
+   },
+   {
+    "arxiv_id": "2606.27032",
+    "title": "State Representation Matters in Deep Reinforcement Learning: Application to Energy Trading",
+    "url": "https://arxiv.org/abs/2606.27032",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.316
+   },
+   {
+    "arxiv_id": "2606.26917",
+    "title": "GEOALIGN: Geometric Rollout Curation for Robust LLM Reinforcement Learning",
+    "url": "https://arxiv.org/abs/2606.26917",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.412
+   },
+   {
+    "arxiv_id": "2606.27369",
+    "title": "Reinforcement Learning without Ground-Truth Solutions can Improve LLMs",
+    "url": "https://arxiv.org/abs/2606.27369",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.441
+   },
+   {
+    "arxiv_id": "2606.27315",
+    "title": "Blackwell Approachability and Gradient Equilibrium are Equivalent",
+    "url": "https://arxiv.org/abs/2606.27315",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.399
+   }
+  ],
+  "evals_benchmarks": [
+   {
+    "arxiv_id": "2606.26866",
+    "title": "Fortress and Gatekeeper: Theorizing Transitive Trust in Third-Party Cybersecurity Risk Governance",
+    "url": "https://arxiv.org/abs/2606.26866",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.318
+   },
+   {
+    "arxiv_id": "2606.26479",
+    "title": "Adaptive Evaluation of Out-of-Band Defenses Against Prompt Injection in LLM Agents",
+    "url": "https://arxiv.org/abs/2606.26479",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.405
+   },
+   {
+    "arxiv_id": "2606.26936",
+    "title": "Jailbreaking for the Average Jane: Choosing Optimal Jailbreaks via Bandit Algorithms for Automatically Enhanced Queries",
+    "url": "https://arxiv.org/abs/2606.26936",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.383
+   },
+   {
+    "arxiv_id": "2606.27106",
+    "title": "Application of LLMs to Threat Assessment of Foreign Peacekeeping Missions",
+    "url": "https://arxiv.org/abs/2606.27106",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.35
+   },
+   {
+    "arxiv_id": "2606.26968",
+    "title": "RedVox: Safety and Fairness Gaps in Speech Models Across Languages",
+    "url": "https://arxiv.org/abs/2606.26968",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.388
+   },
+   {
+    "arxiv_id": "2606.26990",
+    "title": "Decision-Aligned Evaluation of Uncertainty Quantification",
+    "url": "https://arxiv.org/abs/2606.26990",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.407
+   },
+   {
+    "arxiv_id": "2606.26836",
+    "title": "The Capability Frontier: Benchmarks Miss 82% of Model Performance",
+    "url": "https://arxiv.org/abs/2606.26836",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.486
+   },
+   {
+    "arxiv_id": "2606.27269",
+    "title": "Ribbon: Scalable Approximation and Robust Uncertainty Quantification",
+    "url": "https://arxiv.org/abs/2606.27269",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.311
+   }
+  ],
+  "rsi_control": [
+   {
+    "arxiv_id": "2606.27251",
+    "title": "Advancing Omnimodal Embodied Agents from Isolated Skills to Everyday Physical Autonomy",
+    "url": "https://arxiv.org/abs/2606.27251",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.396
+   },
+   {
+    "arxiv_id": "2606.27045",
+    "title": "The Spec Growth Engine: Spec-Anchored, Code-Coupled, Drift-Enforced Architecture for AI-Assisted Software Development",
+    "url": "https://arxiv.org/abs/2606.27045",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.331
+   },
+   {
+    "arxiv_id": "2606.27027",
+    "title": "ShareLock: A Stealthy Multi-Tool Threshold Poisoning Attack Against MCP",
+    "url": "https://arxiv.org/abs/2606.27027",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.399
+   },
+   {
+    "arxiv_id": "2606.26494",
+    "title": "Clinical Harness for Governable Medical AI Skill Ecosystems",
+    "url": "https://arxiv.org/abs/2606.26494",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.391
+   },
+   {
+    "arxiv_id": "2606.26498",
+    "title": "Mean-Field PhiBE: Continuous-Time Mean-Field Reinforcement Learning from Discrete-Time Data",
+    "url": "https://arxiv.org/abs/2606.26498",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.28
+   },
+   {
+    "arxiv_id": "2606.26933",
+    "title": "Chai: Agentic Discovery of Cryptographic Misuse Vulnerabilities",
+    "url": "https://arxiv.org/abs/2606.26933",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.366
+   },
+   {
+    "arxiv_id": "2606.26552",
+    "title": "Perception, Verdict, and Evolution: Hindsight-Driven Self-Refining Forensics Agent for AI-Generated Image Detection",
+    "url": "https://arxiv.org/abs/2606.26552",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.38
+   },
+   {
+    "arxiv_id": "2606.26479",
+    "title": "Adaptive Evaluation of Out-of-Band Defenses Against Prompt Injection in LLM Agents",
+    "url": "https://arxiv.org/abs/2606.26479",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.484
+   }
+  ],
+  "agentic_monitoring": [
+   {
+    "arxiv_id": "2606.27330",
+    "title": "Empowering GUI Agents via Autonomous Experience Exploration and Hindsight Experience Utilization for Task Planning",
+    "url": "https://arxiv.org/abs/2606.27330",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.381
+   },
+   {
+    "arxiv_id": "2606.27251",
+    "title": "Advancing Omnimodal Embodied Agents from Isolated Skills to Everyday Physical Autonomy",
+    "url": "https://arxiv.org/abs/2606.27251",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.449
+   },
+   {
+    "arxiv_id": "2606.27188",
+    "title": "A Process Harness for Uplifting Legacy Workflows to Agentic BPM: Design and Realization in CUGA FLO",
+    "url": "https://arxiv.org/abs/2606.27188",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.523
+   },
+   {
+    "arxiv_id": "2606.27027",
+    "title": "ShareLock: A Stealthy Multi-Tool Threshold Poisoning Attack Against MCP",
+    "url": "https://arxiv.org/abs/2606.27027",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.493
+   },
+   {
+    "arxiv_id": "2606.26924",
+    "title": "A Deterministic Control Plane for LLM Coding Agents",
+    "url": "https://arxiv.org/abs/2606.26924",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.493
+   },
+   {
+    "arxiv_id": "2606.26859",
+    "title": "AgentX: Towards Agent-Driven Self-Iteration of Industrial Recommender Systems",
+    "url": "https://arxiv.org/abs/2606.26859",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.53
+   },
+   {
+    "arxiv_id": "2606.26793",
+    "title": "MIRROR: Novelty-Constrained Memory-Guided MCTS Red-Teaming for Agentic RAG",
+    "url": "https://arxiv.org/abs/2606.26793",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.35
+   },
+   {
+    "arxiv_id": "2606.26722",
+    "title": "Socratic agents for autonomous scientific discovery in high-dimensional physical systems",
+    "url": "https://arxiv.org/abs/2606.26722",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.343
+   }
+  ],
+  "agentic_capability": [
+   {
+    "arxiv_id": "2606.27330",
+    "title": "Empowering GUI Agents via Autonomous Experience Exploration and Hindsight Experience Utilization for Task Planning",
+    "url": "https://arxiv.org/abs/2606.27330",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.532
+   },
+   {
+    "arxiv_id": "2606.27268",
+    "title": "E-TTS: A New Embodied Test-Time Scaling Framework for Robotic Manipulation",
+    "url": "https://arxiv.org/abs/2606.27268",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.36
+   },
+   {
+    "arxiv_id": "2606.27251",
+    "title": "Advancing Omnimodal Embodied Agents from Isolated Skills to Everyday Physical Autonomy",
+    "url": "https://arxiv.org/abs/2606.27251",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.549
+   },
+   {
+    "arxiv_id": "2606.27233",
+    "title": "Bridging Talk and Thought: Understanding Dialogue Dynamics Across Collaborative Problem-Solving Contexts",
+    "url": "https://arxiv.org/abs/2606.27233",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.399
+   },
+   {
+    "arxiv_id": "2606.27188",
+    "title": "A Process Harness for Uplifting Legacy Workflows to Agentic BPM: Design and Realization in CUGA FLO",
+    "url": "https://arxiv.org/abs/2606.27188",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.592
+   },
+   {
+    "arxiv_id": "2606.27163",
+    "title": "Learning to Fold: prizewinning solution at LeHome Challenge 2026 (1st place online, 2nd offline)",
+    "url": "https://arxiv.org/abs/2606.27163",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.437
+   },
+   {
+    "arxiv_id": "2606.27136",
+    "title": "Joint Learning of Experiential Rules and Policies for Large Language Model Agents",
+    "url": "https://arxiv.org/abs/2606.27136",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.51
+   },
+   {
+    "arxiv_id": "2606.27045",
+    "title": "The Spec Growth Engine: Spec-Anchored, Code-Coupled, Drift-Enforced Architecture for AI-Assisted Software Development",
+    "url": "https://arxiv.org/abs/2606.27045",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.342
+   }
+  ],
+  "rl_rlhf": [
+   {
+    "arxiv_id": "2606.27163",
+    "title": "Learning to Fold: prizewinning solution at LeHome Challenge 2026 (1st place online, 2nd offline)",
+    "url": "https://arxiv.org/abs/2606.27163",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.432
+   },
+   {
+    "arxiv_id": "2606.27136",
+    "title": "Joint Learning of Experiential Rules and Policies for Large Language Model Agents",
+    "url": "https://arxiv.org/abs/2606.27136",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.576
+   },
+   {
+    "arxiv_id": "2606.26981",
+    "title": "In-Context Model Predictive Generation: Open-Vocabulary Motion Synthesis from Language Models to Physics",
+    "url": "https://arxiv.org/abs/2606.26981",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.343
+   },
+   {
+    "arxiv_id": "2606.26661",
+    "title": "LAMP: Lane-Aligned Motion Primitives for Feasible Trajectory Prediction",
+    "url": "https://arxiv.org/abs/2606.26661",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.294
+   },
+   {
+    "arxiv_id": "2606.26575",
+    "title": "IDEA: Insensitive to Dynamics Mismatch via Effect Alignment for Sim-to-Real Transfer in Multi-Agent Control",
+    "url": "https://arxiv.org/abs/2606.26575",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.399
+   },
+   {
+    "arxiv_id": "2606.26574",
+    "title": "Revisiting Action Factorization for Complex Action Spaces",
+    "url": "https://arxiv.org/abs/2606.26574",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.438
+   },
+   {
+    "arxiv_id": "2606.26498",
+    "title": "Mean-Field PhiBE: Continuous-Time Mean-Field Reinforcement Learning from Discrete-Time Data",
+    "url": "https://arxiv.org/abs/2606.26498",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.361
+   },
+   {
+    "arxiv_id": "2606.26790",
+    "title": "OPID: On-Policy Skill Distillation for Agentic Reinforcement Learning",
+    "url": "https://arxiv.org/abs/2606.26790",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.494
+   }
+  ],
+  "reasoning_cot": [
+   {
+    "arxiv_id": "2606.27268",
+    "title": "E-TTS: A New Embodied Test-Time Scaling Framework for Robotic Manipulation",
+    "url": "https://arxiv.org/abs/2606.27268",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.43
+   },
+   {
+    "arxiv_id": "2606.27233",
+    "title": "Bridging Talk and Thought: Understanding Dialogue Dynamics Across Collaborative Problem-Solving Contexts",
+    "url": "https://arxiv.org/abs/2606.27233",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.394
+   },
+   {
+    "arxiv_id": "2606.27009",
+    "title": "Semantic Early-Stopping for Iterative LLM Agent Loops",
+    "url": "https://arxiv.org/abs/2606.27009",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.523
+   },
+   {
+    "arxiv_id": "2606.26981",
+    "title": "In-Context Model Predictive Generation: Open-Vocabulary Motion Synthesis from Language Models to Physics",
+    "url": "https://arxiv.org/abs/2606.26981",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.338
+   },
+   {
+    "arxiv_id": "2606.26525",
+    "title": "Theory-Scale Auto-Formalization of Logics for Computer Science",
+    "url": "https://arxiv.org/abs/2606.26525",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.484
+   },
+   {
+    "arxiv_id": "2606.27154",
+    "title": "OpenRCA 2.0: From Outcome Labels to Causal Process Supervision",
+    "url": "https://arxiv.org/abs/2606.27154",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.423
+   },
+   {
+    "arxiv_id": "2606.26686",
+    "title": "Do Safety Guardrails Need to Reason? LeanGuard: A Fast and Light Approach for Robust Moderation",
+    "url": "https://arxiv.org/abs/2606.26686",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.504
+   },
+   {
+    "arxiv_id": "2606.26529",
+    "title": "The Inattentional Gap: Task-Conditioned Language and Vision Models Omit the Safety-Critical Signals They Can Otherwise Report",
+    "url": "https://arxiv.org/abs/2606.26529",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.387
+   }
+  ],
+  "frontier_scaling": [
+   {
+    "arxiv_id": "2606.27288",
+    "title": "When Does Combining Language Models Help? A Co-Failure Ceiling on Routing, Voting, and Mixture-of-Agents Across 67 Frontier Models",
+    "url": "https://arxiv.org/abs/2606.27288",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.388
+   },
+   {
+    "arxiv_id": "2606.27234",
+    "title": "From Celebrities to Anyone: Characterizing AI Nudification Content, Technology, and Community Dynamics on 4chan",
+    "url": "https://arxiv.org/abs/2606.27234",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.306
+   },
+   {
+    "arxiv_id": "2606.26987",
+    "title": "Where Do Models Find Happiness? Emotion Vectors in Open-Source LLMs",
+    "url": "https://arxiv.org/abs/2606.26987",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.288
+   },
+   {
+    "arxiv_id": "2606.26836",
+    "title": "The Capability Frontier: Benchmarks Miss 82% of Model Performance",
+    "url": "https://arxiv.org/abs/2606.26836",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.442
+   },
+   {
+    "arxiv_id": "2606.27269",
+    "title": "Ribbon: Scalable Approximation and Robust Uncertainty Quantification",
+    "url": "https://arxiv.org/abs/2606.27269",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.345
+   },
+   {
+    "arxiv_id": "2606.27361",
+    "title": "Autoregressive Boltzmann Generators",
+    "url": "https://arxiv.org/abs/2606.27361",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.352
+   },
+   {
+    "arxiv_id": "2606.27342",
+    "title": "Understanding Domain-Aware Distribution Alignment in Budgeted Entity Matching",
+    "url": "https://arxiv.org/abs/2606.27342",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.281
+   },
+   {
+    "arxiv_id": "2606.27321",
+    "title": "Beyond the Hard Budget: Sparsity Regularizers for More Interpretable Top-k Sparse Autoencoders",
+    "url": "https://arxiv.org/abs/2606.27321",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.379
+   }
+  ],
+  "multiagent_tooluse": [
+   {
+    "arxiv_id": "2606.27233",
+    "title": "Bridging Talk and Thought: Understanding Dialogue Dynamics Across Collaborative Problem-Solving Contexts",
+    "url": "https://arxiv.org/abs/2606.27233",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.443
+   },
+   {
+    "arxiv_id": "2606.27188",
+    "title": "A Process Harness for Uplifting Legacy Workflows to Agentic BPM: Design and Realization in CUGA FLO",
+    "url": "https://arxiv.org/abs/2606.27188",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.519
+   },
+   {
+    "arxiv_id": "2606.26924",
+    "title": "A Deterministic Control Plane for LLM Coding Agents",
+    "url": "https://arxiv.org/abs/2606.26924",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.5
+   },
+   {
+    "arxiv_id": "2606.26859",
+    "title": "AgentX: Towards Agent-Driven Self-Iteration of Industrial Recommender Systems",
+    "url": "https://arxiv.org/abs/2606.26859",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.481
+   },
+   {
+    "arxiv_id": "2606.26758",
+    "title": "EGG: An Expert-Guided Agent Framework for Kernel Generation",
+    "url": "https://arxiv.org/abs/2606.26758",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.415
+   },
+   {
+    "arxiv_id": "2606.26669",
+    "title": "SKILL-DISCO: Distilling and Compiling Agent Traces into Reusable Procedural Skills",
+    "url": "https://arxiv.org/abs/2606.26669",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.503
+   },
+   {
+    "arxiv_id": "2606.26649",
+    "title": "Autoformalization of Agent Instructions into Policy-as-Code",
+    "url": "https://arxiv.org/abs/2606.26649",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.525
+   },
+   {
+    "arxiv_id": "2606.26627",
+    "title": "Agents That Know Too Much: A Data-Centric Survey of Privacy in LLM Agents",
+    "url": "https://arxiv.org/abs/2606.26627",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.476
+   }
+  ],
+  "self_improvement": [
+   {
+    "arxiv_id": "2606.26593",
+    "title": "Content-Based Smart E-Mail Dispatcher Using Large Language Models",
+    "url": "https://arxiv.org/abs/2606.26593",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.328
+   },
+   {
+    "arxiv_id": "2606.26935",
+    "title": "Where Do CoT Training Gains Land in LLM based Agents?",
+    "url": "https://arxiv.org/abs/2606.26935",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.445
+   },
+   {
+    "arxiv_id": "2606.27287",
+    "title": "Prompt Injection in Automated Résumé Screening with Large Language Models: Single and Multi-Injection Settings",
+    "url": "https://arxiv.org/abs/2606.27287",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.349
+   },
+   {
+    "arxiv_id": "2606.26698",
+    "title": "Beyond Logical Forms: LLM-Extracted Patterns for Fallacy Classification",
+    "url": "https://arxiv.org/abs/2606.26698",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.364
+   },
+   {
+    "arxiv_id": "2606.27326",
+    "title": "Hallucination in World Models is Predictable and Preventable",
+    "url": "https://arxiv.org/abs/2606.27326",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.346
+   },
+   {
+    "arxiv_id": "2606.27114",
+    "title": "Cross-Head Attention Uplift Network with Inverse Propensity Score under Unobserved Confounding",
+    "url": "https://arxiv.org/abs/2606.27114",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.315
+   },
+   {
+    "arxiv_id": "2606.27210",
+    "title": "Paved with True Intents: Intent-Aware Training Improves LLM Safety Classification Across Training Regimes",
+    "url": "https://arxiv.org/abs/2606.27210",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.371
+   },
+   {
+    "arxiv_id": "2606.27147",
+    "title": "Safe Autoregressive Image Generation with Iterative Self-Improving Codebooks",
+    "url": "https://arxiv.org/abs/2606.27147",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.349
+   }
+  ]
+ }
+}
