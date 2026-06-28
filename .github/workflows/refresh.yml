@@ -63,4 +63,9 @@ jobs:
             # Rebase onto any concurrent pushes (e.g. docs) before pushing.
             git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
             git push
+            # Mirror the snapshot to the dev branch too (fast-forward only, so it's
+            # skipped harmlessly if that branch has diverged). Keeps the live app
+            # current whether it deploys from main or the feature branch.
+            git push origin "HEAD:claude/ai-safety-foresight-analysis-fletm1" || \
+              echo "feature branch not fast-forwardable; skipped"
           fi
