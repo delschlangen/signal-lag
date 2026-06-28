@@ -4670,6 +4670,257 @@
     "summary": "Explores whether LLMs can be trained to use visual counterfactual simulation ('world models') as a complement to language for complex reasoning.",
     "why_it_matters": "Probes a frontier reasoning mechanism that, if successful, would extend model cognition beyond language and complicate transparency of internal reasoning."
    }
-  ]
+  ],
+  "foresight_gap": {
+   "risks": [
+    {
+     "risk": "Agentic AI is being embedded into rare-disease and clinical genomics workflows while the oversight literature designed to catch multi-step errors is actively contracting — creating a class of unmonitored, plausible-but-wrong medical decisions whose harm surfaces only on diagnostic time-lags of months to years.",
+     "derived_from": "Lab activity 'Talos: Scaling rare disease diagnosis with automated, iterative genomic reanalysis' and 'How GPT-5 helped immunologist Derya Unutmaz solve a 3-year-old mystery' (Frontier/Scaling Capability) crossed with Scalable Oversight decelerating -5.6%/qtr AND rising critical share (31.4%, +8.9 pts) and the Multi-Agent/Tool-Use vs Scalable Oversight divergence (gap 0.263, volume ratio 0.24).",
+     "source_arxiv_ids": [],
+     "source_topics": [
+      "Frontier / Scaling Capability",
+      "Scalable Oversight",
+      "Multi-Agent / Tool-Use Capability",
+      "Agentic / Autonomy Capability"
+     ],
+     "domains_crossed": [
+      "Technological",
+      "Legal/Regulatory",
+      "Social"
+     ],
+     "why_underdiscussed": "Medical AI risk discourse focuses on chatbot misadvice and FDA device clearance; almost no one is tracking iterative, multi-step genomic *reanalysis* agents where the failure mode is a silent wrong reclassification of a variant that no human re-checks, and where oversight research is shrinking precisely as deployment scales.",
+     "mechanism": "Genomic reanalysis is iterative and probabilistic; an agent that mis-weights a variant produces an authoritative-looking diagnosis. Because oversight methods for long-horizon agentic reasoning are getting LESS research attention (decelerating) while critical-quality concerns within that subfield rise, deployed clinical agents lack the verification scaffolding. Harm is invisible because diagnostic correctness is only confirmed downstream (treatment failure, missed condition), so feedback never reaches developers within a useful loop.",
+     "leading_indicator": "First published cases of AI-driven genomic reanalysis reversing or introducing a clinically actionable variant call without a flagged confidence drop; hospital procurement contracts for agentic reanalysis tools that lack a mandated human-in-the-loop verification clause.",
+     "calibration": "Emerging, moderate confidence on the seam (the deployment signal and the oversight-contraction signal are both concretely in the digest); lower confidence on near-term materialization of documented patient harm.",
+     "extrapolation": "Assumed Talos-style tools are moving toward clinical deployment rather than research-only; the digest shows the capability blog post but not deployment scale or harm cases."
+    },
+    {
+     "risk": "PRC-linked influence operations targeting the US data-center/electricity-cost debate will fuse with genuine local grid-strain grievances to convert routine utility-rate disputes into a recurring vector for delegitimizing AI infrastructure siting — a hybrid social-environmental attack surface no single agency owns.",
+     "derived_from": "SOCIETAL_CONTEXT: June 2026 OpenAI disclosure of PRC-linked ops amplifying the data-center/electricity-cost debate, crossed with Environmental signals (IEA 415→945 TWh, grid strain as local flashpoint) and the digest's heavy Agentic/Autonomy + Agentic Behavior Monitoring acceleration (115 and 123.5 recent/qtr) enabling scalable, autonomous narrative operations.",
+     "source_arxiv_ids": [],
+     "source_topics": [
+      "Agentic / Autonomy Capability",
+      "Agentic Behavior Monitoring"
+     ],
+     "domains_crossed": [
+      "Security/Geopolitical",
+      "Environmental",
+      "Political"
+     ],
+     "why_underdiscussed": "Influence-operation analysis treats narratives as election/geopolitics content; energy/grid analysts treat data-center opposition as local NIMBY economics. Nobody is modeling the SEAM where a foreign actor uses agentic tooling to industrialize the amplification of *true* local grievances about electricity prices to throttle the physical buildout AI itself depends on.",
+     "mechanism": "Agentic capability lets a small operation run many localized, persistent, context-tailored campaigns at zoning-board granularity. By piggybacking on real rate increases (caused partly by data-center demand), the narrative is unfalsifiable and self-reinforcing. Each blocked or delayed substation/data-center compounds grid constraints, raising prices, feeding the next cycle — a foreign actor degrading a rival's compute buildout via domestic democratic process rather than cyberattack.",
+     "leading_indicator": "Cluster of near-identical, locally-tailored anti-data-center campaigns appearing across unrelated jurisdictions within days of utility-rate filings; CAISI/lab disclosures escalating the data-center-narrative ops from Category One toward measurable local-policy impact.",
+     "calibration": "Emerging, moderate-high confidence the vector exists (explicitly disclosed); lower confidence it scales to material siting delays in the near term.",
+     "extrapolation": "Assumed agentic tooling materially lowers the cost of jurisdiction-level micro-campaigns; the disclosure rated current impact low and did not confirm agentic automation."
+    },
+    {
+     "risk": "Chain-of-Thought Faithfulness research is accelerating just as SB 53 / RAISE-style transparency mandates take effect — creating a perverse incentive for labs to publish 'faithful reasoning traces' as compliance artifacts even as the research itself shows those traces are unreliable, manufacturing legally-sanctioned false assurance.",
+     "derived_from": "Chain-of-Thought Faithfulness accelerating +34.9% (29/qtr) and Agentic Behavior Monitoring +13.8% (123.5/qtr) in the digest, crossed with Legal/Regulatory context: California SB 53 in effect Jan 2026 (publish risk frameworks/incident reports), NY RAISE Act mirror, and 'Helping build shared standards for advanced AI' lab activity.",
+     "source_arxiv_ids": [],
+     "source_topics": [
+      "Chain-of-Thought Faithfulness",
+      "Agentic Behavior Monitoring",
+      "Evals & Dangerous-Capability Benchmarks"
+     ],
+     "domains_crossed": [
+      "Legal/Regulatory",
+      "Technological",
+      "Political"
+     ],
+     "why_underdiscussed": "Faithfulness research is treated as an interpretability problem; transparency law is treated as a governance win. No one is examining the seam: a regulatory regime that demands disclosure of model reasoning will incentivize labs to surface CoT traces as evidence of safety, while the very literature growing fastest is the one establishing that those traces don't faithfully reflect the model's actual computation.",
+     "mechanism": "Transparency statutes reward documentable artifacts. CoT traces are the cheapest legible artifact to produce. As labs co-author 'shared standards,' faithful-looking reasoning gets normalized as a compliance deliverable. But faithfulness research itself is flagging that traces can be post-hoc rationalizations — so regulators, auditors, and courts may accept a control that the science says is unsound, freezing in a false-assurance standard that is hard to dislodge once codified.",
+     "leading_indicator": "Frontier risk frameworks or CAISI evaluation protocols citing 'reasoning transparency / CoT disclosure' as a primary safety control; standards drafts treating chain-of-thought as auditable evidence without a faithfulness-validity requirement.",
+     "calibration": "Emerging, moderate confidence; the standards-setting and law are real and the faithfulness acceleration is in the digest, but the specific co-optation pathway is an inference.",
+     "extrapolation": "Assumed standards bodies will reach for CoT as a transparency artifact; the digest shows the research acceleration and a standards blog post but not their linkage."
+    },
+    {
+     "risk": "The widening daily-AI-use gap between college-educated and non-college workers, combined with agentic tools that author their own code and complete long-horizon tasks, will hollow out the intermediate verification labor that currently catches agent errors — removing the human checkpoints precisely as oversight research declines.",
+     "derived_from": "Demographic context: college-educated daily use 22%→34% while non-college fell ~6 pts; crossed with Agentic/Autonomy +38.6% (115/qtr), 'Codex-maxxing for long-running work', 'How agents are transforming work', and Scalable Oversight decelerating with rising critical share.",
+     "source_arxiv_ids": [],
+     "source_topics": [
+      "Agentic / Autonomy Capability",
+      "Scalable Oversight",
+      "Multi-Agent / Tool-Use Capability"
+     ],
+     "domains_crossed": [
+      "Demographic",
+      "Economic",
+      "Social"
+     ],
+     "why_underdiscussed": "Labor-displacement discourse asks 'whose jobs go away'; this risk is about the disappearance of the mid-skill *checking* function that organizations rely on to catch agent mistakes. The adoption gap concentrates AI use among the people who would otherwise be the reviewers, while non-adopters lose the fluency to audit outputs — so the verification layer thins from both directions.",
+     "mechanism": "As agentic tools run long-horizon work, the human role shifts from doing to verifying. But the verification skill requires sustained hands-on engagement that is itself being automated away among heavy adopters (automation complacency), while non-adopters never build the fluency to review agent output. Combined with safety research deprioritizing scalable oversight, organizations end up with neither human nor research-grade checks on increasingly autonomous workflows — a silent erosion of error-catching capacity.",
+     "leading_indicator": "Surveys showing experienced reviewers report declining ability to spot agent errors; firms reducing QA/review headcount in agent-heavy functions; rising incidence of compounding multi-step agent errors reaching production despite nominal human sign-off.",
+     "calibration": "Emerging, moderate confidence on the skill-erosion mechanism; the adoption-gap data and agentic acceleration are solid, the verification-collapse pathway is extrapolated.",
+     "extrapolation": "Assumed that heavy adoption induces verification-skill atrophy and that organizations cut review layers; the digest and context show adoption gaps and capability growth but not measured deskilling of reviewers."
+    }
+   ],
+   "digest": {
+    "divergences_safety_lagging": [
+     {
+      "pairing": "Multi-agent/tool-use vs. scalable oversight",
+      "capability": "Multi-Agent / Tool-Use Capability",
+      "safety": "Scalable Oversight",
+      "cap_growth_pct_per_qtr": 20.7,
+      "saf_growth_pct_per_qtr": -5.6,
+      "gap": 0.263,
+      "volume_ratio_cap_over_saf": 0.24
+     }
+    ],
+    "velocity": {
+     "accelerating": [
+      {
+       "topic": "Agentic / Autonomy Capability",
+       "change_pct": 38.6,
+       "recent_per_qtr": 115.0
+      },
+      {
+       "topic": "Chain-of-Thought Faithfulness",
+       "change_pct": 34.9,
+       "recent_per_qtr": 29.0
+      },
+      {
+       "topic": "Evals & Dangerous-Capability Benchmarks",
+       "change_pct": 22.4,
+       "recent_per_qtr": 46.5
+      },
+      {
+       "topic": "Multi-Agent / Tool-Use Capability",
+       "change_pct": 20.7,
+       "recent_per_qtr": 52.5
+      },
+      {
+       "topic": "Agentic Behavior Monitoring",
+       "change_pct": 13.8,
+       "recent_per_qtr": 123.5
+      }
+     ],
+     "decelerating": [
+      {
+       "topic": "Reward Hacking",
+       "change_pct": -17.1,
+       "recent_per_qtr": 17.0
+      },
+      {
+       "topic": "Self-Improvement / RSI Capability",
+       "change_pct": -8.4,
+       "recent_per_qtr": 103.0
+      },
+      {
+       "topic": "Deceptive Alignment",
+       "change_pct": -7.9,
+       "recent_per_qtr": 88.0
+      },
+      {
+       "topic": "Scalable Oversight",
+       "change_pct": -5.6,
+       "recent_per_qtr": 218.0
+      },
+      {
+       "topic": "Self-Improvement Risk & Control",
+       "change_pct": -5.1,
+       "recent_per_qtr": 92.5
+      }
+     ]
+    },
+    "eroding_confidence_rising_critical_share": [
+     {
+      "topic": "Scalable Oversight",
+      "recent_critical_share_pct": 31.4,
+      "trend_pts": 8.9,
+      "n_recent": 455
+     }
+    ],
+    "quadrant": {
+     "emerging": [],
+     "white_space": []
+    },
+    "citation_movers": {
+     "sleepers": [],
+     "rapid_growth": []
+    },
+    "new_emergent_clusters": [],
+    "recent_lab_activity": [
+     {
+      "source": "OpenAI",
+      "title": "Previewing GPT-5.6 Sol: a next-generation model",
+      "topic": "Agentic Behavior Monitoring",
+      "published": "2026-06-26"
+     },
+     {
+      "source": "Microsoft Research",
+      "title": "Understanding the brain with AI-driven explanations and experiments",
+      "topic": "Reasoning / Chain-of-Thought Capability",
+      "published": "2026-06-25"
+     },
+     {
+      "source": "OpenAI",
+      "title": "How agents are transforming work",
+      "topic": "Agentic / Autonomy Capability",
+      "published": "2026-06-25"
+     },
+     {
+      "source": "Microsoft Research",
+      "title": "Talos: Scaling rare disease diagnosis with automated, iterative genomic reanalysis",
+      "topic": "Frontier / Scaling Capability",
+      "published": "2026-06-24"
+     },
+     {
+      "source": "Google DeepMind",
+      "title": "Introducing computer use in Gemini 3.5 Flash",
+      "topic": null,
+      "published": "2026-06-24"
+     },
+     {
+      "source": "OpenAI",
+      "title": "OpenAI and Broadcom unveil LLM-optimized inference chip",
+      "topic": "Agentic / Autonomy Capability",
+      "published": "2026-06-24"
+     },
+     {
+      "source": "OpenAI",
+      "title": "How Omio is building the future of conversational travel",
+      "topic": "Agentic / Autonomy Capability",
+      "published": "2026-06-23"
+     },
+     {
+      "source": "OpenAI",
+      "title": "How GPT-5 helped immunologist Derya Unutmaz solve a 3-year-old mystery",
+      "topic": null,
+      "published": "2026-06-23"
+     },
+     {
+      "source": "OpenAI",
+      "title": "Helping build shared standards for advanced AI",
+      "topic": "Agentic Behavior Monitoring",
+      "published": "2026-06-23"
+     },
+     {
+      "source": "OpenAI",
+      "title": "Codex-maxxing for long-running work",
+      "topic": "Agentic / Autonomy Capability",
+      "published": "2026-06-22"
+     }
+    ],
+    "what_changed_this_week": {
+     "first_run": false,
+     "prev_date": "2026-06-28",
+     "new_safety_lag_alerts": [],
+     "new_accelerations": [],
+     "new_citation_sleepers": []
+    }
+   },
+   "framework": {
+    "Social": "norms, behaviors, public trust, culture, labor and skills, education",
+    "Technological": "adjacent non-AI tech: biotech, energy, compute supply, networks, robotics",
+    "Economic": "markets, capital flows, business models, costs, employment, consolidation",
+    "Environmental": "climate, resources, energy and water demand, supply chains, physical infrastructure",
+    "Political": "governance, elections, institutions, state capacity, public administration",
+    "Legal/Regulatory": "law, liability, IP, standards, enforcement gaps, jurisdiction",
+    "Security/Geopolitical": "national security, conflict, cyber, dual-use diffusion, alliances, export controls",
+    "Demographic": "population, aging, migration, inequality, generational shifts"
+   },
+   "context": "# Societal Context — current real-world state\n#\n# ILLUSTRATIVE AND NON-EXHAUSTIVE. This file enriches the foresight synthesis with\n# CURRENT real-world state across societal domains. It is NOT a filter, a fixed list,\n# or a set of \"the risks that matter.\" The synthesis reasons across the FULL\n# STEEP/PESTLE+ framework regardless of what is written here. The purpose of this file\n# is solely to UPDATE the model on current real-world conditions it cannot otherwise\n# know from training data — not to narrow, rank, or pre-select what it considers.\n# The model must treat everything below as background state to reason ACROSS and\n# combine with the week's research signals, never as the only factors in play.\n#\n# Write BROAD, FACTUAL, and CURRENT. State conditions of the world, not conclusions\n# about which are dangerous. Give the board, not the move. Update regularly.\n#\n# Last updated: June 2026\n\n## Social\n- US public sentiment toward AI has soured over the past year. A March 2026 Quinnipiac poll found 55% of Americans think AI will do more harm than good in daily life (up from 44% in April 2025); 64% think AI will do more harm than good for education.\n- A March 2026 NBC News poll found 57% of voters believe AI's risks outweigh its benefits (vs. 34% the reverse); only 26% have positive feelings about AI, 46% negative — a net rating lower than every tested topic except the Democratic Party and Iran.\n- Trust is low and usage is rising simultaneously: a Feb 2026 Verasight poll found 56% remain anxious about AI even as adoption grows. The Stanford 2026 AI Index notes global \"more benefits than drawbacks\" sentiment rose to 59%, but nervousness also rose to 52%.\n- Sentiment is sharply split by demographics (see Demographic). The single strongest predictor of attitude is personal usage: daily users are favorable by +57 points; rare/never users unfavorable by -42.\n- 76% of Americans think businesses are not transparent enough about their AI use; trust in AI developers is a recurring weak point.\n\n## Technological\n- Frontier capability is advancing fastest in agentic/autonomous systems and coding. Labs report models authoring large shares of their own code; autonomous task-completion horizons are lengthening.\n- Capability is increasingly announced first by labs (system cards, blog posts) ahead of the academic safety literature's response — the lead-time gap this tool measures.\n- Synthetic media generation is mainstream (a quarter of 2026 Super Bowl ads were AI-made or AI-advertising); detection and provenance lag generation.\n- Agentic deployment is shifting risk from single-output failures toward long-horizon, multi-step, multi-tool behavior — outpacing existing monitoring designed for bounded tasks.\n\n## Economic\n- Intense \"AI bubble\" debate. Total AI spending projected to surpass $1.6T; OpenAI committed ~$1.4T over 8 years on data centers; the big four (Google, Microsoft, Meta, Amazon) expected to spend ~$450B in capex in 2026; the 14 largest data-center operators near $750B in 2026 (up from ~$450B in 2025); Goldman estimates ~$7.6T cumulative AI CapEx 2026–2031.\n- Concentration risk: in late 2025 the five largest companies held up ~30% of the S&P 500 — the greatest concentration in half a century. AI-related stocks have driven ~75% of S&P 500 returns, 80% of earnings growth, and 90% of capex growth since ChatGPT launched.\n- Circular-investment concerns (Nvidia↔OpenAI↔AMD↔Microsoft↔CoreWeave cross-holdings) fuel bubble skepticism. Hyperscalers took on ~$121B in new debt (+300% vs. typical load), some structured off-balance-sheet via special-purpose vehicles.\n- Revenue/ROI doubts: an MIT study found 95% of organizations saw zero return on GenAI investment; one analysis found only ~3% of people pay for AI. A Feb 2026 NBER study found 90% of firms reported no productivity/workplace impact.\n- Institutional warnings: the Bank of England and IMF have warned of global market-correction risk from AI overvaluation. Counter-view (JPMorgan, Fed Chair Powell, White House AI czar David Sacks, Ben Horowitz) holds AI generates real revenue and is not a classic bubble. DeepSeek's Jan 2025 release triggered a ~$600B single-day Nvidia drop; the KOSPI halted trading on June 23, 2026.\n\n## Environmental\n- Energy is becoming a binding constraint on AI buildout. The IEA projects global data-center electricity use rising from ~415 TWh in 2024 (~1.5% of total) toward ~945 TWh by 2030 (roughly 4×).\n- Data-center siting, water use, and grid strain are emerging as local political flashpoints. Public opinion favors data-center approaches that protect consumers from high electricity costs and environmental impact.\n- Grid capacity, power procurement, and cooling are now first-order bottlenecks alongside chip supply.\n\n## Political\n- The federal posture is deregulatory and pro-preemption. A Dec 11, 2025 executive order (\"Ensuring a National Policy Framework for AI,\" EO 14365) directs a DOJ litigation task force (active Jan 10, 2026) to challenge state AI laws, a Commerce review of \"burdensome\" state laws, and an FTC policy stance; it exempts child safety, AI compute/data-center infrastructure, and state procurement from preemption.\n- In March 2026 the White House released a National Policy Framework urging Congress to enact broad preemption under a light-touch standard.\n- AI is politically \"up for grabs\" — voters trust neither party to handle it well; negative sentiment concentrates among younger voters and women under 50.\n- A notable administration reversal: driven by national-security concerns over advanced model capabilities, the administration is reportedly considering pre-release frontier-model evaluation requirements, and CAISI (the renamed US AI Safety Institute) announced evaluation partnerships with Google, Microsoft, and xAI — a shift for an administration that entered opposing AI oversight.\n\n## Legal / Regulatory\n- Preemption is NOT settled law. A 10-year state-law moratorium failed in the Senate 99-1 (July 2025). State laws remain enforceable unless/until preempted by statute or struck down by courts. Prudent posture is to keep complying with state law while monitoring.\n- California SB 53 (Transparency in Frontier AI Act) is in effect as of Jan 1, 2026: frontier developers (>10^26 FLOPS) must publish risk frameworks, report safety incidents, and provide whistleblower protections; penalties up to $1M/violation for firms over $500M revenue. Also effective: AB 2013 (training-data transparency); SB 942 (AI-content disclosure/watermarking, delayed to Aug 2, 2026).\n- Texas TRAIGA (HB 149) in force Jan 1, 2026 — scaled back from an EU-style draft to prohibiting specific harmful practices, intent-based liability, AG enforcement with a 60-day cure period.\n- Colorado's comprehensive SB 24-205 never took effect; in May 2026 it was repealed/replaced by the narrower SB 26-189 (ADMT-focused), effective Jan 1, 2027. It was the only state law named in the Dec 2025 EO.\n- New York amended the RAISE Act (March 2026) to mirror SB 53 (revenue-based threshold), easing multistate compliance.\n- A bipartisan federal discussion draft — the Great American AI Act (June 4, 2026, Obernolte/Trahan, 269 pages) — proposes the first comprehensive federal framework in exchange for a 3-year freeze on state laws regulating how models are *built* (not how they're *used*). Not yet introduced or voted on.\n- State legislative volume is high: ~1,561 AI bills introduced across 45 states as of March 2026, surpassing all of 2024.\n- EU AI Act: GPAI obligations took effect Aug 2, 2025; high-risk obligations have an Aug 2, 2026 deadline, though the Commission proposed (Nov 2025) delaying high-risk implementation toward 2027. It remains the binding global benchmark.\n\n## Security / Geopolitical\n- State-linked misuse of frontier AI is documented and rising. In June 2026, OpenAI disclosed PRC-linked influence operations using ChatGPT to amplify US domestic grievances — notably targeting the data-center/electricity-cost debate — rated low-impact (Category One) but notable for testing narratives against AI infrastructure itself.\n- US–China competition centers on compute: export controls on advanced chips and high-bandwidth memory; Chinese stockpiling ahead of restrictions; Chinese model developers (DeepSeek and others) demonstrating competitive capability at lower cost.\n- Frontier cyber capability is operationalizing: documented cases of AI-assisted/AI-orchestrated cyber operations and the first AI-developed exploit code; labs now rate some models \"High\" in cyber capability.\n- National-security concern over advanced model capabilities is reshaping US oversight posture (see Political) — government model-review arrangements with major labs are now in place.\n- Critical-infrastructure exposure (power grid, financial systems) to AI-enabled attacks is a growing institutional concern.\n\n## Demographic\n- Attitudes split sharply by group. Data for Progress (Feb 2026): men favorable +16, women unfavorable -10; under-45 favorable +25, 45+ unfavorable -10; Black voters +29 and Latino +10 favorable, white voters -3.\n- Generational pessimism is strongest among the young despite high usage: Quinnipiac found Gen Z 36% support / 58% oppose AI, the most negative of any generation; NBC found 18-34s at net -44 favorability and women 18-49 at -41.\n- A usage/education divergence at work: among employed college-educated voters, daily AI use jumped from 22% (Aug 2025) to 34% (early 2026), while non-college use fell ~6 points — a widening adoption gap.\n- Overall adoption keeps rising: ~56-66% report using an AI tool in recent months; professional/managerial and white-collar workers adopt far faster than blue-collar workers and retirees.",
+   "n_context_chars": 9704
+  }
  }
 }
