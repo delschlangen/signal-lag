@@ -67,6 +67,9 @@ def build_snapshot(
                     "url": arxiv_url(p.arxiv_id),
                     "published": p.published.isoformat(),
                     "cited_by_count": p.cited_by_count,
+                    "influential_citations": p.s2_influential_citations,
+                    "venue": p.venue,
+                    "tldr": p.s2_tldr,
                     "score": round(float(score), 3),
                 }
             )

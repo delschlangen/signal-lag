@@ -111,6 +111,10 @@ class Settings:
     def openalex_max_enrich(self) -> int:
         return int(self.raw["ingestion"].get("openalex_max_enrich", 0))
 
+    @property
+    def semantic_scholar(self) -> dict[str, Any]:
+        return self.raw["ingestion"].get("semantic_scholar", {"enabled": False})
+
     # --- generic section accessor ---
     def section(self, name: str) -> dict[str, Any]:
         return self.raw.get(name, {})

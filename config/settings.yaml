@@ -17,7 +17,7 @@ ingestion:
   max_results_per_category: 1500
   # arXiv asks for <= 1 request / 3s; we page in chunks of this size.
   arxiv_page_size: 200
-  arxiv_request_delay_seconds: 3.0
+  arxiv_request_delay_seconds: 5.0
   # Exponential backoff schedule (seconds) on 429/503/transient errors.
   # arXiv throttles bursts hard, so we back off generously.
   backoff_schedule: [5, 15, 30, 60]
@@ -25,6 +25,12 @@ ingestion:
   openalex_mailto: "delschlangen@gmail.com"
   # Cap OpenAlex enrichment calls per run (0 = enrich all cached papers).
   openalex_max_enrich: 0
+  # Semantic Scholar enrichment: TLDRs, influential-citation counts, venue, fields.
+  # Fail-soft; uses the batch endpoint. Toggle on once the base pipeline is stable.
+  semantic_scholar:
+    enabled: true
+    api_key: null
+    max_enrich: 0          # 0 = all cached papers
 
 embeddings:
   # Primary local model (downloaded once from HuggingFace). Falls back to a

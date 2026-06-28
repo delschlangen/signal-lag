@@ -232,8 +232,16 @@ with tabs[4]:
     keys = list(snap["label_map"].keys())
     pick = st.selectbox("Topic", keys, format_func=lambda k: lbl(snap, k))
     for p in snap["sources"].get(pick, []):
-        cites = f" · {p['cited_by_count']} cites" if p.get("cited_by_count") else ""
-        st.markdown(f"- [{p['title']}]({p['url']}) · {p['published']}{cites}")
+        bits = [p["published"]]
+        if p.get("venue"):
+            bits.append(p["venue"])
+        if p.get("cited_by_count"):
+            bits.append(f"{p['cited_by_count']} cites")
+        if p.get("influential_citations"):
+            bits.append(f"{p['influential_citations']} influential")
+        st.markdown(f"- [{p['title']}]({p['url']}) · " + " · ".join(bits))
+        if p.get("tldr"):
+            st.caption(f"  TL;DR: {p['tldr']}")
     if not snap["sources"].get(pick):
         st.write("No tagged papers for this topic in the current snapshot.")
 
