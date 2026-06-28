@@ -1,0 +1,12 @@
+# Full / best-quality requirements (recommended for local + real-data runs).
+# Adds the preferred embedding and clustering backends on top of the core set.
+# These are heavier (sentence-transformers pulls in torch), which is why they're
+# kept out of the default deploy install.
+
+-r requirements.txt
+
+# Preferred embedding backend (downloads all-MiniLM-L6-v2 from HuggingFace once).
+sentence-transformers>=2.2
+
+# Preferred clustering backend (density-based; auto cluster count + noise).
+hdbscan>=0.8.33

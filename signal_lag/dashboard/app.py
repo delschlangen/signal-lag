@@ -23,6 +23,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from signal_lag.analysis.runner import run_analysis  # noqa: E402
 from signal_lag.config import load_all  # noqa: E402
+from signal_lag.ingest.pipeline import ingest  # noqa: E402
+from signal_lag.ingest.store import Store  # noqa: E402
 
 st.set_page_config(page_title="signal-lag", layout="wide")
 
@@ -30,7 +32,17 @@ st.set_page_config(page_title="signal-lag", layout="wide")
 @st.cache_data(show_spinner="Running analysis...")
 def _analyze():
     settings, taxonomy = load_all()
+    # On a fresh deploy (e.g. Streamlit Community Cloud) there's no cache yet.
+    # Self-seed from the bundled offline fixtures so the demo just works.
+    seeded_from_fixtures = False
+    store = Store(settings.path("db_path"))
+    empty = store.count_papers() == 0
+    store.close()
+    if empty:
+        ingest(settings, use_fixtures=True, enrich=False)
+        seeded_from_fixtures = True
     results = run_analysis(settings, taxonomy)
+    results["meta"]["fixtures"] = seeded_from_fixtures
     label_map = {t.key: t.label for t in taxonomy.all_topics}
     return results, label_map
 
@@ -53,6 +65,12 @@ except Exception as e:
     st.stop()
 
 meta = results["meta"]
+if meta.get("fixtures"):
+    st.info(
+        "📦 Showing the bundled **synthetic demo dataset** (no live cache found). "
+        "Run `python -m signal_lag.cli ingest` locally to analyze real arXiv data.",
+        icon="ℹ️",
+    )
 c1, c2, c3 = st.columns(3)
 c1.metric("Papers analyzed", meta["n_papers"])
 c2.metric("Embedding backend", meta["backend"])
