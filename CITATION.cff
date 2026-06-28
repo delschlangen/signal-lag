@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use signal-lag in your work, please cite it as below."
+title: "signal-lag: patent-landscape-style foresight on AI-safety research"
+abstract: >-
+  signal-lag tracks topic velocity, citation dynamics, and sentiment across the
+  AI research literature to surface where safety attention lags capability. It
+  adds an LLM (Claude) analysis layer and a Foresight Gap synthesis that crosses
+  research-trend signals with broader societal context to surface novel
+  cross-domain risks, web-verified against current coverage. Runs as a live
+  Streamlit dashboard on real arXiv, OpenAlex, Semantic Scholar, OpenReview, and
+  lab-blog data, auto-refreshed weekly.
+type: software
+authors:
+  - family-names: Schlangen
+    given-names: Del
+    orcid: "https://orcid.org/0009-0005-5116-9564"
+repository-code: "https://github.com/delschlangen/signal-lag"
+url: "https://github.com/delschlangen/signal-lag"
+license: MIT
+keywords:
+  - AI safety
+  - AI alignment
+  - AI governance
+  - foresight
+  - horizon scanning
+  - technology forecasting
+  - scientometrics
+  - research intelligence
+  - arXiv
+  - OpenAlex
+  - embeddings
+  - large language models
