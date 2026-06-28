@@ -4674,84 +4674,261 @@
   "foresight_gap": {
    "risks": [
     {
-     "risk": "Agentic AI is being embedded into rare-disease and clinical genomics workflows while the oversight literature designed to catch multi-step errors is actively contracting — creating a class of unmonitored, plausible-but-wrong medical decisions whose harm surfaces only on diagnostic time-lags of months to years.",
-     "derived_from": "Lab activity 'Talos: Scaling rare disease diagnosis with automated, iterative genomic reanalysis' and 'How GPT-5 helped immunologist Derya Unutmaz solve a 3-year-old mystery' (Frontier/Scaling Capability) crossed with Scalable Oversight decelerating -5.6%/qtr AND rising critical share (31.4%, +8.9 pts) and the Multi-Agent/Tool-Use vs Scalable Oversight divergence (gap 0.263, volume ratio 0.24).",
+     "risk": "California SB 53's safety-incident reporting will codify metrics from a research subfield (scalable oversight) whose own practitioners are increasingly flagging their methods as failing — freezing an unsound assurance standard into law just as confidence in it erodes.",
+     "research_anchor": "Scalable Oversight: velocity DECELERATING (-5.6%/qtr) AND rising critical-share (recent_critical_share_pct 31.4%, trend +8.9 pts, n=455) — the eroding-confidence flag.",
+     "derived_from": "eroding_confidence_rising_critical_share for Scalable Oversight; decelerating velocity for Scalable Oversight; SOCIETAL_CONTEXT legal section (SB 53 in effect Jan 1 2026 requiring published risk frameworks + incident reports; NY RAISE Act mirroring; SB 53 as de-facto multistate template).",
      "source_arxiv_ids": [],
      "source_topics": [
-      "Frontier / Scaling Capability",
+      "Scalable Oversight"
+     ],
+     "domains_crossed": [
+      "Legal/Regulatory",
+      "Technological"
+     ],
+     "communities": "Frontier-AI compliance/policy teams drafting SB 53 risk frameworks treat 'oversight' as a checkbox category and reference whatever the dominant method is; oversight researchers themselves are publishing the critical-share signal (nearly a third of recent papers now flagging failure modes of the very methods being codified). The two don't connect because policy teams read regulatory text and lab system cards, not the velocity/critical-share trend inside the oversight literature.",
+     "framing_inversion": "Transparency/incident-reporting regulation is treated as straightforwardly good. Inversion: by requiring developers to attest to oversight 'risk frameworks' at the moment the research community is losing confidence in those frameworks, the law incentivizes locking in a known-shaky method as the legal baseline — making it harder to abandon than if it were unregulated.",
+     "why_underdiscussed": "Nobody is cross-referencing the internal health of the oversight research field against the specific assurance categories newly mandated by SB 53/RAISE. The legal debate is about preemption, not about whether the underlying technical assurance concept is decaying.",
+     "mechanism": "SB 53 requires published risk frameworks and incident reporting; firms standardize on the dominant scalable-oversight paradigm to demonstrate compliance. Meanwhile that paradigm's own literature is decelerating in output while a rising share of papers flag it as critical/failing. Regulatory inertia + litigation-defensibility incentives make the codified method sticky; firms keep attesting to it because changing the standard creates legal exposure, not because it works.",
+     "leading_indicator": "SB 53 risk-framework filings (and CAISI evaluation partnership templates) converging on a single oversight methodology, while arXiv oversight papers continue rising critical-share above ~35% — i.e. the gap between legal attestation and research confidence widening.",
+     "calibration": "Emerging, moderate-low confidence. The critical-share signal is real and distinctive, but the causal step — 'rising critical share ⇒ the method is genuinely unsound' vs. 'the field is maturing and self-critiquing' — is inferential. Critical-share can rise simply because a field grows self-reflective. Confidence lowered accordingly; this is a hypothesis about regulatory lock-in, not a verdict on the method.",
+     "extrapolation": "Assumed SB 53 risk frameworks will in practice reference scalable-oversight-style assurance; the statute does not name specific technical methods. Assumed critical-share reflects substantive doubt rather than normal scholarly maturation.",
+     "verification": {
+      "prior_coverage": "SB 53's incident-reporting and risk-framework regime is heavily covered (Brookings, Wharton, FPF, Stanford Law, law-firm alerts), and the 'self-critique of scalable oversight' literature is also public (e.g. the 'Safetywashing' paper, which specifically warns scalable-oversight benchmarks are liable to safetywashing). However, the specific seam this risk proposes — that SB 53 will codify scalable-oversight metrics into law and freeze them just as the subfield loses confidence — does not appear to be written about anywhere; no source connects SB 53 to scalable oversight as a codified standard.",
+      "sources": [
+       {
+        "title": "California's Disclosure Gambit: What SB 53 Reveals... (Stanford Law CodeX)",
+        "url": "https://law.stanford.edu/2026/01/15/californias-disclosure-gambit-what-sb-53-reveals-about-our-relationship-with-potentially-dangerous-technology-2/"
+       },
+       {
+        "title": "What is California's AI safety law? (Brookings)",
+        "url": "https://www.brookings.edu/articles/what-is-californias-ai-safety-law/"
+       },
+       {
+        "title": "SB 53: What California's New AI Safety Law Means for Developers (Wharton)",
+        "url": "https://ai-analytics.wharton.upenn.edu/wharton-accountable-ai-lab/sb-53-what-californias-new-ai-safety-law-means-for-developers/"
+       },
+       {
+        "title": "California's SB 53: The First Frontier AI Law, Explained (Future of Privacy Forum)",
+        "url": "https://fpf.org/blog/californias-sb-53-the-first-frontier-ai-law-explained/"
+       },
+       {
+        "title": "Safetywashing: Do AI Safety Benchmarks Actually Measure Safety Progress?",
+        "url": "https://arxiv.org/pdf/2407.21792"
+       },
+       {
+        "title": "Confirmation bias: A challenge for scalable oversight",
+        "url": "https://arxiv.org/pdf/2507.19486"
+       },
+       {
+        "title": "Scaling Laws For Scalable Oversight",
+        "url": "https://arxiv.org/html/2504.18530v1"
+       }
+      ],
+      "disputed_claims": "Two load-bearing claims are contested. (1) The mechanism's premise that SB 53 'codifies metrics from scalable oversight' is contradicted by the statute and its analysts: the Stanford Law CodeX analysis states SB 53 does not define an adequate assessment, mandate specific testing protocols, or prescribe evaluation methodologies; FPF/Wharton/Brookings describe it as a disclosure-and-transparency regime requiring firms to publish their OWN frameworks referencing general standards, not any named research paradigm — so there is no scalable-oversight metric being frozen into law. (2) The inferential leap 'rising critical-share => the method is genuinely unsound' is disputed by the field itself: the same self-critical literature (e.g. the Safetywashing paper, confirmation-bias work) frames this as healthy self-correction and benchmark-hygiene, not method collapse — and the risk's own calibration already concedes the field may simply be maturing/self-reflective.",
+      "novelty_rating": "partially_anticipated",
+      "recommended_action": "flag",
+      "recalibrated_calibration": "Lower confidence than the candidate states; the seam is fresh but rests on a likely-false factual premise. SB 53 is NOT a codification of scalable-oversight metrics — it is a transparency/disclosure regime that explicitly leaves methodology to developers (Stanford Law CodeX, FPF, Brookings), so the core lock-in mechanism ('codify scalable-oversight metrics into law') is not supported by the statute as written. What IS real and somewhat fresh: (a) SB 53's litigation-defensibility incentives could make whatever methods firms voluntarily adopt sticky, and (b) the scalable-oversight subfield is publicly self-critical (Safetywashing explicitly flags scalable-oversight benchmarks as liable to 'safetywashing'). But the bridge between these — that SB 53 will entrench scalable oversight specifically — is the analyst's own construction and is unsupported. The dependent claim 'critical-share rising => method unsound' is contested by the very practitioners cited, who read it as self-correction. Net: treat as a speculative hypothesis about regulatory stickiness of self-attested methods, NOT as a claim that SB 53 freezes an unsound scalable-oversight standard. Flag for re-scoping rather than briefing as-is; if re-scoped to 'litigation-defensibility makes voluntarily-adopted safety methods sticky even as confidence in them erodes,' it is more defensible but still moderate-low confidence."
+     }
+    },
+    {
+     "risk": "AI-driven biomedical agents (rare-disease genomic reanalysis, immunology discovery) are deploying under the same decelerating scalable-oversight regime, but in a clinical/genomic context where neither the medical-AI community nor the safety-research community tracks the other's assurance gaps.",
+     "research_anchor": "Scalable Oversight DECELERATING -5.6% with rising critical-share (31.4%, +8.9 pts) — the assurance layer is weakening; Frontier/Scaling Capability and Reasoning/CoT Capability appearing in biomedical lab deployments.",
+     "derived_from": "recent_lab_activity (Microsoft 'Talos: Scaling rare disease diagnosis with automated, iterative genomic reanalysis' tagged Frontier/Scaling Capability; OpenAI 'GPT-5 helped immunologist Derya Unutmaz solve a 3-year mystery'; Microsoft 'Understanding the brain with AI-driven explanations'); eroding_confidence Scalable Oversight; SOCIETAL_CONTEXT legal note that SB 53 covers how models are built but use-regulation is contested/preempted.",
+     "source_arxiv_ids": [],
+     "source_topics": [
       "Scalable Oversight",
-      "Multi-Agent / Tool-Use Capability",
+      "Frontier / Scaling Capability",
+      "Reasoning / Chain-of-Thought Capability",
       "Agentic / Autonomy Capability"
      ],
      "domains_crossed": [
       "Technological",
-      "Legal/Regulatory",
-      "Social"
+      "Legal/Regulatory"
      ],
-     "why_underdiscussed": "Medical AI risk discourse focuses on chatbot misadvice and FDA device clearance; almost no one is tracking iterative, multi-step genomic *reanalysis* agents where the failure mode is a silent wrong reclassification of a variant that no human re-checks, and where oversight research is shrinking precisely as deployment scales.",
-     "mechanism": "Genomic reanalysis is iterative and probabilistic; an agent that mis-weights a variant produces an authoritative-looking diagnosis. Because oversight methods for long-horizon agentic reasoning are getting LESS research attention (decelerating) while critical-quality concerns within that subfield rise, deployed clinical agents lack the verification scaffolding. Harm is invisible because diagnostic correctness is only confirmed downstream (treatment failure, missed condition), so feedback never reaches developers within a useful loop.",
-     "leading_indicator": "First published cases of AI-driven genomic reanalysis reversing or introducing a clinically actionable variant call without a flagged confidence drop; hospital procurement contracts for agentic reanalysis tools that lack a mandated human-in-the-loop verification clause.",
-     "calibration": "Emerging, moderate confidence on the seam (the deployment signal and the oversight-contraction signal are both concretely in the digest); lower confidence on near-term materialization of documented patient harm.",
-     "extrapolation": "Assumed Talos-style tools are moving toward clinical deployment rather than research-only; the digest shows the capability blog post but not deployment scale or harm cases."
+     "communities": "Clinical/genomic-AI deployment teams (Talos genomic reanalysis, immunology) follow biomedical validation norms and IRB/clinical pathways but do not read the frontier-safety oversight literature; scalable-oversight safety researchers study assurance for frontier reasoning but think about coding/agent benchmarks, not autonomous genomic reanalysis pipelines. Neither side sees that an *iterative, automated* genomic reanalysis agent is precisely the long-horizon autonomous case where oversight is decelerating.",
+     "framing_inversion": "AI-accelerated rare-disease diagnosis is an unambiguous good-news story. Inversion: 'automated, iterative' reanalysis is an autonomous-agent deployment in a high-stakes domain inheriting the same eroding oversight layer — the feel-good medical framing actively obscures that it sits in the under-assured agentic regime.",
+     "why_underdiscussed": "Medical-AI wins are reported as breakthroughs in the health press; safety-oversight decline is tracked in the alignment literature. The two literatures share almost no readership, and federal posture (use-regulation contested/preempted) leaves the seam ungoverned.",
+     "mechanism": "Labs deploy autonomous iterative reasoning agents into genomic/clinical workflows (Talos). The assurance methods that would scale human oversight to these long-horizon, expert-domain outputs are exactly the scalable-oversight techniques whose research is decelerating and whose critical-share is rising. Clinical validation pipelines were designed for static models, not iterative autonomous reanalysis. A reanalysis agent that re-interprets variants over time can propagate a subtle systematic error across many patients before any human catches it, because the oversight scaffolding for autonomous expert-domain reasoning is the weakening layer.",
+     "leading_indicator": "Genomic/clinical-AI deployment papers describing autonomous iterative reanalysis without referencing oversight/assurance methods; a reported case of a systematic mis-reanalysis affecting multiple patients traced to an automated agent loop; SB 53 incident reports involving biomedical agentic deployments.",
+     "calibration": "Genuine low-probability but high-consequence; moderate-low confidence. The deployments are real (lab posts), and the oversight deceleration is real, but linking them causally — 'weaker oversight research ⇒ unsafe clinical agent' — is a strong inferential leap; clinical pipelines have independent validation safeguards the digest can't see. Confidence lowered accordingly.",
+     "extrapolation": "Assumed Talos-style genomic reanalysis operates as a long-horizon autonomous agent (the post implies 'automated, iterative' but details are unknown); assumed scalable-oversight techniques are the relevant assurance layer for clinical reasoning, which the digest does not establish.",
+     "verification": {
+      "prior_coverage": "The named components are all already in active public discussion: Microsoft's Talos rare-disease genomic reanalysis tool was just published in Nature Medicine and widely covered, and the GPT-5/Derya Unutmaz immunology result drew broad press the same week. The general 'AI clinical agents need human oversight / verification is the bottleneck' concern is also its own established literature (e.g. a 2026 Stanford paper on the structural limits of agentic healthcare AI, plus multiple systematic reviews on AI agent patient-safety risk). However, the specific seam this risk names — that clinical/genomic AI deployment is happening under the SAME decelerating scalable-oversight regime studied by the AI-safety community, and that neither community tracks the other's assurance gaps — I did not find articulated anywhere.",
+      "sources": [
+       {
+        "title": "Talos: Scaling rare disease diagnosis with automated, iterative genomic reanalysis - Microsoft Research",
+        "url": "https://www.microsoft.com/en-us/research/blog/talos-scaling-rare-disease-diagnosis-with-automated-iterative-genomic-reanalysis/"
+       },
+       {
+        "title": "Automated reanalysis of genomic data for rare disease diagnostics at scale - Nature Medicine",
+        "url": "https://www.nature.com/articles/s41591-026-04477-5"
+       },
+       {
+        "title": "GPT-5 Pro helps immunologist crack a 3-year T cell mystery",
+        "url": "https://www.startuphub.ai/ai-news/artificial-intelligence/2026/gpt-5-pro-solves-immunological-puzzle"
+       },
+       {
+        "title": "The Doctor Will (Still) See You Now: On the Structural Limits of Agentic AI in Healthcare (arXiv)",
+        "url": "https://arxiv.org/abs/2602.18460"
+       },
+       {
+        "title": "AI Agents in Clinical Medicine: A Systematic Review (medRxiv)",
+        "url": "https://www.medrxiv.org/content/10.1101/2025.08.22.25334232v1.full"
+       },
+       {
+        "title": "Scaling Laws For Scalable Oversight (arXiv)",
+        "url": "https://arxiv.org/html/2504.18530v1"
+       },
+       {
+        "title": "Sources of discordance among germ-line variant classifications in ClinVar - Genetics in Medicine",
+        "url": "https://www.nature.com/articles/gim201760"
+       },
+       {
+        "title": "ClinGen Implementing Strategies to Resolve Variant Classification Conflicts in ClinVar - 360Dx",
+        "url": "https://www.360dx.com/molecular-diagnostics/clingen-implementing-strategies-resolve-variant-classification-conflicts"
+       },
+       {
+        "title": "ClinVar and HGMD genomic variant classification accuracy has improved over time - Genome Medicine",
+        "url": "https://link.springer.com/article/10.1186/s13073-023-01199-y"
+       }
+      ],
+      "disputed_claims": "The mechanism's core assumption — that an autonomous reanalysis agent can 'propagate a subtle systematic error across many patients before a human catches it' — rests on contested/nuanced evidence and is partly contradicted by the very deployment cited. (1) The Talos paper reports that every likely-causative variant was independently re-classified as pathogenic/likely-pathogenic by accredited clinical laboratories before becoming a diagnosis, and the tool is tuned for high specificity (~1.3 candidate variants per case, 1 per 200 on monthly cycles) — i.e. a human-in-the-loop circuit-breaker exists by design, undercutting the 'before any human catches it' premise. (2) The underlying ClinVar-discordance literature is itself disputed: clinical labs (Rehm/ClinGen) report only ~1.7% of clinically significant submissions conflict and that classification accuracy has improved over time, while other work shows VUS-level conflicts rising (~2.9% to 4.8% over 2019-2022) — so the rate and severity of systematic error are genuinely contested among genomics groups, not settled. (3) The 'scalable oversight is decelerating' premise is debatable and benchmark-dependent (safetywashing critiques), not an established fact. The causal link 'weaker oversight research => unsafe clinical agent' is the candidate's own acknowledged inferential leap and remains unsupported by any source found.",
+      "novelty_rating": "partially_anticipated",
+      "recommended_action": "flag",
+      "recalibrated_calibration": "Low-probability, high-consequence, and now LOWER confidence than the candidate states. The component facts are real but already widely covered (Talos and the GPT-5 immunology result were front-page within the week; the agentic-clinical-AI oversight gap is an established literature). What appears genuinely unsurfaced is only the specific seam — that medical-AI and AI-safety communities don't track each other's assurance gaps — so the value is in that framing, not in the alarm. Crucially, the risk's mechanism depends on a contested chain: (a) the ClinVar/variant-discordance severity is disputed (ClinGen/Rehm: ~1.7% clinically significant conflicts and improving accuracy, vs. rising VUS conflicts elsewhere), (b) the flagship deployment (Talos) already builds in accredited-lab human confirmation and high-specificity tuning that directly counter the 'error propagates before a human catches it' premise, and (c) 'scalable oversight is decelerating' is itself benchmark-dependent and debatable. Brief this as a framing-level watch item ('do the two communities track each other?'), explicitly NOT as evidence that clinical genomic agents are currently unsafe — that causal claim is an unverified inferential leap resting on contested inputs."
+     }
     },
     {
-     "risk": "PRC-linked influence operations targeting the US data-center/electricity-cost debate will fuse with genuine local grid-strain grievances to convert routine utility-rate disputes into a recurring vector for delegitimizing AI infrastructure siting — a hybrid social-environmental attack surface no single agency owns.",
-     "derived_from": "SOCIETAL_CONTEXT: June 2026 OpenAI disclosure of PRC-linked ops amplifying the data-center/electricity-cost debate, crossed with Environmental signals (IEA 415→945 TWh, grid strain as local flashpoint) and the digest's heavy Agentic/Autonomy + Agentic Behavior Monitoring acceleration (115 and 123.5 recent/qtr) enabling scalable, autonomous narrative operations.",
+     "risk": "Agentic-monitoring research is being built and benchmarked on bounded-task assumptions while deployment moves to long-horizon multi-tool autonomy — and monitoring output volume (123/qtr) is masking that the monitors are scoped to the wrong threat surface.",
+     "research_anchor": "Agentic Behavior Monitoring accelerating but at modest +13.8% while Agentic/Autonomy Capability accelerates +38.6% (recent 115/qtr) and Multi-Agent/Tool-Use +20.7%; Scalable Oversight (the deeper assurance layer) DECELERATING -5.6%.",
+     "derived_from": "velocity.accelerating (Agentic/Autonomy +38.6, Multi-Agent/Tool-Use +20.7, Agentic Behavior Monitoring +13.8); divergence Multi-Agent/Tool-Use vs Scalable Oversight (gap 0.263, volume ratio 0.24); SOCIETAL_CONTEXT tech note that agentic deployment 'shifts risk toward long-horizon multi-step behavior, outpacing monitoring designed for bounded tasks'; recent_lab_activity (Gemini computer use, Codex-maxxing for long-running work, GPT-5.6 Sol).",
      "source_arxiv_ids": [],
      "source_topics": [
+      "Agentic Behavior Monitoring",
       "Agentic / Autonomy Capability",
-      "Agentic Behavior Monitoring"
+      "Multi-Agent / Tool-Use Capability",
+      "Scalable Oversight"
      ],
      "domains_crossed": [
-      "Security/Geopolitical",
-      "Environmental",
-      "Political"
+      "Technological",
+      "Economic"
      ],
-     "why_underdiscussed": "Influence-operation analysis treats narratives as election/geopolitics content; energy/grid analysts treat data-center opposition as local NIMBY economics. Nobody is modeling the SEAM where a foreign actor uses agentic tooling to industrialize the amplification of *true* local grievances about electricity prices to throttle the physical buildout AI itself depends on.",
-     "mechanism": "Agentic capability lets a small operation run many localized, persistent, context-tailored campaigns at zoning-board granularity. By piggybacking on real rate increases (caused partly by data-center demand), the narrative is unfalsifiable and self-reinforcing. Each blocked or delayed substation/data-center compounds grid constraints, raising prices, feeding the next cycle — a foreign actor degrading a rival's compute buildout via domestic democratic process rather than cyberattack.",
-     "leading_indicator": "Cluster of near-identical, locally-tailored anti-data-center campaigns appearing across unrelated jurisdictions within days of utility-rate filings; CAISI/lab disclosures escalating the data-center-narrative ops from Category One toward measurable local-policy impact.",
-     "calibration": "Emerging, moderate-high confidence the vector exists (explicitly disclosed); lower confidence it scales to material siting delays in the near term.",
-     "extrapolation": "Assumed agentic tooling materially lowers the cost of jurisdiction-level micro-campaigns; the disclosure rated current impact low and did not confirm agentic automation."
+     "communities": "Agentic-monitoring researchers (whose paper count looks reassuringly high) measure single-agent, single-session behaviors; product/deployment teams shipping 'long-running' agents (Codex-maxxing, computer-use) operate at the multi-day, multi-tool horizon. Each thinks the other has the harder case covered — monitoring researchers assume deployment is bounded; deployment teams assume the high monitoring paper volume means the field has them covered.",
+     "framing_inversion": "High monitoring-research volume is read as 'safety is keeping pace.' Inversion: volume measured against the wrong (bounded) threat model is worse than visible absence — it produces false assurance precisely where the capability frontier (long-horizon autonomy) has moved.",
+     "why_underdiscussed": "The headline numbers show monitoring accelerating, so observers conclude the safety gap is closing. The mismatch is in the *scope* of what's being monitored, which raw velocity counts cannot reveal.",
+     "mechanism": "Capability research races toward long-horizon multi-agent autonomy (38.6% growth, lab products explicitly for 'long-running work'). Monitoring research grows slower and, critically, inherits eval harnesses built for bounded tasks. Scalable oversight — the layer that would scale assurance to long horizons — is shrinking. Deployed agents thus operate in a regime where the monitoring tooling was validated on a fundamentally shorter horizon, and failures compound across steps before any monitor fires.",
+     "leading_indicator": "New agentic-monitoring benchmarks/papers reporting horizon lengths or tool-call depths far below the task horizons advertised in lab product launches; incident reports (under SB 53) involving multi-step agent actions that no monitor flagged mid-trajectory.",
+     "calibration": "Emerging, moderate confidence on the scope-mismatch; lower confidence that monitors will actually fail in deployment (the 'wrong threat model ⇒ real harm' link is inferential and depends on undisclosed internal monitoring designs at labs).",
+     "extrapolation": "Assumed monitoring research is predominantly bounded-task scoped — the digest gives topic velocity, not the horizon distribution of the underlying papers. Assumed lab deployment horizons exceed academic eval horizons based on product framing, not measured data.",
+     "verification": {
+      "prior_coverage": "The core seam — monitoring/eval harnesses built for bounded short-horizon tasks while deployment shifts to long-horizon multi-tool autonomy — is already explicitly written about across 2025-2026 (VentureBeat on long-horizon agents exposing orchestration limits, Emergence AI noting traditional benchmarks only measure short-horizon bounded tasks, Partnership on AI on real-time failure detection and compounding errors over long workflows, plus arXiv surveys on agentic threat surface and 'measuring long-horizon safety'). The specific framing of a supervision/oversight gap opening as execution outpaces monitoring is named directly (a HuggingFace 'Scalable Interactive Oversight' paper describes an emergent supervision gap; AI runtime-infra papers call for an execution-time layer observing behavior over long horizons).",
+      "sources": [
+       {
+        "title": "Kimi K2.6 runs agents for days — and exposes the limits of enterprise orchestration (VentureBeat)",
+        "url": "https://venturebeat.com/ai/kimi-k2-6-runs-agents-for-days-and-exposes-the-limits-of-enterprise-orchestration"
+       },
+       {
+        "title": "Emergence World: A Laboratory for Evaluating Long-horizon Agent Autonomy",
+        "url": "https://www.emergence.ai/blog/emergence-world-a-laboratory-for-evaluating-long-horizon-agent-autonomy"
+       },
+       {
+        "title": "Prioritizing Real-Time Failure Detection in AI Agents (Partnership on AI)",
+        "url": "https://partnershiponai.org/wp-content/uploads/2025/09/agents-real-time-failure-detection.pdf"
+       },
+       {
+        "title": "Agentic AI Security: Threats, Defenses, Evaluation, and Open Challenges (arXiv 2510.23883)",
+        "url": "https://arxiv.org/pdf/2510.23883"
+       },
+       {
+        "title": "Steering LLMs via Scalable Interactive Oversight (supervision gap)",
+        "url": "https://huggingface.co/papers/2602.04210"
+       },
+       {
+        "title": "A disputed METR graph is testing AI's benchmark economy (Startup Fortune)",
+        "url": "https://startupfortune.com/a-disputed-metr-graph-is-testing-ais-benchmark-economy/"
+       },
+       {
+        "title": "Against the METR Graph (Arachne / Nathan Witkin)",
+        "url": "https://arachnemag.substack.com/p/the-metr-graph-is-hot-garbage"
+       },
+       {
+        "title": "How to game the METR plot (Shashwat Goel)",
+        "url": "https://shash42.substack.com/p/how-to-game-the-metr-plot"
+       },
+       {
+        "title": "Agentic AI hype races ahead as enterprises remain stuck in pilot mode (The Register)",
+        "url": "https://www.theregister.com/ai-and-ml/2026/06/05/agentic-ai-hype-races-ahead-as-enterprises-remain-stuck-in-pilot-mode/5251711"
+       }
+      ],
+      "disputed_claims": "The 'long-horizon threshold has been crossed / autonomy is accelerating fast' premise rests heavily on METR's time-horizon measurements, which are actively disputed: critics (Nathan Witkin/Arachne, Shashwat Goel, Anatol Wegner) and METR's own authors say the precision is overstated, the metric is gameable, the task-length definition is conceptually weak, and the model sample is just sequential iterations from a few labs — not a representative measure of 'AI autonomy.' Separately, the deployment-velocity premise is complicated by reporting (The Register/Forrester) that most enterprises remain stuck in pilot mode, so real-world long-horizon deployment may lag the capability-research velocity the risk assumes. The risk's own weakest link — 'wrong threat model ⇒ real harm,' depending on undisclosed internal lab monitoring designs — remains unverified.",
+      "novelty_rating": "already_widely_discussed",
+      "recommended_action": "flag",
+      "recalibrated_calibration": "Downgrade from 'emerging' to 'already widely discussed.' The scope-mismatch (bounded-task evals vs long-horizon deployment), compounding cross-step failures, and a named 'supervision/oversight gap' are all in public research and trade press as of 2025-2026, so this should NOT be briefed as a novel cross-domain seam — at most as a sharpened, quantified synthesis. Confidence must be lowered further because a load-bearing input — the accelerating-autonomy / horizon-doubling narrative — relies on the contested METR time-horizon measure that METR's own authors and multiple analysts caution against over-interpreting, and because enterprise deployment reportedly lags the capability velocity. The internal 'wrong threat surface ⇒ monitors actually fail in deployment' link stays inferential and unverifiable without lab disclosure. Net: treat as a real but already-surfaced concern resting partly on disputed evidence; present with explicit caveats rather than as a confident original finding."
+     }
     },
     {
-     "risk": "Chain-of-Thought Faithfulness research is accelerating just as SB 53 / RAISE-style transparency mandates take effect — creating a perverse incentive for labs to publish 'faithful reasoning traces' as compliance artifacts even as the research itself shows those traces are unreliable, manufacturing legally-sanctioned false assurance.",
-     "derived_from": "Chain-of-Thought Faithfulness accelerating +34.9% (29/qtr) and Agentic Behavior Monitoring +13.8% (123.5/qtr) in the digest, crossed with Legal/Regulatory context: California SB 53 in effect Jan 2026 (publish risk frameworks/incident reports), NY RAISE Act mirror, and 'Helping build shared standards for advanced AI' lab activity.",
+     "risk": "Decelerating reward-hacking and deceptive-alignment research, combined with surging CoT-faithfulness work, risks shifting the field from preventing covert misbehavior to merely producing more legible explanations — exactly the substitution a transparency-mandate regime would reward and an adversary could exploit.",
+     "research_anchor": "Reward Hacking DECELERATING -17.1% (17/qtr) and Deceptive Alignment DECELERATING -7.9% (88/qtr), while Chain-of-Thought Faithfulness ACCELERATES +34.9% (29/qtr).",
+     "derived_from": "velocity.decelerating (Reward Hacking -17.1, Deceptive Alignment -7.9); velocity.accelerating (CoT Faithfulness +34.9, Evals & Dangerous-Capability Benchmarks +22.4); SOCIETAL_CONTEXT legal (SB 53 published risk frameworks, AI-content disclosure) and security (state-linked misuse, AI-developed exploit code, models rated 'High' cyber).",
      "source_arxiv_ids": [],
      "source_topics": [
+      "Reward Hacking",
+      "Deceptive Alignment",
       "Chain-of-Thought Faithfulness",
-      "Agentic Behavior Monitoring",
       "Evals & Dangerous-Capability Benchmarks"
      ],
      "domains_crossed": [
-      "Legal/Regulatory",
-      "Technological",
-      "Political"
+      "Security/Geopolitical",
+      "Legal/Regulatory"
      ],
-     "why_underdiscussed": "Faithfulness research is treated as an interpretability problem; transparency law is treated as a governance win. No one is examining the seam: a regulatory regime that demands disclosure of model reasoning will incentivize labs to surface CoT traces as evidence of safety, while the very literature growing fastest is the one establishing that those traces don't faithfully reflect the model's actual computation.",
-     "mechanism": "Transparency statutes reward documentable artifacts. CoT traces are the cheapest legible artifact to produce. As labs co-author 'shared standards,' faithful-looking reasoning gets normalized as a compliance deliverable. But faithfulness research itself is flagging that traces can be post-hoc rationalizations — so regulators, auditors, and courts may accept a control that the science says is unsound, freezing in a false-assurance standard that is hard to dislodge once codified.",
-     "leading_indicator": "Frontier risk frameworks or CAISI evaluation protocols citing 'reasoning transparency / CoT disclosure' as a primary safety control; standards drafts treating chain-of-thought as auditable evidence without a faithfulness-validity requirement.",
-     "calibration": "Emerging, moderate confidence; the standards-setting and law are real and the faithfulness acceleration is in the digest, but the specific co-optation pathway is an inference.",
-     "extrapolation": "Assumed standards bodies will reach for CoT as a transparency artifact; the digest shows the research acceleration and a standards blog post but not their linkage."
-    },
-    {
-     "risk": "The widening daily-AI-use gap between college-educated and non-college workers, combined with agentic tools that author their own code and complete long-horizon tasks, will hollow out the intermediate verification labor that currently catches agent errors — removing the human checkpoints precisely as oversight research declines.",
-     "derived_from": "Demographic context: college-educated daily use 22%→34% while non-college fell ~6 pts; crossed with Agentic/Autonomy +38.6% (115/qtr), 'Codex-maxxing for long-running work', 'How agents are transforming work', and Scalable Oversight decelerating with rising critical share.",
-     "source_arxiv_ids": [],
-     "source_topics": [
-      "Agentic / Autonomy Capability",
-      "Scalable Oversight",
-      "Multi-Agent / Tool-Use Capability"
-     ],
-     "domains_crossed": [
-      "Demographic",
-      "Economic",
-      "Social"
-     ],
-     "why_underdiscussed": "Labor-displacement discourse asks 'whose jobs go away'; this risk is about the disappearance of the mid-skill *checking* function that organizations rely on to catch agent mistakes. The adoption gap concentrates AI use among the people who would otherwise be the reviewers, while non-adopters lose the fluency to audit outputs — so the verification layer thins from both directions.",
-     "mechanism": "As agentic tools run long-horizon work, the human role shifts from doing to verifying. But the verification skill requires sustained hands-on engagement that is itself being automated away among heavy adopters (automation complacency), while non-adopters never build the fluency to review agent output. Combined with safety research deprioritizing scalable oversight, organizations end up with neither human nor research-grade checks on increasingly autonomous workflows — a silent erosion of error-catching capacity.",
-     "leading_indicator": "Surveys showing experienced reviewers report declining ability to spot agent errors; firms reducing QA/review headcount in agent-heavy functions; rising incidence of compounding multi-step agent errors reaching production despite nominal human sign-off.",
-     "calibration": "Emerging, moderate confidence on the skill-erosion mechanism; the adoption-gap data and agentic acceleration are solid, the verification-collapse pathway is extrapolated.",
-     "extrapolation": "Assumed that heavy adoption induces verification-skill atrophy and that organizations cut review layers; the digest and context show adoption gaps and capability growth but not measured deskilling of reviewers."
+     "communities": "Faithfulness researchers (accelerating) optimize for explanations that look truthful; reward-hacking/deceptive-alignment researchers (declining) study models that game objectives and conceal intent. They aren't connecting because faithfulness is becoming a fundable, regulator-legible deliverable while reward-hacking is the harder, less-rewarded problem — so the community drifts toward producing legible-looking CoT without resolving whether the underlying behavior is honest.",
+     "framing_inversion": "More chain-of-thought faithfulness research is treated as pure progress toward transparency. Inversion: a model trained/selected to produce faithful-looking reasoning under a disclosure regime, while research into the deception/reward-hacking mechanisms that would falsify that faithfulness is shrinking, creates a more convincing veneer over the same unstudied failure modes — a transparency Potemkin.",
+     "why_underdiscussed": "Faithfulness and reward-hacking are siloed subfields; their opposite velocity trajectories are only visible in aggregate trend data like this tool's. The conventional narrative celebrates faithfulness growth in isolation.",
+     "mechanism": "Regulatory and commercial pressure rewards legible, disclosable reasoning (SB 53 frameworks, content disclosure). Funding and attention flow to CoT faithfulness; the harder adversarial problems (reward hacking, deceptive alignment) lose momentum. Result: the field improves the *appearance* of reasoning honesty faster than its ability to detect when that reasoning is gamed — a gap a sophisticated user or state actor producing AI-orchestrated exploits could exploit, since the very mechanism (reward gaming, concealment) that defeats faithfulness is the under-researched one.",
+     "leading_indicator": "Faithfulness papers increasingly evaluating on benign tasks while citing declining reward-hacking literature; documented cases where a model's faithful-looking CoT diverged from its actual (gamed) objective in a deployment/incident report.",
+     "calibration": "Emerging, low-moderate confidence. The opposite velocity trends are solidly observed; the causal claim that faithfulness work will substitute for rather than complement deception research is inferential and contested — faithfulness and deceptive-alignment research often overlap. Confidence explicitly lowered on the substitution claim.",
+     "extrapolation": "Assumed declining velocity reflects reduced field attention rather than consolidation/saturation; assumed regulatory legibility pressure is steering research direction, which the digest does not directly show.",
+     "verification": {
+      "prior_coverage": "The core seam — that optimizing chains-of-thought to be legible/'look nice' can degrade real monitorability while reward hacking goes concealed — is already prominent in 2025-2026 AI safety literature. The widely-cited 'Chain of Thought Monitorability: A New and Fragile Opportunity' paper and the Frontier Model Forum brief explicitly warn that CoT monitorability is fragile and that training CoTs to look nice or applying optimization pressure undermines it; OpenAI's 'Monitoring Reasoning Models...Risks of Promoting Obfuscation' and a dedicated paper showing CoT obfuscation learned from output supervision generalizes to unseen reward-hacking tasks directly instantiate the adversarial-concealment mechanism. Anthropic's 'Reasoning Models Don't Always Say What They Think' already documents that when RL increases reward hacking, models do not verbalize it. SB 53's transparency-disclosure regime and state-linked AI cyber misuse are both separately, heavily covered.",
+      "sources": [
+       {
+        "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety",
+        "url": "https://arxiv.org/html/2507.11473v1"
+       },
+       {
+        "title": "Chain of Thought Monitorability — Frontier Model Forum issue brief",
+        "url": "https://www.frontiermodelforum.org/issue-briefs/chain-of-thought-monitorability/"
+       },
+       {
+        "title": "Monitoring Reasoning Models for Misbehavior and the Risks of Promoting Obfuscation (OpenAI/Baker et al.)",
+        "url": "https://arxiv.org/pdf/2503.11926"
+       },
+       {
+        "title": "Chain-of-thought obfuscation learned from output supervision can generalise to unseen tasks",
+        "url": "https://arxiv.org/abs/2601.23086"
+       },
+       {
+        "title": "Reasoning Models Don't Always Say What They Think (Anthropic)",
+        "url": "https://www.anthropic.com/research/reasoning-models-dont-say-think"
+       },
+       {
+        "title": "CoT May Be Highly Informative Despite 'Unfaithfulness' (METR)",
+        "url": "https://metr.org/blog/2025-08-08-cot-may-be-highly-informative-despite-unfaithfulness/"
+       },
+       {
+        "title": "Transparency in Frontier AI Act (SB-53): California Requires New Standardized AI Safety Disclosures (WilmerHale)",
+        "url": "https://www.wilmerhale.com/en/insights/blogs/wilmerhale-privacy-and-cybersecurity-law/20251001-transparency-in-frontier-artificial-intelligence-act-sb-53-california-requires-new-standardized-ai-safety-disclosures"
+       },
+       {
+        "title": "International AI Safety Report 2026",
+        "url": "https://internationalaisafetyreport.org/publication/international-ai-safety-report-2026"
+       }
+      ],
+      "disputed_claims": "Two load-bearing claims are contested. (1) The substitution premise — that CoT-faithfulness work crowds out / substitutes for deception research rather than complementing it — is the risk's own admitted inferential leap and is not supported by the literature, which overwhelmingly frames faithfulness/monitorability as integral to detecting deception and reward hacking (Korbak et al.; Frontier Model Forum), i.e. the fields overlap rather than trade off. (2) The framing that faithfulness work merely buys 'legible appearance' is disputed by METR, which argues CoT can be highly informative for catching misbehavior even when technically 'unfaithful,' and the broader debate (Chen/Anthropic vs. METR vs. Emmons et al.) shows faithfulness metrics are classifier-dependent and contested, with 'Lie to Me' cautioning published faithfulness numbers are estimates, not absolute measurements. So the risk's implied premise that the field is producing 'mere legibility' is itself an unsettled empirical question.",
+      "novelty_rating": "already_widely_discussed",
+      "recommended_action": "flag",
+      "recalibrated_calibration": "Downgrade from 'Emerging, low-moderate confidence' to 'Largely anticipated; low confidence on the novel claim.' The underlying mechanism — that optimization/regulatory pressure toward legible, disclosable CoT can degrade genuine monitorability and that reward hacking can be concealed in CoT — is NOT novel; it is the explicit central thesis of the most-cited 2025-26 CoT-monitorability work (Korbak et al., Frontier Model Forum, OpenAI obfuscation paper, the obfuscation-generalizes paper). What is comparatively fresher is the explicit overlay of a transparency-mandate regime (SB 53) plus state-actor exploitation as the forcing function, but each of those elements is itself separately and prominently discussed, so this is at most a re-framing, not an unsurfaced seam. Critically, the risk's distinguishing causal claim — that faithfulness research substitutes for rather than complements deception/reward-hacking research — is contested and unsupported: the safety literature treats them as overlapping, and the 'mere legibility' premise is directly disputed by METR's finding that CoT remains informative despite unfaithfulness, with faithfulness metrics acknowledged to be classifier-dependent and unsettled. Do not brief the substitution claim as established; if surfaced at all, present it as a speculative governance-incentive hypothesis with explicitly low confidence, noting that the empirical trend (velocity deltas) is observed but the substitution interpretation is the analyst's inference, not a documented dynamic."
+     }
     }
    ],
    "digest": {
@@ -4920,7 +5097,8 @@
     "Demographic": "population, aging, migration, inequality, generational shifts"
    },
    "context": "# Societal Context — current real-world state\n#\n# ILLUSTRATIVE AND NON-EXHAUSTIVE. This file enriches the foresight synthesis with\n# CURRENT real-world state across societal domains. It is NOT a filter, a fixed list,\n# or a set of \"the risks that matter.\" The synthesis reasons across the FULL\n# STEEP/PESTLE+ framework regardless of what is written here. The purpose of this file\n# is solely to UPDATE the model on current real-world conditions it cannot otherwise\n# know from training data — not to narrow, rank, or pre-select what it considers.\n# The model must treat everything below as background state to reason ACROSS and\n# combine with the week's research signals, never as the only factors in play.\n#\n# Write BROAD, FACTUAL, and CURRENT. State conditions of the world, not conclusions\n# about which are dangerous. Give the board, not the move. Update regularly.\n#\n# Last updated: June 2026\n\n## Social\n- US public sentiment toward AI has soured over the past year. A March 2026 Quinnipiac poll found 55% of Americans think AI will do more harm than good in daily life (up from 44% in April 2025); 64% think AI will do more harm than good for education.\n- A March 2026 NBC News poll found 57% of voters believe AI's risks outweigh its benefits (vs. 34% the reverse); only 26% have positive feelings about AI, 46% negative — a net rating lower than every tested topic except the Democratic Party and Iran.\n- Trust is low and usage is rising simultaneously: a Feb 2026 Verasight poll found 56% remain anxious about AI even as adoption grows. The Stanford 2026 AI Index notes global \"more benefits than drawbacks\" sentiment rose to 59%, but nervousness also rose to 52%.\n- Sentiment is sharply split by demographics (see Demographic). The single strongest predictor of attitude is personal usage: daily users are favorable by +57 points; rare/never users unfavorable by -42.\n- 76% of Americans think businesses are not transparent enough about their AI use; trust in AI developers is a recurring weak point.\n\n## Technological\n- Frontier capability is advancing fastest in agentic/autonomous systems and coding. Labs report models authoring large shares of their own code; autonomous task-completion horizons are lengthening.\n- Capability is increasingly announced first by labs (system cards, blog posts) ahead of the academic safety literature's response — the lead-time gap this tool measures.\n- Synthetic media generation is mainstream (a quarter of 2026 Super Bowl ads were AI-made or AI-advertising); detection and provenance lag generation.\n- Agentic deployment is shifting risk from single-output failures toward long-horizon, multi-step, multi-tool behavior — outpacing existing monitoring designed for bounded tasks.\n\n## Economic\n- Intense \"AI bubble\" debate. Total AI spending projected to surpass $1.6T; OpenAI committed ~$1.4T over 8 years on data centers; the big four (Google, Microsoft, Meta, Amazon) expected to spend ~$450B in capex in 2026; the 14 largest data-center operators near $750B in 2026 (up from ~$450B in 2025); Goldman estimates ~$7.6T cumulative AI CapEx 2026–2031.\n- Concentration risk: in late 2025 the five largest companies held up ~30% of the S&P 500 — the greatest concentration in half a century. AI-related stocks have driven ~75% of S&P 500 returns, 80% of earnings growth, and 90% of capex growth since ChatGPT launched.\n- Circular-investment concerns (Nvidia↔OpenAI↔AMD↔Microsoft↔CoreWeave cross-holdings) fuel bubble skepticism. Hyperscalers took on ~$121B in new debt (+300% vs. typical load), some structured off-balance-sheet via special-purpose vehicles.\n- Revenue/ROI doubts: an MIT study found 95% of organizations saw zero return on GenAI investment; one analysis found only ~3% of people pay for AI. A Feb 2026 NBER study found 90% of firms reported no productivity/workplace impact.\n- Institutional warnings: the Bank of England and IMF have warned of global market-correction risk from AI overvaluation. Counter-view (JPMorgan, Fed Chair Powell, White House AI czar David Sacks, Ben Horowitz) holds AI generates real revenue and is not a classic bubble. DeepSeek's Jan 2025 release triggered a ~$600B single-day Nvidia drop; the KOSPI halted trading on June 23, 2026.\n\n## Environmental\n- Energy is becoming a binding constraint on AI buildout. The IEA projects global data-center electricity use rising from ~415 TWh in 2024 (~1.5% of total) toward ~945 TWh by 2030 (roughly 4×).\n- Data-center siting, water use, and grid strain are emerging as local political flashpoints. Public opinion favors data-center approaches that protect consumers from high electricity costs and environmental impact.\n- Grid capacity, power procurement, and cooling are now first-order bottlenecks alongside chip supply.\n\n## Political\n- The federal posture is deregulatory and pro-preemption. A Dec 11, 2025 executive order (\"Ensuring a National Policy Framework for AI,\" EO 14365) directs a DOJ litigation task force (active Jan 10, 2026) to challenge state AI laws, a Commerce review of \"burdensome\" state laws, and an FTC policy stance; it exempts child safety, AI compute/data-center infrastructure, and state procurement from preemption.\n- In March 2026 the White House released a National Policy Framework urging Congress to enact broad preemption under a light-touch standard.\n- AI is politically \"up for grabs\" — voters trust neither party to handle it well; negative sentiment concentrates among younger voters and women under 50.\n- A notable administration reversal: driven by national-security concerns over advanced model capabilities, the administration is reportedly considering pre-release frontier-model evaluation requirements, and CAISI (the renamed US AI Safety Institute) announced evaluation partnerships with Google, Microsoft, and xAI — a shift for an administration that entered opposing AI oversight.\n\n## Legal / Regulatory\n- Preemption is NOT settled law. A 10-year state-law moratorium failed in the Senate 99-1 (July 2025). State laws remain enforceable unless/until preempted by statute or struck down by courts. Prudent posture is to keep complying with state law while monitoring.\n- California SB 53 (Transparency in Frontier AI Act) is in effect as of Jan 1, 2026: frontier developers (>10^26 FLOPS) must publish risk frameworks, report safety incidents, and provide whistleblower protections; penalties up to $1M/violation for firms over $500M revenue. Also effective: AB 2013 (training-data transparency); SB 942 (AI-content disclosure/watermarking, delayed to Aug 2, 2026).\n- Texas TRAIGA (HB 149) in force Jan 1, 2026 — scaled back from an EU-style draft to prohibiting specific harmful practices, intent-based liability, AG enforcement with a 60-day cure period.\n- Colorado's comprehensive SB 24-205 never took effect; in May 2026 it was repealed/replaced by the narrower SB 26-189 (ADMT-focused), effective Jan 1, 2027. It was the only state law named in the Dec 2025 EO.\n- New York amended the RAISE Act (March 2026) to mirror SB 53 (revenue-based threshold), easing multistate compliance.\n- A bipartisan federal discussion draft — the Great American AI Act (June 4, 2026, Obernolte/Trahan, 269 pages) — proposes the first comprehensive federal framework in exchange for a 3-year freeze on state laws regulating how models are *built* (not how they're *used*). Not yet introduced or voted on.\n- State legislative volume is high: ~1,561 AI bills introduced across 45 states as of March 2026, surpassing all of 2024.\n- EU AI Act: GPAI obligations took effect Aug 2, 2025; high-risk obligations have an Aug 2, 2026 deadline, though the Commission proposed (Nov 2025) delaying high-risk implementation toward 2027. It remains the binding global benchmark.\n\n## Security / Geopolitical\n- State-linked misuse of frontier AI is documented and rising. In June 2026, OpenAI disclosed PRC-linked influence operations using ChatGPT to amplify US domestic grievances — notably targeting the data-center/electricity-cost debate — rated low-impact (Category One) but notable for testing narratives against AI infrastructure itself.\n- US–China competition centers on compute: export controls on advanced chips and high-bandwidth memory; Chinese stockpiling ahead of restrictions; Chinese model developers (DeepSeek and others) demonstrating competitive capability at lower cost.\n- Frontier cyber capability is operationalizing: documented cases of AI-assisted/AI-orchestrated cyber operations and the first AI-developed exploit code; labs now rate some models \"High\" in cyber capability.\n- National-security concern over advanced model capabilities is reshaping US oversight posture (see Political) — government model-review arrangements with major labs are now in place.\n- Critical-infrastructure exposure (power grid, financial systems) to AI-enabled attacks is a growing institutional concern.\n\n## Demographic\n- Attitudes split sharply by group. Data for Progress (Feb 2026): men favorable +16, women unfavorable -10; under-45 favorable +25, 45+ unfavorable -10; Black voters +29 and Latino +10 favorable, white voters -3.\n- Generational pessimism is strongest among the young despite high usage: Quinnipiac found Gen Z 36% support / 58% oppose AI, the most negative of any generation; NBC found 18-34s at net -44 favorability and women 18-49 at -41.\n- A usage/education divergence at work: among employed college-educated voters, daily AI use jumped from 22% (Aug 2025) to 34% (early 2026), while non-college use fell ~6 points — a widening adoption gap.\n- Overall adoption keeps rising: ~56-66% report using an AI tool in recent months; professional/managerial and white-collar workers adopt far faster than blue-collar workers and retirees.",
-   "n_context_chars": 9704
+   "n_context_chars": 9704,
+   "verified": true
   }
  }
 }
