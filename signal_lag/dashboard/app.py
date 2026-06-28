@@ -54,6 +54,35 @@ def paper_notes(snap):
     return {p.get("arxiv_id"): p for p in get_analysis(snap).get("papers", [])}
 
 
+NOVELTY_BADGE = {
+    "genuinely_unsurfaced": ("🟢", "Genuinely unsurfaced"),
+    "partially_anticipated": ("🟡", "Partially anticipated"),
+    "already_widely_discussed": ("🔴", "Already widely discussed"),
+}
+
+
+def novelty_label(v) -> str:
+    if not v:
+        return "⚪ Not verified"
+    emoji, label = NOVELTY_BADGE.get(v.get("novelty_rating"), ("⚪", "Unrated"))
+    act = v.get("recommended_action")
+    return f"{emoji} {label}" + (f" · action: {act}" if act else "")
+
+
+def surfaced_foresight(snap, limit=3):
+    """The best (web-verified novel/partial) foresight risks; falls back to top risks."""
+    fg = get_analysis(snap).get("foresight_gap")
+    if not fg or not fg.get("risks"):
+        return []
+    surfaced = [
+        r for r in fg["risks"]
+        if (r.get("verification") or {}).get("novelty_rating")
+        in ("genuinely_unsurfaced", "partially_anticipated")
+    ]
+    chosen = surfaced or fg["risks"]  # unverified snapshots: show top risks
+    return chosen[:limit]
+
+
 _key = SNAPSHOT.stat().st_mtime if SNAPSHOT.exists() else 0.0
 snap, prev = _load(_key)
 
@@ -359,6 +388,28 @@ with tab_summary:
     board("🧭 Landscape", quadrant_finding(snap), "quadrant")
     board("🔥 Citations", citation_finding(snap), "citations")
 
+    # Best foresight gaps — the novel cross-domain risks, surfaced front-and-center.
+    top_fore = surfaced_foresight(snap, limit=3)
+    if top_fore:
+        st.divider()
+        st.subheader("🔮 Foresight Gap — this week's novel risks")
+        st.caption("The strongest cross-domain risks this week — anchored on our "
+                   "research-trend signals and web-checked for novelty. These are "
+                   "candidate hypotheses to pressure-test; full six-part analysis and "
+                   "prior-coverage checks are in the **🔮 Foresight Gap** tab.")
+        for r in top_fore:
+            with st.container(border=True):
+                st.markdown(f"**{novelty_label(r.get('verification'))}** — {r.get('risk','')}")
+                meta_bits = []
+                if r.get("domains_crossed"):
+                    meta_bits.append("🔗 " + " × ".join(r["domains_crossed"]))
+                if r.get("research_anchor") and str(r["research_anchor"]).lower() != "none":
+                    meta_bits.append("📊 " + r["research_anchor"])
+                if meta_bits:
+                    st.caption("  ·  ".join(meta_bits))
+                if r.get("communities"):
+                    st.markdown(f"_Who sees which half:_ {r['communities']}")
+
     lab = snap.get("lab_activity") or []
     if lab:
         st.divider()
@@ -577,21 +628,6 @@ def _arxiv_lookup(snap):
             if r.get("arxiv_id"):
                 out[r["arxiv_id"]] = (r.get("title", r["arxiv_id"]), r.get("url"))
     return out
-
-
-NOVELTY_BADGE = {
-    "genuinely_unsurfaced": ("🟢", "Genuinely unsurfaced"),
-    "partially_anticipated": ("🟡", "Partially anticipated"),
-    "already_widely_discussed": ("🔴", "Already widely discussed"),
-}
-
-
-def novelty_label(v) -> str:
-    if not v:
-        return "⚪ Not verified"
-    emoji, label = NOVELTY_BADGE.get(v.get("novelty_rating"), ("⚪", "Unrated"))
-    act = v.get("recommended_action")
-    return f"{emoji} {label}" + (f" · action: {act}" if act else "")
 
 
 def foresight_brief_md(fg) -> str:
