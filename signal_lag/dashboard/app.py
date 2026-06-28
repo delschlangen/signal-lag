@@ -102,6 +102,14 @@ with tabs[0]:
     c2.metric("Window", f"{meta['date_start'][:7]} → {meta['date_end'][:7]}")
     c3.metric("Safety-lag alerts", f"{meta['n_flagged']} of {meta['n_pairings']}")
     c4.metric("Topics tracked", meta["topics_tracked"])
+    srcs = meta.get("source_counts") or {}
+    bits = [f"{k}: {v:,}" for k, v in srcs.items()]
+    if meta.get("n_posts"):
+        bits.append(f"blog posts: {meta['n_posts']}")
+    if meta.get("s2_enriched") is not None:
+        bits.append(f"Semantic Scholar enriched: {meta['s2_enriched']:,}")
+    if bits:
+        st.caption(" · ".join(bits))
 
     st.subheader("What changed since last refresh")
     d = diff_snapshots(snap, prev)
@@ -263,14 +271,19 @@ with tabs[4]:
 
     st.divider()
     ccol, scol = st.columns(2)
+    def _cite_line(r):
+        extra = f" · {r['influential_citations']} influential" if r.get("influential_citations") else ""
+        ven = f" · {r['venue']}" if r.get("venue") else ""
+        return f"- [{r['title']}]({r['url']}) — {r['cited_by_count']} cites{extra}{ven}"
+
     with ccol:
         st.markdown("**🔥 Rapid citation growth**")
         for r in snap["citations"].get("rapid_growth", [])[:10]:
-            st.markdown(f"- [{r['title']}]({r['url']}) — {r['cited_by_count']} cites")
+            st.markdown(_cite_line(r))
     with scol:
         st.markdown("**💤 Sleepers (early-heat)**")
         for r in snap["citations"].get("sleepers", [])[:10]:
-            st.markdown(f"- [{r['title']}]({r['url']}) — {r['cited_by_count']} cites")
+            st.markdown(_cite_line(r))
 
 # =================================================================== Signals
 with tabs[5]:

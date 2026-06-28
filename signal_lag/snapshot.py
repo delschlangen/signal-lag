@@ -56,6 +56,13 @@ def build_snapshot(
     for p in papers:
         source_counts[p.source] = source_counts.get(p.source, 0) + 1
 
+    # Semantic Scholar coverage across the *whole* corpus (the recent-papers view
+    # alone can't show this, since S2 rarely indexes brand-new arXiv papers).
+    s2_enriched = sum(
+        1 for p in papers
+        if p.s2_tldr or p.s2_influential_citations is not None or p.venue
+    )
+
     by_id = {p.arxiv_id: p for p in papers}
     label_map = {t.key: t.label for t in taxonomy.all_topics}
 
@@ -83,11 +90,17 @@ def build_snapshot(
         lst.sort(key=lambda r: r["published"], reverse=True)
         per_topic[k] = lst[:8]
 
-    # Add URLs to citation movers.
+    # Add URLs + S2 fields to citation movers (these are older, cited papers that
+    # Semantic Scholar is most likely to have indexed).
     cites = results["citations"]
     for bucket in ("rapid_growth", "sleepers"):
         for r in cites.get(bucket, []):
             r["url"] = arxiv_url(r["arxiv_id"])
+            src = by_id.get(r["arxiv_id"])
+            if src is not None:
+                r["influential_citations"] = src.s2_influential_citations
+                r["tldr"] = src.s2_tldr
+                r["venue"] = src.venue
 
     dates = [p.published for p in papers] or [today]
     meta = {
@@ -104,6 +117,7 @@ def build_snapshot(
         "n_flagged": sum(1 for d in results["divergence"] if d["lagging"]),
         "source_counts": source_counts,
         "n_posts": len(posts),
+        "s2_enriched": s2_enriched,
     }
 
     return {
