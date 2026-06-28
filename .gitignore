@@ -1,0 +1,17 @@
+# Local cache + generated artifacts
+data/*.sqlite
+data/*.sqlite-*
+data/*.npz
+data/*.md
+data/*.parquet
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Model cache (HuggingFace)
+.cache/
