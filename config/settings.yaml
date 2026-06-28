@@ -2,7 +2,7 @@
 
 ingestion:
   # arXiv categories to pull from.
-  arxiv_categories: [cs.AI, cs.LG, cs.CL]
+  arxiv_categories: [cs.AI, cs.LG, cs.CL, cs.CR, cs.CY, cs.CV]
   # Inclusive date window for submissions. If start/end are null, a rolling
   # window of `years_back` ending today is used.
   date_range:
@@ -33,12 +33,15 @@ ingestion:
     max_enrich: 0          # 0 = all cached papers
   # OpenReview venue papers + peer-review scores (added as papers, source=openreview).
   openreview:
-    enabled: false
+    enabled: true
     max_per_venue: 400
-    venues: []             # e.g. ["ICLR.cc/2025/Conference", "NeurIPS.cc/2024/Conference"]
+    venues:
+      - "ICLR.cc/2024/Conference"
+      - "ICLR.cc/2025/Conference"
+      - "NeurIPS.cc/2024/Conference"
   # Lab/blog RSS — capability-leading signal (kept separate from paper velocity).
   blogs:
-    enabled: false
+    enabled: true
     max_per_feed: 30
     feeds:
       - {name: "Anthropic", url: "https://www.anthropic.com/news/rss.xml"}
@@ -90,6 +93,9 @@ citations:
 divergence:
   # Relative-velocity gap (capability minus safety) that triggers a signal.
   gap_threshold: 0.25
+  # Min recent capability volume (papers/quarter) required to flag, so tiny-count
+  # topics can't produce noisy alerts.
+  min_recent_volume: 3
 
 paths:
   db_path: "data/signal_lag.sqlite"

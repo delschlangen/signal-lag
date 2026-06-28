@@ -41,3 +41,19 @@ def test_divergence_flags_lagging_safety():
     rec = div[0]
     assert rec["lagging"] is True
     assert rec["cap_growth"] > rec["saf_growth"]
+
+
+def test_volume_floor_suppresses_tiny_topics():
+    import pandas as pd
+
+    # Capability grows 1->2 (gap big in %) but recent volume (2) is below the floor.
+    ts = pd.DataFrame([
+        {"period": pd.Period("2024Q1", freq="Q"), "topic_key": "cap", "count": 1},
+        {"period": pd.Period("2024Q2", freq="Q"), "topic_key": "cap", "count": 2},
+        {"period": pd.Period("2024Q1", freq="Q"), "topic_key": "saf", "count": 1},
+        {"period": pd.Period("2024Q2", freq="Q"), "topic_key": "saf", "count": 1},
+    ])
+    div = divergence.compute_divergence(
+        ts, _taxonomy(), window=1, gap_threshold=0.25, min_recent_volume=3
+    )
+    assert div[0]["lagging"] is False  # below volume floor → no noisy alert

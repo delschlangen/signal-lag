@@ -5,6 +5,7 @@ Returns a single results dict consumed by the CLI and the Streamlit dashboard.
 """
 from __future__ import annotations
 
+import datetime as dt
 import logging
 
 import numpy as np
@@ -58,13 +59,17 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
 
     # --- velocity (taxonomy topics) ---
     vcfg = settings.section("velocity")
-    tax_ts = velocity.topic_timeseries(papers, tax_tags)
+    today = dt.date.today()
+    # Trim the current incomplete quarter so trend math sees only complete ones.
+    tax_ts = velocity.drop_incomplete_tail(velocity.topic_timeseries(papers, tax_tags), today)
     inflections = velocity.compute_inflections(
         tax_ts, int(vcfg.get("inflection_window", 2)), float(vcfg.get("inflection_threshold", 0.3))
     )
 
     # --- velocity (clusters) for emergent/new-cluster detection ---
-    cluster_ts = velocity.topic_timeseries(papers, cluster_tags)
+    cluster_ts = velocity.drop_incomplete_tail(
+        velocity.topic_timeseries(papers, cluster_tags), today
+    )
     new_cluster_keys = velocity.newly_forming(
         cluster_ts, int(vcfg.get("new_cluster_max_age_periods", 3))
     )
@@ -81,10 +86,12 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
     cite = citations.citation_signals(papers, settings.section("citations"))
 
     # --- divergence (headline) ---
+    dcfg = settings.section("divergence")
     div = divergence.compute_divergence(
         tax_ts, taxonomy,
         int(vcfg.get("inflection_window", 2)),
-        float(settings.section("divergence").get("gap_threshold", 0.25)),
+        float(dcfg.get("gap_threshold", 0.25)),
+        float(dcfg.get("min_recent_volume", 3)),
     )
     quad = divergence.quadrant_view(inflections, tax_ts)
 
