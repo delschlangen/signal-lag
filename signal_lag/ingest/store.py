@@ -28,7 +28,15 @@ CREATE TABLE IF NOT EXISTS papers (
     cited_by_count    INTEGER,
     counts_by_year    TEXT,          -- json list of {year,count}
     institutions      TEXT,          -- json list
-    enriched_at       TEXT
+    enriched_at       TEXT,
+    -- Semantic Scholar enrichment (nullable)
+    s2_tldr           TEXT,
+    s2_influential    INTEGER,
+    venue             TEXT,
+    fields_of_study   TEXT,          -- json list
+    -- Provenance + review signal
+    source            TEXT DEFAULT 'arxiv',
+    review_score      REAL
 );
 
 CREATE TABLE IF NOT EXISTS authors (
@@ -61,7 +69,23 @@ class Store:
         self.conn = sqlite3.connect(str(self.db_path))
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(SCHEMA)
+        self._migrate()
         self.conn.commit()
+
+    def _migrate(self) -> None:
+        """Add columns missing from an older cache (CREATE IF NOT EXISTS won't)."""
+        cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(papers)")}
+        adds = {
+            "s2_tldr": "TEXT",
+            "s2_influential": "INTEGER",
+            "venue": "TEXT",
+            "fields_of_study": "TEXT",
+            "source": "TEXT DEFAULT 'arxiv'",
+            "review_score": "REAL",
+        }
+        for name, decl in adds.items():
+            if name not in cols:
+                self.conn.execute(f"ALTER TABLE papers ADD COLUMN {name} {decl}")
 
     def close(self) -> None:
         self.conn.close()
@@ -80,8 +104,8 @@ class Store:
                 """
                 INSERT INTO papers
                     (arxiv_id, title, abstract, published, updated,
-                     primary_category, categories, pdf_url)
-                VALUES (?,?,?,?,?,?,?,?)
+                     primary_category, categories, pdf_url, source, review_score)
+                VALUES (?,?,?,?,?,?,?,?,?,?)
                 ON CONFLICT(arxiv_id) DO UPDATE SET
                     title=excluded.title,
                     abstract=excluded.abstract,
@@ -89,7 +113,9 @@ class Store:
                     updated=excluded.updated,
                     primary_category=excluded.primary_category,
                     categories=excluded.categories,
-                    pdf_url=excluded.pdf_url
+                    pdf_url=excluded.pdf_url,
+                    source=excluded.source,
+                    review_score=excluded.review_score
                 """,
                 (
                     p.arxiv_id,
@@ -100,6 +126,8 @@ class Store:
                     p.primary_category,
                     json.dumps(p.categories),
                     p.pdf_url,
+                    p.source,
+                    p.review_score,
                 ),
             )
             # Refresh authors for this paper.
@@ -128,6 +156,20 @@ class Store:
                 json.dumps(paper.counts_by_year),
                 json.dumps(paper.institutions),
                 dt.datetime.utcnow().isoformat(timespec="seconds"),
+                paper.arxiv_id,
+            ),
+        )
+        self.conn.commit()
+
+    def update_s2_enrichment(self, paper: Paper) -> None:
+        self.conn.execute(
+            "UPDATE papers SET s2_tldr=?, s2_influential=?, venue=?, fields_of_study=?"
+            " WHERE arxiv_id=?",
+            (
+                paper.s2_tldr,
+                paper.s2_influential_citations,
+                paper.venue,
+                json.dumps(paper.fields_of_study),
                 paper.arxiv_id,
             ),
         )
@@ -197,4 +239,18 @@ class Store:
             cited_by_count=r["cited_by_count"],
             counts_by_year=json.loads(r["counts_by_year"]) if r["counts_by_year"] else [],
             institutions=json.loads(r["institutions"]) if r["institutions"] else [],
+            s2_tldr=_get(r, "s2_tldr"),
+            s2_influential_citations=_get(r, "s2_influential"),
+            venue=_get(r, "venue"),
+            fields_of_study=json.loads(r["fields_of_study"]) if _get(r, "fields_of_study") else [],
+            source=_get(r, "source") or "arxiv",
+            review_score=_get(r, "review_score"),
         )
+
+
+def _get(row: sqlite3.Row, key: str):
+    """Safe column access (older caches may lack newer columns)."""
+    try:
+        return row[key]
+    except (IndexError, KeyError):
+        return None

@@ -98,10 +98,39 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
 
     if enrich:
         enrich_citations(settings, store)
+        try:
+            enrich_semantic_scholar(settings, store)
+        except Exception as e:  # fully optional, never block ingestion
+            log.warning("Semantic Scholar enrichment skipped: %s", e)
 
     total = store.count_papers()
     store.close()
     return total
+
+
+def enrich_semantic_scholar(settings: Settings, store: Store | None = None) -> int:
+    """Optional Semantic Scholar enrichment (TLDR, influential cites, venue, fields)."""
+    cfg = settings.semantic_scholar
+    if not cfg.get("enabled"):
+        return 0
+    from .semantic_scholar_client import SemanticScholarClient
+
+    own = store is None
+    store = store or Store(settings.path("db_path"))
+    papers = store.get_papers()
+    cap = int(cfg.get("max_enrich", 0))
+    if cap:
+        papers = papers[-cap:]  # most recent
+    client = SemanticScholarClient(api_key=cfg.get("api_key"))
+    log.info("Semantic Scholar: enriching %d papers", len(papers))
+    n = client.enrich(papers)
+    for p in papers:
+        if p.s2_tldr is not None or p.s2_influential_citations is not None or p.venue:
+            store.update_s2_enrichment(p)
+    log.info("Semantic Scholar: enriched %d papers", n)
+    if own:
+        store.close()
+    return n
 
 
 def _quarter_windows(start: dt.date, end: dt.date) -> list[tuple[dt.date, dt.date]]:

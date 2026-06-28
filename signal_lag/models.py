@@ -31,6 +31,17 @@ class Paper:
     counts_by_year: list[dict] = field(default_factory=list)
     institutions: list[str] = field(default_factory=list)
 
+    # Semantic Scholar enrichment (optional, fail-soft).
+    s2_tldr: str | None = None
+    s2_influential_citations: int | None = None
+    venue: str | None = None
+    fields_of_study: list[str] = field(default_factory=list)
+
+    # Provenance: which source(s) this record came from (e.g. "arxiv", "openreview").
+    source: str = "arxiv"
+    # OpenReview-style review signal (mean rating), when available.
+    review_score: float | None = None
+
     @property
     def quarter(self) -> str:
         q = (self.published.month - 1) // 3 + 1
