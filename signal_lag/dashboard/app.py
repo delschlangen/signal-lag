@@ -34,8 +34,10 @@ SNAPSHOT = Path(__file__).resolve().parent.parent.parent / "data" / "snapshot.js
 PREV_SNAPSHOT = SNAPSHOT.with_name("snapshot_prev.json")
 
 
-@st.cache_data(show_spinner="Loading foresight snapshot...")
-def _load():
+# TTL + a cache key derived from the snapshot file's mtime so a refreshed
+# snapshot is always picked up, even if the app container isn't redeployed.
+@st.cache_data(ttl=1800, show_spinner="Loading foresight snapshot...")
+def _load(_cache_key: float):
     snap = load_snapshot(SNAPSHOT)
     if snap is None:
         # No published snapshot yet -> build a demo one from fixtures in-memory.
@@ -52,7 +54,8 @@ def lbl(snap, key):
     return snap["label_map"].get(key, key)
 
 
-snap, prev = _load()
+_key = SNAPSHOT.stat().st_mtime if SNAPSHOT.exists() else 0.0
+snap, prev = _load(_key)
 meta = snap["meta"]
 live = meta.get("mode") == "live"
 
