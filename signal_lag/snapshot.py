@@ -124,7 +124,7 @@ def build_snapshot(
         "s2_enriched": s2_enriched,
     }
 
-    return {
+    snap_out = {
         "meta": meta,
         "label_map": label_map,
         "divergence": results["divergence"],
@@ -142,6 +142,33 @@ def build_snapshot(
         "lab_activity": posts,
         "analysis": results.get("analysis"),
     }
+
+    # --- Foresight Gap: second Claude pass crossing this week's signals with the
+    # living societal context. Same fail-soft, baked-into-snapshot architecture as the
+    # primary analysis (no page-load API calls).
+    acfg = settings.analysis or {}
+    fcfg = acfg.get("foresight") or {}
+    if fcfg.get("enabled"):
+        from .analysis import foresight
+
+        try:
+            prev_snap = load_snapshot(settings.path("snapshot_path"))
+        except Exception:
+            prev_snap = None
+        diff = diff_snapshots(snap_out, prev_snap)
+        ctx = foresight.load_context(settings.root / fcfg.get("context_path", "config/context.md"))
+        digest = foresight.build_signal_digest(snap_out, diff)
+        fg = foresight.synthesize_foresight_gap(
+            digest, ctx, acfg.get("api_key"),
+            acfg.get("model", "claude-opus-4-8"),
+            int(fcfg.get("max_risks", 4)),
+        )
+        if fg:
+            if snap_out.get("analysis") is None:
+                snap_out["analysis"] = {}
+            snap_out["analysis"]["foresight_gap"] = fg
+
+    return snap_out
 
 
 def save_snapshot(snapshot: dict, path: Path) -> None:

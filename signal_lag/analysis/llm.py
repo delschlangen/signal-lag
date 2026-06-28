@@ -55,7 +55,8 @@ provided abstracts/metrics. Output must be valid JSON and nothing else.
 """
 
 
-def _extract_json(text: str) -> dict | None:
+def extract_json(text: str) -> dict | None:
+    """Best-effort parse of a JSON object from a model response (handles ``` fences)."""
     text = text.strip()
     # Strip ```json fences if present.
     text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip(), flags=re.MULTILINE)
@@ -73,34 +74,50 @@ def _extract_json(text: str) -> dict | None:
     return None
 
 
-def analyze_weekly(payload: dict, api_key: str | None, model: str = "claude-opus-4-8") -> dict | None:
+# Backwards-compatible private alias.
+_extract_json = extract_json
+
+
+def call_claude(
+    system: str, user: str, api_key: str | None,
+    model: str = "claude-opus-4-8", max_tokens: int = 8000,
+) -> str | None:
+    """Single Claude message call. Returns the text, or None on any failure.
+
+    Shared by every LLM pass (weekly analysis, foresight) so there is exactly one
+    client/call pattern. Fail-soft: missing key, missing SDK, or any API error -> None.
+    """
     if not api_key:
-        log.info("No ANTHROPIC_API_KEY; skipping LLM analysis")
+        log.info("No ANTHROPIC_API_KEY; skipping LLM call")
         return None
     try:
         import anthropic
     except ImportError:
-        log.warning("anthropic SDK not installed; skipping LLM analysis")
+        log.warning("anthropic SDK not installed; skipping LLM call")
         return None
-
     try:
         client = anthropic.Anthropic(api_key=api_key)
         resp = client.messages.create(
-            model=model,
-            max_tokens=8000,
-            system=SYSTEM,
-            messages=[{
-                "role": "user",
-                "content": INSTRUCTIONS + "\n\nDATA:\n" + json.dumps(payload, ensure_ascii=False),
-            }],
+            model=model, max_tokens=max_tokens, system=system,
+            messages=[{"role": "user", "content": user}],
         )
-        text = "".join(b.text for b in resp.content if getattr(b, "type", None) == "text")
-        result = _extract_json(text)
-        if result is None:
-            log.warning("Could not parse LLM analysis JSON")
-            return None
-        log.info("LLM analysis complete (%d paper notes)", len(result.get("papers", [])))
-        return result
-    except Exception as e:  # any API/parse failure -> fail soft
-        log.warning("LLM analysis failed: %s", e)
+        return "".join(b.text for b in resp.content if getattr(b, "type", None) == "text")
+    except Exception as e:  # any API failure -> fail soft
+        log.warning("Claude call failed: %s", e)
         return None
+
+
+def analyze_weekly(payload: dict, api_key: str | None, model: str = "claude-opus-4-8") -> dict | None:
+    text = call_claude(
+        SYSTEM,
+        INSTRUCTIONS + "\n\nDATA:\n" + json.dumps(payload, ensure_ascii=False),
+        api_key, model,
+    )
+    if text is None:
+        return None
+    result = extract_json(text)
+    if result is None:
+        log.warning("Could not parse LLM analysis JSON")
+        return None
+    log.info("LLM analysis complete (%d paper notes)", len(result.get("papers", [])))
+    return result

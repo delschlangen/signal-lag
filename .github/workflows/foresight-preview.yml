@@ -1,0 +1,35 @@
+name: Foresight preview
+
+# Runs ONLY the Foresight Gap synthesis against the already-committed snapshot
+# (no data pull, no re-analysis) and prints the generated risks to the job log, so the
+# synthesis prompt can be tuned on real signals before the dashboard tab is built.
+# Manual trigger only.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt anthropic
+
+      - name: Run foresight preview (real snapshot)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python scripts/foresight_preview.py

@@ -119,8 +119,21 @@ analysis:
   api_key: null
   # How many representative papers per pairing side to send for grounding.
   papers_per_side: 3
+  # Second Claude pass: cross the week's signals with broader societal/contextual
+  # trends to surface novel, not-yet-in-the-news risk implications (the seam between
+  # research signals and societal forces). Baked into analysis["foresight_gap"];
+  # fail-soft (skipped with no api_key), same as the primary analysis.
+  foresight:
+    enabled: true
+    # Number of novel risk implications to generate (2-4 recommended).
+    max_risks: 4
+    # User-maintained living context file (the current real-world state across
+    # societal domains). Edited week-to-week; if missing/empty the pass still runs
+    # without the societal layer.
+    context_path: "config/context.md"
 
 paths:
   db_path: "data/signal_lag.sqlite"
   embeddings_path: "data/embeddings.npz"
   brief_output: "data/foresight_brief.md"
+  snapshot_path: "data/snapshot.json"
