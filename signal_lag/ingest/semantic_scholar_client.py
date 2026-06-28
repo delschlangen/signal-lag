@@ -40,7 +40,7 @@ class SemanticScholarClient:
             self.session.headers.update({"x-api-key": api_key})
 
     def _post_batch(self, ids: list[str]) -> list[dict] | None:
-        for attempt, wait in enumerate([0, 5, 15, 30]):
+        for attempt, wait in enumerate([0, 3, 8]):
             if wait:
                 time.sleep(wait)
             try:
@@ -65,12 +65,21 @@ class SemanticScholarClient:
         by_id = {p.arxiv_id: p for p in papers}
         ids = [f"ARXIV:{aid}" for aid in by_id]
         enriched = 0
+        consecutive_failures = 0
         for i in range(0, len(ids), self.batch_size):
             chunk = ids[i : i + self.batch_size]
             data = self._post_batch(chunk)
             time.sleep(self.request_delay)
             if not data:
+                # Keyless S2 pool is heavily rate-limited; bail early instead of
+                # burning backoff on every batch when it's clearly throttling us.
+                consecutive_failures += 1
+                if consecutive_failures >= 2:
+                    log.warning("S2 repeatedly unavailable; stopping enrichment "
+                                "(set SEMANTIC_SCHOLAR_API_KEY for reliable access)")
+                    break
                 continue
+            consecutive_failures = 0
             for rec in data:
                 if not rec:
                     continue  # S2 returns null for unmatched ids
