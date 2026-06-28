@@ -181,12 +181,36 @@ How it works:
    extrapolation** (an honest flag of what goes beyond the data). It's instructed to
    ground every claim in the provided signals and to refuse to restate well-known AI risks.
 
+The synthesis is tuned to the tool's real strength:
+- **Research-trend anchor (the proprietary edge).** Each risk leads with a signal only this
+  tool has — a safety subfield whose velocity is *decelerating* or whose *critical share is
+  rising* — then crosses it with the societal context. The research signal makes it novel;
+  the societal cross makes it a real-world risk.
+- **Cross-silo seams.** It prioritizes risks where two distinct expert communities each
+  track one half and nobody connects them, and names which community sees which half.
+- **Framing inversions.** It rewards risks that invert a trend everyone treats as simply
+  good or bad (e.g. transparency regulation freezing in an unsound standard).
+- **Calibrated on contested ground.** When a risk leans on a disputed or inferential claim
+  — including over-reading the tool's own trend metric as causation — confidence is lowered
+  explicitly, never laundered into a confident claim.
+
+**Novelty verification.** After synthesis, each candidate is run through a web search
+(Claude's server-side web search) that looks for **both confirming and disputing** coverage,
+returning a *prior-coverage check*, a verified novelty rating (*genuinely unsurfaced /
+partially anticipated / already widely discussed*), disputing sources, and a recalibrated
+confidence. Already-discussed risks are **flagged and demoted, not hidden**. Verifications
+run in parallel and are baked into the snapshot (cached — never at page load). This is the
+calibrated posture: generate candidate risks, *then check them against current coverage
+before surfacing them* — distinguishing a genuine seam from something that just isn't in the
+index yet.
+
 **These are AI-surfaced candidate hypotheses for an analyst to pressure-test — not
 predictions.** The model widens the aperture; human judgment goes on top. The tab shows
-the digest, context, and framework that fed each synthesis, so the reasoning is fully
+the digest, context, framework, and per-risk prior-coverage check, so the reasoning is fully
 transparent. Config lives under `analysis.foresight` in `settings.yaml` (enable, number of
-risks, context-file path). Like the rest of the Claude layer it needs the
-`ANTHROPIC_API_KEY` repo secret; without it the tab shows an honest "unavailable" message.
+risks, context-file path, `verify_novelty`, web-search tool version). Like the rest of the
+Claude layer it needs the `ANTHROPIC_API_KEY` repo secret; without it the tab shows an
+honest "unavailable" message.
 
 ---
 
@@ -275,12 +299,15 @@ python scripts/generate_fixtures.py
 - **🧭 Quadrant** — topics plotted by recent volume (x) vs. growth (y): *emerging*
   (small but surging), *hot* (big and growing), *cooling* (shrinking), *white-space*
   (quiet). A strategic map of the field.
-- **🔮 Foresight Gap** — a second Claude pass that crosses this week's signals with
-  broader societal forces to surface **novel, not-yet-in-the-news risks** living in the
-  *seam between domains*. Each is a candidate hypothesis (not a prediction) with a six-part
-  structure — statement, derived-from, why-under-discussed, mechanism, leading indicator,
-  calibration, extrapolation — and it shows the signal digest + societal context + scanning
-  framework that fed it. See methodology section 10. Exportable as a brief.
+- **🔮 Foresight Gap** — a second Claude pass that anchors on the tool's own research-trend
+  signal and crosses it with broader societal forces to surface **novel, not-yet-in-the-news
+  risks** living in the *seam between domains*. Each candidate is then **web-checked against
+  current coverage** and given a verified novelty rating (genuinely unsurfaced / partially
+  anticipated / already widely discussed) with a *prior-coverage check* and disputing
+  sources — already-discussed ones are flagged and demoted, not hidden. Each is a candidate
+  hypothesis (not a prediction) naming which communities see which half of the problem, with
+  mechanism, leading indicator, calibration, and an explicit extrapolation line. See
+  methodology section 10. Exportable as a brief.
 - **🔍 Sources** — the receipts: actual arXiv papers behind each topic (each with a
   short *what-it-does / why-it-matters* note — written by Claude when the analysis
   layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,

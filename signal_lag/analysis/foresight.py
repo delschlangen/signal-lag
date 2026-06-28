@@ -201,22 +201,38 @@ You are given four inputs (as JSON / text below):
    the analyst.
 
 CRITICAL INSTRUCTIONS:
-- The VALUE IS IN THE SEAM. Generate risks that emerge ONLY when you CROSS the research
-  signals with developments across the societal domains — the kind of risk no single
-  community is tracking because it sits BETWEEN domains (e.g. a capability trend × a
-  regulatory gap × a demographic shift). A risk that lives entirely inside AI research,
-  or entirely inside one societal domain, is NOT what we want.
+- ANCHOR ON THE TOOL'S PROPRIETARY SIGNAL, THEN CROSS IT. This tool's distinctive edge
+  is its own research-trend data — a safety subfield whose velocity is DECELERATING or
+  whose CRITICAL share is RISING. That is something no outside commentator has. Weight
+  risks that are anchored in such a research-trend signal MORE heavily: the research
+  signal is what makes a risk genuinely novel. THEN cross it with the societal context to
+  make it a real-world risk. (The research signal makes it novel; the societal cross makes
+  it matter.) Do NOT downweight the societal layer — you need both; just lead with the
+  research-trend anchor.
+- THE VALUE IS IN THE CROSS-SILO SEAM. The highest-value risks are ones where TWO DISTINCT
+  EXPERT COMMUNITIES each track one half of the problem and NOBODY is connecting them
+  (e.g. medical-AI deployment teams who don't follow safety-research trends; faithfulness
+  researchers who don't think about compliance incentives). For every risk, name in
+  "communities" who already sees each half and why they are not connecting them. A risk
+  that lives entirely inside one community is probably already covered there — discard it.
+- REWARD FRAMING INVERSIONS. Where possible, look for risks that INVERT or COMPLICATE the
+  conventional framing of a trend everyone treats as straightforwardly good or bad (e.g.
+  "transparency regulation is a solution" → "it can freeze an unsound standard into law").
+  These inversions tend to be the genuinely unsurfaced ones.
+- PENALIZE CONFIDENT CLAIMS ON CONTESTED GROUND. If a risk depends on a claim that is
+  itself disputed, unverified, or thinly evidenced — INCLUDING when you lean on this
+  tool's own research-trend metric as a CAUSAL claim ("less research attention ⇒ less
+  deployed safety scaffolding") rather than as a mere attention signal — the "calibration"
+  MUST state that uncertainty explicitly and lower confidence. NEVER launder a contested
+  or inferential claim into a confident risk.
 - The SOCIETAL_CONTEXT file and any examples in it are ILLUSTRATIVE AND NON-EXHAUSTIVE.
   Reason across the FULL scanning framework and your own knowledge of the current
-  real-world state. NEVER treat the listed items as the only societal factors that
-  matter; if the context is sparse, use the framework plus what you know to fill the gaps
-  (and say so).
+  real-world state. NEVER treat the listed items as the only societal factors that matter.
 - EXPLICITLY FORBIDDEN: restating well-known or already-reported AI risks (e.g. "models
   may hallucinate", "AI could cause job loss", "deepfakes threaten elections", "alignment
   is hard"). If a risk would not surprise an informed reader, discard it.
 - GROUND every risk in the provided signals. In "derived_from", cite the ACTUAL topics,
-  papers (by title/arxiv_id), or divergences from the digest — so each risk is traceable,
-  not hallucinated. When you reason beyond the signals, set "extrapolation" to a short
+  papers (by title/arxiv_id), or divergences from the digest. In "extrapolation", give an
   honest note of what you assumed that the data does NOT show.
 
 Generate {max_risks} novel risk implications (fewer is fine if you cannot find that many
@@ -227,14 +243,17 @@ preamble) with exactly this shape:
   "risks": [
     {{
       "risk": "one-line risk statement",
+      "research_anchor": "the specific research-trend signal this is anchored on (a decelerating velocity or rising critical-share topic from the digest) — or 'none' if it is anchored mainly in societal context",
       "derived_from": "the specific signals this is built on — cite actual topics / paper titles / divergences from the digest",
       "source_arxiv_ids": ["<id>", "..."],   // ids from the digest this draws on (may be empty)
       "source_topics": ["<topic label>", "..."],  // topic labels from the digest this draws on
       "domains_crossed": ["<framework domain>", "<framework domain>"],  // the seam
+      "communities": "which two (or more) expert communities each see one half, and why they are not connecting them",
+      "framing_inversion": "if this inverts a conventional 'this trend is good/bad' framing, state the inversion — else 'n/a'",
       "why_underdiscussed": "why this isn't in the news/literature yet",
       "mechanism": "the causal chain — why it is plausible",
       "leading_indicator": "the concrete observable that would tell us it is materializing",
-      "calibration": "honest read: genuine low-probability vs. emerging, and your confidence",
+      "calibration": "honest read: genuine low-probability vs. emerging, and your confidence — explicitly lowered where the risk leans on a contested/inferential claim",
       "extrapolation": "what you assumed beyond the provided signals (or 'none — grounded in the digest')"
     }}
   ]
@@ -312,6 +331,41 @@ def verify_novelty(
         # else try the fallback tool version
     log.warning("Novelty verification failed for risk: %s", (risk.get("risk") or "")[:60])
     return None
+
+
+# Genuinely-novel first; already-discussed demoted to the bottom (unverified in between).
+NOVELTY_RANK = {
+    "genuinely_unsurfaced": 0,
+    "partially_anticipated": 1,
+    None: 2,                      # verification failed / not run
+    "already_widely_discussed": 3,
+}
+
+
+def verify_and_rank_risks(
+    risks: list, api_key: str | None, model: str = "claude-opus-4-8",
+    tool_version: str = "web_search_20260209", max_workers: int = 4,
+) -> list:
+    """Verify each risk's novelty in parallel, attach ``verification``, and sort.
+
+    Genuinely-unsurfaced risks float to the top; already-widely-discussed ones are
+    demoted to the bottom (flagged, not dropped). Fail-soft per risk: a failed
+    verification leaves ``verification: None`` and the risk keeps its place in the middle.
+    """
+    if not risks:
+        return risks
+    from concurrent.futures import ThreadPoolExecutor
+
+    def _one(r):
+        return verify_novelty(r, api_key, model, tool_version)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        verifications = list(ex.map(_one, risks))
+    for r, v in zip(risks, verifications):
+        r["verification"] = v
+    risks.sort(key=lambda r: NOVELTY_RANK.get(
+        (r.get("verification") or {}).get("novelty_rating"), 2))
+    return risks
 
 
 def synthesize_foresight_gap(

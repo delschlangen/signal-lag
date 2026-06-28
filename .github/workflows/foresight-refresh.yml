@@ -18,7 +18,7 @@ concurrency:
 jobs:
   foresight:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25      # synthesis + parallel web-search verification
     steps:
       - uses: actions/checkout@v4
 

@@ -171,12 +171,20 @@ def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | 
     diff = diff_snapshots(snapshot, prev_snapshot)
     ctx = foresight.load_context(settings.root / fcfg.get("context_path", "config/context.md"))
     digest = foresight.build_signal_digest(snapshot, diff)
+    model = acfg.get("model", "claude-opus-4-8")
     fg = foresight.synthesize_foresight_gap(
-        digest, ctx, acfg.get("api_key"),
-        acfg.get("model", "claude-opus-4-8"),
-        int(fcfg.get("max_risks", 4)),
+        digest, ctx, acfg.get("api_key"), model, int(fcfg.get("max_risks", 4)),
     )
     if fg:
+        # Novelty verification (web search): stress-test each candidate against current
+        # coverage, then demote already-discussed ones. Baked into the snapshot, so the
+        # searches are cached (run once per refresh, never at page load).
+        if fcfg.get("verify_novelty") and fg.get("risks"):
+            fg["risks"] = foresight.verify_and_rank_risks(
+                fg["risks"], acfg.get("api_key"), model,
+                fcfg.get("web_search_tool", "web_search_20260209"),
+            )
+            fg["verified"] = True
         if snapshot.get("analysis") is None:
             snapshot["analysis"] = {}
         snapshot["analysis"]["foresight_gap"] = fg
