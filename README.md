@@ -15,9 +15,11 @@ capability research is accelerating while the paired safety work stays flat.
 
 **▶️ Live demo: https://signal-lag-aw6rmrmp65nit9m9f8wmcq.streamlit.app**
 
-The hosted dashboard self-seeds from a bundled synthetic dataset, so it works
-immediately with no setup. Hosting is free on [Streamlit Community
-Cloud](https://share.streamlit.io); to run your own copy, see
+The live dashboard runs on **real arXiv + OpenAlex data**, refreshed **weekly** by a
+GitHub Action that pulls fresh papers, re-runs the analysis, and publishes a snapshot
+the app reads (see [How the live data works](#how-the-live-data-works)). Before the
+first refresh runs it shows a bundled synthetic demo dataset. Hosting is free on
+[Streamlit Community Cloud](https://share.streamlit.io); to run your own copy, see
 [Deploy your own](#deploy-your-own).
 
 ---
@@ -129,6 +131,29 @@ Regenerate the fixtures (deterministic) with:
 
 ```bash
 python scripts/generate_fixtures.py
+```
+
+---
+
+## How the live data works
+
+The dashboard never pulls data at page-load time — that would be slow and
+network-dependent. Instead:
+
+1. **`.github/workflows/refresh.yml`** runs weekly (Mondays 06:00 UTC) and on demand.
+2. It pulls real arXiv + OpenAlex data, runs the full analysis, and writes
+   **`data/snapshot.json`** via `scripts/refresh_snapshot.py`.
+3. It commits that snapshot; Streamlit Community Cloud redeploys on the push.
+4. The app reads the snapshot — fast — and the **Weekly Summary** tab diffs it against
+   the previous snapshot to show what changed.
+
+Trigger it manually anytime from the repo's **Actions → Weekly data refresh → Run
+workflow** (you can tune the per-category and OpenAlex caps there). To produce a
+snapshot locally:
+
+```bash
+python scripts/refresh_snapshot.py            # real data (needs network)
+python scripts/refresh_snapshot.py --use-fixtures   # offline demo snapshot
 ```
 
 ---
