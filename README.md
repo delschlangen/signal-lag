@@ -1,5 +1,7 @@
 # signal-lag
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Patent-landscape-style **foresight on AI-safety research**. It treats research
 papers the way patent analysts treat filings — tracking *what* is being worked on,
 *how fast*, *by whom*, and crucially *what isn't* — to surface where the field is
@@ -449,3 +451,14 @@ python -m pytest tests/ -q
   the real metrics and abstracts; it never invents data.
 - OpenReview papers are dated by submission, so they cluster around venue cycles; their
   review scores are captured but not yet surfaced prominently in the UI.
+
+---
+
+## License
+
+**[MIT](LICENSE)** — free to use, copy, modify, and redistribute (including commercially),
+with attribution. Fork it, deploy your own, retune the taxonomy/context, build on it.
+
+The **code** is MIT-licensed. The **data** it surfaces comes from third parties under
+their own terms — arXiv, OpenAlex, Semantic Scholar, OpenReview, and the labs' blogs —
+so respect those sources' licenses and rate limits when you run your own copy.
