@@ -20,6 +20,7 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
+from signal_lag.glossary import CAPABILITY_KEYS, GLOSSARY, SAFETY_KEYS  # noqa: E402
 from signal_lag.snapshot import diff_snapshots, load_snapshot  # noqa: E402
 
 st.set_page_config(page_title="signal-lag", layout="wide", page_icon="📡")
@@ -718,8 +719,35 @@ with tab_sources:
         _render_cites("sleepers")
 
 # =============================================================== Methodology
+def render_glossary(snap):
+    """Plain-language definition + read-more link for every tracked category."""
+    def block(title, keys, blurb):
+        st.markdown(f"#### {title}")
+        st.caption(blurb)
+        for k in keys:
+            entry = GLOSSARY.get(k)
+            if not entry:
+                continue
+            definition, link = entry
+            st.markdown(f"- **{lbl(snap, k)}** — {definition} [↗ read more]({link})")
+
+    block("🛡️ Safety topics", SAFETY_KEYS,
+          "What we'd need to *trust* increasingly capable systems.")
+    block("⚡ Capability topics", CAPABILITY_KEYS,
+          "What makes systems more powerful — the side that tends to move first.")
+    st.caption("Each safety topic is paired with the capability it's meant to keep pace "
+               "with; the **Divergence** tab measures the gap between the two.")
+
+
 with tab_method:
     st.subheader("How signal-lag works")
+
+    with st.expander("📖 The categories we track — what each term means", expanded=True):
+        st.markdown("Plain-language definitions of every capability and safety concept "
+                    "this tool tracks, so the rest of the dashboard is legible even if "
+                    "you don't live in AI-safety jargon.")
+        render_glossary(snap)
+
     cats = ", ".join(meta.get("categories", []) or [])
     srcs = meta.get("source_counts") or {}
     src_line = ", ".join(f"{k}: {v:,}" for k, v in srcs.items()) if srcs else "—"
@@ -736,7 +764,7 @@ it tracks *what* is being worked on, *how fast*, *by whom*, and — most importa
 All free, all **fail-soft** (a source being down just omits its signal):
 - **arXiv** — papers (title, abstract, authors, dates) from `{cats}`.
 - **OpenAlex** — citation counts, year-by-year citation series, author institutions.
-- **Semantic Scholar** — TLDRs, *influential*-citation counts, venue, fields (needs an API key).
+- **Semantic Scholar** — TLDRs, *influential*-citation counts, venue, fields.
 - **OpenReview** — venue papers + peer-review scores, added as papers.
 - **Lab/blog RSS** — posts from major labs as a *capability-leading* signal (kept separate from paper velocity).
 
@@ -784,10 +812,9 @@ Once per refresh, the computed metrics **plus the real paper abstracts** are sen
 to **Claude** (`claude-opus-4-8`), which returns a genuine analytical read: what the
 widest capability↔safety gap actually *means* and why it matters, a per-tab
 interpretation of the week, and a one-line *what-it-does* / *why-it-matters* for
-each driving paper. This is computed once and baked into the snapshot (no API calls
-at page-load). It's fully **fail-soft** — with no `ANTHROPIC_API_KEY` the layer is
-skipped and the dashboard falls back to its data-derived templated text. Claude only
-interprets the real metrics and abstracts; it does not invent data.
+each driving paper. This is computed once and baked into the snapshot (no model calls
+at page-load). Claude only interprets the real metrics and abstracts; it does not
+invent data.
 
 ### 10. Foresight Gap synthesis (the 🔮 tab)
 A **second Claude pass** (`claude-opus-4-8`, same API and fail-soft architecture as
@@ -804,8 +831,7 @@ Claude returns 2–4 candidate risks, each with a six-part structure (statement,
 from, why-under-discussed, mechanism, leading indicator, calibration, extrapolation),
 grounded in the digest and flagging where it extrapolates. **These are candidate
 hypotheses to pressure-test, not predictions** — the model widens the aperture; human
-judgment goes on top. Baked into the snapshot; skipped (with an honest message) when no
-`ANTHROPIC_API_KEY` is set.
+judgment goes on top.
 
 ### Caveats
 - High coverage of the **AI preprint literature**, not every publisher.

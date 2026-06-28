@@ -25,8 +25,8 @@ capability research is accelerating while the paired safety work stays flat.
 
 The live dashboard runs on **real arXiv + OpenAlex data**, refreshed **weekly** by a
 GitHub Action that pulls fresh papers, re-runs the analysis, and publishes a snapshot
-the app reads (see [How the live data works](#how-the-live-data-works)). Before the
-first refresh runs it shows a bundled synthetic demo dataset. Hosting is free on
+the app reads (see [How the live data works](#how-the-live-data-works)). It only ever
+shows a real, published snapshot — never synthetic or demo content. Hosting is free on
 [Streamlit Community Cloud](https://share.streamlit.io); to run your own copy, see
 [Deploy your own](#deploy-your-own).
 
@@ -205,7 +205,7 @@ sentence-transformers (or its model download) is unavailable, the embedder
 **automatically falls back** to a local scikit-learn TF-IDF + SVD vectorizer; if
 HDBSCAN is unavailable it falls back to k-means. The whole pipeline therefore runs
 even with only the core install, and even fully offline. The heavy backends are
-kept out of the default install so the hosted demo stays lightweight.
+kept out of the default install so the hosted app stays lightweight.
 
 ---
 
@@ -308,7 +308,7 @@ snapshot locally:
 
 ```bash
 python scripts/refresh_snapshot.py            # real data (needs network)
-python scripts/refresh_snapshot.py --use-fixtures   # offline demo snapshot
+python scripts/refresh_snapshot.py --use-fixtures   # offline fixture snapshot (local dev only)
 ```
 
 ---
@@ -330,7 +330,7 @@ You'll get a URL like `https://<your-app>.streamlit.app`; paste it into the
 **Live demo** line near the top of this README.
 
 > The deploy install is intentionally lightweight (TF-IDF + k-means fallbacks), which
-> keeps it within the free tier's resource limits. To run the demo on real arXiv data,
+> keeps it within the free tier's resource limits. To run it on real arXiv data,
 > ingest locally and point the deployment at a populated cache, or run it locally with
 > `requirements-full.txt`.
 
