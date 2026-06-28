@@ -34,29 +34,37 @@ shows a real, published snapshot — never synthetic or demo content. Hosting is
 
 ## What it does
 
-1. **Ingestion** — pulls papers from the arXiv API (`cs.AI`, `cs.LG`, `cs.CL`) over a
-   configurable date window and enriches them with OpenAlex citation counts, yearly
-   citation series, and author affiliations. Everything is cached in local SQLite so
-   re-runs don't re-pull. arXiv pagination is rate-limited (~1 req/3s) with
-   exponential backoff on 429/503.
+1. **Ingestion** — pulls papers from the arXiv API (`cs.AI`, `cs.LG`, `cs.CL`, `cs.CR`,
+   `cs.CY`, `cs.CV`) over a configurable window, **stratified by quarter** for even time
+   coverage, and enriches them via **OpenAlex** (citation counts, yearly series, author
+   affiliations), **Semantic Scholar** (TLDRs, influential-citation counts, venue),
+   **OpenReview** (venue papers + peer-review scores), and **lab/blog RSS** (a
+   capability-leading signal). Cached in local SQLite; rate-limited with backoff. All
+   sources are fail-soft — one being down just omits its signal.
 2. **Topic modeling via embeddings** — embeds every abstract (sentence-transformers
-   `all-MiniLM-L6-v2`), then:
-   - **discovers emergent topics** by clustering with HDBSCAN (k-means optional), and
-   - **tags papers against a supervised safety taxonomy** (interpretability, CoT
-     faithfulness, scalable oversight, deceptive alignment, reward hacking, evals,
-     RSI/control, agentic monitoring) via cosine similarity to topic centroids.
-3. **Velocity analysis** — submission rate per topic/cluster per quarter; flags
-   acceleration/deceleration inflections and newly-forming clusters.
-4. **Citation dynamics** — papers with rapid recent citation growth, plus "sleepers":
-   previously-quiet papers now spawning downstream work (early-heat signals).
-5. **Divergence layer (the product)** — per configured capability↔safety pairing,
-   compares recent velocities and flags where capability is accelerating but the
-   paired safety topic is flat.
-6. **Author/institution flow** — which labs are ramping activity in which subfields
-   (a talent-flow leading indicator).
-7. **Output** — a Streamlit dashboard (velocity time series, divergence chart,
-   emerging/cooling/white-space quadrant, signals panel) plus an exportable
-   **markdown brief** of BLUF-style findings.
+   `all-MiniLM-L6-v2`, with a TF-IDF+SVD fallback), then **discovers emergent topics**
+   (HDBSCAN, k-means fallback) and **tags papers against a supervised taxonomy** of 8
+   safety + 6 capability topics via cosine similarity to topic centroids.
+3. **Velocity analysis** — submission rate per topic per quarter; flags
+   acceleration/deceleration inflections and newly-forming clusters (the current
+   incomplete quarter is dropped from trend math).
+4. **Sentiment / confidence layer** — the share of *critical / limitation-focused*
+   papers per topic (embedding-based), and whether it's **rising** — an early
+   confidence-erosion warning, especially when volume is flat.
+5. **Citation dynamics** — rapid recent citation growth, plus "sleepers": previously-
+   quiet papers now spawning downstream work (early-heat signals).
+6. **Divergence layer (the headline product)** — per configured capability↔safety
+   pairing, flags where capability is accelerating but the paired safety topic is flat.
+7. **Author/institution flow** — which labs are ramping activity in which subfields.
+8. **Weekly Claude analysis** — once per refresh, Claude (`claude-opus-4-8`) reads the
+   computed metrics + real abstracts and writes the analytical headline, a per-tab read,
+   and a *what-it-does / why-it-matters* note per driving paper (baked into the snapshot).
+9. **Foresight Gap** — a second Claude pass crosses the research-trend signals with a
+   living societal-context file to surface **novel cross-domain risks**, then **web-checks
+   each against current coverage** (verified novelty + disputing sources) and backfills
+   for quality. (See methodology section 10.)
+10. **Output** — a Streamlit dashboard (8 tabs, led by a self-contained Weekly Summary)
+    plus exportable **markdown briefs**.
 
 ---
 
@@ -66,7 +74,7 @@ signal-lag pulls from several free sources (all config-driven, all fail-soft —
 source being down or rate-limited just omits its signal):
 
 - **arXiv** — the papers themselves (title, abstract, authors, dates), from the
-  `cs.AI`, `cs.LG`, `cs.CL` categories (extendable in config).
+  `cs.AI`, `cs.LG`, `cs.CL`, `cs.CR`, `cs.CY`, `cs.CV` categories (extendable in config).
 - **OpenAlex** — enrichment matched to those papers: citation counts, year-by-year
   citation series, and author institutions.
 - **Semantic Scholar** — enrichment: TLDR summaries, **influential**-citation counts
@@ -94,13 +102,12 @@ naively pulling "the newest N" would only span days. Instead ingestion samples u
 even time coverage. Velocity therefore tracks each topic's *share* of activity per
 quarter (the trend that divergence relies on), not raw absolute counts.
 
-**What it does _not_ cover (yet):** other arXiv categories (`cs.CV`, `cs.CR`,
-`cs.RO`, `stat.ML`, …), venues that don't post to arXiv (OpenReview / ICLR / NeurIPS,
-ACL Anthology, PMLR, journals), and industry tech reports or lab blog posts. So treat
-it as **high coverage of the AI preprint literature, not "everything published."**
-The arXiv categories are config-driven (add more in `config/settings.yaml`); adding a
-genuinely new source (e.g. OpenReview, Semantic Scholar) means adding a small
-ingestion client alongside `arxiv_client.py`.
+**What it does _not_ cover (yet):** further arXiv categories (`cs.RO`, `stat.ML`, …),
+and venues outside arXiv + the configured OpenReview conferences (ACL Anthology, PMLR,
+journals). So treat it as **high coverage of the AI preprint literature, not "everything
+published."** The arXiv categories and OpenReview venues are config-driven (extend them in
+`config/settings.yaml`); adding a genuinely new *source* means a small ingestion client
+alongside `arxiv_client.py`.
 
 ---
 

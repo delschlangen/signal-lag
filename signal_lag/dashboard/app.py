@@ -117,9 +117,29 @@ st.info(
     icon="🧭",
 )
 
-if get_analysis(snap):
-    st.caption("🧠 This week's figures were analyzed by **Claude** — look for *Claude's read* "
-               "on each tab and the narrative headline below.")
+with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
+    st.markdown(
+        "**Start on 📋 Weekly Summary** — it digests every other tab in plain language, "
+        "so you only open the others for detail.\n\n"
+        "**The tabs**\n"
+        "- **📋 Weekly Summary** — the briefing: what changed, the headline gap, a read of "
+        "every tab, and this week's best foresight risks.\n"
+        "- **⚖️ Divergence** — where capability research is outpacing the paired safety work.\n"
+        "- **📈 Velocity** — how fast each topic is moving (accelerating / cooling).\n"
+        "- **🔬 Sentiment** — share of *critical / limitation-focused* papers; a rising share "
+        "is an early confidence-erosion warning.\n"
+        "- **🧭 Quadrant** — the field mapped by volume vs. growth (emerging / hot / cooling).\n"
+        "- **🔮 Foresight Gap** — novel cross-domain risks, web-checked for novelty.\n"
+        "- **🔍 Sources** — the actual papers behind every topic, all linked.\n"
+        "- **📖 Methodology** — how it all works + a glossary of every term.\n\n"
+        "**Symbols you'll see**\n"
+        "- 🟢 genuinely unsurfaced · 🟡 partially anticipated · 🔴 already widely discussed "
+        "(the verified novelty of a foresight risk)\n"
+        "- 🧠 *Claude's read* — an AI-written analytical interpretation of that tab's data\n"
+        "- ⚠️ eroding confidence · 🚨 new safety-lag alert this week"
+        + ("\n\n_This week's figures and risks were analyzed by **Claude** (computed once "
+           "into the snapshot, not run live)._" if get_analysis(snap) else "")
+    )
 
 (tab_summary, tab_div, tab_vel, tab_sentiment, tab_quad,
  tab_foresight, tab_sources, tab_method) = st.tabs(
@@ -497,9 +517,9 @@ with tab_div:
             legend=dict(orientation="h", yanchor="bottom", y=1.02),
             margin=dict(l=10, r=20, t=10, b=40),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         show = div[["pairing", "cap_growth", "saf_growth", "gap", "volume_ratio", "lagging"]]
-        st.dataframe(show, use_container_width=True, hide_index=True)
+        st.dataframe(show, width="stretch", hide_index=True)
     else:
         st.info("No pairings configured.")
 
@@ -526,11 +546,11 @@ with tab_vel:
         fig.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.02,
                                       title=None), xaxis_title=None,
                           yaxis_title="papers / quarter", margin=dict(t=10))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     else:
         st.info("No timeseries data.")
     st.markdown("**Velocity inflections**")
-    st.dataframe(pd.DataFrame(snap["inflections"]), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(snap["inflections"]), width="stretch", hide_index=True)
 
 # ================================================================== Sentiment
 with tab_sentiment:
@@ -563,7 +583,7 @@ with tab_sentiment:
                              "topic": ""},
                      height=120 + 26 * len(sdf), template="plotly_dark")
         fig.update_layout(margin=dict(l=10, r=10, t=10, b=30), coloraxis_showscale=False)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         if rising:
             st.markdown("**⚠️ Eroding-confidence warnings:**")
             for k, v in rising:
@@ -571,7 +591,7 @@ with tab_sentiment:
                     f"- **{lbl(snap, k)}** — critical share {v['prior_share']*100:.0f}% → "
                     f"{v['recent_share']*100:.0f}% (+{v['trend']*100:.0f} pts, {v['n_recent']} recent papers)"
                 )
-        st.dataframe(sdf, use_container_width=True, hide_index=True)
+        st.dataframe(sdf, width="stretch", hide_index=True)
         st.caption("Critical detection is embedding-based (cosine similarity to negative/"
                    "limitation seed phrases), not keyword matching — and it's a proxy, "
                    "so use it to decide where to read, not as a verdict.")
@@ -606,7 +626,7 @@ with tab_quad:
         fig.add_hline(y=0.3, line_dash="dot", line_color="gray")
         fig.add_vline(x=5, line_dash="dot", line_color="gray")
         fig.update_layout(margin=dict(t=10))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     else:
         st.info("No quadrant data.")
     if snap["new_clusters"]:
