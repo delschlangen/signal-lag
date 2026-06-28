@@ -36,6 +36,15 @@ class ArxivClient:
         self.backoff_schedule = backoff_schedule or [2, 4, 8, 16]
         self.session = session or requests.Session()
         self.session.headers.update({"User-Agent": "signal-lag/0.1 (research foresight tool)"})
+        self._last_request_ts: float | None = None
+
+    def _throttle(self) -> None:
+        """Enforce >= request_delay between *all* requests (global rate limit)."""
+        if self._last_request_ts is not None:
+            elapsed = time.monotonic() - self._last_request_ts
+            if elapsed < self.request_delay:
+                time.sleep(self.request_delay - elapsed)
+        self._last_request_ts = time.monotonic()
 
     def _get(self, params: dict) -> str:
         last_err: Exception | None = None
@@ -43,9 +52,14 @@ class ArxivClient:
             if wait:
                 log.warning("arXiv retry in %ss (attempt %d)", wait, attempt)
                 time.sleep(wait)
+            self._throttle()
             try:
                 resp = self.session.get(ARXIV_ENDPOINT, params=params, timeout=60)
                 if resp.status_code in (429, 503):
+                    # Respect Retry-After when present, else fall through to backoff.
+                    ra = resp.headers.get("Retry-After")
+                    if ra and ra.isdigit():
+                        time.sleep(min(int(ra), 60))
                     last_err = RuntimeError(f"arXiv {resp.status_code}")
                     continue
                 resp.raise_for_status()
