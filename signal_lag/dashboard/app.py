@@ -651,24 +651,10 @@ with tab_foresight:
         )
     else:
         look = _arxiv_lookup(snap)
-        risks = fg.get("risks", [])
-        if fg.get("verified"):
-            st.caption("✅ Each candidate was web-checked against current coverage and "
-                       "ranked by verified novelty (genuinely unsurfaced → already "
-                       "discussed). Already-discussed risks are kept but flagged, not hidden.")
-        st.markdown(f"**{len(risks)} candidate risk(s)** this week.")
 
-        demoted_header_shown = False
-        for i, r in enumerate(risks, 1):
+        def render_risk(r, i):
             v = r.get("verification")
             rating = (v or {}).get("novelty_rating")
-            # Visual divider when we cross into the demoted (already-discussed) group.
-            if rating == "already_widely_discussed" and not demoted_header_shown:
-                st.divider()
-                st.markdown("#### 🔴 Shown for transparency — already widely discussed")
-                st.caption("The verifier found these (or close versions) are already public. "
-                           "Kept visible so you can see what was filtered and why — not novel.")
-                demoted_header_shown = True
             with st.container(border=True):
                 st.markdown(f"**{novelty_label(v)}**")
                 st.markdown(f"### {i}. {r.get('risk','')}")
@@ -697,20 +683,46 @@ with tab_foresight:
                 st.markdown(f"**📡 Leading indicator:** {r.get('leading_indicator','')}")
                 st.markdown(f"**🎯 Calibration:** {r.get('calibration','')}")
                 st.markdown(f"**⚠️ Extrapolation beyond the data:** {r.get('extrapolation','')}")
-                # Prior-coverage check (the verification pass).
                 if v:
-                    with st.expander("🔎 Prior-coverage check (web-verified)", expanded=(rating != "genuinely_unsurfaced")):
+                    with st.expander("🔎 Prior-coverage check (web-verified)",
+                                     expanded=(rating != "genuinely_unsurfaced")):
                         st.markdown(f"**What already exists:** {v.get('prior_coverage','')}")
                         st.markdown(f"**Disputed / contested claims:** {v.get('disputed_claims','')}")
                         st.markdown(f"**Recalibrated:** {v.get('recalibrated_calibration','')}")
-                        srcs = v.get("sources") or []
-                        if srcs:
-                            st.markdown("**Coverage found:**")
-                            for s in srcs[:8]:
-                                t, u = s.get("title", ""), s.get("url", "")
-                                st.markdown(f"- [{t}]({u})" if u else f"- {t}")
+                        for s in (v.get("sources") or [])[:8]:
+                            t, u = s.get("title", ""), s.get("url", "")
+                            st.markdown(f"- [{t}]({u})" if u else f"- {t}")
                 elif fg.get("verified"):
                     st.caption("⚪ Prior-coverage check could not be completed for this risk.")
+
+        risks = fg.get("risks", [])
+        demoted = [r for r in risks
+                   if (r.get("verification") or {}).get("novelty_rating") == "already_widely_discussed"]
+        surfaced = [r for r in risks if r not in demoted]
+
+        if fg.get("verified"):
+            cap = (f"✅ Web-checked against current coverage. **{len(surfaced)} surfaced** "
+                   f"(genuinely-novel / partially-anticipated)")
+            if demoted:
+                cap += f" · {len(demoted)} already widely discussed (tucked below)"
+            if fg.get("rounds", 1) > 1:
+                cap += f" · {fg['rounds']} synthesis rounds (backfilled for quality)"
+            st.caption(cap + ".")
+
+        if surfaced:
+            for i, r in enumerate(surfaced, 1):
+                render_risk(r, i)
+        else:
+            st.warning("No risks survived novelty verification as fresh this week — all "
+                       "candidates were already widely discussed. See below.", icon="🔍")
+
+        if demoted:
+            with st.expander(f"🔴 Already widely discussed ({len(demoted)}) — "
+                             "shown for transparency, not novel", expanded=False):
+                st.caption("The verifier found these (or close versions) are already public. "
+                           "Kept so you can see what was considered and filtered out.")
+                for j, r in enumerate(demoted, 1):
+                    render_risk(r, j)
 
         st.download_button(
             "⬇️ Download foresight-gap brief", data=foresight_brief_md(fg),
@@ -904,11 +916,14 @@ Then a **novelty-verification pass** web-searches each candidate (Claude's serve
 web search) for **both confirming and disputing** coverage, and returns a *prior-coverage
 check* with a verified novelty rating — *genuinely unsurfaced / partially anticipated /
 already widely discussed* — plus disputing sources and a recalibrated confidence.
-Already-discussed risks are **demoted and flagged, not hidden**. The searches are baked
-into the snapshot (run once per refresh, cached — never at page load). This is the
-calibrated posture: the tool generates candidate risks **and then checks them against
-current coverage before surfacing them**, distinguishing a genuine seam from something
-that simply isn't in its index yet.
+Already-discussed risks are tucked into a collapsed **"already widely discussed"**
+expander (flagged, not hidden). **Quality over quantity:** if too few candidates survive
+as fresh, the synthesis re-runs for *different* seams (up to a few rounds) and verifies
+those too, so a week where several risks turn out already-covered still surfaces genuine
+ones. The searches are baked into the snapshot (run once per refresh, cached — never at
+page load). This is the calibrated posture: the tool generates candidate risks **and then
+checks them against current coverage before surfacing them**, distinguishing a genuine
+seam from something that simply isn't in its index yet.
 
 **These are candidate hypotheses to pressure-test, not predictions** — the model widens
 the aperture; human judgment goes on top.

@@ -198,11 +198,14 @@ The synthesis is tuned to the tool's real strength:
 (Claude's server-side web search) that looks for **both confirming and disputing** coverage,
 returning a *prior-coverage check*, a verified novelty rating (*genuinely unsurfaced /
 partially anticipated / already widely discussed*), disputing sources, and a recalibrated
-confidence. Already-discussed risks are **flagged and demoted, not hidden**. Verifications
-run in parallel and are baked into the snapshot (cached — never at page load). This is the
-calibrated posture: generate candidate risks, *then check them against current coverage
-before surfacing them* — distinguishing a genuine seam from something that just isn't in the
-index yet.
+confidence. Already-discussed risks are tucked into a collapsed expander (flagged, not
+hidden). **Quality over quantity:** if too few candidates survive verification as fresh,
+the synthesis automatically re-runs for *different* seams (up to `max_rounds`) and verifies
+those too — so a week where several turn out already-covered still surfaces genuine ones.
+Verifications run in parallel and are baked into the snapshot (cached — never at page load).
+This is the calibrated posture: generate candidate risks, *then check them against current
+coverage before surfacing them* — distinguishing a genuine seam from something that just
+isn't in the index yet.
 
 **These are AI-surfaced candidate hypotheses for an analyst to pressure-test — not
 predictions.** The model widens the aperture; human judgment goes on top. The tab shows

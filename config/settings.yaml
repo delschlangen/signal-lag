@@ -138,6 +138,11 @@ analysis:
     # Server-side web search tool version (falls back to web_search_20250305 if the
     # account/platform lacks the newer one).
     web_search_tool: "web_search_20260209"
+    # Quality-over-quantity backfill: if fewer than `min_surfaced` risks survive
+    # verification (too many came back already-widely-discussed), re-run synthesis for
+    # DIFFERENT seams up to `max_rounds` total rounds. Stops early once enough survive.
+    min_surfaced: 3
+    max_rounds: 3
 
 paths:
   db_path: "data/signal_lag.sqlite"

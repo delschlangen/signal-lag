@@ -342,60 +342,86 @@ NOVELTY_RANK = {
 }
 
 
-def verify_and_rank_risks(
-    risks: list, api_key: str | None, model: str = "claude-opus-4-8",
-    tool_version: str = "web_search_20260209", max_workers: int = 4,
-) -> list:
-    """Verify each risk's novelty in parallel, attach ``verification``, and sort.
+SURFACED_RATINGS = ("genuinely_unsurfaced", "partially_anticipated")
 
-    Genuinely-unsurfaced risks float to the top; already-widely-discussed ones are
-    demoted to the bottom (flagged, not dropped). Fail-soft per risk: a failed
-    verification leaves ``verification: None`` and the risk keeps its place in the middle.
-    """
+
+def _surviving_count(risks: list) -> int:
+    """How many risks verified as genuinely-novel or partially-anticipated."""
+    return sum(
+        1 for r in risks
+        if (r.get("verification") or {}).get("novelty_rating") in SURFACED_RATINGS
+    )
+
+
+def _verify_attach(risks, api_key, model, tool_version, max_workers=4) -> list:
+    """Verify each risk's novelty in parallel and attach ``verification`` (no sort)."""
     if not risks:
         return risks
     from concurrent.futures import ThreadPoolExecutor
 
-    def _one(r):
-        return verify_novelty(r, api_key, model, tool_version)
-
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
-        verifications = list(ex.map(_one, risks))
-    for r, v in zip(risks, verifications):
+        vs = list(ex.map(lambda r: verify_novelty(r, api_key, model, tool_version), risks))
+    for r, v in zip(risks, vs):
         r["verification"] = v
+    return risks
+
+
+def _sort_by_novelty(risks: list) -> list:
+    """Genuinely-novel first; already-widely-discussed demoted to the bottom."""
     risks.sort(key=lambda r: NOVELTY_RANK.get(
         (r.get("verification") or {}).get("novelty_rating"), 2))
     return risks
 
 
-def synthesize_foresight_gap(
-    digest: dict, context: str, api_key: str | None,
-    model: str = "claude-opus-4-8", max_risks: int = 4,
-) -> dict | None:
-    """Run the foresight pass. Returns the analysis["foresight_gap"] block or None.
+def verify_and_rank_risks(
+    risks: list, api_key: str | None, model: str = "claude-opus-4-8",
+    tool_version: str = "web_search_20260209", max_workers: int = 4,
+) -> list:
+    """Verify each risk's novelty in parallel, attach ``verification``, and sort."""
+    return _sort_by_novelty(_verify_attach(risks, api_key, model, tool_version, max_workers))
 
-    Fail-soft (no key / no SDK / any API or parse error -> None). The returned wrapper
-    bakes in the digest, framework, and context that were used, so the dashboard can
-    show the full reasoning trail without recomputation.
-    """
+
+def _synthesize_risks(
+    digest: dict, context: str, api_key: str | None, model: str, max_risks: int,
+    avoid_seams: list | None = None,
+) -> list | None:
+    """One synthesis round -> list of candidate risks (or None on failure)."""
     payload = {
         "SIGNAL_DIGEST": {k: v for k, v in digest.items() if k != "what_changed_this_week"},
         "WHAT_CHANGED_THIS_WEEK": digest.get("what_changed_this_week", {}),
         "SOCIETAL_CONTEXT": context or "(none provided — reason across the full scanning "
         "framework and current real-world state you know of)",
     }
-    text = llm.call_claude(
-        SYSTEM,
-        _instructions(max_risks) + "\n\nINPUTS:\n" + json.dumps(payload, ensure_ascii=False),
-        api_key, model,
-    )
+    user = _instructions(max_risks)
+    if avoid_seams:
+        avoid = "\n".join(f"- {s}" for s in avoid_seams)
+        user += ("\n\nALREADY CONSIDERED THIS WEEK — these seams have already been "
+                 "generated (some were found to be already widely discussed). Produce "
+                 "DIFFERENT, fresh seams; do NOT repeat or lightly reword any of these:\n"
+                 + avoid)
+    user += "\n\nINPUTS:\n" + json.dumps(payload, ensure_ascii=False)
+    text = llm.call_claude(SYSTEM, user, api_key, model)
     if text is None:
         return None
     result = llm.extract_json(text)
     if result is None or "risks" not in result:
         log.warning("Could not parse foresight JSON")
         return None
-    risks = result.get("risks") or []
+    return result.get("risks") or []
+
+
+def synthesize_foresight_gap(
+    digest: dict, context: str, api_key: str | None,
+    model: str = "claude-opus-4-8", max_risks: int = 4,
+) -> dict | None:
+    """Single-round synthesis (no verification). Returns the foresight_gap block or None.
+
+    Kept for the preview script; the production path uses ``run_foresight`` which adds
+    verification and quality-driven backfill.
+    """
+    risks = _synthesize_risks(digest, context, api_key, model, max_risks)
+    if risks is None:
+        return None
     log.info("Foresight synthesis complete (%d risks)", len(risks))
     return {
         "risks": risks,
@@ -403,4 +429,50 @@ def synthesize_foresight_gap(
         "framework": SCANNING_FRAMEWORK,
         "context": context,
         "n_context_chars": len(context or ""),
+    }
+
+
+def run_foresight(
+    digest: dict, context: str, api_key: str | None, model: str = "claude-opus-4-8",
+    max_risks: int = 4, verify: bool = True,
+    tool_version: str = "web_search_20260209",
+    min_surfaced: int = 3, max_rounds: int = 3,
+) -> dict | None:
+    """Full foresight pass: synthesize -> verify -> backfill until enough survive.
+
+    Quality over quantity: if too few risks survive verification as genuinely-novel /
+    partially-anticipated (too many came back already-widely-discussed), it runs another
+    synthesis round asking for DIFFERENT seams and verifies those too — up to
+    ``max_rounds``. Stops early once ``min_surfaced`` survive or a round adds nothing.
+    Without verification it's a single round. Fail-soft (-> None on first-round failure).
+    """
+    risks = _synthesize_risks(digest, context, api_key, model, max_risks)
+    if risks is None:
+        return None
+
+    rounds = 1
+    if verify:
+        _verify_attach(risks, api_key, model, tool_version)
+        while _surviving_count(risks) < min_surfaced and rounds < max_rounds:
+            need = max(2, min_surfaced - _surviving_count(risks))
+            avoid = [r.get("risk", "") for r in risks]
+            more = _synthesize_risks(digest, context, api_key, model, need, avoid_seams=avoid)
+            if not more:
+                break
+            _verify_attach(more, api_key, model, tool_version)
+            risks.extend(more)
+            rounds += 1
+            log.info("Foresight backfill round %d: %d surviving of %d",
+                     rounds, _surviving_count(risks), len(risks))
+        _sort_by_novelty(risks)
+
+    return {
+        "risks": risks,
+        "digest": digest,
+        "framework": SCANNING_FRAMEWORK,
+        "context": context,
+        "n_context_chars": len(context or ""),
+        "verified": bool(verify),
+        "rounds": rounds,
+        "n_surfaced": _surviving_count(risks) if verify else None,
     }
