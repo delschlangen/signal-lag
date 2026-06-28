@@ -104,6 +104,7 @@ def build_snapshot(
                 r["influential_citations"] = src.s2_influential_citations
                 r["tldr"] = src.s2_tldr
                 r["venue"] = src.venue
+                r["abstract"] = (src.abstract or "")[:300]
 
     dates = [p.published for p in papers] or [today]
     meta = {

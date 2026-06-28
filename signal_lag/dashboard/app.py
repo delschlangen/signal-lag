@@ -66,10 +66,10 @@ st.success(
 
 # Analyst's note — front and centre, not buried.
 st.info(
-    "🧭 **Analyst's note — read me.** signal-lag measures *research attention*, not "
-    "*research success*. A spike can mean a breakthrough **or** a field thrashing against "
-    "a wall — so treat this as a **triage instrument** that shows *where to investigate*, "
-    "not *what to conclude*. The Sentiment tab helps tell those two cases apart.",
+    "**Analyst note:** signal-lag measures *research attention*, not *research success*. "
+    "A spike can mean a breakthrough **or** a field thrashing against a wall — so treat "
+    "this as a **triage instrument** that shows *where to investigate*, not *what to "
+    "conclude*. The Sentiment tab helps tell those two cases apart.",
     icon="🧭",
 )
 
@@ -81,18 +81,114 @@ st.info(
 
 
 def topic_links(snap, topic_key, n=3):
-    """Markdown bullet list of recent papers for a topic."""
+    """Markdown bullet list of recent papers for a topic, each with a short blurb."""
     items = snap["sources"].get(topic_key, [])[:n]
-    return "".join(
-        f"\n  - [{p['title']}]({p['url']}) · {p['published']}"
-        + (f" · {p['cited_by_count']} cites" if p.get("cited_by_count") else "")
-        for p in items
+    out = ""
+    for p in items:
+        cites = f" · {p['cited_by_count']} cites" if p.get("cited_by_count") else ""
+        out += f"\n  - [{p['title']}]({p['url']}) · {p['published']}{cites}"
+        d = short_desc(p, 160)
+        if d:
+            out += f"  \n    _{d}_"
+    return out
+
+
+def week_note(what: str, finding: str | None = None):
+    """One line on what the chart is, then a data-driven read of THIS week."""
+    st.caption(what)
+    if finding:
+        st.markdown(f"**📅 This week:** {finding}")
+
+
+def _fmt_pct(x):
+    return f"{x*100:+.0f}%"
+
+
+def divergence_finding(snap) -> str:
+    div = snap.get("divergence", [])
+    if not div:
+        return "No pairings configured."
+    flagged = [d for d in div if d.get("lagging")]
+    widest = max(div, key=lambda d: d.get("gap", 0))
+    parts = []
+    if flagged:
+        names = ", ".join(f"**{lbl(snap, d['capability_topic'])}** over "
+                          f"**{lbl(snap, d['safety_topic'])}**" for d in flagged[:3])
+        parts.append(f"{len(flagged)} pairing(s) show safety lagging — {names}.")
+    else:
+        parts.append("No pairing crosses the safety-lag threshold — safety is broadly keeping pace.")
+    parts.append(
+        f"Widest gap: {lbl(snap, widest['capability_topic'])} "
+        f"({_fmt_pct(widest['cap_growth'])}/qtr) vs {lbl(snap, widest['safety_topic'])} "
+        f"({_fmt_pct(widest['saf_growth'])})."
     )
+    # where safety leads
+    lead = min(div, key=lambda d: d.get("gap", 0))
+    if lead.get("gap", 0) < 0:
+        parts.append(f"Safety is *ahead* in {lbl(snap, lead['safety_topic'])} "
+                     f"({_fmt_pct(lead['saf_growth'])} vs {_fmt_pct(lead['cap_growth'])}).")
+    return " ".join(parts)
 
 
-def week_note(text: str):
-    """Render a short 'this week / what you're looking at' note atop a tab."""
-    st.caption(f"📅 **This week** — {text}")
+def velocity_finding(snap) -> str:
+    inf = snap.get("inflections", [])
+    if not inf:
+        return "No velocity data yet."
+    by_change = sorted(inf, key=lambda i: i.get("change", 0), reverse=True)
+    by_vol = sorted(inf, key=lambda i: i.get("recent_mean", 0), reverse=True)
+    top = by_change[0]
+    bot = by_change[-1]
+    parts = [
+        f"Fastest-accelerating: **{lbl(snap, top['topic_key'])}** "
+        f"({_fmt_pct(top['change'])}, ~{top['recent_mean']:.0f}/qtr)."
+    ]
+    if bot.get("change", 0) < -0.05:
+        parts.append(f"Steepest pullback: **{lbl(snap, bot['topic_key'])}** ({_fmt_pct(bot['change'])}).")
+    parts.append(f"Largest field by volume: **{lbl(snap, by_vol[0]['topic_key'])}** "
+                 f"(~{by_vol[0]['recent_mean']:.0f}/qtr).")
+    return " ".join(parts)
+
+
+def sentiment_finding(snap) -> str:
+    sent = snap.get("sentiment", {})
+    if not sent:
+        return "No sentiment data yet."
+    rising = [(k, v) for k, v in sent.items() if v.get("rising")]
+    hi = max(sent.items(), key=lambda kv: kv[1].get("recent_share", 0))
+    parts = []
+    if rising:
+        names = ", ".join(f"**{lbl(snap, k)}** (+{v['trend']*100:.0f} pts → "
+                          f"{v['recent_share']*100:.0f}% critical)" for k, v in rising[:3])
+        parts.append(f"Rising critical share (possible confidence erosion): {names}.")
+    else:
+        parts.append("No topic shows a rising critical share this week.")
+    parts.append(f"Most critical overall: **{lbl(snap, hi[0])}** "
+                 f"({hi[1].get('recent_share',0)*100:.0f}% of recent papers).")
+    return " ".join(parts)
+
+
+def quadrant_finding(snap) -> str:
+    quad = snap.get("quadrant", [])
+    if not quad:
+        return "No quadrant data yet."
+    groups = {}
+    for q in quad:
+        groups.setdefault(q.get("quadrant", "?"), []).append(lbl(snap, q["topic_key"]))
+    order = ["emerging", "hot", "cooling", "white-space"]
+    parts = []
+    for g in order:
+        if groups.get(g):
+            parts.append(f"**{g}**: " + ", ".join(groups[g][:4]))
+    return " · ".join(parts) if parts else "All topics established."
+
+
+def short_desc(item, limit=200) -> str | None:
+    """A short human summary for a paper/post item from real fields."""
+    text = item.get("tldr") or item.get("abstract") or item.get("summary")
+    if not text:
+        return None
+    text = " ".join(text.split())
+    return text[:limit].rstrip() + ("…" if len(text) > limit else "")
 
 
 def paper_signal(p: dict, topic_label: str) -> str:
@@ -209,6 +305,9 @@ with tab_summary:
                     st.markdown(f"- **{post['source']}**: [{title}]({post['url']}){when}{tp}")
                 else:
                     st.markdown(f"- **{post['source']}**: {title}{when}{tp}")
+                d = short_desc(post, 200)
+                if d:
+                    st.caption(d)
 
     st.divider()
     st.download_button("⬇️ Download full markdown brief", data=snap["brief"],
@@ -217,14 +316,11 @@ with tab_summary:
 # ================================================================ Divergence
 with tab_div:
     st.subheader("Capability vs. safety velocity gap")
-    _nflag = meta.get("n_flagged", 0)
     week_note(
-        "recent growth of each **capability** topic vs its paired **safety** topic. "
-        "A long blue bar (capability) next to a short orange bar (safety) = safety lagging. "
-        f"**{_nflag} of {meta.get('n_pairings','?')} pairings** cross the safety-lag threshold "
-        "this week — those are where capability is pulling ahead of the safety response."
+        "Recent growth of each **capability** topic vs its paired **safety** topic "
+        "(long blue + short orange = safety lagging).",
+        divergence_finding(snap),
     )
-    st.caption("A long blue bar with a short orange bar = safety lagging.")
     div = pd.DataFrame(snap["divergence"]).sort_values("gap")
     if not div.empty:
         names = [n.replace(" vs. ", "<br>vs. ") for n in div["pairing"]]
@@ -249,9 +345,9 @@ with tab_div:
 with tab_vel:
     st.subheader("Topic submission velocity (papers per quarter)")
     week_note(
-        "how many papers per quarter each topic is producing, and whether that rate is "
-        "**accelerating or decelerating** (inflection table below). This is *attention*, "
-        "not success — pair it with the Sentiment tab to read what a spike means."
+        "Papers per quarter per topic, and whether each rate is accelerating or "
+        "decelerating (table below). Attention, not success — cross-read with Sentiment.",
+        velocity_finding(snap),
     )
     ts = pd.DataFrame(snap["timeseries"])
     if not ts.empty:
@@ -278,12 +374,9 @@ with tab_sentiment:
     sent = snap.get("sentiment") or {}
     rising = [(k, v) for k, v in sent.items() if v.get("rising")]
     week_note(
-        "the **share of critical / limitation-focused papers** within each topic. "
-        "Volume tells you how *much* a field is working; this tells you whether it may be "
-        "**hitting a wall**. A rising critical share — especially when volume is flat — is an "
-        "early warning that confidence in an approach is eroding before it hits headlines. "
-        + (f"**{len(rising)} topic(s) flagged this week.**" if rising else
-           "No topics cross the rising-critical threshold this week.")
+        "Share of **critical / limitation-focused** papers per topic. A rising share "
+        "(especially when volume is flat) is an early warning that confidence is eroding.",
+        sentiment_finding(snap),
     )
     if sent:
         rows = []
@@ -323,11 +416,11 @@ with tab_sentiment:
 with tab_quad:
     st.subheader("Emerging / hot / cooling / white-space")
     week_note(
-        "a strategic map of every topic by **recent volume** (x) vs **growth** (y): "
-        "*emerging* (small but surging — worth watching), *hot* (big and growing), "
-        "*cooling* (shrinking), *white-space* (quiet — potential gaps)."
+        "Strategic map: **recent volume** (x) vs **growth** (y) — emerging, hot, "
+        "cooling, white-space.",
+        quadrant_finding(snap),
     )
-    st.caption("X = recent volume (papers/quarter), Y = growth rate. Hover for topic names.")
+    st.caption("Hover points for topic names.")
     quad = pd.DataFrame(snap["quadrant"])
     if not quad.empty:
         quad["topic"] = quad["topic_key"].map(lambda k: lbl(snap, k))
@@ -388,14 +481,19 @@ with tab_sources:
         ven = f" · {r['venue']}" if r.get("venue") else ""
         return f"- [{r['title']}]({r['url']}) — {r['cited_by_count']} cites{extra}{ven}"
 
+    def _render_cites(bucket):
+        for r in snap["citations"].get(bucket, [])[:10]:
+            st.markdown(_cite_line(r))
+            d = short_desc(r, 160)
+            if d:
+                st.caption(d)
+
     with ccol:
         st.markdown("**🔥 Rapid citation growth**")
-        for r in snap["citations"].get("rapid_growth", [])[:10]:
-            st.markdown(_cite_line(r))
+        _render_cites("rapid_growth")
     with scol:
         st.markdown("**💤 Sleepers (early-heat)**")
-        for r in snap["citations"].get("sleepers", [])[:10]:
-            st.markdown(_cite_line(r))
+        _render_cites("sleepers")
 
 # =================================================================== Signals
 with tab_signals:
