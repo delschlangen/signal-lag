@@ -34,23 +34,40 @@ def cluster_embeddings(matrix: np.ndarray, cfg: dict) -> np.ndarray:
         log.info("k-means: %d clusters", k)
         return labels
 
-    # default: HDBSCAN
+    # default: HDBSCAN. High-dim transformer embeddings (384-d) make HDBSCAN
+    # collapse everything to noise, so we first reduce to a low-dim space.
     try:
         import hdbscan
 
+        reduced = _reduce_dims(matrix, int(cfg.get("reduce_dims", 50)))
         h = cfg.get("hdbscan", {})
         clusterer = hdbscan.HDBSCAN(
-            min_cluster_size=int(h.get("min_cluster_size", 15)),
-            min_samples=int(h.get("min_samples", 5)),
-            metric="euclidean",  # vectors are L2-normalized -> ~cosine
+            min_cluster_size=int(h.get("min_cluster_size", 10)),
+            min_samples=int(h.get("min_samples", 3)),
+            metric="euclidean",
         )
-        labels = clusterer.fit_predict(matrix.astype(np.float64))
+        labels = clusterer.fit_predict(reduced.astype(np.float64))
         n = len(set(labels)) - (1 if -1 in labels else 0)
         log.info("HDBSCAN: %d clusters, %d noise", n, int((labels == -1).sum()))
+        # If it still collapses to noise, fall back to k-means for usable clusters.
+        if n == 0:
+            log.warning("HDBSCAN found 0 clusters; falling back to k-means")
+            return cluster_embeddings(matrix, {**cfg, "algorithm": "kmeans"})
         return labels
     except Exception as e:
         log.warning("HDBSCAN unavailable (%s); falling back to k-means", e)
         return cluster_embeddings(matrix, {**cfg, "algorithm": "kmeans"})
+
+
+def _reduce_dims(matrix: np.ndarray, n_components: int) -> np.ndarray:
+    """SVD-reduce to n_components dims (no-op if already small enough)."""
+    if matrix.shape[1] <= n_components or matrix.shape[0] <= n_components:
+        return matrix
+    from sklearn.decomposition import TruncatedSVD
+    from sklearn.preprocessing import normalize
+
+    svd = TruncatedSVD(n_components=n_components, random_state=42)
+    return normalize(svd.fit_transform(matrix))
 
 
 def label_clusters(

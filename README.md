@@ -64,6 +64,12 @@ signal-lag currently pulls from **two free sources**:
 **What this covers well:** arXiv is where the large majority of frontier AI/ML/NLP
 research appears first, so coverage of the fast-moving preprint literature is high.
 
+**Temporally-stratified sampling.** arXiv publishes hundreds of papers per day, so
+naively pulling "the newest N" would only span days. Instead ingestion samples up to
+`max_per_period` papers **per category per quarter** across the whole window, giving
+even time coverage. Velocity therefore tracks each topic's *share* of activity per
+quarter (the trend that divergence relies on), not raw absolute counts.
+
 **What it does _not_ cover (yet):** other arXiv categories (`cs.CV`, `cs.CR`,
 `cs.RO`, `stat.ML`, …), venues that don't post to arXiv (OpenReview / ICLR / NeurIPS,
 ACL Anthology, PMLR, journals), and industry tech reports or lab blog posts. So treat
