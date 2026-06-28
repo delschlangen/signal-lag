@@ -9,6 +9,17 @@ The headline output is the **capability-vs-safety divergence**: for paired topic
 (e.g. *agentic/autonomy capability* ↔ *agentic monitoring*), it measures whether
 capability research is accelerating while the paired safety work stays flat.
 
+## 🚀 Try it live
+
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=delschlangen%2Fsignal-lag&branch=main&mainModule=signal_lag%2Fdashboard%2Fapp.py)
+
+<!-- Once deployed, replace the line below with your live URL, e.g. https://signal-lag.streamlit.app -->
+**Live demo:** _deploy with the badge above to get your URL_
+
+The hosted dashboard self-seeds from a bundled synthetic dataset, so it works
+immediately with no setup. Hosting is free on [Streamlit Community
+Cloud](https://share.streamlit.io); see [Deploy your own](#deploy-your-own).
+
 ---
 
 ## What it does
@@ -61,14 +72,19 @@ capability research is accelerating while the paired safety work stays flat.
 ## Install
 
 ```bash
+# Core: runs the whole pipeline + dashboard using built-in fallbacks
 pip install -r requirements.txt
+
+# Optional: best-quality backends (sentence-transformers + HDBSCAN; heavier)
+pip install -r requirements-full.txt
 ```
 
-`sentence-transformers` and `hdbscan` are the preferred paths. If
+`sentence-transformers` and `hdbscan` are the **preferred** backends. If
 sentence-transformers (or its model download) is unavailable, the embedder
 **automatically falls back** to a local scikit-learn TF-IDF + SVD vectorizer; if
 HDBSCAN is unavailable it falls back to k-means. The whole pipeline therefore runs
-even fully offline.
+even with only the core install, and even fully offline. The heavy backends are
+kept out of the default install so the hosted demo stays lightweight.
 
 ---
 
@@ -114,6 +130,27 @@ Regenerate the fixtures (deterministic) with:
 ```bash
 python scripts/generate_fixtures.py
 ```
+
+---
+
+## Deploy your own
+
+The dashboard hosts well on **[Streamlit Community Cloud](https://share.streamlit.io)** (free):
+
+1. Push this repo to your GitHub (already done if you're reading this there).
+2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub.
+3. Click **New app**, pick this repo/branch, and set the main file to
+   `signal_lag/dashboard/app.py` (the [badge above](#-try-it-live) pre-fills this).
+4. Deploy. The app installs `requirements.txt` and **auto-seeds the bundled demo
+   dataset** on first load — no cache or ingestion step required.
+
+You'll get a URL like `https://<your-app>.streamlit.app`; paste it into the
+**Live demo** line near the top of this README.
+
+> The deploy install is intentionally lightweight (TF-IDF + k-means fallbacks), which
+> keeps it within the free tier's resource limits. To run the demo on real arXiv data,
+> ingest locally and point the deployment at a populated cache, or run it locally with
+> `requirements-full.txt`.
 
 ---
 

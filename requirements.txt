@@ -1,20 +1,17 @@
-# Core
+# Core / deploy requirements. This is the lightweight set that runs the whole
+# pipeline (and the hosted Streamlit demo) using the built-in fallbacks:
+# TF-IDF+SVD embeddings and k-means clustering. For the higher-quality
+# sentence-transformers + HDBSCAN path, also install requirements-full.txt.
+
 requests>=2.31
 PyYAML>=6.0
 python-dateutil>=2.8
 
-# Data / analysis
 numpy>=1.24
 pandas>=2.0
 scikit-learn>=1.3
-hdbscan>=0.8.33
 
-# Embeddings (primary path). If unavailable, code falls back to TF-IDF+SVD.
-sentence-transformers>=2.2
-
-# Dashboard
 streamlit>=1.30
 plotly>=5.18
 
-# Tests
 pytest>=7.4
