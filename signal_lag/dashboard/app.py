@@ -81,7 +81,7 @@ else:
 
 tabs = st.tabs(
     ["📋 Weekly Summary", "⚖️ Divergence", "📈 Velocity", "🧭 Quadrant",
-     "🔍 Sources", "🚨 Signals"]
+     "🔍 Sources", "🚨 Signals", "📖 Methodology"]
 )
 
 
@@ -280,6 +280,78 @@ with tabs[5]:
         st.markdown(f"{sev.get(s['severity'], '⚪')} **{s['headline']}**  \n{s['detail']}")
     with st.expander("Preview full brief"):
         st.markdown(snap["brief"])
+
+# =============================================================== Methodology
+with tabs[6]:
+    st.subheader("How signal-lag works")
+    cats = ", ".join(meta.get("categories", []) or [])
+    srcs = meta.get("source_counts") or {}
+    src_line = ", ".join(f"{k}: {v:,}" for k, v in srcs.items()) if srcs else "—"
+    st.markdown(
+        f"""
+This dashboard does **patent-landscape-style foresight** on AI-safety research:
+it tracks *what* is being worked on, *how fast*, *by whom*, and — most importantly —
+**where safety research lags capability research**.
+
+*This snapshot: {meta.get('n_papers', '?'):,} papers ({src_line}); embeddings via
+`{meta.get('backend', '?')}`; window {meta.get('date_start','?')} → {meta.get('date_end','?')}.*
+
+### 1. Data sources
+All free, all **fail-soft** (a source being down just omits its signal):
+- **arXiv** — papers (title, abstract, authors, dates) from `{cats}`.
+- **OpenAlex** — citation counts, year-by-year citation series, author institutions.
+- **Semantic Scholar** — TLDRs, *influential*-citation counts, venue, fields (needs an API key).
+- **OpenReview** — venue papers + peer-review scores, added as papers.
+- **Lab/blog RSS** — posts from major labs as a *capability-leading* signal (kept separate from paper velocity).
+
+### 2. Sampling
+arXiv publishes hundreds of papers/day, so ingestion is **stratified by quarter**:
+up to *N* papers per category per quarter, giving even coverage across the whole
+window. The **current incomplete quarter is dropped** from trend math so a
+mid-quarter refresh doesn't look like a slowdown.
+
+### 3. Topic categorization (embeddings, not keywords)
+Two complementary layers:
+- **Supervised tagging** — each taxonomy topic has seed phrases; these are embedded
+  and averaged into a **centroid**. Each paper's abstract is embedded into the same
+  space, and tagged to a topic when **cosine similarity** clears a threshold. Semantic,
+  so it catches papers that don't use the exact words.
+- **Unsupervised clustering** — HDBSCAN over the embeddings surfaces *emergent* topics
+  not in the taxonomy (falls back to k-means when it finds too few clusters).
+
+### 4. Velocity
+Papers per **quarter** per topic. An **inflection** compares the mean of the last
+*N* quarters to the prior *N*; a relative change beyond ±30% counts as
+acceleration/deceleration. New clusters appearing in recent quarters are flagged
+as emerging.
+
+### 5. Divergence (the headline)
+For each configured **capability ↔ safety pairing**,
+`gap = capability_growth − safety_growth`. A pairing is flagged **"safety lagging"**
+when the gap clears a threshold, capability growth is positive, *and* capability has
+enough recent volume (a floor that suppresses noisy tiny-count topics).
+
+### 6. Citation dynamics
+From OpenAlex yearly counts: **rapid recent growth**, and **sleepers** — papers that
+were quiet early but are now accruing most of their citations (early-heat signals).
+
+### 7. Author / institution flow
+Which labs are growing activity in which subfields over time — a talent-flow
+leading indicator.
+
+### 8. Signals & brief
+Computed metrics are templated into ranked **BLUF findings**, exportable as a
+markdown brief (see the Signals tab).
+
+### Caveats
+- High coverage of the **AI preprint literature**, not every publisher.
+- Velocity tracks each topic's *share* of activity (stratified sample), not raw totals.
+- Quality depends on the embedding backend and the taxonomy seed phrases — all
+  config-driven in `config/taxonomy.yaml` and `config/settings.yaml`.
+
+Full details: [github.com/delschlangen/signal-lag](https://github.com/delschlangen/signal-lag).
+"""
+    )
 
 st.caption(
     f"Embedding backend: {meta['backend']} · snapshot v{meta.get('version', 1)} · "

@@ -60,23 +60,35 @@ class SemanticScholarClient:
                 continue
         return None
 
-    def enrich(self, papers: list[Paper]) -> int:
-        """Enrich papers in place by arXiv id. Returns count enriched."""
+    def enrich(self, papers: list[Paper], time_budget_s: float = 480.0) -> int:
+        """Enrich papers in place by arXiv id. Returns count enriched.
+
+        Keyless access is heavily rate-limited, so this is best-effort: it keeps
+        going through transient failures (up to a tolerance) but stops once a
+        wall-clock budget is exceeded, so a refresh can't stall on S2.
+        """
+        import time as _time
+
         by_id = {p.arxiv_id: p for p in papers}
         ids = [f"ARXIV:{aid}" for aid in by_id]
         enriched = 0
         consecutive_failures = 0
+        # Keyless: many small batches fail less often than a few large ones.
+        fail_tolerance = 10 if not self.api_key else 3
+        start = _time.monotonic()
         for i in range(0, len(ids), self.batch_size):
+            if _time.monotonic() - start > time_budget_s:
+                log.warning("S2 time budget reached; enriched %d so far", enriched)
+                break
             chunk = ids[i : i + self.batch_size]
             data = self._post_batch(chunk)
             time.sleep(self.request_delay)
             if not data:
-                # Keyless S2 pool is heavily rate-limited; bail early instead of
-                # burning backoff on every batch when it's clearly throttling us.
                 consecutive_failures += 1
-                if consecutive_failures >= 2:
-                    log.warning("S2 repeatedly unavailable; stopping enrichment "
-                                "(set SEMANTIC_SCHOLAR_API_KEY for reliable access)")
+                if consecutive_failures >= fail_tolerance:
+                    log.warning("S2 unavailable after %d tries; stopping (set "
+                                "SEMANTIC_SCHOLAR_API_KEY for reliable access)",
+                                fail_tolerance)
                     break
                 continue
             consecutive_failures = 0

@@ -133,8 +133,15 @@ def enrich_semantic_scholar(settings: Settings, store: Store | None = None) -> i
     cap = int(cfg.get("max_enrich", 0))
     if cap:
         papers = papers[-cap:]  # most recent
-    client = SemanticScholarClient(api_key=cfg.get("api_key"))
-    log.info("Semantic Scholar: enriching %d papers", len(papers))
+    api_key = cfg.get("api_key")
+    # Keyless pool is throttled: smaller batches + slower pacing succeed more often.
+    client = SemanticScholarClient(
+        api_key=api_key,
+        batch_size=200 if api_key else 50,
+        request_delay=0.5 if api_key else 1.3,
+    )
+    log.info("Semantic Scholar: enriching %d papers (%s)",
+             len(papers), "keyed" if api_key else "keyless best-effort")
     n = client.enrich(papers)
     for p in papers:
         if p.s2_tldr is not None or p.s2_influential_citations is not None or p.venue:
