@@ -1,0 +1,72 @@
+# signal-lag runtime settings. Edit freely; no code changes needed.
+
+ingestion:
+  # arXiv categories to pull from.
+  arxiv_categories: [cs.AI, cs.LG, cs.CL]
+  # Inclusive date window for submissions. If start/end are null, a rolling
+  # window of `years_back` ending today is used.
+  date_range:
+    years_back: 3
+    start: null            # e.g. "2022-01-01"
+    end: null              # e.g. "2025-01-01"
+  # Per-category cap on papers fetched (moderate default ~1-2k each).
+  max_results_per_category: 1500
+  # arXiv asks for <= 1 request / 3s; we page in chunks of this size.
+  arxiv_page_size: 200
+  arxiv_request_delay_seconds: 3.0
+  # Exponential backoff schedule (seconds) on 429/503/transient errors.
+  backoff_schedule: [2, 4, 8, 16]
+  # OpenAlex "polite pool" contact (faster, friendlier rate limits).
+  openalex_mailto: "delschlangen@gmail.com"
+  # Cap OpenAlex enrichment calls per run (0 = enrich all cached papers).
+  openalex_max_enrich: 0
+
+embeddings:
+  # Primary local model (downloaded once from HuggingFace). Falls back to a
+  # TF-IDF + SVD vectorizer automatically if the model can't be loaded.
+  model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  fallback_svd_components: 256
+  batch_size: 64
+
+clustering:
+  # "hdbscan" (default) or "kmeans".
+  algorithm: hdbscan
+  hdbscan:
+    min_cluster_size: 15
+    min_samples: 5
+  kmeans:
+    n_clusters: 25
+  # Number of top c-TF-IDF terms used to auto-label a cluster.
+  label_top_terms: 5
+
+taxonomy:
+  # Cosine-similarity threshold for tagging a paper to a taxonomy/capability topic.
+  tag_threshold: 0.28
+  # A paper may carry multiple tags; cap how many per paper.
+  max_tags_per_paper: 3
+
+velocity:
+  # Bucket size for time series. "Q" = calendar quarter.
+  period: "Q"
+  # Window (in periods) used to measure an inflection.
+  inflection_window: 2
+  # Relative change that counts as an acceleration/deceleration inflection.
+  inflection_threshold: 0.30
+  # A cluster younger than this many periods is "newly forming".
+  new_cluster_max_age_periods: 3
+
+citations:
+  # Min citations for a paper to be eligible for "rapid growth" signals.
+  min_citations: 5
+  # Share of a paper's citations arriving in the recent window to flag "heat".
+  recent_window_periods: 4
+  recent_share_threshold: 0.5
+
+divergence:
+  # Relative-velocity gap (capability minus safety) that triggers a signal.
+  gap_threshold: 0.25
+
+paths:
+  db_path: "data/signal_lag.sqlite"
+  embeddings_path: "data/embeddings.npz"
+  brief_output: "data/foresight_brief.md"

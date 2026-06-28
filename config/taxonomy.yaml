@@ -1,0 +1,151 @@
+# Topic taxonomy and capability<->safety pairings.
+#
+# Each topic has:
+#   key:    stable identifier
+#   label:  human-readable name
+#   kind:   "safety" or "capability"
+#   seeds:  short phrases describing the topic. These are embedded and averaged
+#           into a centroid; papers are tagged to a topic by cosine similarity
+#           between their abstract embedding and the centroid.
+#
+# Edit/extend freely. The clustering layer ALSO discovers emergent topics that
+# are not in this list — this taxonomy is the supervised overlay.
+
+safety_topics:
+  - key: interpretability
+    label: "Mechanistic Interpretability"
+    kind: safety
+    seeds:
+      - "mechanistic interpretability of neural networks"
+      - "reverse engineering features and circuits in transformers"
+      - "sparse autoencoders for model internals"
+      - "probing internal representations of language models"
+
+  - key: cot_faithfulness
+    label: "Chain-of-Thought Faithfulness"
+    kind: safety
+    seeds:
+      - "faithfulness of chain-of-thought reasoning"
+      - "whether model reasoning traces reflect the true computation"
+      - "unfaithful or post-hoc rationalization in step-by-step reasoning"
+
+  - key: scalable_oversight
+    label: "Scalable Oversight"
+    kind: safety
+    seeds:
+      - "scalable oversight of AI systems"
+      - "debate and recursive reward modeling for supervision"
+      - "weak-to-strong generalization and supervising superhuman models"
+      - "AI-assisted evaluation of hard-to-judge outputs"
+
+  - key: deceptive_alignment
+    label: "Deceptive Alignment"
+    kind: safety
+    seeds:
+      - "deceptive alignment and scheming in AI models"
+      - "sandbagging and strategic deception by language models"
+      - "models that behave differently under observation"
+      - "sleeper agents and hidden backdoored behaviors"
+
+  - key: reward_hacking
+    label: "Reward Hacking"
+    kind: safety
+    seeds:
+      - "reward hacking and specification gaming"
+      - "reward model overoptimization and Goodhart's law in RLHF"
+      - "exploiting flaws in reward functions"
+
+  - key: evals_benchmarks
+    label: "Evals & Dangerous-Capability Benchmarks"
+    kind: safety
+    seeds:
+      - "dangerous capability evaluations for frontier models"
+      - "safety benchmarks and red-teaming evaluations"
+      - "measuring risky capabilities like deception, persuasion, autonomy"
+
+  - key: rsi_control
+    label: "Self-Improvement Risk & Control"
+    kind: safety
+    seeds:
+      - "AI control protocols for untrusted models"
+      - "containment and control of recursively self-improving AI"
+      - "preventing escape and unsafe autonomous self-modification"
+
+  - key: agentic_monitoring
+    label: "Agentic Behavior Monitoring"
+    kind: safety
+    seeds:
+      - "monitoring the behavior of autonomous LLM agents"
+      - "runtime oversight and guardrails for tool-using agents"
+      - "detecting unsafe actions taken by AI agents"
+
+capability_topics:
+  - key: agentic_capability
+    label: "Agentic / Autonomy Capability"
+    kind: capability
+    seeds:
+      - "autonomous LLM agents that plan and act"
+      - "tool-using agents completing long-horizon tasks"
+      - "agentic frameworks for web and computer use"
+
+  - key: rl_rlhf
+    label: "RL / RLHF Capability"
+    kind: capability
+    seeds:
+      - "reinforcement learning from human feedback to align models"
+      - "policy optimization and RL fine-tuning of language models"
+      - "preference optimization such as PPO and DPO"
+
+  - key: reasoning_cot
+    label: "Reasoning / Chain-of-Thought Capability"
+    kind: capability
+    seeds:
+      - "improving reasoning with chain-of-thought prompting"
+      - "test-time compute and deliberate reasoning models"
+      - "math and code reasoning in large language models"
+
+  - key: frontier_scaling
+    label: "Frontier / Scaling Capability"
+    kind: capability
+    seeds:
+      - "scaling laws for large language models"
+      - "pretraining ever larger frontier foundation models"
+      - "emergent capabilities from scale"
+
+  - key: multiagent_tooluse
+    label: "Multi-Agent / Tool-Use Capability"
+    kind: capability
+    seeds:
+      - "multi-agent collaboration between language models"
+      - "tool use and function calling by LLMs"
+      - "agent orchestration and role-based agent teams"
+
+  - key: self_improvement
+    label: "Self-Improvement / RSI Capability"
+    kind: capability
+    seeds:
+      - "self-improving language models that refine themselves"
+      - "recursive self-improvement and self-training"
+      - "models generating their own training data and curricula"
+
+# The headline product: paired capability<->safety topics. Divergence is measured
+# as (capability velocity) - (safety velocity) for each pair.
+pairings:
+  - name: "Agentic capability vs. agentic monitoring"
+    capability: agentic_capability
+    safety: agentic_monitoring
+  - name: "RL/RLHF vs. reward hacking"
+    capability: rl_rlhf
+    safety: reward_hacking
+  - name: "Reasoning/CoT vs. CoT faithfulness"
+    capability: reasoning_cot
+    safety: cot_faithfulness
+  - name: "Frontier scaling vs. evals & dangerous-capability benchmarks"
+    capability: frontier_scaling
+    safety: evals_benchmarks
+  - name: "Multi-agent/tool-use vs. scalable oversight"
+    capability: multiagent_tooluse
+    safety: scalable_oversight
+  - name: "Self-improvement/RSI vs. deceptive alignment"
+    capability: self_improvement
+    safety: deceptive_alignment
