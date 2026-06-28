@@ -11,14 +11,14 @@ capability research is accelerating while the paired safety work stays flat.
 
 ## 🚀 Try it live
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=delschlangen%2Fsignal-lag&branch=main&mainModule=signal_lag%2Fdashboard%2Fapp.py)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://signal-lag-aw6rmrmp65nit9m9f8wmcq.streamlit.app)
 
-<!-- Once deployed, replace the line below with your live URL, e.g. https://signal-lag.streamlit.app -->
-**Live demo:** _deploy with the badge above to get your URL_
+**▶️ Live demo: https://signal-lag-aw6rmrmp65nit9m9f8wmcq.streamlit.app**
 
 The hosted dashboard self-seeds from a bundled synthetic dataset, so it works
 immediately with no setup. Hosting is free on [Streamlit Community
-Cloud](https://share.streamlit.io); see [Deploy your own](#deploy-your-own).
+Cloud](https://share.streamlit.io); to run your own copy, see
+[Deploy your own](#deploy-your-own).
 
 ---
 
