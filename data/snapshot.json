@@ -4,7 +4,7 @@
   "refreshed_at": "2026-06-28",
   "mode": "live",
   "backend": "sentence-transformers",
-  "n_papers": 10304,
+  "n_papers": 9104,
   "date_start": "2023-06-28",
   "date_end": "2026-06-25",
   "categories": [
@@ -19,8 +19,7 @@
   "n_pairings": 6,
   "n_flagged": 1,
   "source_counts": {
-   "arxiv": 9104,
-   "openreview": 1200
+   "arxiv": 9104
   },
   "n_posts": 70,
   "s2_enriched": 8344
@@ -361,7 +360,7 @@
    "detail": "Submission rate inflected +35% (now ~29.0/quarter)."
   }
  ],
- "brief": "# Signal-Lag Foresight Brief\n\n_Generated 2026-06-28 · 10304 papers · embedding backend: sentence-transformers_\n\n## BLUF\n\n- **Confidence may be eroding in Scalable Oversight** — Critical/negative papers rose from 22% to 31% of recent work (+9 pts) while volume is flat/declining — an early sign the field may be hitting limits.\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** — Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Capability vs. Safety Divergence\n\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** (high): Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Confidence / Negative Signals\n\n- **Confidence may be eroding in Scalable Oversight** (high): Critical/negative papers rose from 22% to 31% of recent work (+9 pts) while volume is flat/declining — an early sign the field may be hitting limits.\n\n## Topic Velocity\n\n- **Agentic / Autonomy Capability is accelerating** (medium): Submission rate inflected +39% (now ~115.0/quarter).\n- **Chain-of-Thought Faithfulness is accelerating** (medium): Submission rate inflected +35% (now ~29.0/quarter).\n",
+ "brief": "# Signal-Lag Foresight Brief\n\n_Generated 2026-06-28 · 9104 papers · embedding backend: sentence-transformers_\n\n## BLUF\n\n- **Confidence may be eroding in Scalable Oversight** — Critical/negative papers rose from 22% to 31% of recent work (+9 pts) while volume is flat/declining — an early sign the field may be hitting limits.\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** — Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Capability vs. Safety Divergence\n\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** (high): Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Confidence / Negative Signals\n\n- **Confidence may be eroding in Scalable Oversight** (high): Critical/negative papers rose from 22% to 31% of recent work (+9 pts) while volume is flat/declining — an early sign the field may be hitting limits.\n\n## Topic Velocity\n\n- **Agentic / Autonomy Capability is accelerating** (medium): Submission rate inflected +39% (now ~115.0/quarter).\n- **Chain-of-Thought Faithfulness is accelerating** (medium): Submission rate inflected +35% (now ~29.0/quarter).\n",
  "timeseries": [
   {
    "topic_key": "agentic_capability",
@@ -371,7 +370,7 @@
   {
    "topic_key": "agentic_capability",
    "period": "2023Q3",
-   "count": 90
+   "count": 59
   },
   {
    "topic_key": "agentic_capability",
@@ -386,12 +385,12 @@
   {
    "topic_key": "agentic_capability",
    "period": "2024Q2",
-   "count": 88
+   "count": 62
   },
   {
    "topic_key": "agentic_capability",
    "period": "2024Q3",
-   "count": 110
+   "count": 57
   },
   {
    "topic_key": "agentic_capability",
@@ -431,7 +430,7 @@
   {
    "topic_key": "agentic_monitoring",
    "period": "2023Q3",
-   "count": 79
+   "count": 73
   },
   {
    "topic_key": "agentic_monitoring",
@@ -446,12 +445,12 @@
   {
    "topic_key": "agentic_monitoring",
    "period": "2024Q2",
-   "count": 77
+   "count": 69
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2024Q3",
-   "count": 112
+   "count": 91
   },
   {
    "topic_key": "agentic_monitoring",
@@ -491,7 +490,7 @@
   {
    "topic_key": "cot_faithfulness",
    "period": "2023Q3",
-   "count": 23
+   "count": 14
   },
   {
    "topic_key": "cot_faithfulness",
@@ -506,12 +505,12 @@
   {
    "topic_key": "cot_faithfulness",
    "period": "2024Q2",
-   "count": 20
+   "count": 12
   },
   {
    "topic_key": "cot_faithfulness",
    "period": "2024Q3",
-   "count": 22
+   "count": 14
   },
   {
    "topic_key": "cot_faithfulness",
@@ -551,7 +550,7 @@
   {
    "topic_key": "deceptive_alignment",
    "period": "2023Q3",
-   "count": 81
+   "count": 59
   },
   {
    "topic_key": "deceptive_alignment",
@@ -566,12 +565,12 @@
   {
    "topic_key": "deceptive_alignment",
    "period": "2024Q2",
-   "count": 121
+   "count": 93
   },
   {
    "topic_key": "deceptive_alignment",
    "period": "2024Q3",
-   "count": 103
+   "count": 80
   },
   {
    "topic_key": "deceptive_alignment",
@@ -611,7 +610,7 @@
   {
    "topic_key": "evals_benchmarks",
    "period": "2023Q3",
-   "count": 40
+   "count": 30
   },
   {
    "topic_key": "evals_benchmarks",
@@ -626,12 +625,12 @@
   {
    "topic_key": "evals_benchmarks",
    "period": "2024Q2",
-   "count": 31
+   "count": 20
   },
   {
    "topic_key": "evals_benchmarks",
    "period": "2024Q3",
-   "count": 49
+   "count": 36
   },
   {
    "topic_key": "evals_benchmarks",
@@ -671,7 +670,7 @@
   {
    "topic_key": "frontier_scaling",
    "period": "2023Q3",
-   "count": 107
+   "count": 57
   },
   {
    "topic_key": "frontier_scaling",
@@ -686,12 +685,12 @@
   {
    "topic_key": "frontier_scaling",
    "period": "2024Q2",
-   "count": 118
+   "count": 63
   },
   {
    "topic_key": "frontier_scaling",
    "period": "2024Q3",
-   "count": 151
+   "count": 69
   },
   {
    "topic_key": "frontier_scaling",
@@ -731,7 +730,7 @@
   {
    "topic_key": "interpretability",
    "period": "2023Q3",
-   "count": 391
+   "count": 186
   },
   {
    "topic_key": "interpretability",
@@ -746,12 +745,12 @@
   {
    "topic_key": "interpretability",
    "period": "2024Q2",
-   "count": 394
+   "count": 190
   },
   {
    "topic_key": "interpretability",
    "period": "2024Q3",
-   "count": 362
+   "count": 187
   },
   {
    "topic_key": "interpretability",
@@ -791,7 +790,7 @@
   {
    "topic_key": "multiagent_tooluse",
    "period": "2023Q3",
-   "count": 35
+   "count": 31
   },
   {
    "topic_key": "multiagent_tooluse",
@@ -806,12 +805,12 @@
   {
    "topic_key": "multiagent_tooluse",
    "period": "2024Q2",
-   "count": 36
+   "count": 28
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2024Q3",
-   "count": 55
+   "count": 28
   },
   {
    "topic_key": "multiagent_tooluse",
@@ -851,7 +850,7 @@
   {
    "topic_key": "reasoning_cot",
    "period": "2023Q3",
-   "count": 216
+   "count": 120
   },
   {
    "topic_key": "reasoning_cot",
@@ -866,12 +865,12 @@
   {
    "topic_key": "reasoning_cot",
    "period": "2024Q2",
-   "count": 220
+   "count": 137
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2024Q3",
-   "count": 236
+   "count": 117
   },
   {
    "topic_key": "reasoning_cot",
@@ -911,7 +910,7 @@
   {
    "topic_key": "reward_hacking",
    "period": "2023Q3",
-   "count": 62
+   "count": 27
   },
   {
    "topic_key": "reward_hacking",
@@ -926,12 +925,12 @@
   {
    "topic_key": "reward_hacking",
    "period": "2024Q2",
-   "count": 62
+   "count": 26
   },
   {
    "topic_key": "reward_hacking",
    "period": "2024Q3",
-   "count": 40
+   "count": 13
   },
   {
    "topic_key": "reward_hacking",
@@ -971,7 +970,7 @@
   {
    "topic_key": "rl_rlhf",
    "period": "2023Q3",
-   "count": 193
+   "count": 64
   },
   {
    "topic_key": "rl_rlhf",
@@ -986,12 +985,12 @@
   {
    "topic_key": "rl_rlhf",
    "period": "2024Q2",
-   "count": 219
+   "count": 77
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2024Q3",
-   "count": 189
+   "count": 67
   },
   {
    "topic_key": "rl_rlhf",
@@ -1031,7 +1030,7 @@
   {
    "topic_key": "rsi_control",
    "period": "2023Q3",
-   "count": 116
+   "count": 96
   },
   {
    "topic_key": "rsi_control",
@@ -1046,12 +1045,12 @@
   {
    "topic_key": "rsi_control",
    "period": "2024Q2",
-   "count": 121
+   "count": 96
   },
   {
    "topic_key": "rsi_control",
    "period": "2024Q3",
-   "count": 111
+   "count": 95
   },
   {
    "topic_key": "rsi_control",
@@ -1091,7 +1090,7 @@
   {
    "topic_key": "scalable_oversight",
    "period": "2023Q3",
-   "count": 367
+   "count": 192
   },
   {
    "topic_key": "scalable_oversight",
@@ -1106,12 +1105,12 @@
   {
    "topic_key": "scalable_oversight",
    "period": "2024Q2",
-   "count": 379
+   "count": 200
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2024Q3",
-   "count": 368
+   "count": 199
   },
   {
    "topic_key": "scalable_oversight",
@@ -1151,7 +1150,7 @@
   {
    "topic_key": "self_improvement",
    "period": "2023Q3",
-   "count": 282
+   "count": 150
   },
   {
    "topic_key": "self_improvement",
@@ -1166,12 +1165,12 @@
   {
    "topic_key": "self_improvement",
    "period": "2024Q2",
-   "count": 233
+   "count": 135
   },
   {
    "topic_key": "self_improvement",
    "period": "2024Q3",
-   "count": 252
+   "count": 140
   },
   {
    "topic_key": "self_improvement",
@@ -1206,7 +1205,7 @@
  ],
  "sentiment": {
   "agentic_capability": {
-   "critical_share": 0.053,
+   "critical_share": 0.054,
    "recent_share": 0.067,
    "prior_share": 0.048,
    "trend": 0.019,
@@ -1214,7 +1213,7 @@
    "rising": false
   },
   "agentic_monitoring": {
-   "critical_share": 0.049,
+   "critical_share": 0.047,
    "recent_share": 0.069,
    "prior_share": 0.051,
    "trend": 0.018,
@@ -1222,7 +1221,7 @@
    "rising": false
   },
   "cot_faithfulness": {
-   "critical_share": 0.341,
+   "critical_share": 0.331,
    "recent_share": 0.356,
    "prior_share": 0.367,
    "trend": -0.011,
@@ -1230,7 +1229,7 @@
    "rising": false
   },
   "deceptive_alignment": {
-   "critical_share": 0.225,
+   "critical_share": 0.208,
    "recent_share": 0.23,
    "prior_share": 0.198,
    "trend": 0.032,
@@ -1238,7 +1237,7 @@
    "rising": false
   },
   "evals_benchmarks": {
-   "critical_share": 0.23,
+   "critical_share": 0.201,
    "recent_share": 0.212,
    "prior_share": 0.213,
    "trend": -0.002,
@@ -1246,7 +1245,7 @@
    "rising": false
   },
   "frontier_scaling": {
-   "critical_share": 0.296,
+   "critical_share": 0.268,
    "recent_share": 0.277,
    "prior_share": 0.291,
    "trend": -0.014,
@@ -1254,7 +1253,7 @@
    "rising": false
   },
   "interpretability": {
-   "critical_share": 0.242,
+   "critical_share": 0.222,
    "recent_share": 0.254,
    "prior_share": 0.261,
    "trend": -0.007,
@@ -1262,7 +1261,7 @@
    "rising": false
   },
   "multiagent_tooluse": {
-   "critical_share": 0.052,
+   "critical_share": 0.05,
    "recent_share": 0.027,
    "prior_share": 0.061,
    "trend": -0.034,
@@ -1270,7 +1269,7 @@
    "rising": false
   },
   "reasoning_cot": {
-   "critical_share": 0.283,
+   "critical_share": 0.269,
    "recent_share": 0.345,
    "prior_share": 0.28,
    "trend": 0.064,
@@ -1278,7 +1277,7 @@
    "rising": false
   },
   "reward_hacking": {
-   "critical_share": 0.214,
+   "critical_share": 0.18,
    "recent_share": 0.19,
    "prior_share": 0.129,
    "trend": 0.061,
@@ -1286,7 +1285,7 @@
    "rising": false
   },
   "rl_rlhf": {
-   "critical_share": 0.238,
+   "critical_share": 0.222,
    "recent_share": 0.184,
    "prior_share": 0.219,
    "trend": -0.035,
@@ -1294,7 +1293,7 @@
    "rising": false
   },
   "rsi_control": {
-   "critical_share": 0.095,
+   "critical_share": 0.085,
    "recent_share": 0.071,
    "prior_share": 0.079,
    "trend": -0.009,
@@ -1302,7 +1301,7 @@
    "rising": false
   },
   "scalable_oversight": {
-   "critical_share": 0.272,
+   "critical_share": 0.249,
    "recent_share": 0.314,
    "prior_share": 0.225,
    "trend": 0.089,
@@ -1310,7 +1309,7 @@
    "rising": true
   },
   "self_improvement": {
-   "critical_share": 0.325,
+   "critical_share": 0.299,
    "recent_share": 0.354,
    "prior_share": 0.332,
    "trend": 0.022,
@@ -1328,8 +1327,8 @@
   {
    "topic_key": "agentic_capability",
    "period": "2023Q3",
-   "critical_share": 0.044444444444444446,
-   "n": 90
+   "critical_share": 0.05084745762711865,
+   "n": 59
   },
   {
    "topic_key": "agentic_capability",
@@ -1346,14 +1345,14 @@
   {
    "topic_key": "agentic_capability",
    "period": "2024Q2",
-   "critical_share": 0.045454545454545456,
-   "n": 88
+   "critical_share": 0.04838709677419355,
+   "n": 62
   },
   {
    "topic_key": "agentic_capability",
    "period": "2024Q3",
-   "critical_share": 0.05454545454545454,
-   "n": 110
+   "critical_share": 0.05263157894736842,
+   "n": 57
   },
   {
    "topic_key": "agentic_capability",
@@ -1400,8 +1399,8 @@
   {
    "topic_key": "agentic_monitoring",
    "period": "2023Q3",
-   "critical_share": 0.06329113924050633,
-   "n": 79
+   "critical_share": 0.0547945205479452,
+   "n": 73
   },
   {
    "topic_key": "agentic_monitoring",
@@ -1418,14 +1417,14 @@
   {
    "topic_key": "agentic_monitoring",
    "period": "2024Q2",
-   "critical_share": 0.05194805194805195,
-   "n": 77
+   "critical_share": 0.057971014492753624,
+   "n": 69
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2024Q3",
-   "critical_share": 0.044642857142857144,
-   "n": 112
+   "critical_share": 0.03296703296703297,
+   "n": 91
   },
   {
    "topic_key": "agentic_monitoring",
@@ -1472,8 +1471,8 @@
   {
    "topic_key": "cot_faithfulness",
    "period": "2023Q3",
-   "critical_share": 0.30434782608695654,
-   "n": 23
+   "critical_share": 0.21428571428571427,
+   "n": 14
   },
   {
    "topic_key": "cot_faithfulness",
@@ -1490,14 +1489,14 @@
   {
    "topic_key": "cot_faithfulness",
    "period": "2024Q2",
-   "critical_share": 0.35,
-   "n": 20
+   "critical_share": 0.3333333333333333,
+   "n": 12
   },
   {
    "topic_key": "cot_faithfulness",
    "period": "2024Q3",
-   "critical_share": 0.36363636363636365,
-   "n": 22
+   "critical_share": 0.2857142857142857,
+   "n": 14
   },
   {
    "topic_key": "cot_faithfulness",
@@ -1544,8 +1543,8 @@
   {
    "topic_key": "deceptive_alignment",
    "period": "2023Q3",
-   "critical_share": 0.25925925925925924,
-   "n": 81
+   "critical_share": 0.23728813559322035,
+   "n": 59
   },
   {
    "topic_key": "deceptive_alignment",
@@ -1562,14 +1561,14 @@
   {
    "topic_key": "deceptive_alignment",
    "period": "2024Q2",
-   "critical_share": 0.2892561983471074,
-   "n": 121
+   "critical_share": 0.20430107526881722,
+   "n": 93
   },
   {
    "topic_key": "deceptive_alignment",
    "period": "2024Q3",
-   "critical_share": 0.27184466019417475,
-   "n": 103
+   "critical_share": 0.225,
+   "n": 80
   },
   {
    "topic_key": "deceptive_alignment",
@@ -1616,8 +1615,8 @@
   {
    "topic_key": "evals_benchmarks",
    "period": "2023Q3",
-   "critical_share": 0.35,
-   "n": 40
+   "critical_share": 0.26666666666666666,
+   "n": 30
   },
   {
    "topic_key": "evals_benchmarks",
@@ -1634,14 +1633,14 @@
   {
    "topic_key": "evals_benchmarks",
    "period": "2024Q2",
-   "critical_share": 0.41935483870967744,
-   "n": 31
+   "critical_share": 0.25,
+   "n": 20
   },
   {
    "topic_key": "evals_benchmarks",
    "period": "2024Q3",
-   "critical_share": 0.32653061224489793,
-   "n": 49
+   "critical_share": 0.25,
+   "n": 36
   },
   {
    "topic_key": "evals_benchmarks",
@@ -1688,8 +1687,8 @@
   {
    "topic_key": "frontier_scaling",
    "period": "2023Q3",
-   "critical_share": 0.35514018691588783,
-   "n": 107
+   "critical_share": 0.3157894736842105,
+   "n": 57
   },
   {
    "topic_key": "frontier_scaling",
@@ -1706,14 +1705,14 @@
   {
    "topic_key": "frontier_scaling",
    "period": "2024Q2",
-   "critical_share": 0.3644067796610169,
-   "n": 118
+   "critical_share": 0.25396825396825395,
+   "n": 63
   },
   {
    "topic_key": "frontier_scaling",
    "period": "2024Q3",
-   "critical_share": 0.304635761589404,
-   "n": 151
+   "critical_share": 0.18840579710144928,
+   "n": 69
   },
   {
    "topic_key": "frontier_scaling",
@@ -1760,8 +1759,8 @@
   {
    "topic_key": "interpretability",
    "period": "2023Q3",
-   "critical_share": 0.2557544757033248,
-   "n": 391
+   "critical_share": 0.1989247311827957,
+   "n": 186
   },
   {
    "topic_key": "interpretability",
@@ -1778,14 +1777,14 @@
   {
    "topic_key": "interpretability",
    "period": "2024Q2",
-   "critical_share": 0.29441624365482233,
-   "n": 394
+   "critical_share": 0.24210526315789474,
+   "n": 190
   },
   {
    "topic_key": "interpretability",
    "period": "2024Q3",
-   "critical_share": 0.24033149171270718,
-   "n": 362
+   "critical_share": 0.17647058823529413,
+   "n": 187
   },
   {
    "topic_key": "interpretability",
@@ -1832,8 +1831,8 @@
   {
    "topic_key": "multiagent_tooluse",
    "period": "2023Q3",
-   "critical_share": 0.02857142857142857,
-   "n": 35
+   "critical_share": 0.03225806451612903,
+   "n": 31
   },
   {
    "topic_key": "multiagent_tooluse",
@@ -1850,14 +1849,14 @@
   {
    "topic_key": "multiagent_tooluse",
    "period": "2024Q2",
-   "critical_share": 0.16666666666666666,
-   "n": 36
+   "critical_share": 0.17857142857142858,
+   "n": 28
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2024Q3",
-   "critical_share": 0.07272727272727272,
-   "n": 55
+   "critical_share": 0.07142857142857142,
+   "n": 28
   },
   {
    "topic_key": "multiagent_tooluse",
@@ -1904,8 +1903,8 @@
   {
    "topic_key": "reasoning_cot",
    "period": "2023Q3",
-   "critical_share": 0.2824074074074074,
-   "n": 216
+   "critical_share": 0.21666666666666667,
+   "n": 120
   },
   {
    "topic_key": "reasoning_cot",
@@ -1922,14 +1921,14 @@
   {
    "topic_key": "reasoning_cot",
    "period": "2024Q2",
-   "critical_share": 0.31363636363636366,
-   "n": 220
+   "critical_share": 0.31386861313868614,
+   "n": 137
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2024Q3",
-   "critical_share": 0.3135593220338983,
-   "n": 236
+   "critical_share": 0.23931623931623933,
+   "n": 117
   },
   {
    "topic_key": "reasoning_cot",
@@ -1976,8 +1975,8 @@
   {
    "topic_key": "reward_hacking",
    "period": "2023Q3",
-   "critical_share": 0.24193548387096775,
-   "n": 62
+   "critical_share": 0.18518518518518517,
+   "n": 27
   },
   {
    "topic_key": "reward_hacking",
@@ -1994,14 +1993,14 @@
   {
    "topic_key": "reward_hacking",
    "period": "2024Q2",
-   "critical_share": 0.24193548387096775,
-   "n": 62
+   "critical_share": 0.11538461538461539,
+   "n": 26
   },
   {
    "topic_key": "reward_hacking",
    "period": "2024Q3",
-   "critical_share": 0.2,
-   "n": 40
+   "critical_share": 0.07692307692307693,
+   "n": 13
   },
   {
    "topic_key": "reward_hacking",
@@ -2048,8 +2047,8 @@
   {
    "topic_key": "rl_rlhf",
    "period": "2023Q3",
-   "critical_share": 0.22279792746113988,
-   "n": 193
+   "critical_share": 0.203125,
+   "n": 64
   },
   {
    "topic_key": "rl_rlhf",
@@ -2066,14 +2065,14 @@
   {
    "topic_key": "rl_rlhf",
    "period": "2024Q2",
-   "critical_share": 0.273972602739726,
-   "n": 219
+   "critical_share": 0.2077922077922078,
+   "n": 77
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2024Q3",
-   "critical_share": 0.25925925925925924,
-   "n": 189
+   "critical_share": 0.208955223880597,
+   "n": 67
   },
   {
    "topic_key": "rl_rlhf",
@@ -2120,8 +2119,8 @@
   {
    "topic_key": "rsi_control",
    "period": "2023Q3",
-   "critical_share": 0.10344827586206896,
-   "n": 116
+   "critical_share": 0.052083333333333336,
+   "n": 96
   },
   {
    "topic_key": "rsi_control",
@@ -2138,14 +2137,14 @@
   {
    "topic_key": "rsi_control",
    "period": "2024Q2",
-   "critical_share": 0.1487603305785124,
-   "n": 121
+   "critical_share": 0.11458333333333333,
+   "n": 96
   },
   {
    "topic_key": "rsi_control",
    "period": "2024Q3",
-   "critical_share": 0.14414414414414414,
-   "n": 111
+   "critical_share": 0.1368421052631579,
+   "n": 95
   },
   {
    "topic_key": "rsi_control",
@@ -2192,8 +2191,8 @@
   {
    "topic_key": "scalable_oversight",
    "period": "2023Q3",
-   "critical_share": 0.2970027247956403,
-   "n": 367
+   "critical_share": 0.22395833333333334,
+   "n": 192
   },
   {
    "topic_key": "scalable_oversight",
@@ -2210,14 +2209,14 @@
   {
    "topic_key": "scalable_oversight",
    "period": "2024Q2",
-   "critical_share": 0.32981530343007914,
-   "n": 379
+   "critical_share": 0.255,
+   "n": 200
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2024Q3",
-   "critical_share": 0.30978260869565216,
-   "n": 368
+   "critical_share": 0.25125628140703515,
+   "n": 199
   },
   {
    "topic_key": "scalable_oversight",
@@ -2264,8 +2263,8 @@
   {
    "topic_key": "self_improvement",
    "period": "2023Q3",
-   "critical_share": 0.3333333333333333,
-   "n": 282
+   "critical_share": 0.24666666666666667,
+   "n": 150
   },
   {
    "topic_key": "self_improvement",
@@ -2282,14 +2281,14 @@
   {
    "topic_key": "self_improvement",
    "period": "2024Q2",
-   "critical_share": 0.34334763948497854,
-   "n": 233
+   "critical_share": 0.2740740740740741,
+   "n": 135
   },
   {
    "topic_key": "self_improvement",
    "period": "2024Q3",
-   "critical_share": 0.3333333333333333,
-   "n": 252
+   "critical_share": 0.2357142857142857,
+   "n": 140
   },
   {
    "topic_key": "self_improvement",
@@ -4515,5 +4514,162 @@
    "topic": "agentic_capability",
    "topic_score": 0.409
   }
- ]
+ ],
+ "analysis": {
+  "headline": {
+   "meaning": "The dominant story is agentic autonomy racing ahead of the oversight needed to govern it: capability work on tool-using, embodied, and multi-agent systems is the fastest-growing category while the matching scalable-oversight work is shrinking.",
+   "capability_focus": "Multi-agent collaboration, GUI/web agents, embodied robotic manipulation, and agentic business-process automation that grants LLMs broad file, shell, and physical action authority.",
+   "safety_focus": "Scalable oversight is contracting (-5.6%/qtr), while monitoring-adjacent work focuses on policy-governed control planes, out-of-band prompt-injection defenses, and process-level supervision for agent trajectories.",
+   "why_it_matters": "Autonomous agents with real-world execution authority are being deployed faster than the oversight tooling to constrain them, widening the gap precisely where misbehavior is hardest to catch and reverse."
+  },
+  "tabs": {
+   "divergence": "Multi-agent/tool-use capability grows 20.7%/qtr against a shrinking scalable-oversight field (-5.6%), the clearest flagged lag this week. Conversely, CoT-faithfulness (+34.9%) and dangerous-capability evals (+22.4%) are outpacing their capability counterparts, showing safety is keeping up on interpretability and evaluation but falling behind on agentic control. The volume ratios still favor capability heavily in RL/RLHF (4.79) and reasoning (5.5), so safety leads in growth rate but not absolute output.",
+   "velocity": "Agentic/Autonomy capability is the top mover (+38.6%, 115 recent/qtr) and Agentic Behavior Monitoring is accelerating too (+13.8%, 123.5), suggesting monitoring is at least chasing autonomy. The sharpest declines are Reward Hacking (-17.1%) and RSI capability (-8.4%), indicating attention is rotating away from speculative recursive-self-improvement risks toward concrete agent deployment concerns. Reasoning capability has the highest absolute throughput (159.5/qtr) despite modest growth.",
+   "sentiment": "Scalable Oversight is the only topic with rising critical share (31.4%, +8.9pts), signaling growing community skepticism about whether oversight methods actually work as agents scale. Agentic capability and monitoring carry very low critical share (~6.7-6.9%), reflecting an optimistic, deployment-driven literature with little self-criticism. CoT faithfulness and RSI sit at the highest critical share (~35%), consistent with mature, contested research areas.",
+   "quadrant": "Only Agentic/Autonomy Capability and Chain-of-Thought Faithfulness register as 'hot'; everything else is 'established,' indicating a maturing field without genuine white-space breakthroughs this week. The pairing of a hot capability (autonomy) with a hot safety topic (CoT faithfulness) is notable but mismatched—faithfulness work does not directly address agent action oversight. No emerging or cooling quadrants appear, suggesting incremental rather than disruptive movement.",
+   "citations": "No rapid-growth or sleeper citation movers were recorded this week, so there is no clear evidence of a breakout paper or a quietly resurging older result. This absence suggests the week's output is incremental and consolidating rather than driven by a single high-impact contribution."
+  },
+  "papers": [
+   {
+    "arxiv_id": "2606.27233",
+    "summary": "Proposes a conceptual framework for analyzing dialogue dynamics in human-AI and multi-agent collaborative problem-solving.",
+    "why_it_matters": "Better understanding of multi-agent dialogue is foundational for evaluating and governing cooperative agent systems, though it remains conceptual rather than a control mechanism."
+   },
+   {
+    "arxiv_id": "2606.27188",
+    "summary": "Introduces a 'process harness' that wraps legacy workflow engines in a policy-governed agentic layer while the deterministic engine retains structural authority.",
+    "why_it_matters": "Demonstrates a containment pattern—keeping deterministic control while adding agentic reasoning—that is directly relevant to bounding agent autonomy in production systems."
+   },
+   {
+    "arxiv_id": "2606.26924",
+    "summary": "Studies 10,008 GitHub repos to show LLM coding-agent configuration files propagate as unmanaged, duplicated shared components and proposes a deterministic control plane.",
+    "why_it_matters": "Reveals an overlooked supply-chain and oversight gap: agents with broad shell/file access are steered by ungoverned config that silently spreads across projects."
+   },
+   {
+    "arxiv_id": "2606.27330",
+    "summary": "Builds a planning-experience exploration and hindsight-utilization method to improve small open-source GUI web agents' task planning and cross-site generalization.",
+    "why_it_matters": "Strengthens autonomous web-agent capability on cheap open models, broadening who can deploy capable agents and raising the stakes for oversight."
+   },
+   {
+    "arxiv_id": "2606.27268",
+    "summary": "Presents an embodied test-time scaling framework that uses reasoning and historical context to improve long-horizon robotic manipulation policies.",
+    "why_it_matters": "Extends test-time reasoning gains into physical embodied tasks, pushing autonomy into the real world where failures have material consequences."
+   },
+   {
+    "arxiv_id": "2606.27163",
+    "summary": "Describes a prizewinning bimanual garment-folding system using a vision-language-action policy that serves as its own RL value function.",
+    "why_it_matters": "Shows competitive real-world robotic autonomy from a self-evaluating RL loop, a setup where the policy judging its own success invites reward-hacking risks."
+   },
+   {
+    "arxiv_id": "2606.27251",
+    "summary": "Develops omnimodal embodied agents that unify cyber and physical action spaces with autonomous recovery from physical failures over extended operation.",
+    "why_it_matters": "Persistent agents orchestrating APIs, IoT, and physical manipulation greatly expand the autonomy attack surface and the difficulty of meaningful human oversight."
+   },
+   {
+    "arxiv_id": "2606.27136",
+    "summary": "Jointly learns interpretable natural-language rules and model-parameter policies so LLM agents better reuse accumulated interaction experience.",
+    "why_it_matters": "Bridges interpretable rules with policy learning, which could aid oversight but also makes agents more self-improving from their own experience."
+   },
+   {
+    "arxiv_id": "2606.26981",
+    "summary": "Combines LLM open-vocabulary action planning with physics-aware models to synthesize physically realistic human motion from text.",
+    "why_it_matters": "Primarily a generative-capability advance with limited direct safety relevance, illustrating LLMs grounding language into physical constraints."
+   },
+   {
+    "arxiv_id": "2606.27274",
+    "summary": "Releases an explanation-annotated dataset for detecting manipulative betting advertisements that use persuasive, misleading techniques on social media.",
+    "why_it_matters": "Provides a concrete benchmark for detecting AI-relevant manipulation and persuasion harms affecting user well-being."
+   },
+   {
+    "arxiv_id": "2606.27180",
+    "summary": "Automates potential-based reward shaping using VLM guidance to give RL agents intermediate feedback without inducing reward hacking.",
+    "why_it_matters": "Directly targets reward hacking by using PBRS guarantees, a rare concrete safety contribution in a shrinking reward-hacking literature."
+   },
+   {
+    "arxiv_id": "2606.27112",
+    "summary": "Proposes a corrected heavy-ball Q-learning method with proven convergence and acceleration over standard Q-learning.",
+    "why_it_matters": "A theoretical RL optimization advance with little direct safety bearing, relevant mainly to training efficiency and stability."
+   },
+   {
+    "arxiv_id": "2606.26593",
+    "summary": "Builds an LLM-based system to classify and dispatch email content and attachments to intended recipients in organizations.",
+    "why_it_matters": "A workflow-automation application that, despite its agentic framing, carries privacy and misrouting risks when handling sensitive organizational communications."
+   },
+   {
+    "arxiv_id": "2606.26935",
+    "summary": "Investigates whether CoT training improves an agent's ability to change its action via reasoning or merely to predict answers, probing post-hoc unfaithfulness.",
+    "why_it_matters": "Directly addresses chain-of-thought faithfulness—whether verbalized reasoning genuinely drives behavior—which is central to trusting reasoning-based oversight."
+   },
+   {
+    "arxiv_id": "2606.27287",
+    "summary": "Demonstrates that subtle self-promotional prompt injection in résumés can manipulate LLM-based applicant screening without adding real qualifications.",
+    "why_it_matters": "Shows a practical adversarial-manipulation vector against deployed LLM decision systems, evidencing real-world strategic gaming of AI evaluators."
+   },
+   {
+    "arxiv_id": "2606.26511",
+    "summary": "Identifies that RAG lacks a model of time and proposes handling temporal validity so agents stop serving stale, superseded facts.",
+    "why_it_matters": "Addresses a structural reliability failure in agent memory that could cause confidently wrong outputs over evolving knowledge."
+   },
+   {
+    "arxiv_id": "2606.26933",
+    "summary": "Presents Chai, an AI system that discovers and validates cryptographic-misuse vulnerabilities lacking conventional instrumentation.",
+    "why_it_matters": "A dual-use capability: agentic vulnerability discovery aids defenders but also lowers the bar for automated offensive security."
+   },
+   {
+    "arxiv_id": "2606.26590",
+    "summary": "Introduces TerraProbe, a five-layer oracle framework to detect deceptive fixes by LLM repair agents on Terraform infrastructure-as-code.",
+    "why_it_matters": "Tackles deceptive alignment in practice—repairs that satisfy a static checker without genuinely fixing security—via layered behavioral verification."
+   },
+   {
+    "arxiv_id": "2606.27288",
+    "summary": "Proves a co-failure ceiling showing multi-model routing/voting/mixture systems cannot exceed accuracy bounded by the rate all models fail together.",
+    "why_it_matters": "Sets a rigorous theoretical limit on ensemble-based reliability, tempering claims that combining frontier models reliably improves correctness."
+   },
+   {
+    "arxiv_id": "2606.27234",
+    "summary": "Characterizes AI nudification (non-consensual synthetic explicit imagery) requests and community dynamics on 4chan's anonymous content community.",
+    "why_it_matters": "Documents an active, expanding generative-AI abuse ecosystem extending from celebrities to ordinary individuals, a concrete misuse harm."
+   },
+   {
+    "arxiv_id": "2606.26987",
+    "summary": "Tests whether emotion vectors found in Claude generalize to open-weight models by extracting layer-wise emotion contrast vectors.",
+    "why_it_matters": "Advances mechanistic interpretability by probing whether causal emotion representations are a general feature of LLMs, aiding behavioral steering and monitoring."
+   },
+   {
+    "arxiv_id": "2606.26866",
+    "summary": "Theorizes transitive trust in third-party cybersecurity risk governance through document analysis of frameworks like NIST.",
+    "why_it_matters": "Frames supply-chain trust governance relevant as AI systems increasingly depend on opaque third-party vendors and data flows."
+   },
+   {
+    "arxiv_id": "2606.26479",
+    "summary": "Adaptively evaluates out-of-band, deterministic-policy defenses (CaMeL, FIDES, Progent, etc.) against indirect prompt injection in tool-using agents.",
+    "why_it_matters": "Stress-tests the leading external-enforcement paradigm for agent security, directly informing whether out-of-band oversight actually holds under adaptive attack."
+   },
+   {
+    "arxiv_id": "2606.26936",
+    "summary": "Uses bandit algorithms to automatically select optimal jailbreaks and enhance malicious queries for non-expert ('average Jane') attackers.",
+    "why_it_matters": "Demonstrates that automated jailbreak selection lowers the expertise barrier for eliciting harmful responses, raising real misuse-accessibility concerns."
+   },
+   {
+    "arxiv_id": "2606.27009",
+    "summary": "Proposes semantic early-stopping that halts iterative LLM agent loops when draft embeddings stop changing, replacing fixed iteration caps.",
+    "why_it_matters": "Improves agent loop efficiency and control, a small step toward smarter termination logic than blunt syntactic kill-switches."
+   },
+   {
+    "arxiv_id": "2606.27154",
+    "summary": "Introduces OpenRCA 2.0/PAVE, a benchmark providing causal-process supervision (full propagation paths) rather than only root-cause outcome labels.",
+    "why_it_matters": "Strengthens process-level evaluation of agent reasoning, supporting scalable oversight by rewarding correct reasoning paths over pattern-matched answers."
+   },
+   {
+    "arxiv_id": "2606.26686",
+    "summary": "Presents LeanGuard, showing safety guardrails do not always need chain-of-thought, enabling faster, lighter moderation than CoT-based guards.",
+    "why_it_matters": "Challenges the assumption that reasoning improves guardrails, with deployment implications for the latency and robustness of moderation systems."
+   },
+   {
+    "arxiv_id": "2606.26969",
+    "summary": "Explores whether LLMs can be trained to use visual counterfactual simulation ('world models') as a complement to language for complex reasoning.",
+    "why_it_matters": "Probes a frontier reasoning mechanism that, if successful, would extend model cognition beyond language and complicate transparency of internal reasoning."
+   }
+  ]
+ }
 }
