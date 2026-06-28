@@ -4,25 +4,17 @@
   "refreshed_at": "2026-06-28",
   "mode": "live",
   "backend": "sentence-transformers",
-  "n_papers": 10304,
+  "n_papers": 4542,
   "date_start": "2023-06-28",
   "date_end": "2026-06-25",
   "categories": [
    "cs.AI",
    "cs.LG",
-   "cs.CL",
-   "cs.CR",
-   "cs.CY",
-   "cs.CV"
+   "cs.CL"
   ],
   "topics_tracked": 14,
   "n_pairings": 6,
-  "n_flagged": 1,
-  "source_counts": {
-   "arxiv": 9104,
-   "openreview": 1200
-  },
-  "n_posts": 60
+  "n_flagged": 0
  },
  "label_map": {
   "interpretability": "Mechanistic Interpretability",
@@ -45,285 +37,285 @@
    "pairing": "Multi-agent/tool-use vs. scalable oversight",
    "capability_topic": "multiagent_tooluse",
    "safety_topic": "scalable_oversight",
-   "cap_recent": 52.5,
-   "saf_recent": 218.0,
-   "cap_growth": 0.207,
-   "saf_growth": -0.056,
-   "gap": 0.263,
+   "cap_recent": 32.5,
+   "saf_recent": 136.0,
+   "cap_growth": -0.085,
+   "saf_growth": -0.018,
+   "gap": -0.066,
    "volume_ratio": 0.24,
-   "lagging": true
+   "lagging": false
   },
   {
    "pairing": "Agentic capability vs. agentic monitoring",
    "capability_topic": "agentic_capability",
    "safety_topic": "agentic_monitoring",
-   "cap_recent": 115.0,
-   "saf_recent": 123.5,
-   "cap_growth": 0.386,
-   "saf_growth": 0.138,
-   "gap": 0.247,
-   "volume_ratio": 0.93,
-   "lagging": false
-  },
-  {
-   "pairing": "RL/RLHF vs. reward hacking",
-   "capability_topic": "rl_rlhf",
-   "safety_topic": "reward_hacking",
-   "cap_recent": 81.5,
-   "saf_recent": 17.0,
-   "cap_growth": 0.032,
-   "saf_growth": -0.171,
-   "gap": 0.202,
-   "volume_ratio": 4.79,
-   "lagging": false
-  },
-  {
-   "pairing": "Self-improvement/RSI vs. deceptive alignment",
-   "capability_topic": "self_improvement",
-   "safety_topic": "deceptive_alignment",
-   "cap_recent": 103.0,
-   "saf_recent": 88.0,
-   "cap_growth": -0.084,
-   "saf_growth": -0.079,
-   "gap": -0.006,
-   "volume_ratio": 1.17,
+   "cap_recent": 58.0,
+   "saf_recent": 43.5,
+   "cap_growth": -0.033,
+   "saf_growth": 0.208,
+   "gap": -0.242,
+   "volume_ratio": 1.33,
    "lagging": false
   },
   {
    "pairing": "Frontier scaling vs. evals & dangerous-capability benchmarks",
    "capability_topic": "frontier_scaling",
    "safety_topic": "evals_benchmarks",
-   "cap_recent": 83.0,
-   "saf_recent": 46.5,
-   "cap_growth": 0.012,
-   "saf_growth": 0.224,
-   "gap": -0.211,
-   "volume_ratio": 1.78,
+   "cap_recent": 58.0,
+   "saf_recent": 17.5,
+   "cap_growth": -0.134,
+   "saf_growth": 0.207,
+   "gap": -0.341,
+   "volume_ratio": 3.31,
+   "lagging": false
+  },
+  {
+   "pairing": "RL/RLHF vs. reward hacking",
+   "capability_topic": "rl_rlhf",
+   "safety_topic": "reward_hacking",
+   "cap_recent": 75.0,
+   "saf_recent": 14.0,
+   "cap_growth": -0.057,
+   "saf_growth": 0.4,
+   "gap": -0.457,
+   "volume_ratio": 5.36,
    "lagging": false
   },
   {
    "pairing": "Reasoning/CoT vs. CoT faithfulness",
    "capability_topic": "reasoning_cot",
    "safety_topic": "cot_faithfulness",
-   "cap_recent": 159.5,
-   "saf_recent": 29.0,
-   "cap_growth": 0.078,
-   "saf_growth": 0.349,
-   "gap": -0.271,
-   "volume_ratio": 5.5,
+   "cap_recent": 95.5,
+   "saf_recent": 19.0,
+   "cap_growth": -0.151,
+   "saf_growth": 0.652,
+   "gap": -0.803,
+   "volume_ratio": 5.03,
+   "lagging": false
+  },
+  {
+   "pairing": "Self-improvement/RSI vs. deceptive alignment",
+   "capability_topic": "self_improvement",
+   "safety_topic": "deceptive_alignment",
+   "cap_recent": 66.0,
+   "saf_recent": 40.0,
+   "cap_growth": -0.17,
+   "saf_growth": 0.702,
+   "gap": -0.872,
+   "volume_ratio": 1.65,
    "lagging": false
   }
  ],
  "inflections": [
   {
-   "topic_key": "agentic_capability",
-   "recent_mean": 115.0,
-   "prior_mean": 83.0,
-   "change": 0.386,
+   "topic_key": "deceptive_alignment",
+   "recent_mean": 40.0,
+   "prior_mean": 23.5,
+   "change": 0.702,
    "direction": "acceleration"
   },
   {
    "topic_key": "cot_faithfulness",
-   "recent_mean": 29.0,
-   "prior_mean": 21.5,
-   "change": 0.349,
+   "recent_mean": 19.0,
+   "prior_mean": 11.5,
+   "change": 0.652,
    "direction": "acceleration"
   },
   {
-   "topic_key": "evals_benchmarks",
-   "recent_mean": 46.5,
-   "prior_mean": 38.0,
-   "change": 0.224,
+   "topic_key": "reward_hacking",
+   "recent_mean": 14.0,
+   "prior_mean": 10.0,
+   "change": 0.4,
+   "direction": "acceleration"
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "recent_mean": 43.5,
+   "prior_mean": 36.0,
+   "change": 0.208,
    "direction": "steady"
   },
   {
-   "topic_key": "multiagent_tooluse",
-   "recent_mean": 52.5,
-   "prior_mean": 43.5,
+   "topic_key": "evals_benchmarks",
+   "recent_mean": 17.5,
+   "prior_mean": 14.5,
    "change": 0.207,
    "direction": "steady"
   },
   {
-   "topic_key": "agentic_monitoring",
-   "recent_mean": 123.5,
-   "prior_mean": 108.5,
-   "change": 0.138,
-   "direction": "steady"
-  },
-  {
-   "topic_key": "reasoning_cot",
-   "recent_mean": 159.5,
-   "prior_mean": 148.0,
-   "change": 0.078,
-   "direction": "steady"
-  },
-  {
-   "topic_key": "rl_rlhf",
-   "recent_mean": 81.5,
-   "prior_mean": 79.0,
-   "change": 0.032,
-   "direction": "steady"
-  },
-  {
-   "topic_key": "frontier_scaling",
-   "recent_mean": 83.0,
-   "prior_mean": 82.0,
-   "change": 0.012,
-   "direction": "steady"
-  },
-  {
    "topic_key": "interpretability",
-   "recent_mean": 170.5,
-   "prior_mean": 175.0,
-   "change": -0.026,
+   "recent_mean": 127.0,
+   "prior_mean": 114.0,
+   "change": 0.114,
    "direction": "steady"
   },
   {
    "topic_key": "rsi_control",
-   "recent_mean": 92.5,
-   "prior_mean": 97.5,
-   "change": -0.051,
+   "recent_mean": 19.0,
+   "prior_mean": 19.0,
+   "change": 0.0,
    "direction": "steady"
   },
   {
    "topic_key": "scalable_oversight",
-   "recent_mean": 218.0,
-   "prior_mean": 231.0,
-   "change": -0.056,
+   "recent_mean": 136.0,
+   "prior_mean": 138.5,
+   "change": -0.018,
    "direction": "steady"
   },
   {
-   "topic_key": "deceptive_alignment",
-   "recent_mean": 88.0,
-   "prior_mean": 95.5,
-   "change": -0.079,
+   "topic_key": "agentic_capability",
+   "recent_mean": 58.0,
+   "prior_mean": 60.0,
+   "change": -0.033,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "recent_mean": 75.0,
+   "prior_mean": 79.5,
+   "change": -0.057,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "recent_mean": 32.5,
+   "prior_mean": 35.5,
+   "change": -0.085,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "recent_mean": 58.0,
+   "prior_mean": 67.0,
+   "change": -0.134,
+   "direction": "steady"
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "recent_mean": 95.5,
+   "prior_mean": 112.5,
+   "change": -0.151,
    "direction": "steady"
   },
   {
    "topic_key": "self_improvement",
-   "recent_mean": 103.0,
-   "prior_mean": 112.5,
-   "change": -0.084,
-   "direction": "steady"
-  },
-  {
-   "topic_key": "reward_hacking",
-   "recent_mean": 17.0,
-   "prior_mean": 20.5,
-   "change": -0.171,
+   "recent_mean": 66.0,
+   "prior_mean": 79.5,
+   "change": -0.17,
    "direction": "steady"
   }
  ],
  "quadrant": [
   {
-   "topic_key": "agentic_capability",
-   "recent_mean": 115.0,
-   "prior_mean": 83.0,
-   "change": 0.386,
+   "topic_key": "deceptive_alignment",
+   "recent_mean": 40.0,
+   "prior_mean": 23.5,
+   "change": 0.702,
    "direction": "acceleration",
    "quadrant": "hot"
   },
   {
    "topic_key": "cot_faithfulness",
-   "recent_mean": 29.0,
-   "prior_mean": 21.5,
-   "change": 0.349,
+   "recent_mean": 19.0,
+   "prior_mean": 11.5,
+   "change": 0.652,
    "direction": "acceleration",
    "quadrant": "hot"
   },
   {
-   "topic_key": "evals_benchmarks",
-   "recent_mean": 46.5,
-   "prior_mean": 38.0,
-   "change": 0.224,
+   "topic_key": "reward_hacking",
+   "recent_mean": 14.0,
+   "prior_mean": 10.0,
+   "change": 0.4,
+   "direction": "acceleration",
+   "quadrant": "hot"
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "recent_mean": 43.5,
+   "prior_mean": 36.0,
+   "change": 0.208,
    "direction": "steady",
    "quadrant": "established"
   },
   {
-   "topic_key": "multiagent_tooluse",
-   "recent_mean": 52.5,
-   "prior_mean": 43.5,
+   "topic_key": "evals_benchmarks",
+   "recent_mean": 17.5,
+   "prior_mean": 14.5,
    "change": 0.207,
    "direction": "steady",
    "quadrant": "established"
   },
   {
-   "topic_key": "agentic_monitoring",
-   "recent_mean": 123.5,
-   "prior_mean": 108.5,
-   "change": 0.138,
-   "direction": "steady",
-   "quadrant": "established"
-  },
-  {
-   "topic_key": "reasoning_cot",
-   "recent_mean": 159.5,
-   "prior_mean": 148.0,
-   "change": 0.078,
-   "direction": "steady",
-   "quadrant": "established"
-  },
-  {
-   "topic_key": "rl_rlhf",
-   "recent_mean": 81.5,
-   "prior_mean": 79.0,
-   "change": 0.032,
-   "direction": "steady",
-   "quadrant": "established"
-  },
-  {
-   "topic_key": "frontier_scaling",
-   "recent_mean": 83.0,
-   "prior_mean": 82.0,
-   "change": 0.012,
-   "direction": "steady",
-   "quadrant": "established"
-  },
-  {
    "topic_key": "interpretability",
-   "recent_mean": 170.5,
-   "prior_mean": 175.0,
-   "change": -0.026,
+   "recent_mean": 127.0,
+   "prior_mean": 114.0,
+   "change": 0.114,
    "direction": "steady",
    "quadrant": "established"
   },
   {
    "topic_key": "rsi_control",
-   "recent_mean": 92.5,
-   "prior_mean": 97.5,
-   "change": -0.051,
+   "recent_mean": 19.0,
+   "prior_mean": 19.0,
+   "change": 0.0,
    "direction": "steady",
    "quadrant": "established"
   },
   {
    "topic_key": "scalable_oversight",
-   "recent_mean": 218.0,
-   "prior_mean": 231.0,
-   "change": -0.056,
+   "recent_mean": 136.0,
+   "prior_mean": 138.5,
+   "change": -0.018,
    "direction": "steady",
    "quadrant": "established"
   },
   {
-   "topic_key": "deceptive_alignment",
-   "recent_mean": 88.0,
-   "prior_mean": 95.5,
-   "change": -0.079,
+   "topic_key": "agentic_capability",
+   "recent_mean": 58.0,
+   "prior_mean": 60.0,
+   "change": -0.033,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "rl_rlhf",
+   "recent_mean": 75.0,
+   "prior_mean": 79.5,
+   "change": -0.057,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "recent_mean": 32.5,
+   "prior_mean": 35.5,
+   "change": -0.085,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "recent_mean": 58.0,
+   "prior_mean": 67.0,
+   "change": -0.134,
+   "direction": "steady",
+   "quadrant": "established"
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "recent_mean": 95.5,
+   "prior_mean": 112.5,
+   "change": -0.151,
    "direction": "steady",
    "quadrant": "established"
   },
   {
    "topic_key": "self_improvement",
-   "recent_mean": 103.0,
-   "prior_mean": 112.5,
-   "change": -0.084,
-   "direction": "steady",
-   "quadrant": "established"
-  },
-  {
-   "topic_key": "reward_hacking",
-   "recent_mean": 17.0,
-   "prior_mean": 20.5,
-   "change": -0.171,
+   "recent_mean": 66.0,
+   "prior_mean": 79.5,
+   "change": -0.17,
    "direction": "steady",
    "quadrant": "established"
   }
@@ -336,145 +328,155 @@
  "institution_trends": [],
  "signals": [
   {
-   "severity": "high",
-   "category": "divergence",
-   "headline": "Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight",
-   "detail": "Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume."
-  },
-  {
    "severity": "medium",
    "category": "velocity",
-   "headline": "Agentic / Autonomy Capability is accelerating",
-   "detail": "Submission rate inflected +39% (now ~115.0/quarter)."
+   "headline": "Deceptive Alignment is accelerating",
+   "detail": "Submission rate inflected +70% (now ~40.0/quarter)."
   },
   {
    "severity": "medium",
    "category": "velocity",
    "headline": "Chain-of-Thought Faithfulness is accelerating",
-   "detail": "Submission rate inflected +35% (now ~29.0/quarter)."
+   "detail": "Submission rate inflected +65% (now ~19.0/quarter)."
+  },
+  {
+   "severity": "medium",
+   "category": "velocity",
+   "headline": "Reward Hacking is accelerating",
+   "detail": "Submission rate inflected +40% (now ~14.0/quarter)."
   }
  ],
- "brief": "# Signal-Lag Foresight Brief\n\n_Generated 2026-06-28 · 10304 papers · embedding backend: sentence-transformers_\n\n## BLUF\n\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** — Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Capability vs. Safety Divergence\n\n- **Safety attention may lag capability: Multi-Agent / Tool-Use Capability vs Scalable Oversight** (high): Multi-Agent / Tool-Use Capability velocity grew 21% recently while paired safety topic Scalable Oversight grew -6% (gap 26 pts); capability now runs ~0.2x the safety volume.\n\n## Topic Velocity\n\n- **Agentic / Autonomy Capability is accelerating** (medium): Submission rate inflected +39% (now ~115.0/quarter).\n- **Chain-of-Thought Faithfulness is accelerating** (medium): Submission rate inflected +35% (now ~29.0/quarter).\n",
+ "brief": "# Signal-Lag Foresight Brief\n\n_Generated 2026-06-28 · 4542 papers · embedding backend: sentence-transformers_\n\n## BLUF\n\n- No high-severity capability/safety divergences flagged this run.\n\n## Topic Velocity\n\n- **Deceptive Alignment is accelerating** (medium): Submission rate inflected +70% (now ~40.0/quarter).\n- **Chain-of-Thought Faithfulness is accelerating** (medium): Submission rate inflected +65% (now ~19.0/quarter).\n- **Reward Hacking is accelerating** (medium): Submission rate inflected +40% (now ~14.0/quarter).\n",
  "timeseries": [
   {
    "topic_key": "agentic_capability",
    "period": "2023Q2",
-   "count": 43
+   "count": 37
   },
   {
    "topic_key": "agentic_capability",
    "period": "2023Q3",
-   "count": 90
+   "count": 42
   },
   {
    "topic_key": "agentic_capability",
    "period": "2023Q4",
-   "count": 60
+   "count": 33
   },
   {
    "topic_key": "agentic_capability",
    "period": "2024Q1",
-   "count": 55
+   "count": 31
   },
   {
    "topic_key": "agentic_capability",
    "period": "2024Q2",
-   "count": 88
+   "count": 42
   },
   {
    "topic_key": "agentic_capability",
    "period": "2024Q3",
-   "count": 110
+   "count": 36
   },
   {
    "topic_key": "agentic_capability",
    "period": "2024Q4",
+   "count": 35
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q1",
+   "count": 46
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q2",
+   "count": 45
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q3",
+   "count": 54
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2025Q4",
    "count": 66
   },
   {
    "topic_key": "agentic_capability",
-   "period": "2025Q1",
-   "count": 70
-  },
-  {
-   "topic_key": "agentic_capability",
-   "period": "2025Q2",
-   "count": 75
-  },
-  {
-   "topic_key": "agentic_capability",
-   "period": "2025Q3",
-   "count": 91
-  },
-  {
-   "topic_key": "agentic_capability",
-   "period": "2025Q4",
-   "count": 117
-  },
-  {
-   "topic_key": "agentic_capability",
    "period": "2026Q1",
-   "count": 113
+   "count": 58
+  },
+  {
+   "topic_key": "agentic_capability",
+   "period": "2026Q2",
+   "count": 58
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2023Q2",
-   "count": 26
+   "count": 16
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2023Q3",
-   "count": 79
+   "count": 19
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2023Q4",
-   "count": 68
+   "count": 20
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2024Q1",
-   "count": 61
+   "count": 20
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2024Q2",
-   "count": 77
+   "count": 18
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2024Q3",
-   "count": 112
+   "count": 23
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2024Q4",
-   "count": 80
+   "count": 24
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2025Q1",
-   "count": 101
+   "count": 31
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2025Q2",
-   "count": 97
+   "count": 40
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2025Q3",
-   "count": 120
+   "count": 39
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2025Q4",
-   "count": 114
+   "count": 33
   },
   {
    "topic_key": "agentic_monitoring",
    "period": "2026Q1",
-   "count": 133
+   "count": 44
+  },
+  {
+   "topic_key": "agentic_monitoring",
+   "period": "2026Q2",
+   "count": 43
   },
   {
    "topic_key": "cot_faithfulness",
@@ -484,297 +486,322 @@
   {
    "topic_key": "cot_faithfulness",
    "period": "2023Q3",
-   "count": 23
+   "count": 8
   },
   {
    "topic_key": "cot_faithfulness",
    "period": "2023Q4",
+   "count": 8
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q1",
+   "count": 7
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q2",
+   "count": 9
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q3",
+   "count": 9
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2024Q4",
+   "count": 14
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q1",
+   "count": 16
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q2",
+   "count": 15
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q3",
+   "count": 11
+  },
+  {
+   "topic_key": "cot_faithfulness",
+   "period": "2025Q4",
    "count": 12
   },
   {
    "topic_key": "cot_faithfulness",
-   "period": "2024Q1",
-   "count": 11
-  },
-  {
-   "topic_key": "cot_faithfulness",
-   "period": "2024Q2",
-   "count": 20
-  },
-  {
-   "topic_key": "cot_faithfulness",
-   "period": "2024Q3",
-   "count": 22
-  },
-  {
-   "topic_key": "cot_faithfulness",
-   "period": "2024Q4",
-   "count": 18
-  },
-  {
-   "topic_key": "cot_faithfulness",
-   "period": "2025Q1",
+   "period": "2026Q1",
    "count": 19
   },
   {
    "topic_key": "cot_faithfulness",
-   "period": "2025Q2",
+   "period": "2026Q2",
+   "count": 19
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2023Q2",
    "count": 21
   },
   {
-   "topic_key": "cot_faithfulness",
-   "period": "2025Q3",
-   "count": 22
+   "topic_key": "deceptive_alignment",
+   "period": "2023Q3",
+   "count": 21
   },
   {
-   "topic_key": "cot_faithfulness",
-   "period": "2025Q4",
+   "topic_key": "deceptive_alignment",
+   "period": "2023Q4",
+   "count": 24
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q1",
+   "count": 24
+  },
+  {
+   "topic_key": "deceptive_alignment",
+   "period": "2024Q2",
    "count": 27
   },
   {
-   "topic_key": "cot_faithfulness",
-   "period": "2026Q1",
-   "count": 31
-  },
-  {
-   "topic_key": "deceptive_alignment",
-   "period": "2023Q2",
-   "count": 26
-  },
-  {
-   "topic_key": "deceptive_alignment",
-   "period": "2023Q3",
-   "count": 81
-  },
-  {
-   "topic_key": "deceptive_alignment",
-   "period": "2023Q4",
-   "count": 60
-  },
-  {
-   "topic_key": "deceptive_alignment",
-   "period": "2024Q1",
-   "count": 78
-  },
-  {
-   "topic_key": "deceptive_alignment",
-   "period": "2024Q2",
-   "count": 121
-  },
-  {
    "topic_key": "deceptive_alignment",
    "period": "2024Q3",
-   "count": 103
+   "count": 28
   },
   {
    "topic_key": "deceptive_alignment",
    "period": "2024Q4",
-   "count": 73
+   "count": 17
   },
   {
    "topic_key": "deceptive_alignment",
    "period": "2025Q1",
-   "count": 87
+   "count": 31
   },
   {
    "topic_key": "deceptive_alignment",
    "period": "2025Q2",
-   "count": 95
+   "count": 32
   },
   {
    "topic_key": "deceptive_alignment",
    "period": "2025Q3",
-   "count": 96
+   "count": 27
   },
   {
    "topic_key": "deceptive_alignment",
    "period": "2025Q4",
-   "count": 71
+   "count": 20
   },
   {
    "topic_key": "deceptive_alignment",
    "period": "2026Q1",
-   "count": 105
+   "count": 38
   },
   {
-   "topic_key": "evals_benchmarks",
-   "period": "2023Q2",
-   "count": 9
-  },
-  {
-   "topic_key": "evals_benchmarks",
-   "period": "2023Q3",
-   "count": 40
-  },
-  {
-   "topic_key": "evals_benchmarks",
-   "period": "2023Q4",
-   "count": 35
-  },
-  {
-   "topic_key": "evals_benchmarks",
-   "period": "2024Q1",
-   "count": 22
-  },
-  {
-   "topic_key": "evals_benchmarks",
-   "period": "2024Q2",
-   "count": 31
-  },
-  {
-   "topic_key": "evals_benchmarks",
-   "period": "2024Q3",
-   "count": 49
-  },
-  {
-   "topic_key": "evals_benchmarks",
-   "period": "2024Q4",
-   "count": 30
-  },
-  {
-   "topic_key": "evals_benchmarks",
-   "period": "2025Q1",
-   "count": 39
-  },
-  {
-   "topic_key": "evals_benchmarks",
-   "period": "2025Q2",
-   "count": 34
-  },
-  {
-   "topic_key": "evals_benchmarks",
-   "period": "2025Q3",
+   "topic_key": "deceptive_alignment",
+   "period": "2026Q2",
    "count": 42
   },
   {
    "topic_key": "evals_benchmarks",
+   "period": "2023Q2",
+   "count": 3
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2023Q3",
+   "count": 6
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2023Q4",
+   "count": 8
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q1",
+   "count": 1
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q2",
+   "count": 3
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q3",
+   "count": 6
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2024Q4",
+   "count": 9
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q1",
+   "count": 11
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q2",
+   "count": 14
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2025Q3",
+   "count": 14
+  },
+  {
+   "topic_key": "evals_benchmarks",
    "period": "2025Q4",
-   "count": 47
+   "count": 15
   },
   {
    "topic_key": "evals_benchmarks",
    "period": "2026Q1",
+   "count": 19
+  },
+  {
+   "topic_key": "evals_benchmarks",
+   "period": "2026Q2",
+   "count": 16
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2023Q2",
+   "count": 35
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2023Q3",
+   "count": 43
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2023Q4",
+   "count": 47
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q1",
+   "count": 36
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q2",
+   "count": 48
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2024Q3",
    "count": 46
   },
   {
    "topic_key": "frontier_scaling",
-   "period": "2023Q2",
-   "count": 38
-  },
-  {
-   "topic_key": "frontier_scaling",
-   "period": "2023Q3",
-   "count": 107
-  },
-  {
-   "topic_key": "frontier_scaling",
-   "period": "2023Q4",
-   "count": 59
-  },
-  {
-   "topic_key": "frontier_scaling",
-   "period": "2024Q1",
-   "count": 51
-  },
-  {
-   "topic_key": "frontier_scaling",
-   "period": "2024Q2",
-   "count": 118
-  },
-  {
-   "topic_key": "frontier_scaling",
-   "period": "2024Q3",
-   "count": 151
-  },
-  {
-   "topic_key": "frontier_scaling",
    "period": "2024Q4",
-   "count": 58
+   "count": 46
   },
   {
    "topic_key": "frontier_scaling",
    "period": "2025Q1",
-   "count": 73
+   "count": 50
   },
   {
    "topic_key": "frontier_scaling",
    "period": "2025Q2",
+   "count": 50
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q3",
+   "count": 64
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2025Q4",
    "count": 70
   },
   {
    "topic_key": "frontier_scaling",
-   "period": "2025Q3",
-   "count": 94
-  },
-  {
-   "topic_key": "frontier_scaling",
-   "period": "2025Q4",
-   "count": 88
-  },
-  {
-   "topic_key": "frontier_scaling",
    "period": "2026Q1",
-   "count": 78
+   "count": 59
+  },
+  {
+   "topic_key": "frontier_scaling",
+   "period": "2026Q2",
+   "count": 57
   },
   {
    "topic_key": "interpretability",
    "period": "2023Q2",
-   "count": 134
+   "count": 107
   },
   {
    "topic_key": "interpretability",
    "period": "2023Q3",
-   "count": 391
+   "count": 127
   },
   {
    "topic_key": "interpretability",
    "period": "2023Q4",
-   "count": 194
+   "count": 138
   },
   {
    "topic_key": "interpretability",
    "period": "2024Q1",
-   "count": 185
+   "count": 113
   },
   {
    "topic_key": "interpretability",
    "period": "2024Q2",
-   "count": 394
+   "count": 124
   },
   {
    "topic_key": "interpretability",
    "period": "2024Q3",
-   "count": 362
+   "count": 132
   },
   {
    "topic_key": "interpretability",
    "period": "2024Q4",
-   "count": 161
+   "count": 113
   },
   {
    "topic_key": "interpretability",
    "period": "2025Q1",
-   "count": 175
+   "count": 120
   },
   {
    "topic_key": "interpretability",
    "period": "2025Q2",
-   "count": 164
+   "count": 110
   },
   {
    "topic_key": "interpretability",
    "period": "2025Q3",
-   "count": 186
+   "count": 119
   },
   {
    "topic_key": "interpretability",
    "period": "2025Q4",
-   "count": 151
+   "count": 109
   },
   {
    "topic_key": "interpretability",
    "period": "2026Q1",
-   "count": 190
+   "count": 125
+  },
+  {
+   "topic_key": "interpretability",
+   "period": "2026Q2",
+   "count": 129
   },
   {
    "topic_key": "multiagent_tooluse",
@@ -784,417 +811,452 @@
   {
    "topic_key": "multiagent_tooluse",
    "period": "2023Q3",
-   "count": 35
+   "count": 22
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2023Q4",
-   "count": 42
+   "count": 30
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2024Q1",
-   "count": 36
+   "count": 23
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2024Q2",
-   "count": 36
+   "count": 21
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2024Q3",
-   "count": 55
+   "count": 16
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2024Q4",
-   "count": 45
+   "count": 31
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2025Q1",
-   "count": 35
+   "count": 23
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2025Q2",
-   "count": 32
+   "count": 22
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2025Q3",
-   "count": 55
+   "count": 38
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2025Q4",
-   "count": 44
+   "count": 33
   },
   {
    "topic_key": "multiagent_tooluse",
    "period": "2026Q1",
-   "count": 61
+   "count": 35
+  },
+  {
+   "topic_key": "multiagent_tooluse",
+   "period": "2026Q2",
+   "count": 30
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2023Q2",
-   "count": 66
+   "count": 62
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2023Q3",
-   "count": 216
+   "count": 93
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2023Q4",
-   "count": 124
+   "count": 98
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2024Q1",
-   "count": 122
+   "count": 86
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2024Q2",
-   "count": 220
+   "count": 102
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2024Q3",
-   "count": 236
+   "count": 75
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2024Q4",
-   "count": 124
+   "count": 99
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2025Q1",
-   "count": 132
+   "count": 104
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2025Q2",
-   "count": 134
+   "count": 93
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2025Q3",
-   "count": 162
+   "count": 112
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2025Q4",
-   "count": 166
+   "count": 113
   },
   {
    "topic_key": "reasoning_cot",
    "period": "2026Q1",
-   "count": 153
+   "count": 95
+  },
+  {
+   "topic_key": "reasoning_cot",
+   "period": "2026Q2",
+   "count": 96
   },
   {
    "topic_key": "reward_hacking",
    "period": "2023Q2",
-   "count": 14
+   "count": 12
   },
   {
    "topic_key": "reward_hacking",
    "period": "2023Q3",
-   "count": 62
-  },
-  {
-   "topic_key": "reward_hacking",
-   "period": "2023Q4",
-   "count": 20
-  },
-  {
-   "topic_key": "reward_hacking",
-   "period": "2024Q1",
-   "count": 17
-  },
-  {
-   "topic_key": "reward_hacking",
-   "period": "2024Q2",
-   "count": 62
-  },
-  {
-   "topic_key": "reward_hacking",
-   "period": "2024Q3",
-   "count": 40
-  },
-  {
-   "topic_key": "reward_hacking",
-   "period": "2024Q4",
-   "count": 13
-  },
-  {
-   "topic_key": "reward_hacking",
-   "period": "2025Q1",
-   "count": 10
-  },
-  {
-   "topic_key": "reward_hacking",
-   "period": "2025Q2",
-   "count": 26
-  },
-  {
-   "topic_key": "reward_hacking",
-   "period": "2025Q3",
-   "count": 15
-  },
-  {
-   "topic_key": "reward_hacking",
-   "period": "2025Q4",
    "count": 16
   },
   {
    "topic_key": "reward_hacking",
+   "period": "2023Q4",
+   "count": 11
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q1",
+   "count": 8
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q2",
+   "count": 12
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q3",
+   "count": 7
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2024Q4",
+   "count": 5
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q1",
+   "count": 6
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q2",
+   "count": 12
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q3",
+   "count": 8
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2025Q4",
+   "count": 12
+  },
+  {
+   "topic_key": "reward_hacking",
    "period": "2026Q1",
-   "count": 18
+   "count": 8
+  },
+  {
+   "topic_key": "reward_hacking",
+   "period": "2026Q2",
+   "count": 20
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2023Q2",
-   "count": 58
+   "count": 56
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2023Q3",
-   "count": 193
+   "count": 56
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2023Q4",
-   "count": 60
-  },
-  {
-   "topic_key": "rl_rlhf",
-   "period": "2024Q1",
    "count": 53
   },
   {
    "topic_key": "rl_rlhf",
+   "period": "2024Q1",
+   "count": 44
+  },
+  {
+   "topic_key": "rl_rlhf",
    "period": "2024Q2",
-   "count": 219
+   "count": 60
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2024Q3",
-   "count": 189
+   "count": 61
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2024Q4",
-   "count": 68
+   "count": 55
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2025Q1",
-   "count": 59
+   "count": 52
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2025Q2",
-   "count": 58
+   "count": 51
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2025Q3",
-   "count": 100
+   "count": 82
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2025Q4",
-   "count": 87
+   "count": 77
   },
   {
    "topic_key": "rl_rlhf",
    "period": "2026Q1",
-   "count": 76
+   "count": 66
   },
   {
-   "topic_key": "rsi_control",
-   "period": "2023Q2",
-   "count": 31
-  },
-  {
-   "topic_key": "rsi_control",
-   "period": "2023Q3",
-   "count": 116
-  },
-  {
-   "topic_key": "rsi_control",
-   "period": "2023Q4",
+   "topic_key": "rl_rlhf",
+   "period": "2026Q2",
    "count": 84
   },
   {
    "topic_key": "rsi_control",
+   "period": "2023Q2",
+   "count": 20
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2023Q3",
+   "count": 20
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2023Q4",
+   "count": 17
+  },
+  {
+   "topic_key": "rsi_control",
    "period": "2024Q1",
-   "count": 79
+   "count": 21
   },
   {
    "topic_key": "rsi_control",
    "period": "2024Q2",
-   "count": 121
+   "count": 13
   },
   {
    "topic_key": "rsi_control",
    "period": "2024Q3",
-   "count": 111
+   "count": 18
   },
   {
    "topic_key": "rsi_control",
    "period": "2024Q4",
-   "count": 85
+   "count": 16
   },
   {
    "topic_key": "rsi_control",
    "period": "2025Q1",
-   "count": 92
+   "count": 17
   },
   {
    "topic_key": "rsi_control",
    "period": "2025Q2",
-   "count": 99
+   "count": 22
   },
   {
    "topic_key": "rsi_control",
    "period": "2025Q3",
-   "count": 96
+   "count": 22
   },
   {
    "topic_key": "rsi_control",
    "period": "2025Q4",
-   "count": 93
+   "count": 16
   },
   {
    "topic_key": "rsi_control",
    "period": "2026Q1",
-   "count": 92
+   "count": 19
+  },
+  {
+   "topic_key": "rsi_control",
+   "period": "2026Q2",
+   "count": 19
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2023Q2",
-   "count": 136
+   "count": 116
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2023Q3",
-   "count": 367
+   "count": 127
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2023Q4",
-   "count": 167
+   "count": 98
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2024Q1",
-   "count": 182
+   "count": 90
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2024Q2",
-   "count": 379
+   "count": 109
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2024Q3",
-   "count": 368
+   "count": 107
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2024Q4",
-   "count": 193
+   "count": 108
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2025Q1",
-   "count": 190
+   "count": 106
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2025Q2",
-   "count": 209
+   "count": 127
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2025Q3",
-   "count": 253
+   "count": 147
   },
   {
    "topic_key": "scalable_oversight",
    "period": "2025Q4",
-   "count": 227
-  },
-  {
-   "topic_key": "scalable_oversight",
-   "period": "2026Q1",
-   "count": 209
-  },
-  {
-   "topic_key": "self_improvement",
-   "period": "2023Q2",
-   "count": 89
-  },
-  {
-   "topic_key": "self_improvement",
-   "period": "2023Q3",
-   "count": 282
-  },
-  {
-   "topic_key": "self_improvement",
-   "period": "2023Q4",
-   "count": 129
-  },
-  {
-   "topic_key": "self_improvement",
-   "period": "2024Q1",
    "count": 130
   },
   {
+   "topic_key": "scalable_oversight",
+   "period": "2026Q1",
+   "count": 130
+  },
+  {
+   "topic_key": "scalable_oversight",
+   "period": "2026Q2",
+   "count": 142
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2023Q2",
+   "count": 78
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2023Q3",
+   "count": 116
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2023Q4",
+   "count": 99
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2024Q1",
+   "count": 93
+  },
+  {
    "topic_key": "self_improvement",
    "period": "2024Q2",
-   "count": 233
+   "count": 99
   },
   {
    "topic_key": "self_improvement",
    "period": "2024Q3",
-   "count": 252
+   "count": 95
   },
   {
    "topic_key": "self_improvement",
    "period": "2024Q4",
-   "count": 112
+   "count": 88
   },
   {
    "topic_key": "self_improvement",
    "period": "2025Q1",
-   "count": 106
+   "count": 75
   },
   {
    "topic_key": "self_improvement",
    "period": "2025Q2",
-   "count": 105
+   "count": 73
   },
   {
    "topic_key": "self_improvement",
    "period": "2025Q3",
-   "count": 120
+   "count": 83
   },
   {
    "topic_key": "self_improvement",
    "period": "2025Q4",
-   "count": 106
+   "count": 76
   },
   {
    "topic_key": "self_improvement",
    "period": "2026Q1",
-   "count": 100
+   "count": 71
+  },
+  {
+   "topic_key": "self_improvement",
+   "period": "2026Q2",
+   "count": 61
   }
  ],
  "sources": {
@@ -1514,17 +1576,6 @@
     "score": 0.424
    },
    {
-    "arxiv_id": "2606.27139",
-    "title": "The Observer World: A Cryptographic Extension of Impagliazzo's Five Worlds",
-    "url": "https://arxiv.org/abs/2606.27139",
-    "published": "2026-06-25",
-    "cited_by_count": null,
-    "influential_citations": null,
-    "venue": null,
-    "tldr": null,
-    "score": 0.382
-   },
-   {
     "arxiv_id": "2606.27288",
     "title": "When Does Combining Language Models Help? A Co-Failure Ceiling on Routing, Voting, and Mixture-of-Agents Across 67 Frontier Models",
     "url": "https://arxiv.org/abs/2606.27288",
@@ -1556,6 +1607,17 @@
     "venue": null,
     "tldr": null,
     "score": 0.406
+   },
+   {
+    "arxiv_id": "2606.27215",
+    "title": "Vulnerability of Natural Language Classifiers to Evolutionary Generated Adversarial Text",
+    "url": "https://arxiv.org/abs/2606.27215",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.403
    }
   ],
   "reward_hacking": [
@@ -1683,17 +1745,6 @@
     "score": 0.383
    },
    {
-    "arxiv_id": "2606.27128",
-    "title": "FlameVQA: A Physically-Grounded UAV Wildfire VQA Benchmark with Radiometric Thermal Supervision",
-    "url": "https://arxiv.org/abs/2606.27128",
-    "published": "2026-06-25",
-    "cited_by_count": null,
-    "influential_citations": null,
-    "venue": null,
-    "tldr": null,
-    "score": 0.331
-   },
-   {
     "arxiv_id": "2606.27106",
     "title": "Application of LLMs to Threat Assessment of Foreign Peacekeeping Missions",
     "url": "https://arxiv.org/abs/2606.27106",
@@ -1736,6 +1787,17 @@
     "venue": null,
     "tldr": null,
     "score": 0.486
+   },
+   {
+    "arxiv_id": "2606.27269",
+    "title": "Ribbon: Scalable Approximation and Robust Uncertainty Quantification",
+    "url": "https://arxiv.org/abs/2606.27269",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.311
    }
   ],
   "rsi_control": [
@@ -1795,17 +1857,6 @@
     "score": 0.28
    },
    {
-    "arxiv_id": "2606.26524",
-    "title": "VIGIL: Runtime Enforcement of Behavioral Specifications in AI Agent Skills",
-    "url": "https://arxiv.org/abs/2606.26524",
-    "published": "2026-06-25",
-    "cited_by_count": null,
-    "influential_citations": null,
-    "venue": null,
-    "tldr": null,
-    "score": 0.509
-   },
-   {
     "arxiv_id": "2606.26933",
     "title": "Chai: Agentic Discovery of Cryptographic Misuse Vulnerabilities",
     "url": "https://arxiv.org/abs/2606.26933",
@@ -1826,6 +1877,17 @@
     "venue": null,
     "tldr": null,
     "score": 0.38
+   },
+   {
+    "arxiv_id": "2606.26479",
+    "title": "Adaptive Evaluation of Out-of-Band Defenses Against Prompt Injection in LLM Agents",
+    "url": "https://arxiv.org/abs/2606.26479",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.484
    }
   ],
   "agentic_monitoring": [
@@ -2155,17 +2217,6 @@
     "score": 0.484
    },
    {
-    "arxiv_id": "2606.26907",
-    "title": "Qwen-Image-Agent: Bridging the Context Gap in Real-World Image Generation",
-    "url": "https://arxiv.org/abs/2606.26907",
-    "published": "2026-06-25",
-    "cited_by_count": null,
-    "influential_citations": null,
-    "venue": null,
-    "tldr": null,
-    "score": 0.341
-   },
-   {
     "arxiv_id": "2606.27154",
     "title": "OpenRCA 2.0: From Outcome Labels to Causal Process Supervision",
     "url": "https://arxiv.org/abs/2606.27154",
@@ -2186,6 +2237,17 @@
     "venue": null,
     "tldr": null,
     "score": 0.504
+   },
+   {
+    "arxiv_id": "2606.26529",
+    "title": "The Inattentional Gap: Task-Conditioned Language and Vision Models Omit the Safety-Critical Signals They Can Otherwise Report",
+    "url": "https://arxiv.org/abs/2606.26529",
+    "published": "2026-06-25",
+    "cited_by_count": null,
+    "influential_citations": null,
+    "venue": null,
+    "tldr": null,
+    "score": 0.387
    }
   ],
   "frontier_scaling": [
@@ -2458,487 +2520,5 @@
     "score": 0.349
    }
   ]
- },
- "lab_activity": [
-  {
-   "id": "https://openai.com/index/previewing-gpt-5-6-sol",
-   "source": "OpenAI",
-   "title": "Previewing GPT-5.6 Sol: a next-generation model",
-   "summary": "OpenAI previews GPT-5.6 Sol, a next-generation model with stronger capabilities in coding, science, and cybersecurity, paired with its most advanced safety stack.",
-   "url": "https://openai.com/index/previewing-gpt-5-6-sol",
-   "published": "2026-06-26"
-  },
-  {
-   "id": "https://www.microsoft.com/en-us/research/?p=1176573",
-   "source": "Microsoft Research",
-   "title": "Understanding the brain with AI-driven explanations and experiments",
-   "summary": "Researchers introduce generative causal testing, which translates black box models into clear hypotheses and verifies them in the scanner, revealing what specific brain regions respond to in language.\nThe post Understanding the brain with AI-driven explanations and experiments appeared first on Microsoft Research.",
-   "url": "https://www.microsoft.com/en-us/research/blog/understanding-the-brain-with-ai-driven-explanations-and-experiments/",
-   "published": "2026-06-25"
-  },
-  {
-   "id": "https://openai.com/index/how-agents-are-transforming-work",
-   "source": "OpenAI",
-   "title": "How agents are transforming work",
-   "summary": "A new OpenAI research paper shows how AI agents are transforming work, enabling longer, more complex tasks and expanding productivity across roles.",
-   "url": "https://openai.com/index/how-agents-are-transforming-work",
-   "published": "2026-06-25"
-  },
-  {
-   "id": "https://www.microsoft.com/en-us/research/blog/talos-scaling-rare-disease-diagnosis-with-automated-iterative-genomic-reanalysis/",
-   "source": "Microsoft Research",
-   "title": "Talos: Scaling rare disease diagnosis with automated, iterative genomic reanalysis",
-   "summary": "Talos was built to help resolve a major bottleneck in genomic medicine: human review time. The open-source system recovered 90% of in-scope diagnoses while surfacing just 1.3 candidate variants per patient for expert review. \nThe post Talos: Scaling rare disease diagnosis with automated, iterative genomic reanalysis appeared first on Microsoft Research.",
-   "url": "https://www.microsoft.com/en-us/research/blog/talos-scaling-rare-disease-diagnosis-with-automated-iterative-genomic-reanalysis/",
-   "published": "2026-06-24"
-  },
-  {
-   "id": "https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/",
-   "source": "Google DeepMind",
-   "title": "Introducing computer use in Gemini 3.5 Flash",
-   "summary": "",
-   "url": "https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/",
-   "published": "2026-06-24"
-  },
-  {
-   "id": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
-   "source": "OpenAI",
-   "title": "OpenAI and Broadcom unveil LLM-optimized inference chip",
-   "summary": "OpenAI and Broadcom introduce Jalapeño, a custom AI chip built for LLM inference to improve performance, efficiency, and scale across AI systems.",
-   "url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
-   "published": "2026-06-24"
-  },
-  {
-   "id": "https://openai.com/index/omio",
-   "source": "OpenAI",
-   "title": "How Omio is building the future of conversational travel",
-   "summary": "Discover how Omio uses OpenAI to power conversational travel experiences, accelerate product development, and transform into an AI-native company.",
-   "url": "https://openai.com/index/omio",
-   "published": "2026-06-23"
-  },
-  {
-   "id": "https://openai.com/index/gpt-5-immunology-mystery",
-   "source": "OpenAI",
-   "title": "How GPT-5 helped immunologist Derya Unutmaz solve a 3-year-old mystery",
-   "summary": "GPT-5 Pro helped solve a 3-year-old immunology mystery, offering insights into T cell behavior. The breakthrough could support cancer and autoimmune research.",
-   "url": "https://openai.com/index/gpt-5-immunology-mystery",
-   "published": "2026-06-23"
-  },
-  {
-   "id": "https://openai.com/index/helping-build-shared-standards-for-advanced-ai",
-   "source": "OpenAI",
-   "title": "Helping build shared standards for advanced AI",
-   "summary": "OpenAI helps build shared standards for advanced AI, supporting evaluation frameworks, safety practices, and global cooperation through the Appia Foundation.",
-   "url": "https://openai.com/index/helping-build-shared-standards-for-advanced-ai",
-   "published": "2026-06-23"
-  },
-  {
-   "id": "https://openai.com/index/codex-maxxing-long-running-work",
-   "source": "OpenAI",
-   "title": "Codex-maxxing for long-running work",
-   "summary": "Learn how Jason Liu uses Codex to preserve context, manage complex projects, and help work continue beyond a single prompt.",
-   "url": "https://openai.com/index/codex-maxxing-long-running-work",
-   "published": "2026-06-22"
-  },
-  {
-   "id": "https://openai.com/index/daybreak-securing-the-world",
-   "source": "OpenAI",
-   "title": "Daybreak: Tools for securing every organization in the world",
-   "summary": "OpenAI introduces new Daybreak tools, including Codex Security and GPT-5.5-Cyber, to help organizations find, validate, and patch vulnerabilities at scale.",
-   "url": "https://openai.com/index/daybreak-securing-the-world",
-   "published": "2026-06-22"
-  },
-  {
-   "id": "https://openai.com/index/patch-the-planet",
-   "source": "OpenAI",
-   "title": "Patch the Planet: a Daybreak initiative to support open source maintainers",
-   "summary": "OpenAI introduces Patch the Planet, a Daybreak initiative helping open-source maintainers find, validate, and fix vulnerabilities with AI and expert review.",
-   "url": "https://openai.com/index/patch-the-planet",
-   "published": "2026-06-22"
-  },
-  {
-   "id": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
-   "source": "OpenAI",
-   "title": "Samsung Electronics brings ChatGPT and Codex to employees",
-   "summary": "Samsung Electronics deploys ChatGPT Enterprise and Codex to employees worldwide, marking one of OpenAI’s largest enterprise AI rollouts.",
-   "url": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
-   "published": "2026-06-21"
-  },
-  {
-   "id": "https://openai.com/index/diagnose-rare-childhood-diseases",
-   "source": "OpenAI",
-   "title": "Using AI to help physicians diagnose rare genetic diseases affecting children",
-   "summary": "Researchers used an OpenAI reasoning model to help diagnose rare diseases, identifying 18 new diagnoses in previously unsolved cases.",
-   "url": "https://openai.com/index/diagnose-rare-childhood-diseases",
-   "published": "2026-06-18"
-  },
-  {
-   "id": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
-   "source": "OpenAI",
-   "title": "Improving health intelligence in ChatGPT",
-   "summary": "Learn how GPT-5.5 Instant improves ChatGPT’s health and wellness responses with stronger reasoning, better context, clearer communication, and physician-informed evaluations.",
-   "url": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
-   "published": "2026-06-18"
-  },
-  {
-   "id": "https://openai.com/index/chatgpt-enterprise-spend-controls",
-   "source": "OpenAI",
-   "title": "New usage analytics and updated spend controls for enterprises",
-   "summary": "OpenAI introduces new spend controls and usage analytics for ChatGPT Enterprise, helping organizations manage costs and scale AI with confidence.",
-   "url": "https://openai.com/index/chatgpt-enterprise-spend-controls",
-   "published": "2026-06-18"
-  },
-  {
-   "id": "https://openai.com/index/introducing-life-sci-bench",
-   "source": "OpenAI",
-   "title": "Introducing LifeSciBench",
-   "summary": "Introducing LifeSciBench, an expert-authored, expert-reviewed benchmark for evaluating how AI systems handle real-world life science research tasks and decisions.",
-   "url": "https://openai.com/index/introducing-life-sci-bench",
-   "published": "2026-06-17"
-  },
-  {
-   "id": "https://openai.com/index/ai-chemist-improves-reaction",
-   "source": "OpenAI",
-   "title": "A near-autonomous AI chemist improves a challenging reaction in medicinal chemistry",
-   "summary": "OpenAI and Molecule.one show how a near-autonomous AI chemist using GPT-5.4 improved a key drug-making reaction, advancing medicinal chemistry research.",
-   "url": "https://openai.com/index/ai-chemist-improves-reaction",
-   "published": "2026-06-17"
-  },
-  {
-   "id": "https://deepmind.google/blog/securing-the-future-of-ai-agents/",
-   "source": "Google DeepMind",
-   "title": "Securing the future of AI agents",
-   "summary": "Securing internal systems with an AI Control Roadmap, combining traditional safeguards and real-time monitoring.",
-   "url": "https://deepmind.google/blog/securing-the-future-of-ai-agents/",
-   "published": "2026-06-16"
-  },
-  {
-   "id": "https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/",
-   "source": "Google DeepMind",
-   "title": "Unlocking UK house-building with AI-accelerated planning",
-   "summary": "UK government partners with Google DeepMind to build a new AI-powered prototype aimed at faster housing decisions.",
-   "url": "https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/",
-   "published": "2026-06-16"
-  },
-  {
-   "id": "https://openai.com/index/deployment-simulation",
-   "source": "OpenAI",
-   "title": "Predicting model behavior before release by simulating deployment",
-   "summary": "OpenAI introduces Deployment Simulation, a method to predict AI model behavior before deployment using real conversation data to improve safety and evaluation accuracy.",
-   "url": "https://openai.com/index/deployment-simulation",
-   "published": "2026-06-16"
-  },
-  {
-   "id": "https://openai.com/index/introducing-openai-partner-network",
-   "source": "OpenAI",
-   "title": "Introducing the OpenAI Partner Network",
-   "summary": "OpenAI launches the Partner Network, investing $150M to help global partners accelerate enterprise AI adoption, deployment, and transformation.",
-   "url": "https://openai.com/index/introducing-openai-partner-network",
-   "published": "2026-06-14"
-  },
-  {
-   "id": "https://www.microsoft.com/en-us/research/?p=1175369",
-   "source": "Microsoft Research",
-   "title": "Ire identifies another LOTUSLITE specimen",
-   "summary": "Project Ire examined a timely malware sample and determined its intent through reverse engineering—identifying LOTUSLITE characteristics even as most major EDR tools did not detect it.\nThe post Ire identifies another LOTUSLITE specimen appeared first on Microsoft Research.",
-   "url": "https://www.microsoft.com/en-us/research/blog/ire-identifies-another-lotuslite-specimen/",
-   "published": "2026-06-12"
-  },
-  {
-   "id": "https://openai.com/index/preply",
-   "source": "OpenAI",
-   "title": "How Preply combines AI and human tutors to personalize learning",
-   "summary": "Preply uses OpenAI to launch AI-generated lesson summaries, providing personalised feedback and language learning exercises.",
-   "url": "https://openai.com/index/preply",
-   "published": "2026-06-12"
-  },
-  {
-   "id": "https://openai.com/index/academy-courses-applying-ai-at-work",
-   "source": "OpenAI",
-   "title": "New OpenAI Academy courses for the next era of work",
-   "summary": "OpenAI introduces three Academy courses that help people build practical AI skills, create repeatable workflows, and apply agents in everyday work.",
-   "url": "https://openai.com/index/academy-courses-applying-ai-at-work",
-   "published": "2026-06-12"
-  },
-  {
-   "id": "https://openai.com/index/openai-to-acquire-ona",
-   "source": "OpenAI",
-   "title": "OpenAI to acquire Ona",
-   "summary": "OpenAI plans to acquire Ona to expand Codex with secure, persistent cloud environments, enabling long-running AI agents across enterprise workflows.",
-   "url": "https://openai.com/index/openai-to-acquire-ona",
-   "published": "2026-06-11"
-  },
-  {
-   "id": "https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem",
-   "source": "OpenAI",
-   "title": "Supporting Europe’s work in ensuring a trustworthy AI ecosystem",
-   "summary": "OpenAI supports the EU Code of Practice on AI content transparency, advancing provenance standards and tools to help people understand AI-generated content.",
-   "url": "https://openai.com/index/supporting-eu-trustworthy-ai-ecosystem",
-   "published": "2026-06-11"
-  },
-  {
-   "id": "https://openai.com/index/using-codex-to-simulate-black-holes",
-   "source": "OpenAI",
-   "title": "How an astrophysicist uses Codex to help simulate black holes",
-   "summary": "Discover how astrophysicist Chi-kwan Chan uses Codex to build black hole simulations, helping scientists study extreme physics and test Einstein’s theory of general relativity.",
-   "url": "https://openai.com/index/using-codex-to-simulate-black-holes",
-   "published": "2026-06-11"
-  },
-  {
-   "id": "https://openai.com/index/bbva",
-   "source": "OpenAI",
-   "title": "BBVA puts AI at the core of banking with OpenAI",
-   "summary": "Learn how BBVA scaled ChatGPT Enterprise to 100,000 employees and partnered with OpenAI to accelerate AI-powered banking transformation worldwide.",
-   "url": "https://openai.com/index/bbva",
-   "published": "2026-06-11"
-  },
-  {
-   "id": "https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/",
-   "source": "Google DeepMind",
-   "title": "Investing in multi-agent AI safety research",
-   "summary": "Google DeepMind and partners announce a $10M funding call for multi-agent safety research.",
-   "url": "https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/",
-   "published": "2026-06-10"
-  },
-  {
-   "id": "https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/",
-   "source": "Google DeepMind",
-   "title": "DiffusionGemma: 4x faster text generation",
-   "summary": "",
-   "url": "https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/",
-   "published": "2026-06-10"
-  },
-  {
-   "id": "https://openai.com/index/lseg",
-   "source": "OpenAI",
-   "title": "From data to decisions: how LSEG is scaling trusted AI",
-   "summary": "See how LSEG uses OpenAI to scale trusted AI across its global business, accelerating insights, shrinking release cycles, and empowering 4,000 employees.",
-   "url": "https://openai.com/index/lseg",
-   "published": "2026-06-10"
-  },
-  {
-   "id": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
-   "source": "OpenAI",
-   "title": "PRC-linked influence operations are targeting AI debates in the US",
-   "summary": "A new report from OpenAI details PRC-linked influence operations using AI to target U.S. tech debates, data center narratives, tariffs, and false claims  about ChatGPT.",
-   "url": "https://openai.com/index/prc-linked-influence-operations-ai-debates",
-   "published": "2026-06-10"
-  },
-  {
-   "id": "https://openai.com/index/openai-on-oracle-cloud",
-   "source": "OpenAI",
-   "title": "Access OpenAI models and Codex through your Oracle cloud commitment",
-   "summary": "Access OpenAI models and Codex through Oracle Cloud, using existing commitments to build and deploy AI with enterprise security and governance.",
-   "url": "https://openai.com/index/openai-on-oracle-cloud",
-   "published": "2026-06-10"
-  },
-  {
-   "id": "https://deepmind.google/blog/powering-the-future-of-robotics-in-europe/",
-   "source": "Google DeepMind",
-   "title": "Powering the future of robotics in Europe",
-   "summary": "",
-   "url": "https://deepmind.google/blog/powering-the-future-of-robotics-in-europe/",
-   "published": "2026-06-09"
-  },
-  {
-   "id": "https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model/",
-   "source": "Google DeepMind",
-   "title": "Introducing Gemma 4 12B: a unified, encoder-free multimodal model",
-   "summary": "",
-   "url": "https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model/",
-   "published": "2026-06-09"
-  },
-  {
-   "id": "https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/",
-   "source": "Google DeepMind",
-   "title": "Fluid, natural voice translation with Gemini 3.5 Live Translate",
-   "summary": "Gemini 3.5 Live Translate brings near real-time, natural speech translation to Google AI Studio, Google Translate and Google Meet.",
-   "url": "https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/",
-   "published": "2026-06-09"
-  },
-  {
-   "id": "https://openai.com/index/industrial-policy-for-the-intelligence-age",
-   "source": "OpenAI",
-   "title": "Industrial policy for the Intelligence Age",
-   "summary": "Explore our ambitious, people-first industrial policy ideas for the AI era—focused on expanding opportunity, sharing prosperity, and building resilient institutions as advanced intelligence evolves.",
-   "url": "https://openai.com/index/industrial-policy-for-the-intelligence-age",
-   "published": "2026-06-09"
-  },
-  {
-   "id": "https://openai.com/index/notion",
-   "source": "OpenAI",
-   "title": "What Codex unlocks for Notion",
-   "summary": "How Notion uses Codex to one-shot specs, build AI Voice Input for the web, and multiply engineering power across small teams.",
-   "url": "https://openai.com/index/notion",
-   "published": "2026-06-09"
-  },
-  {
-   "id": "https://openai.com/index/nextdoor",
-   "source": "OpenAI",
-   "title": "How engineers at Nextdoor use Codex to build without limits",
-   "summary": "How engineers at Nextdoor use Codex with GPT-5.5 to investigate hard-to-reproduce issues, build across platforms, and focus on product outcomes.",
-   "url": "https://openai.com/index/nextdoor",
-   "published": "2026-06-09"
-  },
-  {
-   "id": "https://deepmind.google/blog/measuring-the-impact-of-learning-with-ai-in-sierra-leone-and-beyond/",
-   "source": "Google DeepMind",
-   "title": "Measuring the impact of learning with AI in Sierra Leone and beyond",
-   "summary": "Results from a randomized controlled trial show the potential of Gemini’s Guided Learning feature to boost engagement and accelerate learning.",
-   "url": "https://deepmind.google/blog/measuring-the-impact-of-learning-with-ai-in-sierra-leone-and-beyond/",
-   "published": "2026-06-08"
-  },
-  {
-   "id": "https://openai.com/index/openai-submits-confidential-s-1",
-   "source": "OpenAI",
-   "title": "Confidential submission of draft S-1 to the SEC",
-   "summary": "OpenAI confirms a confidential S-1 submission to the SEC and has not yet determined timing for further action.",
-   "url": "https://openai.com/index/openai-submits-confidential-s-1",
-   "published": "2026-06-08"
-  },
-  {
-   "id": "https://www.microsoft.com/en-us/research/?p=1173479",
-   "source": "Microsoft Research",
-   "title": "Data Formulator 0.7: AI-powered data analytics for enterprise data",
-   "summary": "Data Formulator introduces AI-powered analytics for enterprise data workflows. Data teams can easily bring enterprise data into an AI-ready workspace where users can explore, analyze, and visualize data with AI agents to turn raw data into actionable insights.\nThe post Data Formulator 0.7: AI-powered data analytics for enterprise data appeared first on Microsoft Research.",
-   "url": "https://www.microsoft.com/en-us/research/blog/data-formulator-0-7-ai-powered-data-analytics-for-enterprise-data/",
-   "published": "2026-05-28"
-  },
-  {
-   "id": "https://www.microsoft.com/en-us/research/blog/extending-human-intelligence-through-ai/",
-   "source": "Microsoft Research",
-   "title": "Extending Human Intelligence Through AI",
-   "summary": "Understanding AI as an extension of human intelligence—not a replacement for it—offers a more grounded path for building trustworthy AI systems.\nThe post Extending Human Intelligence Through AI appeared first on Microsoft Research.",
-   "url": "https://www.microsoft.com/en-us/research/blog/extending-human-intelligence-through-ai/",
-   "published": "2026-05-27"
-  },
-  {
-   "id": "https://www.microsoft.com/en-us/research/?p=1171880",
-   "source": "Microsoft Research",
-   "title": "Vega: Zero-knowledge proofs for digital identity in the age of AI",
-   "summary": "Vega turns a full credential into a single proof, sharing only what is needed and nothing more, with performance that works in real apps. \nThe post Vega: Zero-knowledge proofs for digital identity in the age of AI appeared first on Microsoft Research.",
-   "url": "https://www.microsoft.com/en-us/research/blog/vega-zero-knowledge-proofs-for-digital-identity-in-the-age-of-ai/",
-   "published": "2026-05-21"
-  },
-  {
-   "id": "https://www.microsoft.com/en-us/research/blog/magenticlite-magenticbrain-fara1-5-an-agentic-experience-optimized-for-small-models/",
-   "source": "Microsoft Research",
-   "title": "MagenticLite, MagenticBrain, Fara1.5: An agentic experience optimized for small models",
-   "summary": "MagenticLite is an agentic system for small models that works across the browser and local file system in a single workflow. It combines specialized models and orchestration to support efficient agentic performance on everyday tasks.\nThe post MagenticLite, MagenticBrain, Fara1.5: An agentic experience optimized for small models appeared first on Microsoft Research.",
-   "url": "https://www.microsoft.com/en-us/research/blog/magenticlite-magenticbrain-fara1-5-an-agentic-experience-optimized-for-small-models/",
-   "published": "2026-05-21"
-  },
-  {
-   "id": "https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/",
-   "source": "Google DeepMind",
-   "title": "We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks",
-   "summary": "",
-   "url": "https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/",
-   "published": "2026-05-21"
-  },
-  {
-   "id": "https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/",
-   "source": "Google DeepMind",
-   "title": "Fast-tracking genetic leads to reverse cellular aging",
-   "summary": "Biologists use Co-Scientist to find novel factors that successfully rejuvenate human cells.",
-   "url": "https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/",
-   "published": "2026-05-18"
-  },
-  {
-   "id": "https://deepmind.google/blog/making-it-easier-to-understand-how-content-was-created-and-edited/",
-   "source": "Google DeepMind",
-   "title": "Making it easier to understand how content was created and edited",
-   "summary": "We're expanding our tools to help you understand how content was created and edited across the web.",
-   "url": "https://deepmind.google/blog/making-it-easier-to-understand-how-content-was-created-and-edited/",
-   "published": "2026-05-17"
-  },
-  {
-   "id": "https://deepmind.google/blog/gemini-for-science-ai-experiments-and-tools-for-a-new-era-of-discovery/",
-   "source": "Google DeepMind",
-   "title": "Gemini for Science: AI experiments and tools for a new era of discovery",
-   "summary": "A collection of science tools and experiments to expand the scale and precision of scientific exploration.",
-   "url": "https://deepmind.google/blog/gemini-for-science-ai-experiments-and-tools-for-a-new-era-of-discovery/",
-   "published": "2026-05-17"
-  },
-  {
-   "id": "https://deepmind.google/blog/introducing-google-antigravity-2-0/",
-   "source": "Google DeepMind",
-   "title": "Introducing Google Antigravity 2.0",
-   "summary": "",
-   "url": "https://deepmind.google/blog/introducing-google-antigravity-2-0/",
-   "published": "2026-05-17"
-  },
-  {
-   "id": "https://deepmind.google/blog/introducing-gemini-omni/",
-   "source": "Google DeepMind",
-   "title": "Introducing Gemini Omni",
-   "summary": "",
-   "url": "https://deepmind.google/blog/introducing-gemini-omni/",
-   "published": "2026-05-17"
-  },
-  {
-   "id": "https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/",
-   "source": "Google DeepMind",
-   "title": "Simulate real-world places with Project Genie and Street View",
-   "summary": "We’re expanding access to Google AI Ultra subscribers globally and introducing a new capability powered by Street View.",
-   "url": "https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/",
-   "published": "2026-05-17"
-  },
-  {
-   "id": "https://deepmind.google/blog/how-weathernext-helped-the-national-hurricane-center-better-predict-hurricane-melissas-historic-landfall-in-jamaica/",
-   "source": "Google DeepMind",
-   "title": "How WeatherNext helped the National Hurricane Center better predict Hurricane Melissa’s historic landfall in Jamaica",
-   "summary": "Learn how our WeatherNext AI model help forecasters give communities unprecedented time to prepare ahead of  the historic Hurricane Melissa.",
-   "url": "https://deepmind.google/blog/how-weathernext-helped-the-national-hurricane-center-better-predict-hurricane-melissas-historic-landfall-in-jamaica/",
-   "published": "2026-05-16"
-  },
-  {
-   "id": "https://deepmind.google/blog/uncovering-repurposed-medicines-to-fight-liver-fibrosis/",
-   "source": "Google DeepMind",
-   "title": "Uncovering repurposed medicines to fight liver fibrosis",
-   "summary": "Stanford geneticist uses Co-Scientist to help find new treatments for chronic liver disease and liver fibrosis.",
-   "url": "https://deepmind.google/blog/uncovering-repurposed-medicines-to-fight-liver-fibrosis/",
-   "published": "2026-05-16"
-  },
-  {
-   "id": "https://deepmind.google/blog/uniting-biological-toolkits-for-a-new-approach-to-als/",
-   "source": "Google DeepMind",
-   "title": "Uniting biological toolkits for a new approach to ALS",
-   "summary": "Co-Scientist unites Boston Children’s Hospital and MIT’s labs to explore new RNA-based treatments for ALS.",
-   "url": "https://deepmind.google/blog/uniting-biological-toolkits-for-a-new-approach-to-als/",
-   "published": "2026-05-16"
-  },
-  {
-   "id": "https://deepmind.google/blog/accelerating-discovery-of-liver-disease-mechanisms/",
-   "source": "Google DeepMind",
-   "title": "Accelerating discovery of liver disease mechanisms",
-   "summary": "Filippo Menolascina uses Co-Scientist to identify new liver disease treatments and explain why existing drugs only help certain patients.",
-   "url": "https://deepmind.google/blog/accelerating-discovery-of-liver-disease-mechanisms/",
-   "published": "2026-05-16"
-  },
-  {
-   "id": "https://deepmind.google/blog/opening-new-paths-in-aging-research/",
-   "source": "Google DeepMind",
-   "title": "Opening new paths in aging research",
-   "summary": "Calico Life Sciences uses Co-Scientist to connect scattered findings and generate new leads in aging research.",
-   "url": "https://deepmind.google/blog/opening-new-paths-in-aging-research/",
-   "published": "2026-05-16"
-  },
-  {
-   "id": "https://deepmind.google/blog/finding-the-molecular-switches-behind-new-infectious-diseases/",
-   "source": "Google DeepMind",
-   "title": "Finding the molecular switches behind new infectious diseases",
-   "summary": "Clare Bryant uses Co-Scientist to identify genetic triggers in emerging infectious diseases.",
-   "url": "https://deepmind.google/blog/finding-the-molecular-switches-behind-new-infectious-diseases/",
-   "published": "2026-05-16"
-  },
-  {
-   "id": "https://deepmind.google/blog/strengthening-singapores-ai-future-a-new-national-partnership/",
-   "source": "Google DeepMind",
-   "title": "Strengthening Singapore’s AI Future: A New National Partnership",
-   "summary": "Google DeepMind and Singapore partner to apply frontier AI to address complex challenges across health, education, and sustainability and more.",
-   "url": "https://deepmind.google/blog/strengthening-singapores-ai-future-a-new-national-partnership/",
-   "published": "2026-05-16"
-  }
- ]
+ }
 }
