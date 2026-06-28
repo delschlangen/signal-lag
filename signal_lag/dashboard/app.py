@@ -325,32 +325,10 @@ with tab_summary:
     if bits:
         st.caption(" · ".join(bits))
 
-    st.subheader("What changed since last refresh")
-    d = diff_snapshots(snap, prev)
-    if d["first_run"]:
-        st.info("First snapshot — no prior refresh to compare against yet. "
-                "Week-over-week changes will appear here from the next refresh.")
-    else:
-        st.caption(f"Compared against the snapshot from {d['prev_date']}.")
-        if d["new_alerts"]:
-            st.markdown("**🚨 New safety-lag alerts this week:**")
-            for a in d["new_alerts"]:
-                st.markdown(
-                    f"- **{lbl(snap, a['capability_topic'])}** is now outpacing "
-                    f"**{lbl(snap, a['safety_topic'])}** "
-                    f"(capability {a['cap_growth']*100:+.0f}% vs safety {a['saf_growth']*100:+.0f}%)."
-                )
-        if d["new_accelerations"]:
-            st.markdown("**📈 Newly accelerating topics:**")
-            for a in d["new_accelerations"]:
-                st.markdown(f"- {lbl(snap, a['topic_key'])} (+{a['change']*100:.0f}%)")
-        if d["new_sleepers"]:
-            st.markdown("**💤 New citation sleepers:**")
-            for s in d["new_sleepers"][:5]:
-                st.markdown(f"- [{s['title']}]({s['url']}) — {s['cited_by_count']} cites")
-        if not (d["new_alerts"] or d["new_accelerations"] or d["new_sleepers"]):
-            st.write("No major new signals since the last refresh.")
+    # Inverted-pyramid briefing order: the single biggest gap, then the novel
+    # foresight risks, then this week's deltas, then the per-tab digest.
 
+    # ---- 1. Headline: the single most important thing ----
     st.divider()
     st.subheader("📌 Headline")
     hl = get_analysis(snap).get("headline") or {}
@@ -391,24 +369,7 @@ with tab_summary:
                 st.write("No capability/safety divergence crosses the alert threshold this "
                          "week — safety research is broadly keeping pace.")
 
-    st.divider()
-    st.subheader("🗞️ This week across the board")
-    if get_analysis(snap).get("tabs"):
-        st.caption("Claude's analytical read of each section, grounded in this week's data — "
-                   "open a tab only if you want the underlying charts.")
-    else:
-        st.caption("Plain-language read of every section — open a tab only if you want the detail.")
-
-    def board(label, fallback, key):
-        st.markdown(f"**{label} —** {tab_analysis(snap, key) or fallback}")
-
-    board("⚖️ Capability vs. safety", divergence_finding(snap), "divergence")
-    board("📈 Velocity", velocity_finding(snap), "velocity")
-    board("🔬 Sentiment / confidence", sentiment_finding(snap), "sentiment")
-    board("🧭 Landscape", quadrant_finding(snap), "quadrant")
-    board("🔥 Citations", citation_finding(snap), "citations")
-
-    # Best foresight gaps — the novel cross-domain risks, surfaced front-and-center.
+    # ---- 2. Best foresight gaps: the novel forward-looking content ----
     top_fore = surfaced_foresight(snap, limit=3)
     if top_fore:
         st.divider()
@@ -429,6 +390,52 @@ with tab_summary:
                     st.caption("  ·  ".join(meta_bits))
                 if r.get("communities"):
                     st.markdown(f"_Who sees which half:_ {r['communities']}")
+
+    # ---- 3. What changed since last refresh (week-over-week deltas) ----
+    st.divider()
+    st.subheader("🆕 What changed since last refresh")
+    d = diff_snapshots(snap, prev)
+    if d["first_run"]:
+        st.info("First snapshot — no prior refresh to compare against yet. "
+                "Week-over-week changes will appear here from the next refresh.")
+    else:
+        st.caption(f"Compared against the snapshot from {d['prev_date']}.")
+        if d["new_alerts"]:
+            st.markdown("**🚨 New safety-lag alerts this week:**")
+            for a in d["new_alerts"]:
+                st.markdown(
+                    f"- **{lbl(snap, a['capability_topic'])}** is now outpacing "
+                    f"**{lbl(snap, a['safety_topic'])}** "
+                    f"(capability {a['cap_growth']*100:+.0f}% vs safety {a['saf_growth']*100:+.0f}%)."
+                )
+        if d["new_accelerations"]:
+            st.markdown("**📈 Newly accelerating topics:**")
+            for a in d["new_accelerations"]:
+                st.markdown(f"- {lbl(snap, a['topic_key'])} (+{a['change']*100:.0f}%)")
+        if d["new_sleepers"]:
+            st.markdown("**💤 New citation sleepers:**")
+            for s in d["new_sleepers"][:5]:
+                st.markdown(f"- [{s['title']}]({s['url']}) — {s['cited_by_count']} cites")
+        if not (d["new_alerts"] or d["new_accelerations"] or d["new_sleepers"]):
+            st.write("No major new signals since the last refresh.")
+
+    # ---- 4. Per-tab digest: a read of every other tab ----
+    st.divider()
+    st.subheader("🗞️ This week across the board")
+    if get_analysis(snap).get("tabs"):
+        st.caption("Claude's analytical read of each section, grounded in this week's data — "
+                   "open a tab only if you want the underlying charts.")
+    else:
+        st.caption("Plain-language read of every section — open a tab only if you want the detail.")
+
+    def board(label, fallback, key):
+        st.markdown(f"**{label} —** {tab_analysis(snap, key) or fallback}")
+
+    board("⚖️ Capability vs. safety", divergence_finding(snap), "divergence")
+    board("📈 Velocity", velocity_finding(snap), "velocity")
+    board("🔬 Sentiment / confidence", sentiment_finding(snap), "sentiment")
+    board("🧭 Landscape", quadrant_finding(snap), "quadrant")
+    board("🔥 Citations", citation_finding(snap), "citations")
 
     lab = snap.get("lab_activity") or []
     if lab:
@@ -518,8 +525,19 @@ with tab_div:
             margin=dict(l=10, r=20, t=10, b=40),
         )
         st.plotly_chart(fig, width="stretch")
-        show = div[["pairing", "cap_growth", "saf_growth", "gap", "volume_ratio", "lagging"]]
-        st.dataframe(show, width="stretch", hide_index=True)
+        disp = pd.DataFrame({
+            "Pairing": div["pairing"],
+            "Capability growth/qtr": (div["cap_growth"] * 100).map(lambda x: f"{x:+.0f}%"),
+            "Safety growth/qtr": (div["saf_growth"] * 100).map(lambda x: f"{x:+.0f}%"),
+            "Gap": (div["gap"] * 100).map(lambda x: f"{x:+.0f} pts"),
+            "Volume ratio (cap÷saf)": div["volume_ratio"].map(
+                lambda x: f"{x:.2f}×" if pd.notna(x) else "—"),
+            "Safety lagging?": div["lagging"].map(lambda b: "⚠️ yes" if b else "—"),
+        })
+        st.dataframe(disp, width="stretch", hide_index=True)
+        st.caption("Gap = capability growth − safety growth. A pairing is flagged when the "
+                   "gap clears the threshold, capability growth is positive, and capability "
+                   "has enough recent volume.")
     else:
         st.info("No pairings configured.")
 
@@ -549,8 +567,22 @@ with tab_vel:
         st.plotly_chart(fig, width="stretch")
     else:
         st.info("No timeseries data.")
-    st.markdown("**Velocity inflections**")
-    st.dataframe(pd.DataFrame(snap["inflections"]), width="stretch", hide_index=True)
+    st.markdown("**Velocity inflections** — which topics sped up or slowed down")
+    infl = pd.DataFrame(snap["inflections"])
+    if not infl.empty:
+        infl = infl.sort_values("change", ascending=False)
+        disp = pd.DataFrame({
+            "Topic": infl["topic_key"].map(lambda k: lbl(snap, k)),
+            "Recent /qtr": infl["recent_mean"].round(0).astype(int),
+            "Prior /qtr": infl["prior_mean"].round(0).astype(int),
+            "Change": (infl["change"] * 100).map(lambda x: f"{x:+.0f}%"),
+            "Direction": infl["direction"].map(
+                {"acceleration": "📈 accelerating", "deceleration": "📉 decelerating"}
+            ).fillna("→ steady"),
+        })
+        st.dataframe(disp, width="stretch", hide_index=True)
+    else:
+        st.caption("No inflection data.")
 
 # ================================================================== Sentiment
 with tab_sentiment:

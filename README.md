@@ -290,13 +290,13 @@ python scripts/generate_fixtures.py
 
 ## Dashboard tabs explained
 
-- **📋 Weekly Summary** — the self-contained briefing. Data freshness, *what changed
-  since the last refresh* (new safety-lag alerts, newly accelerating topics, new
-  citation sleepers), the **Claude-written analytical headline** (what the widest gap
-  means and why it matters) with the driving papers, a plain-language read of every
-  other tab so you needn't open them, **the week's best (web-verified novel) foresight
-  gaps**, and the labs-announce→safety-responds view. The former *Signals* tab is folded
-  in here (full ranked list + downloadable brief).
+- **📋 Weekly Summary** — the self-contained briefing, in inverted-pyramid order:
+  the **Claude-written analytical headline** (what the widest gap means and why it
+  matters) with the driving papers, then **the week's best (web-verified novel) foresight
+  gaps**, then *what changed since the last refresh* (new safety-lag alerts, newly
+  accelerating topics, new citation sleepers), then a plain-language read of every other
+  tab so you needn't open them, plus the labs-announce→safety-responds view. The former
+  *Signals* tab is folded in here (full ranked list + downloadable brief).
 - **⚖️ Divergence** — for every capability↔safety pair, the recent growth rate of each
   side as horizontal bars. A long capability bar next to a short safety bar = safety
   lagging. This is the core product.
