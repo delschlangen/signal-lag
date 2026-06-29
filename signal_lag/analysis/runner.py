@@ -204,6 +204,8 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
     scfg = settings.section("sentiment")
     neg_centroid = sentiment.build_negativity_centroid(taxonomy, embedder)
     crit = sentiment.critical_scores(vecs, neg_centroid)
+    _crit_thr = float(scfg.get("critical_threshold", 0.22))
+    paper_critical = {ids[i]: bool(crit[i] >= _crit_thr) for i in range(len(ids))}
     periods = {p.arxiv_id: pd.Period(p.published, freq="Q") for p in papers}
     topic_sent = sentiment.topic_sentiment(ids, crit, periods, tax_tags, taxonomy, scfg)
     sent_ts = velocity.drop_incomplete_tail(
@@ -285,6 +287,7 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
         "institution_trends": inst_trends,
         "sentiment": topic_sent,
         "sentiment_timeseries": sent_ts,
+        "paper_critical": paper_critical,
         "lab_posts": lab_posts,
         "signals": sigs,
         "brief": brief,

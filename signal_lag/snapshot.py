@@ -155,7 +155,8 @@ def build_snapshot(
     # --- "This week" lens: a focused analysis of just the last `window_days` of papers,
     # alongside the quarterly view (which is unaffected).
     snap_out = build_weekly(
-        settings, taxonomy, snap_out, papers, tax_tags, by_id, today, prev_on_disk
+        settings, taxonomy, snap_out, papers, tax_tags, by_id, today, prev_on_disk,
+        results.get("paper_critical") or {},
     )
 
     return snap_out
@@ -163,7 +164,7 @@ def build_snapshot(
 
 def build_weekly(
     settings: Settings, taxonomy: Taxonomy, snapshot: dict, papers, tax_tags: dict,
-    by_id: dict, today: dt.date, prev_snapshot: dict | None,
+    by_id: dict, today: dt.date, prev_snapshot: dict | None, paper_critical: dict,
 ) -> dict:
     """Attach snapshot["weekly"]: counts + Claude summary + verified foresight for the
     last `window_days` of papers only. Config-gated and fail-soft; the quarterly view is
@@ -184,8 +185,14 @@ def build_weekly(
     safety_keys = {t.key for t in taxonomy.safety_topics}
     cap_keys = {t.key for t in taxonomy.capability_topics}
     counts = {"safety": {}, "capability": {}}
+    counts_by_key: dict[str, int] = {}          # topic_key -> count (for chart tabs)
+    crit_by_key: dict[str, int] = {}            # topic_key -> # critical this week
     for aid in week_ids:
+        is_crit = bool(paper_critical.get(aid))
         for topic_key, _score in tax_tags.get(aid, []):
+            counts_by_key[topic_key] = counts_by_key.get(topic_key, 0) + 1
+            if is_crit:
+                crit_by_key[topic_key] = crit_by_key.get(topic_key, 0) + 1
             bucket = ("safety" if topic_key in safety_keys
                       else "capability" if topic_key in cap_keys else None)
             if bucket:
@@ -193,6 +200,11 @@ def build_weekly(
                 counts[bucket][name] = counts[bucket].get(name, 0) + 1
     counts = {b: dict(sorted(d.items(), key=lambda kv: kv[1], reverse=True))
               for b, d in counts.items()}
+    # Per-topic this-week critical share (topics with >=3 papers, so it's not noise).
+    weekly_sentiment = {
+        k: {"n": n, "critical_share": round(crit_by_key.get(k, 0) / n, 3)}
+        for k, n in counts_by_key.items() if n >= 3
+    }
 
     week_papers = [by_id[a] for a in week_ids if a in by_id]
     week_papers.sort(key=lambda p: ((p.cited_by_count or 0), p.published), reverse=True)
@@ -240,6 +252,8 @@ def build_weekly(
         "cutoff": cutoff.isoformat(),
         "n_papers": len(week_ids),
         "counts_by_topic": counts,
+        "counts_by_key": counts_by_key,
+        "sentiment": weekly_sentiment,
         "notable_papers": notable,
         "summary": summary,
         "foresight_gap": wfg,

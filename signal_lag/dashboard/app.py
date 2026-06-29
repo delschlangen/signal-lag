@@ -91,6 +91,21 @@ def weekly_block(snap):
     return snap.get("weekly") or {}
 
 
+def view_toggle(key: str, available: bool) -> str:
+    """Quarterly/This-week toggle (defaults to **This week** when available).
+
+    Returns "weekly" or "overall". Renders nothing (returns "overall") when there's
+    no weekly data to switch to.
+    """
+    if not available:
+        return "overall"
+    choice = st.radio(
+        "View", ["🆕 This week", "📊 Quarterly (overall)"],
+        horizontal=True, label_visibility="collapsed", key=key,
+    )
+    return "weekly" if choice.startswith("🆕") else "overall"
+
+
 _key = SNAPSHOT.stat().st_mtime if SNAPSHOT.exists() else 0.0
 snap, prev = _load(_key)
 
@@ -184,10 +199,10 @@ def topic_links(snap, topic_key, n=3):
 
 
 def week_note(what: str, finding: str | None = None):
-    """One line on what the chart is, then a data-driven read of THIS week."""
+    """One line on what the chart is, then a data-driven read of the current quarter."""
     st.caption(what)
     if finding:
-        st.markdown(f"**📅 This week:** {finding}")
+        st.markdown(f"**📊 This quarter:** {finding}")
 
 
 def _fmt_pct(x):
@@ -251,7 +266,7 @@ def sentiment_finding(snap) -> str:
                           f"{v['recent_share']*100:.0f}% critical)" for k, v in rising[:3])
         parts.append(f"Rising critical share (possible confidence erosion): {names}.")
     else:
-        parts.append("No topic shows a rising critical share this week.")
+        parts.append("No topic shows a rising critical share this quarter.")
     parts.append(f"Most critical overall: **{lbl(snap, hi[0])}** "
                  f"({hi[1].get('recent_share',0)*100:.0f}% of recent papers).")
     return " ".join(parts)
@@ -328,7 +343,7 @@ def citation_finding(snap) -> str:
                      f"({rg[0]['cited_by_count']} cites).")
     if sl:
         parts.append(f"A previously-quiet 'sleeper' now heating up: **{sl[0]['title']}**.")
-    return " ".join(parts) if parts else "No standout citation movers this week."
+    return " ".join(parts) if parts else "No standout citation movers this quarter."
 
 
 # ============================================================ Weekly Summary
@@ -365,7 +380,7 @@ def render_overall_summary():
         cap_focus = f" (focused on {hl['capability_focus']})" if hl.get("capability_focus") else ""
         saf_focus = f", which covers {hl['safety_focus']}" if hl.get("safety_focus") else ""
         st.markdown(
-            f"**The biggest safety gap this week is {cap} vs {saf}.**{meaning} Capability "
+            f"**The biggest safety gap this quarter is {cap} vs {saf}.**{meaning} Capability "
             f"research there{cap_focus} is growing **{a['cap_growth']*100:+.0f}%/quarter** while "
             f"the paired safety topic ({saf}{saf_focus}) is at **{a['saf_growth']*100:+.0f}%**{ratio}. "
             + (f"In all, **{len(alerts)} of {meta['n_pairings']} pairings** show safety lagging. "
@@ -379,7 +394,7 @@ def render_overall_summary():
     else:
         if hl.get("meaning") or hl.get("why_it_matters"):
             st.markdown(
-                "**No capability/safety pairing crosses the safety-lag threshold this week.** "
+                "**No capability/safety pairing crosses the safety-lag threshold this quarter.** "
                 + (hl.get("meaning") or ""))
             if hl.get("why_it_matters"):
                 st.markdown(f"**Why this matters:** {hl['why_it_matters']}")
@@ -395,9 +410,9 @@ def render_overall_summary():
     top_fore = surfaced_foresight(snap, limit=3)
     if top_fore:
         st.divider()
-        st.subheader("🔮 Foresight Gap — this week's novel risks")
-        st.caption("The strongest cross-domain risks this week — anchored on our "
-                   "research-trend signals and web-checked for novelty. These are "
+        st.subheader("🔮 Foresight Gap — top novel risks")
+        st.caption("The strongest cross-domain risks from the latest analysis — anchored on "
+                   "our research-trend signals and web-checked for novelty. These are "
                    "candidate hypotheses to pressure-test; full six-part analysis and "
                    "prior-coverage checks are in the **🔮 Foresight Gap** tab.")
         for r in top_fore:
@@ -423,7 +438,7 @@ def render_overall_summary():
     else:
         st.caption(f"Compared against the snapshot from {d['prev_date']}.")
         if d["new_alerts"]:
-            st.markdown("**🚨 New safety-lag alerts this week:**")
+            st.markdown("**🚨 New safety-lag alerts:**")
             for a in d["new_alerts"]:
                 st.markdown(
                     f"- **{lbl(snap, a['capability_topic'])}** is now outpacing "
@@ -443,9 +458,9 @@ def render_overall_summary():
 
     # ---- 4. Per-tab digest: a read of every other tab ----
     st.divider()
-    st.subheader("🗞️ This week across the board")
+    st.subheader("🗞️ This quarter — across the board")
     if get_analysis(snap).get("tabs"):
-        st.caption("Claude's analytical read of each section, grounded in this week's data — "
+        st.caption("Claude's analytical read of each section, grounded in this quarter's data — "
                    "open a tab only if you want the underlying charts.")
     else:
         st.caption("Plain-language read of every section — open a tab only if you want the detail.")
@@ -592,19 +607,77 @@ def render_weekly_summary():
 
 
 with tab_summary:
-    if weekly_block(snap):
-        _sv = st.radio("View", ["📊 Quarterly (overall)", "🆕 This week"],
-                       horizontal=True, label_visibility="collapsed", key="summary_view")
-    else:
-        _sv = "📊 Quarterly (overall)"
-    if _sv == "🆕 This week":
+    if view_toggle("summary_view", bool(weekly_block(snap))) == "weekly":
         render_weekly_summary()
     else:
         render_overall_summary()
 
+
+# ---- This-week chart views (raw counts from the last window_days, not quarterly) ----
+def render_weekly_velocity():
+    w = weekly_block(snap)
+    cbk = w.get("counts_by_key") or {}
+    st.caption(f"Papers submitted in the last {w.get('window_days', 7)} days, per topic — "
+               "a raw count of what landed this week, not the quarterly velocity trend.")
+    if not cbk:
+        st.info("No this-week paper counts in this snapshot.")
+        return
+    df = pd.DataFrame([{"topic": lbl(snap, k), "papers": v} for k, v in cbk.items()])
+    df = df.sort_values("papers")
+    fig = px.bar(df, x="papers", y="topic", orientation="h", template="plotly_dark",
+                 height=120 + 24 * len(df))
+    fig.update_layout(margin=dict(l=10, r=10, t=10, b=10),
+                      xaxis_title="papers this week", yaxis_title=None)
+    st.plotly_chart(fig, width="stretch")
+
+
+def render_weekly_divergence():
+    w = weekly_block(snap)
+    cbk = w.get("counts_by_key") or {}
+    st.caption(f"This week's attention split per pairing — papers from the last "
+               f"{w.get('window_days', 7)} days on the capability vs the safety side "
+               "(a raw count, not the quarterly growth gap).")
+    rows = [{"pairing": d["pairing"].replace(" vs. ", "<br>vs. "),
+             "cap": cbk.get(d["capability_topic"], 0), "saf": cbk.get(d["safety_topic"], 0)}
+            for d in snap.get("divergence", [])]
+    if not rows:
+        st.info("No pairings configured.")
+        return
+    df = pd.DataFrame(rows)
+    fig = go.Figure()
+    fig.add_bar(name="Capability papers", y=df["pairing"], x=df["cap"],
+                orientation="h", marker_color="#4c8bf5")
+    fig.add_bar(name="Safety papers", y=df["pairing"], x=df["saf"],
+                orientation="h", marker_color="#ffa94d")
+    fig.update_layout(barmode="group", template="plotly_dark", height=140 + 95 * len(df),
+                      legend=dict(orientation="h", yanchor="bottom", y=1.02),
+                      margin=dict(l=10, r=20, t=10, b=30), xaxis_title="papers this week")
+    st.plotly_chart(fig, width="stretch")
+
+
+def render_weekly_sentiment():
+    w = weekly_block(snap)
+    ws = w.get("sentiment") or {}
+    st.caption(f"Critical / limitation-focused share among this week's papers (last "
+               f"{w.get('window_days', 7)} days; topics with ≥3 papers) — a this-week "
+               "snapshot, not the quarterly trend.")
+    if not ws:
+        st.info("Not enough this-week papers per topic for a critical-share read.")
+        return
+    df = pd.DataFrame([{"topic": lbl(snap, k), "critical_%": round(v["critical_share"] * 100, 1),
+                        "n papers": v["n"]} for k, v in ws.items()])
+    df = df.sort_values("critical_%")
+    fig = px.bar(df, x="critical_%", y="topic", orientation="h", color="critical_%",
+                 color_continuous_scale="Reds", template="plotly_dark",
+                 height=120 + 24 * len(df))
+    fig.update_layout(margin=dict(l=10, r=10, t=10, b=10), coloraxis_showscale=False,
+                      xaxis_title="% critical (this week)", yaxis_title=None)
+    st.plotly_chart(fig, width="stretch")
+    st.dataframe(df.sort_values("critical_%", ascending=False), width="stretch", hide_index=True)
+
+
 # ================================================================ Divergence
-with tab_div:
-    st.subheader("Capability vs. safety velocity gap")
+def render_divergence_overall():
     week_note(
         "Recent growth of each **capability** topic vs its paired **safety** topic "
         "(long blue + short orange = safety lagging).",
@@ -643,9 +716,16 @@ with tab_div:
     else:
         st.info("No pairings configured.")
 
+
+with tab_div:
+    st.subheader("⚖️ Capability vs. safety")
+    if view_toggle("div_view", bool(weekly_block(snap).get("counts_by_key"))) == "weekly":
+        render_weekly_divergence()
+    else:
+        render_divergence_overall()
+
 # ================================================================== Velocity
-with tab_vel:
-    st.subheader("Topic submission velocity (papers per quarter)")
+def render_velocity_overall():
     week_note(
         "Papers per quarter per topic, and whether each rate is accelerating or "
         "decelerating (table below). Attention, not success — cross-read with Sentiment.",
@@ -686,9 +766,16 @@ with tab_vel:
     else:
         st.caption("No inflection data.")
 
+
+with tab_vel:
+    st.subheader("📈 Topic submission velocity")
+    if view_toggle("vel_view", bool(weekly_block(snap).get("counts_by_key"))) == "weekly":
+        render_weekly_velocity()
+    else:
+        render_velocity_overall()
+
 # ================================================================== Sentiment
-with tab_sentiment:
-    st.subheader("Confidence / negative-signal tracker")
+def render_sentiment_overall():
     sent = snap.get("sentiment") or {}
     rising = [(k, v) for k, v in sent.items() if v.get("rising")]
     week_note(
@@ -732,9 +819,21 @@ with tab_sentiment:
     else:
         st.info("No sentiment data in this snapshot.")
 
+
+with tab_sentiment:
+    st.subheader("🔬 Confidence / negative-signal tracker")
+    if view_toggle("sent_view", bool(weekly_block(snap).get("sentiment"))) == "weekly":
+        render_weekly_sentiment()
+    else:
+        render_sentiment_overall()
+
 # ================================================================== Quadrant
 with tab_quad:
     st.subheader("Emerging / hot / cooling / white-space")
+    if weekly_block(snap):
+        st.caption("🧭 Quadrant is a **quarterly** strategic map (volume × growth) — there's "
+                   "no meaningful 7-day version. For the weekly cut, use the **This week** "
+                   "toggle on Velocity, Divergence, or Sentiment, or the Weekly Summary.")
     week_note(
         "Strategic map: **recent volume** (x) vs **growth** (y) — emerging, hot, "
         "cooling, white-space.",
@@ -788,7 +887,7 @@ def foresight_brief_md(fg) -> str:
     """A self-contained markdown brief of the foresight-gap synthesis."""
     lines = [f"# signal-lag — Foresight Gap brief ({meta['refreshed_at']})", ""]
     lines.append("_AI-surfaced candidate risks for an analyst to pressure-test — not "
-                 "predictions. Each crosses this week's research-trend signals with broader "
+                 "predictions. Each crosses the research-trend signals with broader "
                  "societal forces, then is web-checked against current coverage._\n")
     for i, r in enumerate(fg.get("risks", []), 1):
         v = r.get("verification")
@@ -821,22 +920,19 @@ def foresight_brief_md(fg) -> str:
 with tab_foresight:
     st.subheader("🔮 Foresight Gap — novel risks in the seam")
     weekly_fg = weekly_block(snap).get("foresight_gap")
-    if weekly_fg:
-        _fv = st.radio("Foresight view", ["📊 Quarterly (overall)", "🆕 This week"],
-                       horizontal=True, label_visibility="collapsed", key="foresight_view")
-    else:
-        _fv = "📊 Quarterly (overall)"
-    if _fv == "🆕 This week":
+    if view_toggle("foresight_view", bool(weekly_fg)) == "weekly":
         fg = weekly_fg
         st.caption("Risks surfaced from **just this week's papers** "
                    f"(last {weekly_block(snap).get('window_days', 7)} days), crossed with the "
-                   "societal context. Same web-verification as the overall pass.")
+                   "societal context. Same web-verification as the overall (quarterly) pass.")
     else:
         fg = get_analysis(snap).get("foresight_gap")
+        if weekly_fg:
+            st.caption("Risks from the **quarterly** research-trend signals.")
     # Humility framing — these are candidate hypotheses, not predictions.
     st.info(
         "**These are AI-surfaced *candidate* risks for an analyst to pressure-test — "
-        "not predictions.** Each is anchored on *this week's* research-trend signal (a "
+        "not predictions.** Each is anchored on the latest research-trend signal (a "
         "safety subfield decelerating or going critical — the tool's proprietary edge), "
         "crossed with broader societal forces to find the **seam between domains** that no "
         "single community is tracking — **then web-checked against current coverage** so a "
@@ -915,7 +1011,7 @@ with tab_foresight:
             for i, r in enumerate(surfaced, 1):
                 render_risk(r, i)
         else:
-            st.warning("No risks survived novelty verification as fresh this week — all "
+            st.warning("No risks survived novelty verification as fresh this cycle — all "
                        "candidates were already widely discussed. See below.", icon="🔍")
 
         if demoted:
@@ -935,7 +1031,7 @@ with tab_foresight:
         st.divider()
         digest = fg.get("digest") or {}
         with st.expander("🔬 The signal digest that fed this synthesis"):
-            st.caption("The strongest signals signal-lag computed this week — the raw "
+            st.caption("The strongest signals signal-lag computed for this run — the raw "
                        "material the synthesis reasons over. Nothing here is invented.")
             st.json(digest)
         with st.expander("🌐 Societal context & scanning framework used"):
@@ -951,7 +1047,7 @@ with tab_foresight:
             if ctx.strip():
                 st.markdown(ctx)
             else:
-                st.caption("No societal context was provided this week — the synthesis "
+                st.caption("No societal context was provided for this run — the synthesis "
                            "reasoned across the scanning framework and general knowledge "
                            "only. Fill in `config/context.md` to sharpen it.")
 

@@ -354,10 +354,13 @@ python scripts/generate_fixtures.py
   rising sentiment, what-changed) plus a metrics-over-time chart — the longitudinal view a
   single snapshot can't show.
 
-Both the **Summary** and **Foresight Gap** tabs carry a **Quarterly ⟷ 🆕 This week** toggle:
-alongside the 3-year quarterly takeaways, "This week" analyzes *only* the papers from the
-last 7 days (topic counts + a focused Claude read + notable papers + a web-verified
-this-week Foresight Gap), while the quarterly charts stay the primary view.
+The **Summary, Divergence, Velocity, Sentiment, and Foresight Gap** tabs carry a
+**🆕 This week ⟷ 📊 Quarterly** toggle (defaulting to *This week*): alongside the 3-year
+quarterly view, "This week" analyzes *only* the papers from the last 7 days — topic counts,
+the this-week capability/safety attention split, this-week critical-share, a focused Claude
+read, notable papers, and a web-verified this-week Foresight Gap. The quarterly trend math
+(velocity/divergence/quadrant) is unchanged and clearly labeled *this quarter* — Quadrant
+stays quarterly-only (a 7-day volume×growth map isn't meaningful).
 
 ---
 

@@ -18,17 +18,19 @@ import re
 log = logging.getLogger("signal_lag.llm")
 
 SYSTEM = (
-    "You are a senior AI-safety research analyst writing a weekly intelligence "
-    "brief. You read research metrics and real paper abstracts and explain, in "
-    "plain analytical language, what is actually happening and why it matters for "
-    "AI safety. Be concrete and specific — name what the research is about, not "
-    "generic statements. Never fabricate: rely only on the data and abstracts "
-    "provided. Be concise and direct."
+    "You are a senior AI-safety research analyst writing a quarterly research-trend "
+    "intelligence brief. You read research metrics (quarter-over-quarter trends) and "
+    "real paper abstracts and explain, in plain analytical language, what is happening "
+    "across the recent quarters and why it matters for AI safety. Be concrete and "
+    "specific — name what the research is about, not generic statements. Never fabricate: "
+    "rely only on the data and abstracts provided. Be concise and direct. Describe the "
+    "current quarter / recent-quarter trend; do NOT call it 'this week'."
 )
 
 INSTRUCTIONS = """\
-Analyze this week's AI-safety research data (provided as JSON below) and return \
-ONLY a JSON object (no markdown, no preamble) with exactly this shape:
+Analyze this quarter's AI-safety research-trend data (provided as JSON below; growth \
+figures are quarter-over-quarter) and return ONLY a JSON object (no markdown, no \
+preamble) with exactly this shape:
 
 {
   "headline": {
