@@ -64,7 +64,7 @@ def author_migration(
 ) -> dict:
     """EXPERIMENTAL leading indicator: capability→safety author movement.
 
-    Using the OpenAlex author ids captured during enrichment, build each author's
+    Using the stable author ids captured during enrichment (Semantic Scholar), build each author's
     quarterly trajectory of capability vs safety topic membership and flag authors who
     were capability-dominant historically (>= ``min_history`` prior papers, none of them
     safety) and whose *recent* papers (last ``recent_window_periods`` quarters) enter a

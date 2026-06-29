@@ -32,10 +32,9 @@ def _p(aid, year, q, oa=None, refs=None, auths=None):
 
 # --------------------------------------------------------------------- #2 flow
 def test_citation_flow_detects_verified_borrowing():
-    # safety paper S has an OpenAlex id; capability paper C cites it.
-    s = _p("S", 2024, 1, oa="https://openalex.org/W1")
-    c = _p("C", 2024, 2, oa="https://openalex.org/W2",
-           refs=["https://openalex.org/W1", "https://openalex.org/W999"])
+    # Capability paper C cites safety paper S by arXiv id (Semantic Scholar references).
+    s = _p("S", 2024, 1)
+    c = _p("C", 2024, 2, refs=["S", "9999.99999"])
     tax_tags = {"S": [("saf", 1.0)], "C": [("cap", 1.0)]}
     out = citation_flow.citation_flow([s, c], tax_tags, _taxonomy())
     assert out["n_safety_indexed"] == 1
@@ -48,8 +47,8 @@ def test_citation_flow_detects_verified_borrowing():
 
 def test_citation_flow_absence_is_inconclusive():
     # Capability paper cites only an out-of-corpus work -> NOT flagged (no false claim).
-    s = _p("S", 2024, 1, oa="https://openalex.org/W1")
-    c = _p("C", 2024, 2, oa="https://openalex.org/W2", refs=["https://openalex.org/W42"])
+    s = _p("S", 2024, 1)
+    c = _p("C", 2024, 2, refs=["9999.99999"])
     tax_tags = {"S": [("saf", 1.0)], "C": [("cap", 1.0)]}
     out = citation_flow.citation_flow([s, c], tax_tags, _taxonomy())
     assert out["verified_borrowers"] == []
@@ -170,3 +169,25 @@ def test_store_persists_referenced_works_and_author_ids(tmp_path):
     ids = {a.name: a.openalex_id for a in got.authors}
     assert ids["Dr X"] == "https://openalex.org/A1"
     assert ids["Dr Y"] is None          # untouched author stays null
+
+
+def test_s2_enrichment_persists_refs_counts_and_author_ids(tmp_path):
+    from signal_lag.ingest.store import Store
+
+    p = _p("a1", 2024, 1, auths=[Author("Dr X"), Author("Dr Y")])
+    store = Store(tmp_path / "db.sqlite")
+    store.upsert_papers([p])
+    # Semantic Scholar fills citation count, references (arXiv ids), and author ids.
+    p.cited_by_count = 12
+    p.referenced_works = ["2301.00001", "2301.00002"]
+    p.s2_tldr = "tldr"
+    p.authors[0].openalex_id = "S2-AUTHOR-1"
+    store.update_s2_enrichment(p)
+
+    got = store.get_papers()[0]
+    store.close()
+    assert got.cited_by_count == 12
+    assert got.referenced_works == ["2301.00001", "2301.00002"]
+    ids = {a.name: a.openalex_id for a in got.authors}
+    assert ids["Dr X"] == "S2-AUTHOR-1"
+    assert ids["Dr Y"] is None

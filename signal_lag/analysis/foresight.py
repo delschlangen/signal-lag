@@ -293,7 +293,7 @@ CRITICAL INSTRUCTIONS:
   that lives entirely inside one community is probably already covered there — discard it.
 - USE CITATION-VERIFIED BORROWING AS EVIDENCE, NOT VOCABULARY. SIGNAL_DIGEST may include
   "citation_verified_borrowing": capability/applied papers that ACTUALLY CITE core safety
-  work (verified via OpenAlex references, not shared keywords). Treat a listed borrowing as
+  work (verified via real citation references, not shared keywords). Treat a listed borrowing as
   STRONG evidence that the cross-silo link is real — prefer anchoring cross-domain risks on
   these. CRUCIAL: absence from this list is INCONCLUSIVE, never proof of "no borrowing"
   (the cited work may sit outside our sample). Never claim a community "does not cite" or

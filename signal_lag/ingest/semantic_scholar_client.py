@@ -5,6 +5,12 @@ count (a better "heat" signal than raw citations), the publication venue, and
 fields of study. Uses the batch endpoint (up to 500 ids/call), so enriching
 thousands of papers is a handful of requests.
 
+Also supplies the data OpenAlex would (OpenAlex is unreachable from the CI
+runner): the total ``citationCount``, the paper's outgoing ``references`` (their
+arXiv ids — used for citation-FLOW verification), and stable author ids (used for
+author-migration tracking). Citation *by-year* series and institutions are NOT
+available via this batch endpoint, so those signals stay empty without OpenAlex.
+
 Entirely fail-soft: any error (rate limit, outage, no match) just leaves the
 fields empty — nothing else in the pipeline is affected.
 """
@@ -20,7 +26,12 @@ from ..models import Paper
 log = logging.getLogger("signal_lag.s2")
 
 S2_BATCH = "https://api.semanticscholar.org/graph/v1/paper/batch"
-FIELDS = "externalIds,tldr,influentialCitationCount,venue,fieldsOfStudy"
+# Nested selections (references.externalIds, authors.authorId) are supported by the
+# S2 graph API. references gives the outgoing bibliography; authors gives stable ids.
+FIELDS = (
+    "externalIds,tldr,influentialCitationCount,venue,fieldsOfStudy,"
+    "citationCount,references.externalIds,authors.authorId,authors.name"
+)
 
 
 class SemanticScholarClient:
@@ -105,6 +116,25 @@ class SemanticScholarClient:
                 p.s2_influential_citations = rec.get("influentialCitationCount")
                 p.venue = rec.get("venue") or None
                 p.fields_of_study = rec.get("fieldsOfStudy") or []
+                # OpenAlex stand-ins (OpenAlex is unreachable in CI):
+                # total citation count for per-paper "heat".
+                if rec.get("citationCount") is not None:
+                    p.cited_by_count = rec.get("citationCount")
+                # Outgoing references -> arXiv ids of cited papers (citation-FLOW #2).
+                refs: list[str] = []
+                for r in (rec.get("references") or []):
+                    rid = ((r or {}).get("externalIds") or {}).get("ArXiv")
+                    if rid:
+                        refs.append(rid)
+                if refs:
+                    p.referenced_works = refs
+                # Stable author ids (author-migration #4): match S2 authors to ours.
+                s2_authors = rec.get("authors") or []
+                for j, a in enumerate(p.authors):
+                    if a.openalex_id:
+                        continue
+                    if j < len(s2_authors) and s2_authors[j].get("authorId"):
+                        a.openalex_id = s2_authors[j]["authorId"]
                 enriched += 1
             log.info("  S2 enriched %d/%d", min(i + self.batch_size, len(ids)), len(ids))
         return enriched

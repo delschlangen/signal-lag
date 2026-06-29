@@ -164,7 +164,9 @@ def enrich_semantic_scholar(settings: Settings, store: Store | None = None) -> i
              len(papers), "keyed" if api_key else "keyless best-effort")
     n = client.enrich(papers)
     for p in papers:
-        if p.s2_tldr is not None or p.s2_influential_citations is not None or p.venue:
+        if (p.s2_tldr is not None or p.s2_influential_citations is not None or p.venue
+                or p.cited_by_count is not None or p.referenced_works
+                or any(a.openalex_id for a in p.authors)):
             store.update_s2_enrichment(p)
     log.info("Semantic Scholar: enriched %d papers", n)
     if own:

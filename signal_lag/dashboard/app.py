@@ -1291,17 +1291,18 @@ fail-soft (no API key ⇒ the prior behavior, unchanged):
   Claude** ("is this paper's core stance that something fails — or is it constructive?")
   and false positives are downgraded before the trend is computed. Bounded to that subset.
 - **Citation-FLOW, not just citation-heat.** The cross-silo "borrowing" story is verified
-  against **real OpenAlex references** — a capability/applied paper that *actually cites* a
-  core safety paper, not one that merely shares its vocabulary. Surfaced **positive-only**:
-  a verified citation is strong evidence; *absence is inconclusive*, never "they ignore it"
-  (the cited work may sit outside our sample).
+  against **real citation references** (each paper's outgoing bibliography, by arXiv id, from
+  **Semantic Scholar** — OpenAlex is unreachable from the CI runner) — a capability/applied
+  paper that *actually cites* a core safety paper, not one that merely shares its vocabulary.
+  Surfaced **positive-only**: a verified citation is strong evidence; *absence is
+  inconclusive*, never "they ignore it" (the cited work may sit outside our sample).
 - **Live web context (fresh ground truth).** Fast arXiv data was being crossed with a
   hand-maintained `context.md` that can be months stale. Before synthesis, **one web
   search** pulls the *current, dated* status of the flagged topics' real-world
   developments, so the synthesis verifies any date/policy claim against live truth
   (complements, never replaces, the analyst's file).
-- **Author migration (experimental).** Using OpenAlex author IDs, the tool flags authors
-  who were capability-dominant historically and whose **recent** papers enter a
+- **Author migration (experimental).** Using Semantic Scholar author IDs, the tool flags
+  authors who were capability-dominant historically and whose **recent** papers enter a
   safety/oversight topic — a capability→safety talent flow that can precede a wave of
   safety work. **Clearly labeled experimental and noisy** (stratified sample + imperfect
   author IDs): it informs the brief, never gates an alert.

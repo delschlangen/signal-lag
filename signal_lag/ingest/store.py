@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS papers (
     cited_by_count    INTEGER,
     counts_by_year    TEXT,          -- json list of {year,count}
     institutions      TEXT,          -- json list
-    referenced_works  TEXT,          -- json list of OpenAlex work ids (outgoing refs)
+    referenced_works  TEXT,          -- json list of cited arXiv ids (outgoing refs, from S2)
     enriched_at       TEXT,
     -- Semantic Scholar enrichment (nullable)
     s2_tldr           TEXT,
@@ -185,17 +185,34 @@ class Store:
         self.conn.commit()
 
     def update_s2_enrichment(self, paper: Paper) -> None:
+        # Semantic Scholar also backfills the data OpenAlex would (citation count,
+        # outgoing references for citation-flow, author ids for migration) since
+        # OpenAlex is unreachable in CI. cited_by_count/referenced_works are written
+        # via COALESCE-style guards so a real OpenAlex value (if ever present) isn't
+        # clobbered by a null.
         self.conn.execute(
-            "UPDATE papers SET s2_tldr=?, s2_influential=?, venue=?, fields_of_study=?"
-            " WHERE arxiv_id=?",
+            "UPDATE papers SET s2_tldr=?, s2_influential=?, venue=?, fields_of_study=?, "
+            "cited_by_count=COALESCE(?, cited_by_count), "
+            "referenced_works=? "
+            "WHERE arxiv_id=?",
             (
                 paper.s2_tldr,
                 paper.s2_influential_citations,
                 paper.venue,
                 json.dumps(paper.fields_of_study),
+                paper.cited_by_count,
+                json.dumps(paper.referenced_works),
                 paper.arxiv_id,
             ),
         )
+        # Persist stable author ids captured from S2 (mirrors update_enrichment).
+        for a in paper.authors:
+            if a.openalex_id:
+                self.conn.execute(
+                    "UPDATE authors SET openalex_id=? "
+                    "WHERE arxiv_id=? AND name=? AND openalex_id IS NULL",
+                    (a.openalex_id, paper.arxiv_id, a.name),
+                )
         self.conn.commit()
 
     def replace_tags(self, source: str, rows: Iterable[tuple[str, str, float]]) -> None:

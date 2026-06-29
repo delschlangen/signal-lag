@@ -150,12 +150,13 @@ threshold — both tunable in YAML.
   flags critical are **re-checked by Claude** and false positives are downgraded before
   the trend is computed (`sentiment.llm_verify`; bounded to that subset, fail-soft).
 - **Citation-flow verification:** the cross-silo "borrowing" claim is checked against
-  **real OpenAlex references** (`referenced_works`) — a capability/applied paper that
-  *actually cites* a core safety paper, not one that just shares its vocabulary.
+  **real citation references** (each paper's outgoing bibliography, by arXiv id, from
+  **Semantic Scholar** — OpenAlex is unreachable from the CI runner) — a capability/applied
+  paper that *actually cites* a core safety paper, not one that just shares its vocabulary.
   **Positive-only**: a verified citation is strong evidence; *absence is inconclusive*,
   never "they ignore safety work" (`citation_flow.enabled`).
-- **Author migration (experimental):** using OpenAlex author IDs, authors who were
-  capability-dominant historically and whose **recent** papers enter a safety/oversight
+- **Author migration (experimental):** using **Semantic Scholar author IDs**, authors who
+  were capability-dominant historically and whose **recent** papers enter a safety/oversight
   topic are flagged as a capability→safety talent flow — a leading indicator. **Noisy by
   construction** (stratified sample + imperfect IDs): it informs the brief, never gates an
   alert (`analysis.author_migration`).
