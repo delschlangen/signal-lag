@@ -8,56 +8,54 @@
   "n_pairings": 6,
   "headline": {
    "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +21% / saf -6%)",
-   "meaning": "The defining tension this quarter is autonomous agents—coding agents, embodied multi-agent systems, and self-evolving design loops—scaling faster than the oversight and monitoring machinery meant to catch their failures.",
-   "why_it_matters": "When agents that individually pass tests still accumulate ecosystem-level harms no single contribution accounts for, per-agent benchmarks and external perimeter defenses miss the actual risk surface, and oversight that contracts (-5.6%) while agentic capability surges (+38.6%) widens that blind spot."
+   "meaning": "The defining tension this quarter is autonomous agents advancing rapidly while the oversight needed to supervise them at scale is stalling — capability for multi-agent/tool-use systems grew +20.7% QoQ while scalable oversight contracted -5.6%.",
+   "why_it_matters": "Agents are being deployed into shared, stateful environments (repos, infrastructure) where per-agent benchmarks miss accumulated systemic risk, yet the oversight methods to catch this are losing momentum — a widening supervision gap precisely where autonomy is scaling."
   },
-  "sentiment_rising": [
-   "Deceptive Alignment",
-   "Evals & Dangerous-Capability Benchmarks",
-   "Reward Hacking",
-   "Scalable Oversight"
-  ],
+  "sentiment_rising": [],
   "overall_foresight": [
    {
-    "risk": "California SB 53 incident-reporting and frontier risk frameworks are being authored by deployment teams against a safety-research base (scalable oversight, deceptive alignment) that is itself losing velocity and rising in critical-uncertainty share — freezing a contested methodology into a mandatory compliance artifact.",
+    "risk": "As scalable-oversight research decelerates while agentic deployment accelerates, the safest available oversight techniques are being frozen into classified government evaluation regimes just as their methods stop maturing — locking in a static evaluation standard against fast-moving capabilities.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
+     "Political",
      "Legal/Regulatory",
      "Technological"
     ]
    },
    {
-    "risk": "Agentic Behavior Monitoring is scaling fast (123.5/qtr) precisely as PRC-linked influence operations probe the data-center/electricity-cost narrative — meaning agent-monitoring telemetry becomes a high-value, under-secured surveillance target whose compromise reveals both operational patterns and grid-siting sensitivities.",
+    "risk": "Chain-of-Thought Faithfulness research is accelerating right as SB 53 / RAISE-style transparency laws take effect, creating pressure to publish faithfulness metrics as compliance artifacts before the field agrees what 'faithful' means — freezing a premature standard into reporting law.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Security/Geopolitical",
-     "Environmental"
+     "Legal/Regulatory",
+     "Technological",
+     "Social"
     ]
    },
    {
-    "risk": "AI rare-disease/genomic diagnosis pipelines are being deployed via accelerating agentic capability into a clinical setting where the safety subfield governing exactly that failure mode — Scalable Oversight — is shrinking in velocity while its critical-uncertainty share rises, meaning the verification methods clinicians implicitly trust are quietly becoming less validated, not more.",
+    "risk": "PRC influence operations are now probing the data-center/electricity-cost narrative — the same grid-strain pressure point that is becoming AI's hard physical constraint — turning energy infrastructure into a combined cyber-narrative attack surface that neither AI-safety nor grid-security communities own.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Technological",
-     "Legal/Regulatory"
+     "Security/Geopolitical",
+     "Environmental",
+     "Political"
     ]
    }
   ],
   "weekly_foresight": [
    {
-    "risk": "AI fraud/claim-verification pipelines built by detection engineers are silently adopting 'deception' constructs from the alignment literature, importing alignment-research immaturity into consequential financial and information-gatekeeping decisions.",
+    "risk": "Activation-steering and memorization-indicator techniques being published as interpretability/calibration tools are quietly becoming the technical substrate for *covert internal content control*, arriving the same week US frontier-model evaluations moved behind a classified curtain — meaning the public can no longer see how internal steering is being used.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Economic",
+     "Political",
      "Legal/Regulatory"
     ]
    },
    {
-    "risk": "Formal-guarantee control papers (PAC-Bayesian certificates) are being filed under safety topics, creating a 'certified-safe' vocabulary that could be invoked to satisfy SB 53 / EU AI Act risk-framework obligations for systems whose guarantees only hold under assumptions that don't survive deployment.",
+    "risk": "LLM factual-error-detection research is shifting its training reference from human-written 'ground truth' to LLM-generated text — quietly normalizing AI output as the standard of factual correctness just as US public trust in AI accuracy collapses, creating a self-referential truth baseline that institutions will inherit unknowingly.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Legal/Regulatory",
-     "Technological"
+     "Social",
+     "Demographic"
     ]
    }
   ],
