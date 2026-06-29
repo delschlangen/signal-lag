@@ -144,7 +144,21 @@ threshold — both tunable in YAML.
   failure seed phrases (`negativity_seeds` in `taxonomy.yaml`). A paper is *critical*
   when its abstract embedding is close to that centroid; per topic we track the
   critical **share** and its quarter-over-quarter trend. Rising critical share (esp.
-  with flat volume) is flagged as eroding confidence.
+  with flat volume) is flagged as eroding confidence. **Hybrid LLM precision:** the
+  embedding centroid alone mistakes *academic negation* ("we **overcome** the
+  catastrophic failures of prior methods") for criticism, so the recent-window papers it
+  flags critical are **re-checked by Claude** and false positives are downgraded before
+  the trend is computed (`sentiment.llm_verify`; bounded to that subset, fail-soft).
+- **Citation-flow verification:** the cross-silo "borrowing" claim is checked against
+  **real OpenAlex references** (`referenced_works`) — a capability/applied paper that
+  *actually cites* a core safety paper, not one that just shares its vocabulary.
+  **Positive-only**: a verified citation is strong evidence; *absence is inconclusive*,
+  never "they ignore safety work" (`citation_flow.enabled`).
+- **Author migration (experimental):** using OpenAlex author IDs, authors who were
+  capability-dominant historically and whose **recent** papers enter a safety/oversight
+  topic are flagged as a capability→safety talent flow — a leading indicator. **Noisy by
+  construction** (stratified sample + imperfect IDs): it informs the brief, never gates an
+  alert (`analysis.author_migration`).
 - **Labs-lead signal:** lab/blog posts are embedded and tagged to topics, then shown
   against the paired safety topic's velocity — "labs announce → safety responds on a
   delay → the delay is the risk window."
@@ -184,11 +198,20 @@ How it works:
    **illustrative of the format only — not a prescribed or exhaustive list**, and the
    synthesis is explicitly told never to treat them as the only factors that matter. If
    the file is missing/empty the pass still runs (just without the societal layer).
-4. **Synthesis** — Claude returns 2–4 candidate risks, each with a fixed six-part
+4. **Live web brief (current ground truth)** — because fast arXiv data crossed with a
+   hand-maintained `context.md` risks anchoring on stale facts, an optional **pre-synthesis
+   web search** (`analysis.foresight.live_context`) pulls the *current, dated* status of the
+   flagged topics' real-world developments. The synthesis verifies any date/policy claim
+   against this live brief and prefers it over the standing context where they conflict —
+   complementing, never replacing, the analyst's file. Fail-soft; shown in its own expander.
+5. **Synthesis** — Claude returns 2–4 candidate risks, each with a fixed six-part
    structure: **risk statement · derived-from (citing the actual digest signals, so it's
    traceable) · why it's under-discussed · mechanism · leading indicator · calibration ·
    extrapolation** (an honest flag of what goes beyond the data). It's instructed to
    ground every claim in the provided signals and to refuse to restate well-known AI risks.
+   It also gets the **citation-verified borrowings** (use as evidence, not vocabulary;
+   absence inconclusive) and the **experimental author-migration** signal (soft
+   corroboration only).
 
 The synthesis is tuned to the tool's real strength:
 - **Research-trend anchor (the proprietary edge).** Each risk leads with a signal only this

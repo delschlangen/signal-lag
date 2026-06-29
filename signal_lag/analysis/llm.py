@@ -157,6 +157,71 @@ provided data. Output must be valid JSON and nothing else.
 """
 
 
+LIMITATION_SYSTEM = (
+    "You are an AI-safety research analyst doing precise sentiment labeling. For each "
+    "paper you read the title and abstract and decide ONE thing: is the paper's PRIMARY "
+    "stance that something is failing, broken, unsafe, eroding, or fundamentally limited "
+    "— a genuinely critical / limitation-focused contribution (e.g. an audit, a negative "
+    "result, a vulnerability disclosure, evidence that a method does not work)? Crucially: "
+    "papers that merely USE negative vocabulary while reporting PROGRESS are NOT critical "
+    "(e.g. 'we overcome the catastrophic failures of prior methods', 'we fix the "
+    "limitations of X', 'robust against attacks'). Those are positive/constructive. Judge "
+    "the paper's actual stance, not its keywords."
+)
+
+LIMITATION_INSTRUCTIONS = """\
+For each paper below, decide if it is genuinely LIMITATION-FOCUSED / critical (its core \
+message is that something fails, is unsafe, or is fundamentally limited) versus \
+constructive (it proposes/advances/fixes something, even if it uses negative words to \
+describe prior work or threats it defends against).
+
+Return ONLY a JSON object (no markdown, no preamble) of this exact shape:
+
+{"labels": [{"arxiv_id": "<id>", "is_limitation_focused": true_or_false}]}
+
+Include every arxiv_id from the input. Output must be valid JSON and nothing else.
+"""
+
+
+def classify_limitation_focused(
+    papers: list[dict], api_key: str | None, model: str = "claude-opus-4-8",
+    batch_size: int = 50,
+) -> dict[str, bool]:
+    """Batched boolean classifier: {arxiv_id -> is_limitation_focused}.
+
+    ``papers`` is a list of {arxiv_id, title, abstract}. Used to correct embedding-based
+    critical-sentiment false-positives (academic negation: "we overcome the failures of
+    …" is constructive, not critical). Fail-soft: missing key / error -> {} (caller keeps
+    the embedding flags). Batched to bound cost.
+    """
+    if not api_key or not papers:
+        return {}
+    out: dict[str, bool] = {}
+    for i in range(0, len(papers), batch_size):
+        batch = papers[i : i + batch_size]
+        payload = [
+            {"arxiv_id": p["arxiv_id"], "title": p.get("title", ""),
+             "abstract": (p.get("abstract") or "")[:600]}
+            for p in batch
+        ]
+        text = call_claude(
+            LIMITATION_SYSTEM,
+            LIMITATION_INSTRUCTIONS + "\n\nPAPERS:\n" + json.dumps(payload, ensure_ascii=False),
+            api_key, model,
+        )
+        if not text:
+            continue
+        result = extract_json(text)
+        if not result:
+            continue
+        for row in result.get("labels", []):
+            aid = row.get("arxiv_id")
+            if aid is not None and "is_limitation_focused" in row:
+                out[aid] = bool(row["is_limitation_focused"])
+    log.info("LLM limitation classifier labeled %d/%d papers", len(out), len(papers))
+    return out
+
+
 def summarize_week(payload: dict, api_key: str | None, model: str = "claude-opus-4-8") -> dict | None:
     """Focused 'this week only' Claude summary. Fail-soft (-> None)."""
     text = call_claude(

@@ -15,8 +15,8 @@ from ..ingest.store import Store
 import pandas as pd
 
 from . import (
-    authors, citations, cluster, divergence, llm, sentiment, signals,
-    taxonomy as tax_mod, velocity,
+    authors, citation_flow as citation_flow_mod, citations, cluster, divergence,
+    llm, sentiment, signals, taxonomy as tax_mod, velocity,
 )
 from .embeddings import Embedder, save_embeddings
 
@@ -200,6 +200,11 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
 
     new_clusters = [_clab(k) for k in new_cluster_keys]
 
+    # Analysis (Claude) config, hoisted so the sentiment/citation passes can reuse it.
+    acfg = settings.analysis
+    acfg_api_key = acfg.get("api_key") if acfg.get("enabled") else None
+    acfg_model = acfg.get("model", "claude-opus-4-8")
+
     # --- negative / critical-signal layer ---
     scfg = settings.section("sentiment")
     neg_centroid = sentiment.build_negativity_centroid(taxonomy, embedder)
@@ -207,6 +212,46 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
     _crit_thr = float(scfg.get("critical_threshold", 0.22))
     paper_critical = {ids[i]: bool(crit[i] >= _crit_thr) for i in range(len(ids))}
     periods = {p.arxiv_id: pd.Period(p.published, freq="Q") for p in papers}
+
+    # --- hybrid LLM sentiment (#1): embedding recall, LLM precision ---
+    # The embedding centroid mistakes academic negation ("we overcome the catastrophic
+    # failures of prior methods") for genuine criticism. Take only the RECENT-window
+    # papers the embedding flagged critical (the subset that drives the rising-share
+    # signal), batch-verify them with Claude, and downgrade the false positives. Bounded
+    # and fail-soft: no key / disabled / error => pure embedding behavior (unchanged).
+    sent_llm_meta = None
+    if scfg.get("llm_verify") and acfg_api_key:
+        idx_of = {aid: i for i, aid in enumerate(ids)}
+        by_id_p = {p.arxiv_id: p for p in papers}
+        uniq_periods = sorted(set(periods.values()))
+        _win = int(scfg.get("window", 2))
+        recent_cut = uniq_periods[-_win] if len(uniq_periods) >= _win else uniq_periods[0]
+        flagged_recent = [
+            aid for aid in ids
+            if paper_critical.get(aid) and periods[aid] >= recent_cut
+        ]
+        flagged_recent.sort(key=lambda a: periods[a], reverse=True)
+        cap = int(scfg.get("llm_verify_max", 400))
+        subset = flagged_recent[:cap]
+        payload = [
+            {"arxiv_id": aid, "title": by_id_p[aid].title, "abstract": by_id_p[aid].abstract}
+            for aid in subset if aid in by_id_p
+        ]
+        labels = llm.classify_limitation_focused(
+            payload, acfg_api_key, acfg_model,
+            batch_size=int(scfg.get("llm_verify_batch", 50)),
+        )
+        flipped = 0
+        for aid, is_crit in labels.items():
+            if not is_crit and paper_critical.get(aid):
+                paper_critical[aid] = False
+                crit[idx_of[aid]] = 0.0    # snap below threshold so trend math agrees
+                flipped += 1
+        sent_llm_meta = {"verified": len(labels), "downgraded": flipped,
+                         "subset": len(subset)}
+        log.info("LLM sentiment verify: downgraded %d of %d recent flagged-critical papers",
+                 flipped, len(subset))
+
     topic_sent = sentiment.topic_sentiment(ids, crit, periods, tax_tags, taxonomy, scfg)
     sent_ts = velocity.drop_incomplete_tail(
         sentiment.sentiment_timeseries(
@@ -236,6 +281,15 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
     # --- citation dynamics ---
     cite = citations.citation_signals(papers, settings.section("citations"))
 
+    # --- citation-flow verification (does capability work actually cite safety work?) ---
+    cfcfg = settings.section("citation_flow")
+    cflow = None
+    if cfcfg.get("enabled", True):
+        cflow = citation_flow_mod.citation_flow(
+            papers, tax_tags, taxonomy,
+            max_examples=int(cfcfg.get("max_examples", 30)),
+        )
+
     # --- divergence (headline) ---
     dcfg = settings.section("divergence")
     div = divergence.compute_divergence(
@@ -251,6 +305,15 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
         papers, tax_tags, int(vcfg.get("inflection_window", 2))
     )
 
+    # --- author migration (#4, experimental leading indicator) ---
+    amcfg = acfg.get("author_migration") or {}
+    author_mig = None
+    if amcfg.get("enabled"):
+        author_mig = authors.author_migration(
+            papers, tax_tags, taxonomy,
+            min_history=int(amcfg.get("min_history", 2)),
+        )
+
     # --- signals + brief ---
     sigs = signals.generate_signals(
         taxonomy, div, inflections, new_clusters, {}, cite, inst_trends,
@@ -261,7 +324,6 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
 
     # --- optional weekly LLM analysis (Anthropic / Claude) ---
     analysis = None
-    acfg = settings.analysis
     if acfg.get("enabled"):
         by_id = {p.arxiv_id: p for p in papers}
         label_map = {t.key: t.label for t in taxonomy.all_topics}
@@ -287,7 +349,10 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
         "institution_trends": inst_trends,
         "sentiment": topic_sent,
         "sentiment_timeseries": sent_ts,
+        "sentiment_llm_verify": sent_llm_meta,
         "paper_critical": paper_critical,
+        "citation_flow": cflow,
+        "author_migration": author_mig,
         "lab_posts": lab_posts,
         "signals": sigs,
         "brief": brief,

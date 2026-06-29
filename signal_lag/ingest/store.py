@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS papers (
     cited_by_count    INTEGER,
     counts_by_year    TEXT,          -- json list of {year,count}
     institutions      TEXT,          -- json list
+    referenced_works  TEXT,          -- json list of OpenAlex work ids (outgoing refs)
     enriched_at       TEXT,
     -- Semantic Scholar enrichment (nullable)
     s2_tldr           TEXT,
@@ -93,6 +94,7 @@ class Store:
             "fields_of_study": "TEXT",
             "source": "TEXT DEFAULT 'arxiv'",
             "review_score": "REAL",
+            "referenced_works": "TEXT",
         }
         for name, decl in adds.items():
             if name not in cols:
@@ -158,7 +160,7 @@ class Store:
             """
             UPDATE papers SET
                 openalex_id=?, cited_by_count=?, counts_by_year=?,
-                institutions=?, enriched_at=?
+                institutions=?, referenced_works=?, enriched_at=?
             WHERE arxiv_id=?
             """,
             (
@@ -166,10 +168,20 @@ class Store:
                 paper.cited_by_count,
                 json.dumps(paper.counts_by_year),
                 json.dumps(paper.institutions),
+                json.dumps(paper.referenced_works),
                 dt.datetime.utcnow().isoformat(timespec="seconds"),
                 paper.arxiv_id,
             ),
         )
+        # OpenAlex author ids are captured onto paper.authors during enrich; persist them
+        # (the authors rows were written id-less at upsert time). Needed for #4 migration.
+        for a in paper.authors:
+            if a.openalex_id:
+                self.conn.execute(
+                    "UPDATE authors SET openalex_id=? "
+                    "WHERE arxiv_id=? AND name=? AND openalex_id IS NULL",
+                    (a.openalex_id, paper.arxiv_id, a.name),
+                )
         self.conn.commit()
 
     def update_s2_enrichment(self, paper: Paper) -> None:
@@ -270,6 +282,7 @@ class Store:
             cited_by_count=r["cited_by_count"],
             counts_by_year=json.loads(r["counts_by_year"]) if r["counts_by_year"] else [],
             institutions=json.loads(r["institutions"]) if r["institutions"] else [],
+            referenced_works=json.loads(r["referenced_works"]) if _get(r, "referenced_works") else [],
             s2_tldr=_get(r, "s2_tldr"),
             s2_influential_citations=_get(r, "s2_influential"),
             venue=_get(r, "venue"),

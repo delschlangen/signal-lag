@@ -1030,6 +1030,47 @@ with tab_foresight:
         # Transparency: show exactly what fed the synthesis.
         st.divider()
         digest = fg.get("digest") or {}
+
+        # Live web brief (#3): the dated real-world ground truth the synthesis verified
+        # date/policy claims against (complements the static context.md).
+        live_ctx = fg.get("live_context")
+        if live_ctx:
+            with st.expander("🛰️ Live web brief (current real-world status, web-verified)"):
+                st.caption("A pre-synthesis web search pulled the CURRENT, dated status of "
+                           "the flagged topics' real-world developments, so the synthesis "
+                           "checks any date/policy claim against live ground truth instead "
+                           "of a possibly-stale context file.")
+                st.markdown(live_ctx)
+
+        # Citation-VERIFIED cross-domain borrowing (#2): capability papers that actually
+        # cite core safety work (via OpenAlex references), not just shared vocabulary.
+        borrowers = (digest.get("citation_verified_borrowing") or [])
+        if borrowers:
+            with st.expander(f"🔗 Citation-verified borrowing ({len(borrowers)}) — "
+                             "capability work that actually cites safety work"):
+                st.caption("Verified via OpenAlex outgoing references (not keyword overlap). "
+                           "Positive-only: absence from this list is **inconclusive**, never "
+                           "evidence that a community ignores safety work.")
+                for b in borrowers:
+                    cap = ", ".join(b.get("capability_topics") or []) or "—"
+                    cites = "; ".join(c for c in (b.get("cites_safety") or []) if c)
+                    st.markdown(f"- **{b.get('title')}** ({cap}) → cites "
+                                f"{b.get('n_cited_safety')} safety paper(s): {cites}")
+
+        # Author migration (#4, experimental leading indicator).
+        amig = digest.get("author_migration_experimental") or {}
+        if amig.get("available") and amig.get("n_migrants"):
+            with st.expander(f"🧭 Author migration — experimental ({amig.get('n_migrants')} "
+                             "capability→safety authors)"):
+                st.caption("⚠️ EXPERIMENTAL & noisy: built from a temporally-stratified "
+                           "sample with imperfect author IDs. A capability→safety talent "
+                           "flow can precede a wave of safety work — it INFORMS the brief, "
+                           "never gates an alert.")
+                for m in amig.get("examples") or []:
+                    topics = ", ".join(m.get("entered_safety_topics") or [])
+                    st.markdown(f"- **{m.get('author')}** — entered {topics} "
+                                f"(after {m.get('prior_papers')} prior capability papers)")
+
         with st.expander("🔬 The signal digest that fed this synthesis"):
             st.caption("The strongest signals signal-lag computed for this run — the raw "
                        "material the synthesis reasons over. Nothing here is invented.")
@@ -1239,6 +1280,31 @@ longitudinal and timely:
   overall + this week, rising sentiment, what-changed) to `data/history.json`, shown as a
   metrics-over-time chart + a reverse-chronological list — the running record a single
   snapshot can't show.
+
+### 12. Signal-fidelity layers (how much to trust each read)
+Four upgrades raise how much an analyst can trust the output. All are config-gated and
+fail-soft (no API key ⇒ the prior behavior, unchanged):
+- **Hybrid sentiment (embedding recall → LLM precision).** The rising-critical-share
+  signal starts from a cheap embedding score, but that centroid mistakes *academic
+  negation* ("we **overcome** the catastrophic failures of prior methods") for genuine
+  criticism. So the recent-window papers the embedding flags critical are **re-checked by
+  Claude** ("is this paper's core stance that something fails — or is it constructive?")
+  and false positives are downgraded before the trend is computed. Bounded to that subset.
+- **Citation-FLOW, not just citation-heat.** The cross-silo "borrowing" story is verified
+  against **real OpenAlex references** — a capability/applied paper that *actually cites* a
+  core safety paper, not one that merely shares its vocabulary. Surfaced **positive-only**:
+  a verified citation is strong evidence; *absence is inconclusive*, never "they ignore it"
+  (the cited work may sit outside our sample).
+- **Live web context (fresh ground truth).** Fast arXiv data was being crossed with a
+  hand-maintained `context.md` that can be months stale. Before synthesis, **one web
+  search** pulls the *current, dated* status of the flagged topics' real-world
+  developments, so the synthesis verifies any date/policy claim against live truth
+  (complements, never replaces, the analyst's file).
+- **Author migration (experimental).** Using OpenAlex author IDs, the tool flags authors
+  who were capability-dominant historically and whose **recent** papers enter a
+  safety/oversight topic — a capability→safety talent flow that can precede a wave of
+  safety work. **Clearly labeled experimental and noisy** (stratified sample + imperfect
+  author IDs): it informs the brief, never gates an alert.
 
 ### Caveats
 - High coverage of the **AI preprint literature**, not every publisher.

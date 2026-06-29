@@ -68,5 +68,20 @@ class OpenAlexClient:
                 name = inst.get("display_name")
                 if name and name not in institutions:
                     institutions.append(name)
+            # Capture the OpenAlex author id onto the matching Paper.Author (by order),
+            # for cross-cluster author-migration tracking. Names align with arXiv order
+            # well enough; missing matches are simply skipped.
+            au = authorship.get("author") or {}
+            au_id = au.get("id")
+            au_name = au.get("display_name")
+            if au_id:
+                for a in paper.authors:
+                    if a.openalex_id is None and (au_name is None or a.name == au_name):
+                        a.openalex_id = au_id
+                        break
         paper.institutions = institutions
+        # Outgoing bibliography (OpenAlex work ids) — lets us verify cross-domain
+        # citation *flow* (does an applied paper actually cite core safety work?),
+        # not just vocabulary overlap.
+        paper.referenced_works = list(data.get("referenced_works") or [])
         return paper

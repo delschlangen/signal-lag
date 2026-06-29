@@ -139,6 +139,29 @@ def build_signal_digest(snap: dict, diff: dict) -> dict:
         for p in lab[:10]
     ]
 
+    # Citation-VERIFIED cross-domain borrowing (capability papers that actually cite
+    # safety work, via OpenAlex referenced_works). Positive-only: absence is inconclusive.
+    cflow = snap.get("citation_flow") or {}
+    citation_verified = [
+        {"arxiv_id": b.get("arxiv_id"), "title": b.get("title"),
+         "capability_topics": b.get("capability_topics"),
+         "cites_safety": [c.get("title") for c in (b.get("cited_safety") or [])][:5],
+         "n_cited_safety": b.get("n_cited_safety")}
+        for b in (cflow.get("verified_borrowers") or [])[:12]
+    ]
+
+    # Experimental: capability→safety author migration (a leading indicator).
+    amig = snap.get("author_migration") or {}
+    author_migration = {
+        "available": bool(amig.get("available")),
+        "n_migrants": amig.get("n_migrants", 0),
+        "examples": [
+            {"author": m.get("author"), "entered_safety_topics": m.get("entered_safety_topics"),
+             "prior_papers": m.get("prior_papers")}
+            for m in (amig.get("migrants") or [])[:8]
+        ],
+    }
+
     # What changed THIS week (weight movement, not just static state).
     changes = {
         "first_run": diff.get("first_run", False),
@@ -165,6 +188,8 @@ def build_signal_digest(snap: dict, diff: dict) -> dict:
         "eroding_confidence_rising_critical_share": rising,
         "quadrant": {"emerging": emerging, "white_space": white_space},
         "citation_movers": citation_movers,
+        "citation_verified_borrowing": citation_verified,
+        "author_migration_experimental": author_migration,
         "new_emergent_clusters": new_clusters,
         "recent_lab_activity": lab_rows,
         "what_changed_this_week": changes,
@@ -266,6 +291,17 @@ CRITICAL INSTRUCTIONS:
   researchers who don't think about compliance incentives). For every risk, name in
   "communities" who already sees each half and why they are not connecting them. A risk
   that lives entirely inside one community is probably already covered there — discard it.
+- USE CITATION-VERIFIED BORROWING AS EVIDENCE, NOT VOCABULARY. SIGNAL_DIGEST may include
+  "citation_verified_borrowing": capability/applied papers that ACTUALLY CITE core safety
+  work (verified via OpenAlex references, not shared keywords). Treat a listed borrowing as
+  STRONG evidence that the cross-silo link is real — prefer anchoring cross-domain risks on
+  these. CRUCIAL: absence from this list is INCONCLUSIVE, never proof of "no borrowing"
+  (the cited work may sit outside our sample). Never claim a community "does not cite" or
+  "ignores" another based on absence here.
+- "author_migration_experimental" (capability→safety author movement) is an EXPERIMENTAL,
+  NOISY signal off a sampled corpus. You may use it as soft corroboration of where talent
+  is flowing, but NEVER let a risk rest on it alone, and say so in "calibration" if you
+  lean on it.
 - REWARD FRAMING INVERSIONS. Where possible, look for risks that INVERT or COMPLICATE the
   conventional framing of a trend everyone treats as straightforwardly good or bad (e.g.
   "transparency regulation is a solution" → "it can freeze an unsound standard into law").
@@ -432,9 +468,66 @@ def verify_and_rank_risks(
     return _sort_by_novelty(_verify_attach(risks, api_key, model, tool_version, max_workers))
 
 
+LIVE_CONTEXT_SYSTEM = (
+    "You are a research analyst preparing a SHORT, DATED real-world briefing to ground a "
+    "foresight synthesis. The synthesis crosses fast-moving AI research trends with the "
+    "current state of the world, but its hand-maintained context file can be months stale. "
+    "You SEARCH THE WEB for the CURRENT status of the specific societal/regulatory/economic "
+    "developments most relevant to the flagged research topics, and report only verifiable, "
+    "dated facts — correct any item that has since changed (e.g. a regulation's real current "
+    "stage and dates). You do not speculate or generate risks; you supply ground truth."
+)
+
+LIVE_CONTEXT_INSTRUCTIONS = """\
+Given the analyst's standing SOCIETAL_CONTEXT and the topics flagged this period, run a few \
+targeted web searches and return a SHORT current-state brief (no more than ~250 words). For \
+the handful of policy/market/geopolitical developments most relevant to the flagged topics, \
+state the CURRENT status WITH DATES as of now, and explicitly note where this differs from \
+or updates the standing context (e.g. a law's actual current stage, an enforcement date, a \
+funding/market shift). Plain prose, lead each item with its date. Only verifiable facts; if \
+you cannot verify something, omit it. Do NOT propose risks — this is ground truth only."""
+
+
+def fetch_live_context(
+    context: str, digest: dict, api_key: str | None, model: str = "claude-opus-4-8",
+    tool_version: str = "web_search_20260209",
+) -> str | None:
+    """One web-search pass that returns a short, dated 'current real-world brief'.
+
+    Crossing fast arXiv data with a static ``context.md`` is the staleness risk (#3): the
+    synthesis can anchor on out-of-date policy/market facts. This pre-synthesis brief pulls
+    the CURRENT status (with dates) of the developments most relevant to the flagged topics,
+    so the synthesis verifies any date/policy claim against live ground truth. Complements,
+    never replaces, the hand-curated context. Fail-soft (-> None); tries the current tool
+    version then the older one.
+    """
+    # The flagged topics that most need current real-world grounding.
+    flagged_topics = sorted({
+        d.get("safety") for d in digest.get("divergences_safety_lagging", [])
+    } | {
+        r.get("topic") for r in digest.get("eroding_confidence_rising_critical_share", [])
+    } | set(digest.get("quadrant", {}).get("emerging", [])))
+    flagged_topics = [t for t in flagged_topics if t]
+    payload = {
+        "FLAGGED_TOPICS": flagged_topics,
+        "SOCIETAL_CONTEXT": context or "(none provided)",
+    }
+    user = LIVE_CONTEXT_INSTRUCTIONS + "\n\nINPUT:\n" + json.dumps(payload, ensure_ascii=False)
+    for tv in (tool_version, "web_search_20250305"):
+        text = llm.call_claude(
+            LIVE_CONTEXT_SYSTEM, user, api_key, model,
+            tools=[{"type": tv, "name": "web_search"}],
+        )
+        if text and text.strip():
+            log.info("Live web context brief fetched (%d chars)", len(text))
+            return text.strip()
+    log.warning("Live web context fetch failed (fail-soft)")
+    return None
+
+
 def _synthesize_risks(
     digest: dict, context: str, api_key: str | None, model: str, max_risks: int,
-    avoid_seams: list | None = None, lens: str = "",
+    avoid_seams: list | None = None, lens: str = "", live_context: str | None = None,
 ) -> list | None:
     """One synthesis round -> list of candidate risks (or None on failure)."""
     payload = {
@@ -443,6 +536,12 @@ def _synthesize_risks(
         "SOCIETAL_CONTEXT": context or "(none provided — reason across the full scanning "
         "framework and current real-world state you know of)",
     }
+    if live_context:
+        payload["LIVE_WEB_BRIEF"] = (
+            "Current, web-verified real-world status (as of this refresh) — VERIFY any "
+            "date/policy/market claim against THIS, and prefer it over the standing "
+            "SOCIETAL_CONTEXT wherever they conflict:\n" + live_context
+        )
     user = _instructions(max_risks)
     if lens:
         user += "\n\nLENS FOR THIS PASS: " + lens
@@ -465,14 +564,15 @@ def _synthesize_risks(
 
 def synthesize_foresight_gap(
     digest: dict, context: str, api_key: str | None,
-    model: str = "claude-opus-4-8", max_risks: int = 4,
+    model: str = "claude-opus-4-8", max_risks: int = 4, live_context: str | None = None,
 ) -> dict | None:
     """Single-round synthesis (no verification). Returns the foresight_gap block or None.
 
     Kept for the preview script; the production path uses ``run_foresight`` which adds
     verification and quality-driven backfill.
     """
-    risks = _synthesize_risks(digest, context, api_key, model, max_risks)
+    risks = _synthesize_risks(digest, context, api_key, model, max_risks,
+                              live_context=live_context)
     if risks is None:
         return None
     log.info("Foresight synthesis complete (%d risks)", len(risks))
@@ -482,6 +582,7 @@ def synthesize_foresight_gap(
         "framework": SCANNING_FRAMEWORK,
         "context": context,
         "n_context_chars": len(context or ""),
+        "live_context": live_context,
     }
 
 
@@ -490,6 +591,7 @@ def run_foresight(
     max_risks: int = 4, verify: bool = True,
     tool_version: str = "web_search_20260209",
     min_surfaced: int = 3, max_rounds: int = 3, lens: str = "",
+    live_context: str | None = None,
 ) -> dict | None:
     """Full foresight pass: synthesize -> verify -> backfill until enough survive.
 
@@ -500,7 +602,8 @@ def run_foresight(
     Without verification it's a single round. Fail-soft (-> None on first-round failure).
     ``lens`` optionally focuses the synthesis (e.g. on just this week's papers).
     """
-    risks = _synthesize_risks(digest, context, api_key, model, max_risks, lens=lens)
+    risks = _synthesize_risks(digest, context, api_key, model, max_risks, lens=lens,
+                              live_context=live_context)
     if risks is None:
         return None
 
@@ -511,7 +614,8 @@ def run_foresight(
             need = max(2, min_surfaced - _surviving_count(risks))
             avoid = [r.get("risk", "") for r in risks]
             more = _synthesize_risks(digest, context, api_key, model, need,
-                                     avoid_seams=avoid, lens=lens)
+                                     avoid_seams=avoid, lens=lens,
+                                     live_context=live_context)
             if not more:
                 break
             _verify_attach(more, api_key, model, tool_version)
@@ -530,4 +634,5 @@ def run_foresight(
         "verified": bool(verify),
         "rounds": rounds,
         "n_surfaced": _surviving_count(risks) if verify else None,
+        "live_context": live_context,
     }

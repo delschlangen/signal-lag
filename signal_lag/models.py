@@ -30,6 +30,8 @@ class Paper:
     # List of {year: int, count: int} citation counts by year.
     counts_by_year: list[dict] = field(default_factory=list)
     institutions: list[str] = field(default_factory=list)
+    # OpenAlex work ids this paper cites (outgoing bibliography) — for citation-flow checks.
+    referenced_works: list[str] = field(default_factory=list)
 
     # Semantic Scholar enrichment (optional, fail-soft).
     s2_tldr: str | None = None

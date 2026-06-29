@@ -138,6 +138,9 @@ def build_snapshot(
         "timeseries": _records(results["taxonomy_timeseries"]),
         "sentiment": results.get("sentiment", {}),
         "sentiment_timeseries": _records(results.get("sentiment_timeseries")),
+        "sentiment_llm_verify": results.get("sentiment_llm_verify"),
+        "citation_flow": results.get("citation_flow"),
+        "author_migration": results.get("author_migration"),
         "sources": per_topic,
         "lab_activity": posts,
         "analysis": results.get("analysis"),
@@ -231,6 +234,13 @@ def build_weekly(
     ctx = foresight.load_context(settings.root / fcfg.get("context_path", "config/context.md"))
     diff = diff_snapshots(snapshot, prev_snapshot)
     wdigest = foresight.build_weekly_digest(window_days, counts, notable, snapshot, diff)
+    tool_version = fcfg.get("web_search_tool", "web_search_20260209")
+    # Reuse the overall live web brief if one was fetched this refresh (avoid a 2nd search);
+    # else fetch once for the weekly pass when enabled. Fail-soft.
+    live_ctx = ((snapshot.get("analysis") or {}).get("foresight_gap") or {}).get("live_context")
+    if live_ctx is None and fcfg.get("live_context"):
+        live_ctx = foresight.fetch_live_context(
+            ctx, foresight.build_signal_digest(snapshot, diff), api_key, model, tool_version)
     lens = (
         f"Reason about what THESE SPECIFIC papers from the last {window_days} days imply. "
         "Focus on what is newly emerging THIS WEEK, not the long-run quarterly trend (given "
@@ -241,10 +251,11 @@ def build_weekly(
         wdigest, ctx, api_key, model,
         max_risks=int(wcfg.get("max_risks", 3)),
         verify=bool(fcfg.get("verify_novelty")),
-        tool_version=fcfg.get("web_search_tool", "web_search_20260209"),
+        tool_version=tool_version,
         min_surfaced=int(wcfg.get("min_surfaced", 2)),
         max_rounds=int(wcfg.get("max_rounds", 2)),
         lens=lens,
+        live_context=live_ctx,
     )
 
     snapshot["weekly"] = {
@@ -351,16 +362,25 @@ def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | 
     diff = diff_snapshots(snapshot, prev_snapshot)
     ctx = foresight.load_context(settings.root / fcfg.get("context_path", "config/context.md"))
     digest = foresight.build_signal_digest(snapshot, diff)
+    api_key = acfg.get("api_key")
+    model = acfg.get("model", "claude-opus-4-8")
+    tool_version = fcfg.get("web_search_tool", "web_search_20260209")
+    # Pre-synthesis live web brief (#3): pull the CURRENT real-world status of the flagged
+    # topics so synthesis doesn't anchor on a stale context.md. Fail-soft (-> None).
+    live_ctx = None
+    if fcfg.get("live_context"):
+        live_ctx = foresight.fetch_live_context(ctx, digest, api_key, model, tool_version)
     # Synthesize -> verify each candidate against current web coverage -> backfill with
     # fresh seams until enough survive (quality over quantity). All baked into the
     # snapshot, so the searches are cached (run once per refresh, never at page load).
     fg = foresight.run_foresight(
-        digest, ctx, acfg.get("api_key"), acfg.get("model", "claude-opus-4-8"),
+        digest, ctx, api_key, model,
         max_risks=int(fcfg.get("max_risks", 4)),
         verify=bool(fcfg.get("verify_novelty")),
-        tool_version=fcfg.get("web_search_tool", "web_search_20260209"),
+        tool_version=tool_version,
         min_surfaced=int(fcfg.get("min_surfaced", 3)),
         max_rounds=int(fcfg.get("max_rounds", 3)),
+        live_context=live_ctx,
     )
     if fg:
         if snapshot.get("analysis") is None:
