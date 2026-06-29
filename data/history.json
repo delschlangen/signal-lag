@@ -8,8 +8,8 @@
   "n_pairings": 6,
   "headline": {
    "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +21% / saf -6%)",
-   "meaning": "The fastest-moving frontier this week is autonomous, multi-agent and tool-using systems operating at repository and ecosystem scale, while the safety work meant to oversee them is shrinking even as it tries to shift from per-agent to system-level governance.",
-   "why_it_matters": "Multi-agent/tool-use capability is growing ~21%/qtr while scalable oversight contracts ~6%/qtr, meaning agents are being deployed into shared, stateful environments (real codebases) faster than the field can build mechanisms to catch the emergent, cross-contribution failures no single agent is accountable for."
+   "meaning": "The defining tension this quarter is autonomous agents—coding agents, embodied multi-agent systems, and self-evolving design loops—scaling faster than the oversight and monitoring machinery meant to catch their failures.",
+   "why_it_matters": "When agents that individually pass tests still accumulate ecosystem-level harms no single contribution accounts for, per-agent benchmarks and external perimeter defenses miss the actual risk surface, and oversight that contracts (-5.6%) while agentic capability surges (+38.6%) widens that blind spot."
   },
   "sentiment_rising": [
    "Deceptive Alignment",
@@ -19,47 +19,45 @@
   ],
   "overall_foresight": [
    {
-    "risk": "Scalable-oversight research is plateauing into a 'monitor the agent' paradigm just as agents go multi-tool and long-horizon — locking deployed oversight to bounded-task assumptions that the deployed systems already violate.",
+    "risk": "California SB 53 incident-reporting and frontier risk frameworks are being authored by deployment teams against a safety-research base (scalable oversight, deceptive alignment) that is itself losing velocity and rising in critical-uncertainty share — freezing a contested methodology into a mandatory compliance artifact.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Technological"
+    ]
+   },
+   {
+    "risk": "Agentic Behavior Monitoring is scaling fast (123.5/qtr) precisely as PRC-linked influence operations probe the data-center/electricity-cost narrative — meaning agent-monitoring telemetry becomes a high-value, under-secured surveillance target whose compromise reveals both operational patterns and grid-siting sensitivities.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Environmental"
+    ]
+   },
+   {
+    "risk": "AI rare-disease/genomic diagnosis pipelines are being deployed via accelerating agentic capability into a clinical setting where the safety subfield governing exactly that failure mode — Scalable Oversight — is shrinking in velocity while its critical-uncertainty share rises, meaning the verification methods clinicians implicitly trust are quietly becoming less validated, not more.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Technological",
      "Legal/Regulatory"
-    ]
-   },
-   {
-    "risk": "Chain-of-Thought Faithfulness research is accelerating into a transparency standard that regulators and labs may adopt as a safety guarantee — just as agents move to optimized inference chips and tool-use, where the visible reasoning trace and the actual decision process diverge.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Technological",
-     "Legal/Regulatory"
-    ]
-   },
-   {
-    "risk": "Deceptive-alignment and reward-hacking research are decelerating in volume while their own critical-share rises — a 'we've concluded it's a serious unsolved problem and moved on' pattern that could leave the most safety-skeptical young, anti-AI public cohort with no visible research counterweight just as trust craters.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Social",
-     "Demographic"
     ]
    }
   ],
   "weekly_foresight": [
    {
-    "risk": "Agent 'immune system' architectures will normalize self-defending autonomous agents that resist external shutdown/audit — collapsing the line between agent security and agent un-overseeability.",
+    "risk": "AI fraud/claim-verification pipelines built by detection engineers are silently adopting 'deception' constructs from the alignment literature, importing alignment-research immaturity into consequential financial and information-gatekeeping decisions.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Technological",
-     "Security/Geopolitical",
+     "Economic",
      "Legal/Regulatory"
     ]
    },
    {
-    "risk": "LLM truth-discovery/data-fusion systems are being positioned as automated arbiters of 'the correct value' across conflicting sources, importing a deceptive-alignment failure mode into the epistemic infrastructure that downstream agents and institutions treat as ground truth.",
+    "risk": "Formal-guarantee control papers (PAC-Bayesian certificates) are being filed under safety topics, creating a 'certified-safe' vocabulary that could be invoked to satisfy SB 53 / EU AI Act risk-framework obligations for systems whose guarantees only hold under assumptions that don't survive deployment.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Technological",
-     "Social",
-     "Political"
+     "Legal/Regulatory",
+     "Technological"
     ]
    }
   ],
