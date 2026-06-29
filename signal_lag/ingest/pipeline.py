@@ -96,6 +96,26 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
     if failures:
         log.warning("%d window(s) failed and were skipped", failures)
 
+    # Recent top-up: an extra pull of the last N days so the "this week" lens has
+    # complete data even if a category exceeds the quarterly cap in the current quarter.
+    wcfg = settings.analysis.get("weekly", {}) if settings.analysis else {}
+    topup_days = int(wcfg.get("recent_topup_days", 0)) if wcfg.get("enabled") else 0
+    if topup_days > 0:
+        tu_end = end_date
+        tu_start = tu_end - dt.timedelta(days=topup_days)
+        log.info("Recent top-up: last %d days (%s..%s) x %d categories",
+                 topup_days, tu_start, tu_end, len(settings.arxiv_categories))
+        for category in settings.arxiv_categories:
+            try:
+                batch = list(client.search_category(category, tu_start, tu_end, 2000))
+            except Exception as e:  # never abort the run for the top-up
+                log.warning("  top-up %s FAILED: %s", category, e)
+                continue
+            if batch:
+                store.upsert_papers(batch)
+            log.info("  top-up %s: +%d (total %d)", category, len(batch),
+                     store.count_papers())
+
     # Optional extra paper source: OpenReview venues (added as papers).
     try:
         ingest_openreview(settings, store)

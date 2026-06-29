@@ -152,7 +152,173 @@ def build_snapshot(
         prev_on_disk = None
     snap_out = augment_foresight(settings, snap_out, prev_on_disk)
 
+    # --- "This week" lens: a focused analysis of just the last `window_days` of papers,
+    # alongside the quarterly view (which is unaffected).
+    snap_out = build_weekly(
+        settings, taxonomy, snap_out, papers, tax_tags, by_id, today, prev_on_disk
+    )
+
     return snap_out
+
+
+def build_weekly(
+    settings: Settings, taxonomy: Taxonomy, snapshot: dict, papers, tax_tags: dict,
+    by_id: dict, today: dt.date, prev_snapshot: dict | None,
+) -> dict:
+    """Attach snapshot["weekly"]: counts + Claude summary + verified foresight for the
+    last `window_days` of papers only. Config-gated and fail-soft; the quarterly view is
+    untouched. Computed from the already-tagged cache (no re-embedding)."""
+    acfg = settings.analysis or {}
+    wcfg = acfg.get("weekly") or {}
+    if not wcfg.get("enabled"):
+        return snapshot
+    from .analysis import foresight, llm
+
+    window_days = int(wcfg.get("window_days", 7))
+    cutoff = today - dt.timedelta(days=window_days)
+    week_ids = {p.arxiv_id for p in papers if p.published >= cutoff}
+    if not week_ids:
+        return snapshot
+
+    label_map = snapshot.get("label_map", {})
+    safety_keys = {t.key for t in taxonomy.safety_topics}
+    cap_keys = {t.key for t in taxonomy.capability_topics}
+    counts = {"safety": {}, "capability": {}}
+    for aid in week_ids:
+        for topic_key, _score in tax_tags.get(aid, []):
+            bucket = ("safety" if topic_key in safety_keys
+                      else "capability" if topic_key in cap_keys else None)
+            if bucket:
+                name = label_map.get(topic_key, topic_key)
+                counts[bucket][name] = counts[bucket].get(name, 0) + 1
+    counts = {b: dict(sorted(d.items(), key=lambda kv: kv[1], reverse=True))
+              for b, d in counts.items()}
+
+    week_papers = [by_id[a] for a in week_ids if a in by_id]
+    week_papers.sort(key=lambda p: ((p.cited_by_count or 0), p.published), reverse=True)
+    notable = [
+        {"arxiv_id": p.arxiv_id, "title": p.title, "url": arxiv_url(p.arxiv_id),
+         "published": p.published.isoformat(), "cited_by_count": p.cited_by_count,
+         "venue": p.venue, "tldr": p.s2_tldr,
+         "topics": [label_map.get(tk, tk) for tk, _ in tax_tags.get(p.arxiv_id, [])],
+         "abstract": (p.abstract or "")[:300]}
+        for p in week_papers[:15]
+    ]
+
+    api_key = acfg.get("api_key")
+    model = acfg.get("model", "claude-opus-4-8")
+    summary = llm.summarize_week(
+        {"window": f"last {window_days} days", "n_papers": len(week_ids),
+         "counts_by_topic": counts,
+         "notable_papers": [{"arxiv_id": n["arxiv_id"], "title": n["title"],
+                             "abstract": n["abstract"]} for n in notable]},
+        api_key, model,
+    )
+
+    fcfg = acfg.get("foresight") or {}
+    ctx = foresight.load_context(settings.root / fcfg.get("context_path", "config/context.md"))
+    diff = diff_snapshots(snapshot, prev_snapshot)
+    wdigest = foresight.build_weekly_digest(window_days, counts, notable, snapshot, diff)
+    lens = (
+        f"Reason about what THESE SPECIFIC papers from the last {window_days} days imply. "
+        "Focus on what is newly emerging THIS WEEK, not the long-run quarterly trend (given "
+        "only as backdrop). Anchor on the backdrop research-trend signal, then cross THIS "
+        "WEEK's papers with the societal context to find the seam."
+    )
+    wfg = foresight.run_foresight(
+        wdigest, ctx, api_key, model,
+        max_risks=int(wcfg.get("max_risks", 3)),
+        verify=bool(fcfg.get("verify_novelty")),
+        tool_version=fcfg.get("web_search_tool", "web_search_20260209"),
+        min_surfaced=int(wcfg.get("min_surfaced", 2)),
+        max_rounds=int(wcfg.get("max_rounds", 2)),
+        lens=lens,
+    )
+
+    snapshot["weekly"] = {
+        "window_days": window_days,
+        "cutoff": cutoff.isoformat(),
+        "n_papers": len(week_ids),
+        "counts_by_topic": counts,
+        "notable_papers": notable,
+        "summary": summary,
+        "foresight_gap": wfg,
+    }
+    return snapshot
+
+
+def _history_record(snapshot: dict, prev_snapshot: dict | None) -> dict:
+    """A compact weekly briefing record for the History tab (no abstracts/raw data)."""
+    meta = snapshot.get("meta", {})
+    lm = snapshot.get("label_map", {})
+    analysis = snapshot.get("analysis") or {}
+    hl = analysis.get("headline") or {}
+
+    alerts = sorted([d for d in snapshot.get("divergence", []) if d.get("lagging")],
+                    key=lambda a: a.get("gap", 0), reverse=True)
+    if alerts:
+        a = alerts[0]
+        gap_line = (f"{lm.get(a['capability_topic'], a['capability_topic'])} vs "
+                    f"{lm.get(a['safety_topic'], a['safety_topic'])} "
+                    f"(cap {a['cap_growth']*100:+.0f}% / saf {a['saf_growth']*100:+.0f}%)")
+    else:
+        gap_line = "No pairing crosses the safety-lag threshold this week."
+
+    def top_fore(fg, n=3):
+        out = []
+        for r in (fg or {}).get("risks", []):
+            rating = (r.get("verification") or {}).get("novelty_rating")
+            if rating == "already_widely_discussed":
+                continue
+            out.append({"risk": r.get("risk"), "novelty_rating": rating,
+                        "domains_crossed": r.get("domains_crossed")})
+            if len(out) >= n:
+                break
+        return out
+
+    sent = snapshot.get("sentiment", {}) or {}
+    rising = [lm.get(k, k) for k, v in sent.items() if v.get("rising")]
+    diff = diff_snapshots(snapshot, prev_snapshot)
+    return {
+        "date": meta.get("refreshed_at"),
+        "n_papers": meta.get("n_papers"),
+        "date_start": meta.get("date_start"),
+        "date_end": meta.get("date_end"),
+        "n_flagged": meta.get("n_flagged"),
+        "n_pairings": meta.get("n_pairings"),
+        "headline": {
+            "biggest_gap_line": gap_line,
+            "meaning": hl.get("meaning"),
+            "why_it_matters": hl.get("why_it_matters"),
+        },
+        "sentiment_rising": rising,
+        "overall_foresight": top_fore(analysis.get("foresight_gap")),
+        "weekly_foresight": top_fore((snapshot.get("weekly") or {}).get("foresight_gap")),
+        "what_changed": {
+            "n_alerts": len(diff.get("new_alerts", [])),
+            "n_accel": len(diff.get("new_accelerations", [])),
+            "n_sleepers": len(diff.get("new_sleepers", [])),
+        },
+    }
+
+
+def append_history(snapshot: dict, path: Path, prev_snapshot: dict | None = None) -> None:
+    """Append a compact weekly briefing to data/history.json (idempotent per date)."""
+    path = Path(path)
+    try:
+        existing = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    except Exception:
+        existing = []
+    if not isinstance(existing, list):
+        existing = []
+    rec = _history_record(snapshot, prev_snapshot)
+    if not rec.get("date"):
+        return
+    existing = [e for e in existing if e.get("date") != rec["date"]]
+    existing.append(rec)
+    existing.sort(key=lambda e: e.get("date") or "")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(existing, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
 def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | None) -> dict:

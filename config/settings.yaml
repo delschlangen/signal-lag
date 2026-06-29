@@ -143,6 +143,21 @@ analysis:
     # DIFFERENT seams up to `max_rounds` total rounds. Stops early once enough survive.
     min_surfaced: 3
     max_rounds: 3
+  # "This week" lens: alongside the 3-year quarterly view, analyze ONLY papers from the
+  # last `window_days`. Adds a focused Claude summary + a full (web-verified) foresight
+  # pass over just this week's papers, shown via a toggle on the Summary & Foresight tabs.
+  # Fail-soft (skipped with no api_key); the quarterly charts are unaffected.
+  weekly:
+    enabled: true
+    # How many days back counts as "this week" (by paper submission date).
+    window_days: 7
+    # Ingestion completeness net: an extra arXiv pull of the last N days so the window
+    # has complete data even if a category exceeds the quarterly cap (>= window_days).
+    recent_topup_days: 14
+    # This-week foresight is lighter than the overall pass (fewer candidates/rounds).
+    max_risks: 3
+    min_surfaced: 2
+    max_rounds: 2
 
 paths:
   db_path: "data/signal_lag.sqlite"

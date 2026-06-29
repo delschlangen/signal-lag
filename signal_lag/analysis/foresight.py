@@ -171,6 +171,57 @@ def build_signal_digest(snap: dict, diff: dict) -> dict:
     }
 
 
+def build_weekly_digest(window_days: int, counts_by_topic: dict, notable_papers: list,
+                        snapshot: dict, diff: dict) -> dict:
+    """Digest for the 'this week only' foresight pass.
+
+    Focuses on the specific papers that landed in the last ``window_days``, with a compact
+    quarterly backdrop (top lagging divergences + rising critical share) so the synthesis
+    can still anchor on the research-trend signal before crossing it with societal context.
+    """
+    lm = snapshot.get("label_map", {})
+
+    def L(k):
+        return lm.get(k, k)
+
+    flagged = [d for d in snapshot.get("divergence", []) if d.get("lagging")]
+    backdrop_div = [
+        {"pairing": d["pairing"], "capability": L(d["capability_topic"]),
+         "safety": L(d["safety_topic"]),
+         "cap_growth_pct_per_qtr": round(d["cap_growth"] * 100, 1),
+         "saf_growth_pct_per_qtr": round(d["saf_growth"] * 100, 1)}
+        for d in sorted(flagged, key=lambda d: d["gap"], reverse=True)[:3]
+    ]
+    sent = snapshot.get("sentiment", {}) or {}
+    backdrop_rising = [
+        {"topic": L(k), "recent_critical_share_pct": round(v.get("recent_share", 0) * 100, 1),
+         "trend_pts": round(v.get("trend", 0) * 100, 1)}
+        for k, v in sent.items() if v.get("rising")
+    ][:5]
+    changes = {
+        "first_run": diff.get("first_run", False),
+        "prev_date": diff.get("prev_date"),
+        "new_safety_lag_alerts": [
+            {"capability": L(a["capability_topic"]), "safety": L(a["safety_topic"])}
+            for a in diff.get("new_alerts", [])
+        ],
+        "new_accelerations": [
+            {"topic": L(a["topic_key"]), "change_pct": round(a["change"] * 100, 1)}
+            for a in diff.get("new_accelerations", [])
+        ],
+    }
+    return {
+        "window": f"last {window_days} days",
+        "this_week_paper_counts_by_topic": counts_by_topic,
+        "notable_this_week_papers": notable_papers,
+        "quarterly_backdrop": {
+            "top_divergences_safety_lagging": backdrop_div,
+            "rising_critical_share": backdrop_rising,
+        },
+        "what_changed_this_week": changes,
+    }
+
+
 SYSTEM = (
     "You are a strategic foresight analyst. Your job is to surface RISKS THAT ARE NOT "
     "YET VISIBLE in the news or the AI research literature — early, structural, "
@@ -383,7 +434,7 @@ def verify_and_rank_risks(
 
 def _synthesize_risks(
     digest: dict, context: str, api_key: str | None, model: str, max_risks: int,
-    avoid_seams: list | None = None,
+    avoid_seams: list | None = None, lens: str = "",
 ) -> list | None:
     """One synthesis round -> list of candidate risks (or None on failure)."""
     payload = {
@@ -393,6 +444,8 @@ def _synthesize_risks(
         "framework and current real-world state you know of)",
     }
     user = _instructions(max_risks)
+    if lens:
+        user += "\n\nLENS FOR THIS PASS: " + lens
     if avoid_seams:
         avoid = "\n".join(f"- {s}" for s in avoid_seams)
         user += ("\n\nALREADY CONSIDERED THIS WEEK — these seams have already been "
@@ -436,7 +489,7 @@ def run_foresight(
     digest: dict, context: str, api_key: str | None, model: str = "claude-opus-4-8",
     max_risks: int = 4, verify: bool = True,
     tool_version: str = "web_search_20260209",
-    min_surfaced: int = 3, max_rounds: int = 3,
+    min_surfaced: int = 3, max_rounds: int = 3, lens: str = "",
 ) -> dict | None:
     """Full foresight pass: synthesize -> verify -> backfill until enough survive.
 
@@ -445,8 +498,9 @@ def run_foresight(
     synthesis round asking for DIFFERENT seams and verifies those too — up to
     ``max_rounds``. Stops early once ``min_surfaced`` survive or a round adds nothing.
     Without verification it's a single round. Fail-soft (-> None on first-round failure).
+    ``lens`` optionally focuses the synthesis (e.g. on just this week's papers).
     """
-    risks = _synthesize_risks(digest, context, api_key, model, max_risks)
+    risks = _synthesize_risks(digest, context, api_key, model, max_risks, lens=lens)
     if risks is None:
         return None
 
@@ -456,7 +510,8 @@ def run_foresight(
         while _surviving_count(risks) < min_surfaced and rounds < max_rounds:
             need = max(2, min_surfaced - _surviving_count(risks))
             avoid = [r.get("risk", "") for r in risks]
-            more = _synthesize_risks(digest, context, api_key, model, need, avoid_seams=avoid)
+            more = _synthesize_risks(digest, context, api_key, model, need,
+                                     avoid_seams=avoid, lens=lens)
             if not more:
                 break
             _verify_attach(more, api_key, model, tool_version)

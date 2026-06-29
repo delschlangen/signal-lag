@@ -224,6 +224,30 @@ risks, context-file path, `verify_novelty`, web-search tool version). Like the r
 Claude layer it needs the `ANTHROPIC_API_KEY` repo secret; without it the tab shows an
 honest "unavailable" message.
 
+### 11. "This week" lens + History
+
+The quarterly view is a slow-moving baseline (3 years of quarterly trends). Two layers add
+a timely and a longitudinal dimension:
+
+- **"This week" toggle (Summary + Foresight Gap).** Alongside the overall view, a toggle
+  analyzes *only* the papers submitted in the last `window_days` (default 7): topic counts
+  (safety/capability), a focused Claude "what landed this week" summary, notable papers, and
+  a full **web-verified** this-week Foresight Gap. It's anchored on the quarterly research-
+  trend signal (as backdrop) then crossed with *this week's* papers + the societal context.
+  The quarterly charts are untouched. An extra recent-window arXiv pull
+  (`recent_topup_days`) guarantees the 7-day set is complete even if a category exceeds the
+  quarterly cap.
+- **History tab (📜).** Every refresh appends a **compact** briefing — headline, top
+  foresight gaps (overall + this week), rising sentiment, and what-changed counts — to
+  `data/history.json` (idempotent per date). The tab renders a metrics-over-time chart
+  (safety-lag alerts per refresh) plus a reverse-chronological list. Records are compact by
+  design (no abstracts/raw data) so the file stays lean; full per-week data is recoverable
+  from the git history of `data/snapshot.json`.
+
+Config lives under `analysis.weekly` in `settings.yaml` (`enabled`, `window_days`,
+`recent_topup_days`, and lighter `max_risks`/`min_surfaced`/`max_rounds` for the this-week
+foresight). Fail-soft like the rest of the Claude layer.
+
 ---
 
 ## Install
@@ -326,6 +350,14 @@ python scripts/generate_fixtures.py
   layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,
   all linked.
 - **📖 Methodology** — how every layer works, on the live data behind the current snapshot.
+- **📜 History** — a running record of past weekly briefings (headline, top foresight gaps,
+  rising sentiment, what-changed) plus a metrics-over-time chart — the longitudinal view a
+  single snapshot can't show.
+
+Both the **Summary** and **Foresight Gap** tabs carry a **Quarterly ⟷ 🆕 This week** toggle:
+alongside the 3-year quarterly takeaways, "This week" analyzes *only* the papers from the
+last 7 days (topic counts + a focused Claude read + notable papers + a web-verified
+this-week Foresight Gap), while the quarterly charts stay the primary view.
 
 ---
 

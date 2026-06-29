@@ -127,3 +127,46 @@ def analyze_weekly(payload: dict, api_key: str | None, model: str = "claude-opus
         return None
     log.info("LLM analysis complete (%d paper notes)", len(result.get("papers", [])))
     return result
+
+
+WEEK_SYSTEM = (
+    "You are a senior AI-safety research analyst writing a short 'what landed THIS WEEK' "
+    "brief. You read only the papers submitted in the last several days (not the long-run "
+    "trend) and explain, in plain analytical language, what actually showed up this week "
+    "and why it matters. Be concrete and specific; ground every statement in the provided "
+    "titles/abstracts/counts. Never fabricate. Be concise."
+)
+
+WEEK_INSTRUCTIONS = """\
+Analyze ONLY this week's papers (provided as JSON below: counts by topic + notable \
+papers with abstracts) and return ONLY a JSON object (no markdown, no preamble) with \
+exactly this shape:
+
+{
+  "summary": "3-5 sentences: what landed this week across AI-safety/capability research, what's notable, and what it suggests — this week only, not the long-run trend",
+  "themes": ["short theme phrase", "..."],
+  "notable": [
+    {"arxiv_id": "<id from input>", "why_it_matters": "1 sentence: why this specific paper is worth attention this week"}
+  ]
+}
+
+Cover the most notable arxiv_ids from input.notable_papers. Ground every statement in the \
+provided data. Output must be valid JSON and nothing else.
+"""
+
+
+def summarize_week(payload: dict, api_key: str | None, model: str = "claude-opus-4-8") -> dict | None:
+    """Focused 'this week only' Claude summary. Fail-soft (-> None)."""
+    text = call_claude(
+        WEEK_SYSTEM,
+        WEEK_INSTRUCTIONS + "\n\nDATA:\n" + json.dumps(payload, ensure_ascii=False),
+        api_key, model,
+    )
+    if text is None:
+        return None
+    result = extract_json(text)
+    if result is None:
+        log.warning("Could not parse weekly summary JSON")
+        return None
+    log.info("Weekly summary complete (%d notable notes)", len(result.get("notable", [])))
+    return result

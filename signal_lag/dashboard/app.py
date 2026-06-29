@@ -10,6 +10,7 @@ Run: streamlit run signal_lag/dashboard/app.py
 """
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -69,9 +70,8 @@ def novelty_label(v) -> str:
     return f"{emoji} {label}" + (f" · action: {act}" if act else "")
 
 
-def surfaced_foresight(snap, limit=3):
-    """The best (web-verified novel/partial) foresight risks; falls back to top risks."""
-    fg = get_analysis(snap).get("foresight_gap")
+def surfaced_risks(fg, limit=3):
+    """The best (web-verified novel/partial) risks from a foresight_gap block."""
     if not fg or not fg.get("risks"):
         return []
     surfaced = [
@@ -81,6 +81,14 @@ def surfaced_foresight(snap, limit=3):
     ]
     chosen = surfaced or fg["risks"]  # unverified snapshots: show top risks
     return chosen[:limit]
+
+
+def surfaced_foresight(snap, limit=3):
+    return surfaced_risks(get_analysis(snap).get("foresight_gap"), limit)
+
+
+def weekly_block(snap):
+    return snap.get("weekly") or {}
 
 
 _key = SNAPSHOT.stat().st_mtime if SNAPSHOT.exists() else 0.0
@@ -142,10 +150,24 @@ with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
     )
 
 (tab_summary, tab_div, tab_vel, tab_sentiment, tab_quad,
- tab_foresight, tab_sources, tab_method) = st.tabs(
+ tab_foresight, tab_sources, tab_method, tab_history) = st.tabs(
     ["📋 Weekly Summary", "⚖️ Divergence", "📈 Velocity", "🔬 Sentiment",
-     "🧭 Quadrant", "🔮 Foresight Gap", "🔍 Sources", "📖 Methodology"]
+     "🧭 Quadrant", "🔮 Foresight Gap", "🔍 Sources", "📖 Methodology", "📜 History"]
 )
+
+
+HISTORY_PATH = SNAPSHOT.with_name("history.json")
+
+
+@st.cache_data(ttl=1800)
+def _load_history(_cache_key: float):
+    try:
+        return json.loads(HISTORY_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+
+history = _load_history(HISTORY_PATH.stat().st_mtime if HISTORY_PATH.exists() else 0.0)
 
 
 def topic_links(snap, topic_key, n=3):
@@ -310,7 +332,7 @@ def citation_finding(snap) -> str:
 
 
 # ============================================================ Weekly Summary
-with tab_summary:
+def render_overall_summary():
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Papers", f"{meta['n_papers']:,}")
     c2.metric("Window", f"{meta['date_start'][:7]} → {meta['date_end'][:7]}")
@@ -499,6 +521,86 @@ with tab_summary:
         st.markdown(snap["brief"])
     st.download_button("⬇️ Download full markdown brief", data=snap["brief"],
                        file_name="foresight_brief.md", mime="text/markdown")
+
+
+def render_weekly_summary():
+    w = weekly_block(snap)
+    st.caption(
+        f"Just the **{w.get('n_papers', 0)} papers** submitted in the last "
+        f"{w.get('window_days', 7)} days (since {w.get('cutoff', '')}). The quarterly "
+        "charts/trends are unaffected — switch back to **Quarterly** for the long view."
+    )
+    summ = w.get("summary") or {}
+    if summ.get("summary"):
+        st.subheader("📝 This week in AI-safety research")
+        st.markdown(summ["summary"])
+        if summ.get("themes"):
+            st.markdown("**Themes:** " + " · ".join(summ["themes"]))
+    else:
+        st.info("This-week Claude summary isn't available in this snapshot.", icon="🔌")
+
+    counts = w.get("counts_by_topic") or {}
+    cc1, cc2 = st.columns(2)
+    with cc1:
+        st.markdown("**🛡️ Safety topics this week**")
+        sc = counts.get("safety") or {}
+        if sc:
+            for k, v in list(sc.items())[:8]:
+                st.markdown(f"- {k}: **{v}**")
+        else:
+            st.caption("No safety-tagged papers this week.")
+    with cc2:
+        st.markdown("**⚡ Capability topics this week**")
+        cap = counts.get("capability") or {}
+        if cap:
+            for k, v in list(cap.items())[:8]:
+                st.markdown(f"- {k}: **{v}**")
+        else:
+            st.caption("No capability-tagged papers this week.")
+
+    top = surfaced_risks(w.get("foresight_gap"), limit=3)
+    if top:
+        st.divider()
+        st.subheader("🔮 This week's novel risks")
+        st.caption("From the this-week foresight pass — full detail in the **🔮 Foresight "
+                   "Gap** tab (switch it to *This week*).")
+        for r in top:
+            with st.container(border=True):
+                st.markdown(f"**{novelty_label(r.get('verification'))}** — {r.get('risk', '')}")
+                if r.get("domains_crossed"):
+                    st.caption("🔗 " + " × ".join(r["domains_crossed"]))
+
+    notable = w.get("notable_papers") or []
+    if notable:
+        st.divider()
+        st.subheader("📄 Notable papers this week")
+        notes = {n.get("arxiv_id"): n for n in (summ.get("notable") or [])}
+        for p in notable[:8]:
+            with st.container(border=True):
+                bits = [p.get("published", "")]
+                if p.get("venue"):
+                    bits.append(p["venue"])
+                if p.get("cited_by_count"):
+                    bits.append(f"{p['cited_by_count']} cites")
+                st.markdown(f"**[{p['title']}]({p['url']})**  \n" + " · ".join(b for b in bits if b))
+                desc = short_desc(p, 240)
+                if desc:
+                    st.markdown(f"*{desc}*")
+                why = (notes.get(p.get("arxiv_id")) or {}).get("why_it_matters")
+                if why:
+                    st.markdown(f"**Why it matters this week:** {why}")
+
+
+with tab_summary:
+    if weekly_block(snap):
+        _sv = st.radio("View", ["📊 Quarterly (overall)", "🆕 This week"],
+                       horizontal=True, label_visibility="collapsed", key="summary_view")
+    else:
+        _sv = "📊 Quarterly (overall)"
+    if _sv == "🆕 This week":
+        render_weekly_summary()
+    else:
+        render_overall_summary()
 
 # ================================================================ Divergence
 with tab_div:
@@ -718,7 +820,19 @@ def foresight_brief_md(fg) -> str:
 
 with tab_foresight:
     st.subheader("🔮 Foresight Gap — novel risks in the seam")
-    fg = get_analysis(snap).get("foresight_gap")
+    weekly_fg = weekly_block(snap).get("foresight_gap")
+    if weekly_fg:
+        _fv = st.radio("Foresight view", ["📊 Quarterly (overall)", "🆕 This week"],
+                       horizontal=True, label_visibility="collapsed", key="foresight_view")
+    else:
+        _fv = "📊 Quarterly (overall)"
+    if _fv == "🆕 This week":
+        fg = weekly_fg
+        st.caption("Risks surfaced from **just this week's papers** "
+                   f"(last {weekly_block(snap).get('window_days', 7)} days), crossed with the "
+                   "societal context. Same web-verification as the overall pass.")
+    else:
+        fg = get_analysis(snap).get("foresight_gap")
     # Humility framing — these are candidate hypotheses, not predictions.
     st.info(
         "**These are AI-surfaced *candidate* risks for an analyst to pressure-test — "
@@ -1016,6 +1130,20 @@ seam from something that simply isn't in its index yet.
 **These are candidate hypotheses to pressure-test, not predictions** — the model widens
 the aperture; human judgment goes on top.
 
+### 11. "This week" lens + History
+The quarterly view above is the slow-moving baseline. Two layers make the tool
+longitudinal and timely:
+- **This week** — a toggle on the **Summary** and **Foresight Gap** tabs analyzes *only*
+  the papers submitted in the last `window_days` (default 7): topic counts, a focused
+  Claude "what landed this week" read, notable papers, and a full (web-verified) this-week
+  Foresight Gap. The quarterly charts are unaffected; an extra recent-window arXiv pull
+  guarantees the 7-day set is complete. Anchored on the quarterly research-trend signal,
+  then crossed with this week's papers.
+- **History (📜)** — each refresh appends a compact briefing (headline, top foresight gaps
+  overall + this week, rising sentiment, what-changed) to `data/history.json`, shown as a
+  metrics-over-time chart + a reverse-chronological list — the running record a single
+  snapshot can't show.
+
 ### Caveats
 - High coverage of the **AI preprint literature**, not every publisher.
 - Velocity tracks each topic's *share* of activity (stratified sample), not raw totals.
@@ -1025,6 +1153,58 @@ the aperture; human judgment goes on top.
 Full details: [github.com/delschlangen/signal-lag](https://github.com/delschlangen/signal-lag).
 """
     )
+
+# =================================================================== History
+with tab_history:
+    st.subheader("📜 History — weekly briefings over time")
+    if not history:
+        st.info("No history yet — a compact briefing is saved on each weekly refresh. "
+                "Entries appear here from the next refresh onward.", icon="🕰️")
+    else:
+        st.caption(f"{len(history)} weekly briefing(s) recorded. Newest first.")
+        hdf = pd.DataFrame([
+            {"date": e.get("date"), "Safety-lag alerts": e.get("n_flagged"),
+             "Papers": e.get("n_papers")}
+            for e in history if e.get("date")
+        ])
+        if len(hdf) >= 2:
+            hdf = hdf.sort_values("date")
+            fig = px.line(hdf, x="date", y="Safety-lag alerts", markers=True,
+                          template="plotly_dark", height=260)
+            fig.update_layout(yaxis_title="alerts", xaxis_title=None, margin=dict(t=10))
+            st.plotly_chart(fig, width="stretch")
+            st.caption("Safety-lag alerts per refresh — the longitudinal signal the snapshot "
+                       "alone can't show.")
+
+        for e in sorted(history, key=lambda x: x.get("date") or "", reverse=True):
+            hl = e.get("headline") or {}
+            gap = hl.get("biggest_gap_line", "")
+            with st.expander(f"🗓️ {e.get('date', '?')} — {gap}", expanded=False):
+                if hl.get("meaning"):
+                    st.markdown(hl["meaning"])
+                if hl.get("why_it_matters"):
+                    st.markdown(f"**Why it matters:** {hl['why_it_matters']}")
+                wc = e.get("what_changed") or {}
+                st.caption(
+                    f"Papers: {e.get('n_papers') or 0:,} · Safety-lag alerts: "
+                    f"{e.get('n_flagged', '?')}/{e.get('n_pairings', '?')} · new alerts "
+                    f"{wc.get('n_alerts', 0)}, new accel {wc.get('n_accel', 0)}, new sleepers "
+                    f"{wc.get('n_sleepers', 0)}"
+                )
+                if e.get("sentiment_rising"):
+                    st.markdown("**⚠️ Rising critical share:** "
+                                + ", ".join(e["sentiment_rising"]))
+                for label, key in [("🔮 Top foresight gaps (overall)", "overall_foresight"),
+                                   ("🆕 Top foresight gaps (this week)", "weekly_foresight")]:
+                    rows = e.get(key) or []
+                    if rows:
+                        st.markdown(f"**{label}:**")
+                        for r in rows:
+                            nb = NOVELTY_BADGE.get(r.get("novelty_rating"), ("⚪", ""))[0]
+                            st.markdown(f"- {nb} {r.get('risk', '')}")
+        st.download_button("⬇️ Download full history (JSON)",
+                           data=json.dumps(history, indent=1, ensure_ascii=False),
+                           file_name="signal_lag_history.json", mime="application/json")
 
 st.caption(
     f"Embedding backend: {meta['backend']} · snapshot v{meta.get('version', 1)} · "

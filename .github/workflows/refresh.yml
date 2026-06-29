@@ -59,6 +59,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/snapshot.json
           [ -f data/snapshot_prev.json ] && git add data/snapshot_prev.json || true
+          [ -f data/history.json ] && git add data/history.json || true
           if git diff --cached --quiet; then
             echo "No snapshot changes."
           else
