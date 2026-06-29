@@ -126,21 +126,16 @@ if snap is None or snap.get("meta", {}).get("mode") != "live":
     st.stop()
 
 meta = snap["meta"]
-st.success(
-    f"🟢 **Live data** · refreshed **{meta['refreshed_at']}** · {meta['n_papers']:,} papers "
-    f"({meta['date_start']} → {meta['date_end']}) · {', '.join(meta['categories'])} · weekly."
-)
-
-# Analyst's note — front and centre, not buried.
-st.info(
-    "**Analyst note:** signal-lag measures *research attention*, not *research success*. "
-    "A spike can mean a breakthrough **or** a field thrashing against a wall — so treat "
-    "this as a **triage instrument** that shows *where to investigate*, not *what to "
-    "conclude*. The Sentiment tab helps tell those two cases apart.",
-    icon="🧭",
-)
 
 with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
+    # Analyst's note — the core framing for reading everything below.
+    st.info(
+        "**Analyst note:** signal-lag measures *research attention*, not *research success*. "
+        "A spike can mean a breakthrough **or** a field thrashing against a wall — so treat "
+        "this as a **triage instrument** that shows *where to investigate*, not *what to "
+        "conclude*. The Sentiment tab helps tell those two cases apart.",
+        icon="🧭",
+    )
     st.markdown(
         "**Start on 📋 Weekly Summary** — it digests every other tab in plain language, "
         "so you only open the others for detail.\n\n"
@@ -1096,6 +1091,11 @@ with tab_foresight:
 # =================================================================== Sources
 with tab_sources:
     st.subheader("Source papers")
+    # Live-data provenance lives here — the source-of-truth tab.
+    st.success(
+        f"🟢 **Live data** · refreshed **{meta['refreshed_at']}** · {meta['n_papers']:,} papers "
+        f"({meta['date_start']} → {meta['date_end']}) · {', '.join(meta['categories'])} · weekly."
+    )
     week_note(
         "the actual papers behind each topic — with a short description and a "
         "**what-it-signals** line so you can see *why* each one is in the picture. "
