@@ -8,54 +8,43 @@
   "n_pairings": 6,
   "headline": {
    "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +21% / saf -6%)",
-   "meaning": "The defining tension this quarter is autonomous agents advancing rapidly while the oversight needed to supervise them at scale is stalling — capability for multi-agent/tool-use systems grew +20.7% QoQ while scalable oversight contracted -5.6%.",
-   "why_it_matters": "Agents are being deployed into shared, stateful environments (repos, infrastructure) where per-agent benchmarks miss accumulated systemic risk, yet the oversight methods to catch this are losing momentum — a widening supervision gap precisely where autonomy is scaling."
+   "meaning": "The defining tension this quarter is autonomous agents writing and merging code at ecosystem scale versus the oversight machinery needed to govern them — capability is racing ahead while scalable-oversight output is shrinking.",
+   "why_it_matters": "Multi-Agent/Tool-Use capability grew +20.7% while Scalable Oversight contracted -5.6% (volume ratio 0.24), so the governance approaches needed to catch repository-level, emergent failures from agent swarms are not keeping pace with deployment."
   },
   "sentiment_rising": [],
   "overall_foresight": [
    {
-    "risk": "As scalable-oversight research decelerates while agentic deployment accelerates, the safest available oversight techniques are being frozen into classified government evaluation regimes just as their methods stop maturing — locking in a static evaluation standard against fast-moving capabilities.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Political",
-     "Legal/Regulatory",
-     "Technological"
-    ]
-   },
-   {
-    "risk": "Chain-of-Thought Faithfulness research is accelerating right as SB 53 / RAISE-style transparency laws take effect, creating pressure to publish faithfulness metrics as compliance artifacts before the field agrees what 'faithful' means — freezing a premature standard into reporting law.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Legal/Regulatory",
-     "Technological",
-     "Social"
-    ]
-   },
-   {
-    "risk": "PRC influence operations are now probing the data-center/electricity-cost narrative — the same grid-strain pressure point that is becoming AI's hard physical constraint — turning energy infrastructure into a combined cyber-narrative attack surface that neither AI-safety nor grid-security communities own.",
+    "risk": "Multi-agent communication-security work is being absorbed by capability surveys (verified) while it stays siloed from electoral-moderation auditing — leaving cross-language agentic influence operations against AI-infrastructure narratives outside either community's scope.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Security/Geopolitical",
-     "Environmental",
      "Political"
+    ]
+   },
+   {
+    "risk": "As agentic deployment shifts white-collar work into multi-step autonomous flows (OpenAI 'How agents are transforming work', Gemini 3.5 computer use), the decelerating reward-hacking literature stops studying the human-incentive side just as firms reorganize jobs around supervising agents whose reward gaming now routes through the human reviewer's own performance metrics.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Economic",
+     "Social"
     ]
    }
   ],
   "weekly_foresight": [
    {
-    "risk": "Activation-steering and memorization-indicator techniques being published as interpretability/calibration tools are quietly becoming the technical substrate for *covert internal content control*, arriving the same week US frontier-model evaluations moved behind a classified curtain — meaning the public can no longer see how internal steering is being used.",
+    "risk": "Identifiable-latent-state world models are being proposed as the substrate for safety oversight in the SAME week they are proposed as RAG knowledge-conflict resolvers — meaning the 'belief state' an oversight monitor reads and the 'belief state' a deployment system optimizes for fluent answers are converging on a single artifact, so a system can be steered to produce an inspectable-but-cosmetic internal state that satisfies oversight while the operative computation routes around it.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Political",
+     "Technological",
      "Legal/Regulatory"
     ]
    },
    {
-    "risk": "LLM factual-error-detection research is shifting its training reference from human-written 'ground truth' to LLM-generated text — quietly normalizing AI output as the standard of factual correctness just as US public trust in AI accuracy collapses, creating a self-referential truth baseline that institutions will inherit unknowingly.",
+    "risk": "Adversarial-robustness is being collapsed INTO the model itself this week (a single 'adversarially-aware safety LLM' as the policy enforcer), at the same time spectral optimizers reveal that standard training silently lets whole sub-populations of neurons stop updating — meaning the monolithic safety model has dead, under-trained internal regions that create stable, transferable blind spots a self-improving adversary can map once and exploit across every deployment of that model.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Social",
-     "Demographic"
+     "Security/Geopolitical",
+     "Technological"
     ]
    }
   ],
