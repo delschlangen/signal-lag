@@ -351,16 +351,15 @@ python scripts/generate_fixtures.py
   side as horizontal bars. A long capability bar next to a short safety bar = safety
   lagging. This is the core product.
 - **📈 Velocity** — papers per quarter per topic over time, plus an inflection table of
-  which topics accelerated or decelerated. Momentum (attention, not success).
+  which topics accelerated or decelerated, **and the strategic map** (topics plotted by
+  recent volume × growth: *emerging* / *hot* / *cooling* / *white-space*). Momentum
+  (attention, not success).
 - **🔬 Sentiment** — the **negative-signal layer**: the share of *critical / negative /
   limitation-focused* papers within each topic, and whether that share is **rising**.
   A rising critical share while volume is flat is an early warning that a field may be
   losing confidence in an approach — detected via embeddings (cosine similarity to
   negativity seed phrases), not keywords.
-- **🧭 Quadrant** — topics plotted by recent volume (x) vs. growth (y): *emerging*
-  (small but surging), *hot* (big and growing), *cooling* (shrinking), *white-space*
-  (quiet). A strategic map of the field.
-- **🔮 Foresight Gap** — a second Claude pass that anchors on the tool's own research-trend
+- **🔮 Foresight** — a second Claude pass that anchors on the tool's own research-trend
   signal and crosses it with broader societal forces to surface **novel, not-yet-in-the-news
   risks** living in the *seam between domains*. Each candidate is then **web-checked against
   current coverage** and given a verified novelty rating (genuinely unsurfaced / partially
@@ -368,15 +367,14 @@ python scripts/generate_fixtures.py
   sources — already-discussed ones are flagged and demoted, not hidden. Each is a candidate
   hypothesis (not a prediction) naming which communities see which half of the problem, with
   mechanism, leading indicator, calibration, and an explicit extrapolation line. See
-  methodology section 10. Exportable as a brief.
-- **⚠️ Harm Foresight** — the **dual-use lens**: the same frontier papers re-classified by which
-  real-world **misuse** they could enable (cyber-offense, bio/chem uplift, influence ops, scams,
-  agentic misuse, surveillance, model-weight exfiltration, jailbreak/guardrail-evasion, child
-  safety, harassment), each with its own velocity — answering *"which harms is the literature
-  quietly making easier, and how fast?"* over a **0–24 month** horizon. Accelerating harm vectors
-  feed the Foresight Gap synthesis to frame **capability→harm enablement** risks. It's a foresight
-  signal over research, **not** on-platform abuse telemetry. Harm taxonomy: `config/taxonomy.yaml`
-  (`harm_topics`), fully editable.
+  methodology section 10. Exportable as a brief. A **⚠️ Harm vectors** toggle on this tab adds
+  the **dual-use lens**: the same frontier papers re-classified by which real-world **misuse**
+  they could enable (cyber-offense, bio/chem uplift, influence ops, scams, agentic misuse,
+  surveillance, model-weight exfiltration, jailbreak/guardrail-evasion, child safety,
+  harassment), each with its own velocity — *"which harms is the literature quietly making
+  easier, and how fast?"* over a **0–24 month** horizon. Accelerating harm vectors feed the
+  synthesis to frame **capability→harm enablement** risks. A foresight signal over research,
+  **not** on-platform abuse telemetry. Harm taxonomy: `config/taxonomy.yaml` (`harm_topics`).
 - **🔍 Sources** — the receipts: actual arXiv papers behind each topic (each with a
   short *what-it-does / why-it-matters* note — written by Claude when the analysis
   layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,

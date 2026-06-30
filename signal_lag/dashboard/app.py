@@ -143,12 +143,12 @@ with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
         "- **📋 Weekly Summary** — the briefing: what changed, the headline gap, a read of "
         "every tab, and this week's best foresight risks.\n"
         "- **⚖️ Divergence** — where capability research is outpacing the paired safety work.\n"
-        "- **📈 Velocity** — how fast each topic is moving (accelerating / cooling).\n"
+        "- **📈 Velocity** — how fast each topic is moving (accelerating / cooling), plus "
+        "the **strategic map** (volume × growth: emerging / hot / cooling / white-space).\n"
         "- **🔬 Sentiment** — share of *critical / limitation-focused* papers; a rising share "
         "is an early confidence-erosion warning.\n"
-        "- **🧭 Quadrant** — the field mapped by volume vs. growth (emerging / hot / cooling).\n"
-        "- **🔮 Foresight Gap** — novel cross-domain risks, web-checked for novelty.\n"
-        "- **⚠️ Harm Foresight** — the *dual-use* lens: which real-world **misuse** the "
+        "- **🔮 Foresight** — novel cross-domain risks (web-checked for novelty), plus a "
+        "**⚠️ Harm vectors** toggle: the dual-use lens on which real-world **misuse** the "
         "accelerating research could enable, on a 0–24 month horizon.\n"
         "- **🔍 Sources** — the actual papers behind every topic, all linked.\n"
         "- **📖 Methodology** — how it all works + a glossary of every term.\n\n"
@@ -161,11 +161,10 @@ with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
            "into the snapshot, not run live)._" if get_analysis(snap) else "")
     )
 
-(tab_summary, tab_div, tab_vel, tab_sentiment, tab_quad,
- tab_foresight, tab_harm, tab_sources, tab_method, tab_history) = st.tabs(
+(tab_summary, tab_div, tab_vel, tab_sentiment,
+ tab_foresight, tab_sources, tab_method, tab_history) = st.tabs(
     ["📋 Weekly Summary", "⚖️ Divergence", "📈 Velocity", "🔬 Sentiment",
-     "🧭 Quadrant", "🔮 Foresight Gap", "⚠️ Harm Foresight", "🔍 Sources",
-     "📖 Methodology", "📜 History"]
+     "🔮 Foresight", "🔍 Sources", "📖 Methodology", "📜 History"]
 )
 
 
@@ -764,9 +763,41 @@ def render_velocity_overall():
     else:
         st.caption("No inflection data.")
 
+    # --- Strategic map (formerly the Quadrant tab) — the same velocity data plotted as
+    # recent volume × growth: emerging / hot / cooling / white-space. Quarterly only.
+    st.divider()
+    st.markdown("#### 🧭 Strategic map — emerging / hot / cooling / white-space")
+    st.caption("The same topics plotted by **recent volume** (x) vs **growth** (y). "
+               "Hover points for names.")
+    if tab_analysis(snap, "quadrant"):
+        st.markdown(f"**🧠 Claude's read:** {tab_analysis(snap, 'quadrant')}")
+    quad = pd.DataFrame(snap["quadrant"])
+    if not quad.empty:
+        quad["topic"] = quad["topic_key"].map(lambda k: lbl(snap, k))
+        fig = px.scatter(
+            quad, x="recent_mean", y="change", color="quadrant", size="recent_mean",
+            size_max=26, hover_name="topic",
+            labels={"recent_mean": "Recent volume (papers/quarter)", "change": "Growth rate"},
+            height=560, template="plotly_dark",
+        )
+        notable = quad[quad["quadrant"].isin(["emerging", "hot", "cooling"])]
+        for _, r in notable.iterrows():
+            fig.add_annotation(x=r["recent_mean"], y=r["change"], text=r["topic"],
+                               showarrow=False, yshift=14, font=dict(size=10))
+        fig.add_hline(y=0.3, line_dash="dot", line_color="gray")
+        fig.add_vline(x=5, line_dash="dot", line_color="gray")
+        fig.update_layout(margin=dict(t=10))
+        st.plotly_chart(fig, width="stretch")
+    else:
+        st.info("No quadrant data.")
+    if snap["new_clusters"]:
+        st.markdown("**Newly forming clusters (emergent, unsupervised):**")
+        for c in snap["new_clusters"]:
+            st.write(f"- {c}")
+
 
 with tab_vel:
-    st.subheader("📈 Topic submission velocity")
+    st.subheader("📈 Topic velocity & strategic map")
     if view_toggle("vel_view", bool(weekly_block(snap).get("counts_by_key"))) == "weekly":
         render_weekly_velocity()
     else:
@@ -825,47 +856,6 @@ with tab_sentiment:
     else:
         render_sentiment_overall()
 
-# ================================================================== Quadrant
-with tab_quad:
-    st.subheader("Emerging / hot / cooling / white-space")
-    if weekly_block(snap):
-        st.caption("🧭 Quadrant is a **quarterly** strategic map (volume × growth) — there's "
-                   "no meaningful 7-day version. For the weekly cut, use the **This week** "
-                   "toggle on Velocity, Divergence, or Sentiment, or the Weekly Summary.")
-    week_note(
-        "Strategic map: **recent volume** (x) vs **growth** (y) — emerging, hot, "
-        "cooling, white-space.",
-        quadrant_finding(snap),
-    )
-    if tab_analysis(snap, "quadrant"):
-        st.markdown(f"**🧠 Claude's read:** {tab_analysis(snap, 'quadrant')}")
-    st.caption("Hover points for topic names.")
-    quad = pd.DataFrame(snap["quadrant"])
-    if not quad.empty:
-        quad["topic"] = quad["topic_key"].map(lambda k: lbl(snap, k))
-        fig = px.scatter(
-            quad, x="recent_mean", y="change", color="quadrant", size="recent_mean",
-            size_max=26, hover_name="topic",
-            labels={"recent_mean": "Recent volume (papers/quarter)", "change": "Growth rate"},
-            height=560, template="plotly_dark",
-        )
-        # Label only the standout points to avoid clutter.
-        notable = quad[quad["quadrant"].isin(["emerging", "hot", "cooling"])]
-        for _, r in notable.iterrows():
-            fig.add_annotation(x=r["recent_mean"], y=r["change"], text=r["topic"],
-                               showarrow=False, yshift=14, font=dict(size=10))
-        fig.add_hline(y=0.3, line_dash="dot", line_color="gray")
-        fig.add_vline(x=5, line_dash="dot", line_color="gray")
-        fig.update_layout(margin=dict(t=10))
-        st.plotly_chart(fig, width="stretch")
-    else:
-        st.info("No quadrant data.")
-    if snap["new_clusters"]:
-        st.markdown("**Newly forming clusters (emergent, unsupervised):**")
-        for c in snap["new_clusters"]:
-            st.write(f"- {c}")
-
-
 # ============================================================== Foresight Gap
 def _arxiv_lookup(snap):
     """arxiv_id -> (title, url) from sources + citation movers, for linking risks."""
@@ -915,7 +905,7 @@ def foresight_brief_md(fg) -> str:
     return "\n".join(lines)
 
 
-with tab_foresight:
+def render_foresight_section():
     st.subheader("🔮 Foresight Gap — novel risks in the seam")
     weekly_fg = weekly_block(snap).get("foresight_gap")
     if view_toggle("foresight_view", bool(weekly_fg)) == "weekly":
@@ -1094,7 +1084,7 @@ with tab_foresight:
 
 
 # =============================================================== Harm Foresight
-with tab_harm:
+def render_harm_section():
     st.subheader("⚠️ Harm Foresight — the dual-use lens (0–24 months)")
     st.info(
         "A **dual-use foresight lens**: the same frontier papers, re-classified by which "
@@ -1139,6 +1129,18 @@ with tab_harm:
                                 unsafe_allow_html=True)
                     if rp.get("abstract"):
                         st.caption(rp["abstract"])
+
+
+with tab_foresight:
+    _fmode = st.radio(
+        "Foresight view",
+        ["🔮 Cross-domain risks", "⚠️ Harm vectors (dual-use)"],
+        horizontal=True, label_visibility="collapsed",
+    )
+    if _fmode.startswith("⚠️"):
+        render_harm_section()
+    else:
+        render_foresight_section()
 
 
 # =================================================================== Sources
@@ -1360,7 +1362,7 @@ fail-soft (no API key ⇒ the prior behavior, unchanged):
   safety work. **Clearly labeled experimental and noisy** (stratified sample + imperfect
   author IDs): it informs the brief, never gates an alert.
 
-### 13. Harm Foresight — the dual-use lens (the ⚠️ tab)
+### 13. Harm Foresight — the dual-use lens (the ⚠️ Harm vectors view in the 🔮 Foresight tab)
 The capability/safety taxonomy tracks the *research*; this layer re-classifies the **same
 papers** by which real-world **misuse** they could enable — a parallel "harm-vector" taxonomy
 (cyber-offense, bio/chem uplift, influence operations, scams & fraud, agentic misuse,
