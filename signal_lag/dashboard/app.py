@@ -147,9 +147,10 @@ with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
         "the **strategic map** (volume × growth: emerging / hot / cooling / white-space).\n"
         "- **🔬 Sentiment** — share of *critical / limitation-focused* papers; a rising share "
         "is an early confidence-erosion warning.\n"
-        "- **🔮 Foresight** — novel cross-domain risks (web-checked for novelty), plus a "
-        "**⚠️ Harm vectors** toggle: the dual-use lens on which real-world **misuse** the "
-        "accelerating research could enable, on a 0–24 month horizon.\n"
+        "- **🔮 Foresight** — novel cross-domain risks (web-checked for novelty), a "
+        "**⚠️ Harm vectors** toggle (the dual-use lens on which real-world **misuse** the "
+        "accelerating research could enable, 0–24 months), and a **📋 Risk register** view: "
+        "every surfaced risk scored by severity × likelihood × exposure × trajectory.\n"
         "- **🔍 Sources** — the actual papers behind every topic, all linked.\n"
         "- **📖 Methodology** — how it all works + a glossary of every term.\n\n"
         "**Symbols you'll see**\n"
@@ -180,6 +181,19 @@ def _load_history(_cache_key: float):
 
 
 history = _load_history(HISTORY_PATH.stat().st_mtime if HISTORY_PATH.exists() else 0.0)
+
+REGISTER_PATH = SNAPSHOT.with_name("risk_register.json")
+
+
+@st.cache_data(ttl=1800)
+def _load_register(_cache_key: float):
+    try:
+        return json.loads(REGISTER_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+
+risk_register = _load_register(REGISTER_PATH.stat().st_mtime if REGISTER_PATH.exists() else 0.0)
 
 
 def topic_links(snap, topic_key, n=3):
@@ -944,6 +958,13 @@ def render_foresight_section():
             with st.container(border=True):
                 st.markdown(f"**{novelty_label(v)}**")
                 st.markdown(f"### {i}. {r.get('risk','')}")
+                if r.get("priority") is not None:
+                    _traj = {"accelerating": "📈", "steady": "→", "decelerating": "📉"}.get(
+                        r.get("trajectory"), "")
+                    st.markdown(
+                        f"**🎚️ Priority {r.get('priority')}/25** · severity {r.get('severity')}/5 "
+                        f"· likelihood {r.get('likelihood')}/5 · exposure {r.get('exposure')}/5 "
+                        f"· trajectory {_traj} {r.get('trajectory','')}")
                 if r.get("research_anchor") and str(r["research_anchor"]).lower() != "none":
                     st.markdown(f"**📊 Research-trend anchor:** {r['research_anchor']}")
                 if r.get("domains_crossed"):
@@ -1131,14 +1152,64 @@ def render_harm_section():
                         st.caption(rp["abstract"])
 
 
+# =============================================================== Risk register
+def render_register_section():
+    st.subheader("📋 Frontier risk register — prioritized")
+    st.info(
+        "An **evergreen, scored register** of every risk the foresight passes have surfaced "
+        "— ranked by **priority (severity × likelihood)**, with **exposure** and "
+        "**trajectory**, and a first-seen / last-seen trail. The standing watch-list, not "
+        "just this week's snapshot.", icon="📋",
+    )
+    reg = risk_register
+    if not reg:
+        st.warning("No scored risks yet. The register fills in once a refresh runs with the "
+                   "scoring layer (severity / likelihood / exposure / trajectory).", icon="🔌")
+        return
+    rows = []
+    for e in reg:
+        lt = e.get("latest") or {}
+        rows.append({
+            "Priority": lt.get("priority"), "Sev": lt.get("severity"),
+            "Lik": lt.get("likelihood"), "Exp": lt.get("exposure"),
+            "Trajectory": lt.get("trajectory"), "Novelty": lt.get("novelty_rating"),
+            "Risk": e.get("risk"), "First seen": e.get("first_seen"),
+            "Last seen": e.get("last_seen"), "Seen ×": e.get("n_appearances"),
+        })
+    rdf = pd.DataFrame(rows)
+    plot = rdf.dropna(subset=["Sev", "Lik"]).copy()
+    if not plot.empty:
+        plot["Exposure"] = plot["Exp"].fillna(3)
+        fig = px.scatter(
+            plot, x="Lik", y="Sev", size="Exposure", color="Trajectory", hover_name="Risk",
+            size_max=28, labels={"Lik": "Likelihood (1–5)", "Sev": "Severity (1–5)"},
+            category_orders={"Trajectory": ["accelerating", "steady", "decelerating"]},
+            color_discrete_map={"accelerating": "#ff6b6b", "steady": "#ffd43b",
+                                "decelerating": "#69db7c"},
+            height=480, template="plotly_dark",
+        )
+        fig.update_xaxes(range=[0.5, 5.5], dtick=1)
+        fig.update_yaxes(range=[0.5, 5.5], dtick=1)
+        fig.update_layout(margin=dict(t=10))
+        st.plotly_chart(fig, width="stretch")
+        st.caption("Top-right = high-severity **and** high-likelihood. Bubble size = "
+                   "exposure; colour = trajectory of the enabling signal. Hover for the risk.")
+    st.dataframe(rdf.sort_values("Priority", ascending=False, na_position="last"),
+                 width="stretch", hide_index=True)
+    st.caption(f"{len(reg)} risks tracked across all refreshes. "
+               "Priority = severity × likelihood (1–25).")
+
+
 with tab_foresight:
     _fmode = st.radio(
         "Foresight view",
-        ["🔮 Cross-domain risks", "⚠️ Harm vectors (dual-use)"],
+        ["🔮 Cross-domain risks", "⚠️ Harm vectors (dual-use)", "📋 Risk register"],
         horizontal=True, label_visibility="collapsed",
     )
     if _fmode.startswith("⚠️"):
         render_harm_section()
+    elif _fmode.startswith("📋"):
+        render_register_section()
     else:
         render_foresight_section()
 
@@ -1374,6 +1445,19 @@ frame risks as **capability → harm enablement** with a concrete leading indica
 defender community that isn't watching that seam. It is a **foresight signal over research, not
 on-platform abuse telemetry** — an *enabling* signal, not proof of imminent abuse. The harm
 taxonomy lives in `config/taxonomy.yaml` (`harm_topics`) and is fully editable.
+
+### 14. Frontier risk register — prioritized (the 📋 view in 🔮 Foresight)
+Every risk the foresight passes surface is **scored** by Claude at synthesis time on four
+axes — **severity**, **likelihood** (over ~24 months), **exposure** (breadth), and
+**trajectory** (is the enabling signal accelerating / steady / fading) — with **priority =
+severity × likelihood** (1–25). Those scores are accumulated into an **evergreen register**
+(`data/risk_register.json`): each risk keyed by a stable id with *first-seen / last-seen*, an
+appearance count, and a per-refresh **score history**, so you can watch a risk's priority and
+trajectory move over time. The 📋 view renders the standard **priority matrix** (likelihood ×
+severity, bubble = exposure, colour = trajectory) plus a sortable table — the JD's "evergreen
+frontier risk register and prioritization framework (severity, prevalence, exposure,
+trajectory)." Scores are deliberately calibrated, not alarmist: likelihood is lowered wherever
+a risk leans on a contested or inferential claim.
 
 ### Caveats
 - High coverage of the **AI preprint literature**, not every publisher.

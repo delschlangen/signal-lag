@@ -5,6 +5,7 @@ All offline — the LLM/web passes are stubbed so the merge logic is exercised
 without a network or an API key.
 """
 import datetime as dt
+import json
 
 import numpy as np
 
@@ -184,6 +185,44 @@ def test_harm_tagging_via_generic_centroids():
     tagged = {(a, k) for a, k, _ in rows}
     assert ("p1", "cyber_offense") in tagged
     assert not any(a == "p2" for a, k, _ in rows)   # no harm matched -> untagged
+
+
+# ----------------------------------------------------- risk scoring + register
+def test_attach_scores_clamps_and_computes_priority():
+    risks = foresight._attach_scores([
+        {"risk": "R1", "severity": "5", "likelihood": 4, "exposure": 3,
+         "trajectory": "ACCELERATING"},
+        {"risk": "R2", "severity": 99, "likelihood": None, "trajectory": "weird"},
+    ])
+    assert (risks[0]["severity"], risks[0]["likelihood"], risks[0]["exposure"]) == (5, 4, 3)
+    assert risks[0]["trajectory"] == "accelerating"
+    assert risks[0]["priority"] == 20                       # 5 × 4
+    # garbage clamps to [1,5] and defaults (3); unknown trajectory -> steady
+    assert risks[1]["severity"] == 5 and risks[1]["likelihood"] == 3
+    assert risks[1]["trajectory"] == "steady" and risks[1]["priority"] == 15
+
+
+def test_risk_register_upsert_and_idempotency(tmp_path):
+    from signal_lag import snapshot as snap_mod
+
+    def snap(date):
+        r = foresight._attach_scores([{"risk": "Persistent risk", "severity": 4,
+                                       "likelihood": 4, "exposure": 2, "trajectory": "steady"}])
+        return {"meta": {"refreshed_at": date},
+                "analysis": {"foresight_gap": {"risks": r}}, "weekly": {}}
+
+    path = tmp_path / "reg.json"
+    snap_mod.append_risk_register(snap("2026-06-22"), path)
+    snap_mod.append_risk_register(snap("2026-06-22"), path)   # same date -> no double count
+    reg = json.loads(path.read_text())
+    assert len(reg) == 1 and reg[0]["n_appearances"] == 1
+    assert reg[0]["latest"]["priority"] == 16                # 4 × 4
+    assert len(reg[0]["history"]) == 1
+
+    snap_mod.append_risk_register(snap("2026-06-29"), path)   # new date -> increment
+    reg = json.loads(path.read_text())
+    assert reg[0]["n_appearances"] == 2 and len(reg[0]["history"]) == 2
+    assert reg[0]["first_seen"] == "2026-06-22" and reg[0]["last_seen"] == "2026-06-29"
 
 
 def test_digest_includes_harm_vectors_and_filters_thin_ones():

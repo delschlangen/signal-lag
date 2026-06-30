@@ -24,7 +24,8 @@ import json  # noqa: E402
 from signal_lag.config import load_all  # noqa: E402
 from signal_lag.ingest.pipeline import ingest  # noqa: E402
 from signal_lag.snapshot import (  # noqa: E402
-    append_history, augment_foresight, build_snapshot, load_snapshot, save_snapshot,
+    append_history, append_risk_register, augment_foresight, build_snapshot,
+    load_snapshot, save_snapshot,
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s",
@@ -66,6 +67,7 @@ def main(argv=None) -> int:
 
     out = ROOT / "data" / "snapshot.json"
     history_path = ROOT / "data" / "history.json"
+    register_path = ROOT / "data" / "risk_register.json"
 
     if args.foresight_only:
         snap = load_snapshot(out)
@@ -78,6 +80,7 @@ def main(argv=None) -> int:
         # Write in place WITHOUT archiving (don't disturb snapshot_prev.json).
         out.write_text(json.dumps(snap, indent=1, ensure_ascii=False), encoding="utf-8")
         append_history(snap, history_path, prev)
+        append_risk_register(snap, register_path)
         n = len(fg.get("risks", [])) if fg else 0
         log.info("Foresight-only refresh wrote %s (%d risks, %d context chars)",
                  out, n, fg.get("n_context_chars", 0) if fg else 0)
@@ -98,6 +101,7 @@ def main(argv=None) -> int:
     save_snapshot(snapshot, out)
     # After save_snapshot, snapshot_prev.json is the prior week — diff against it.
     append_history(snapshot, history_path, load_snapshot(out.with_name("snapshot_prev.json")))
+    append_risk_register(snapshot, register_path)
     m = snapshot["meta"]
     log.info("Wrote %s: %d papers, %s..%s, %d/%d pairings flagged, backend=%s",
              out, m["n_papers"], m["date_start"], m["date_end"],

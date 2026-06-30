@@ -375,6 +375,11 @@ python scripts/generate_fixtures.py
   easier, and how fast?"* over a **0–24 month** horizon. Accelerating harm vectors feed the
   synthesis to frame **capability→harm enablement** risks. A foresight signal over research,
   **not** on-platform abuse telemetry. Harm taxonomy: `config/taxonomy.yaml` (`harm_topics`).
+  A **📋 Risk register** view scores every surfaced risk on **severity × likelihood × exposure
+  × trajectory** (priority = severity × likelihood, 1–25) and accumulates them into an
+  evergreen `data/risk_register.json` — each risk keyed by a stable id with first-seen /
+  last-seen and a per-refresh score history — rendered as a **priority matrix** + sortable
+  table. (The evergreen, prioritized frontier risk register.)
 - **🔍 Sources** — the receipts: actual arXiv papers behind each topic (each with a
   short *what-it-does / why-it-matters* note — written by Claude when the analysis
   layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,

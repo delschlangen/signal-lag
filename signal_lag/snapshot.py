@@ -440,6 +440,90 @@ def append_history(snapshot: dict, path: Path, prev_snapshot: dict | None = None
     path.write_text(json.dumps(existing, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
+def _risk_id(statement: str) -> str:
+    """Stable id for a risk = sha1 of its normalized statement (first 12 hex chars)."""
+    import hashlib
+    norm = " ".join((statement or "").lower().split())
+    return hashlib.sha1(norm.encode("utf-8")).hexdigest()[:12]
+
+
+def _register_entries(snapshot: dict) -> list[dict]:
+    """Scored risks from the overall + weekly foresight passes, as register-ready dicts."""
+    date = snapshot.get("meta", {}).get("refreshed_at")
+    out = []
+    sources = [("overall", (snapshot.get("analysis") or {}).get("foresight_gap")),
+               ("weekly", (snapshot.get("weekly") or {}).get("foresight_gap"))]
+    for src, fg in sources:
+        for r in (fg or {}).get("risks", []) or []:
+            stmt = r.get("risk")
+            if not stmt:
+                continue
+            out.append({
+                "id": _risk_id(stmt), "risk": stmt, "source": src, "date": date,
+                "severity": r.get("severity"), "likelihood": r.get("likelihood"),
+                "exposure": r.get("exposure"), "trajectory": r.get("trajectory"),
+                "priority": r.get("priority"),
+                "novelty_rating": (r.get("verification") or {}).get("novelty_rating"),
+                "domains_crossed": r.get("domains_crossed"),
+                "leading_indicator": r.get("leading_indicator"),
+            })
+    return out
+
+
+def append_risk_register(snapshot: dict, path: Path) -> None:
+    """Upsert this refresh's scored risks into an evergreen register (idempotent per date).
+
+    The register is the JD's "evergreen frontier risk register": every risk ever surfaced,
+    keyed by a stable id, with first_seen / last_seen / appearance count and a per-refresh
+    score history (severity, likelihood, exposure, trajectory, priority) so trajectory over
+    time is visible. Mirrors append_history's compact, idempotent JSON-list pattern.
+    """
+    path = Path(path)
+    try:
+        reg = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    except Exception:
+        reg = []
+    if not isinstance(reg, list):
+        reg = []
+    by_id = {e["id"]: e for e in reg if e.get("id")}
+    date = snapshot.get("meta", {}).get("refreshed_at")
+    if not date:
+        return
+
+    # Dedup within this refresh by id (prefer the higher-priority appearance).
+    seen: dict[str, dict] = {}
+    for e in _register_entries(snapshot):
+        cur = seen.get(e["id"])
+        if cur is None or (e.get("priority") or 0) > (cur.get("priority") or 0):
+            seen[e["id"]] = e
+
+    for e in seen.values():
+        rid = e["id"]
+        point = {"date": date, "severity": e["severity"], "likelihood": e["likelihood"],
+                 "exposure": e["exposure"], "trajectory": e["trajectory"],
+                 "priority": e["priority"]}
+        rec = by_id.get(rid)
+        if rec is None:
+            by_id[rid] = {"id": rid, "risk": e["risk"], "first_seen": date,
+                          "last_seen": date, "n_appearances": 1, "latest": e,
+                          "history": [point]}
+        else:
+            rec["last_seen"] = date
+            rec["risk"] = e["risk"]
+            rec["latest"] = e
+            if not rec.get("history") or rec["history"][-1].get("date") != date:
+                rec["n_appearances"] = rec.get("n_appearances", 1) + 1
+                rec.setdefault("history", []).append(point)
+            else:                       # same date re-run -> overwrite, don't double-count
+                rec["history"][-1] = point
+
+    out = sorted(by_id.values(),
+                 key=lambda r: ((r.get("latest") or {}).get("priority") or 0,
+                                r.get("last_seen") or ""), reverse=True)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
+
+
 def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | None) -> dict:
     """Run the Foresight Gap pass and attach analysis["foresight_gap"] to ``snapshot``.
 

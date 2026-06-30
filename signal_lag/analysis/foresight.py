@@ -364,11 +364,23 @@ preamble) with exactly this shape:
       "mechanism": "the causal chain — why it is plausible",
       "leading_indicator": "the concrete observable that would tell us it is materializing",
       "calibration": "honest read: genuine low-probability vs. emerging, and your confidence — explicitly lowered where the risk leans on a contested/inferential claim",
-      "extrapolation": "what you assumed beyond the provided signals (or 'none — grounded in the digest')"
+      "extrapolation": "what you assumed beyond the provided signals (or 'none — grounded in the digest')",
+      "severity": 1-5,            // how BAD if it materializes (5 = catastrophic / systemic / irreversible)
+      "likelihood": 1-5,         // probability it MATERIALIZES within ~24 months (5 = likely)
+      "exposure": 1-5,           // BREADTH if it does — how many users / systems / surfaces / sectors (5 = broad)
+      "trajectory": "accelerating | steady | decelerating",  // is the ENABLING signal getting worse, flat, or fading
+      "score_rationale": "1-2 sentences justifying the four scores, grounded in the digest"
     }}
   ]
 }}
 
+SCORING RUBRIC (fill severity/likelihood/exposure as integers 1-5; be calibrated, not
+alarmist — a genuinely low-probability risk should score low on likelihood even if severe):
+- severity: 1 trivial · 2 minor · 3 serious · 4 severe · 5 catastrophic/systemic.
+- likelihood: 1 remote · 2 unlikely · 3 plausible · 4 probable · 5 likely (over ~24 months).
+  LOWER this when the risk leans on a contested/inferential claim (consistent with calibration).
+- exposure: 1 niche · 3 a significant population/sector · 5 broad cross-sector/cross-product.
+- trajectory: read it off the digest's velocity/harm-vector momentum for the anchoring signal.
 Output must be valid JSON and nothing else."""
 
 
@@ -582,7 +594,32 @@ def _synthesize_risks(
     if result is None or "risks" not in result:
         log.warning("Could not parse foresight JSON")
         return None
-    return result.get("risks") or []
+    return _attach_scores(result.get("risks") or [])
+
+
+def _coerce_score(v, default: int = 3) -> int:
+    """Clamp a model-provided score to an integer in [1, 5] (default on garbage)."""
+    try:
+        return max(1, min(5, int(round(float(v)))))
+    except (TypeError, ValueError):
+        return default
+
+
+def _attach_scores(risks: list) -> list:
+    """Normalize severity/likelihood/exposure (1-5) + trajectory, and compute priority.
+
+    priority = severity × likelihood (1-25) — the standard risk-matrix product, used to
+    rank the evergreen register. Defaults (3) keep older/garbled outputs scoreable.
+    """
+    for r in risks or []:
+        sev = _coerce_score(r.get("severity"))
+        lik = _coerce_score(r.get("likelihood"))
+        exp = _coerce_score(r.get("exposure"))
+        r["severity"], r["likelihood"], r["exposure"] = sev, lik, exp
+        traj = str(r.get("trajectory") or "steady").lower()
+        r["trajectory"] = traj if traj in ("accelerating", "steady", "decelerating") else "steady"
+        r["priority"] = sev * lik
+    return risks
 
 
 def synthesize_foresight_gap(
