@@ -846,3 +846,87 @@ def generate_scenarios(
         return None
     log.info("Scenario analysis complete (%d scenarios)", len(result.get("scenarios") or []))
     return result.get("scenarios") or []
+
+
+EXPLAINER_SYSTEM = (
+    "You translate a technical AI foresight risk into a PLAIN-LANGUAGE walkthrough for a "
+    "smart non-specialist or executive. You explain the evidence chain in concrete terms: "
+    "the technical evidence (the ACTUAL papers and the trend metric), the real-world context "
+    "it was crossed with, the synthesis (why the gap creates the risk), and — crucially — "
+    "the tool's OWN skepticism (where the evidence is contested, brittle, or a projection). "
+    "You end with a plain bottom line that separates what is REAL/observed from what is "
+    "PROJECTED. You are concrete, honest, and never overstate; you name papers by title and "
+    "arXiv id where given, and you never invent evidence."
+)
+
+EXPLAINER_INSTRUCTIONS = """\
+Translate the RISK below into a plain-language explanation a non-specialist could follow, \
+using the SOURCE_PAPERS and CONTEXT provided. Return ONLY a JSON object of this exact shape:
+
+{
+  "technical_evidence": "What the actual papers/metrics show, in plain terms — reference the source papers by title and arXiv id, and cite the trend/safety-lag metric if present.",
+  "societal_evidence": "The real-world context, standards, or developments this was crossed with.",
+  "the_gap": "The synthesis: why the friction between the technical evidence and the real-world context creates the risk.",
+  "skepticism": "The tool's OWN counter-evidence — where the capability is contested/brittle, or where it's a projection rather than an imminent fact.",
+  "bottom_line": "1-2 plain sentences separating what is REAL/observed this period from what is PROJECTED."
+}
+
+Ground everything in the provided RISK fields and SOURCE_PAPERS — do not invent papers or \
+facts. Output valid JSON only."""
+
+
+def explain_risk(
+    risk: dict, paper_lookup: dict, context: str, api_key: str | None,
+    model: str = "claude-opus-4-8",
+) -> dict | None:
+    """One Claude call: a plain-language, 5-part walkthrough of a single risk.
+
+    Sections: technical_evidence / societal_evidence / the_gap / skepticism / bottom_line —
+    the legibility layer that explains HOW the tool reasoned (and where it doubts itself),
+    for the in-app expander and the downloadable estimate. Fail-soft (-> None).
+    """
+    src = []
+    for aid in (risk.get("source_arxiv_ids") or [])[:6]:
+        p = paper_lookup.get(aid)
+        if p:
+            src.append({"arxiv_id": aid, "title": p.get("title"),
+                        "abstract": (p.get("abstract") or "")[:400]})
+    payload = {
+        "RISK": {k: risk.get(k) for k in (
+            "risk", "research_anchor", "derived_from", "source_topics", "domains_crossed",
+            "communities", "mechanism", "leading_indicator", "calibration", "extrapolation",
+            "severity", "likelihood", "exposure", "trajectory")},
+        "VERIFICATION": risk.get("verification") or {},
+        "SOURCE_PAPERS": src,
+        "CONTEXT": (context or "(none)")[:2500],
+    }
+    user = EXPLAINER_INSTRUCTIONS + "\n\nINPUTS:\n" + json.dumps(payload, ensure_ascii=False)
+    text = llm.call_claude(EXPLAINER_SYSTEM, user, api_key, model)
+    if text is None:
+        return None
+    return llm.extract_json(text)
+
+
+def attach_explanations(
+    risks: list, paper_lookup: dict, context: str, api_key: str | None,
+    model: str = "claude-opus-4-8", max_explainers: int = 4, max_workers: int = 4,
+) -> list:
+    """Attach a plain-language ``plain_explanation`` to the top-N priority risks (in parallel).
+
+    Bounded to ``max_explainers`` (cost guard) and only the highest-priority risks — the ones
+    a reader actually drills into. Fail-soft: a risk with no explanation just lacks the field.
+    """
+    if not risks or not api_key:
+        return risks
+    top = sorted(risks, key=lambda r: r.get("priority") or 0, reverse=True)[:max_explainers]
+    from concurrent.futures import ThreadPoolExecutor
+
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        outs = list(ex.map(
+            lambda r: explain_risk(r, paper_lookup, context, api_key, model), top))
+    for r, o in zip(top, outs):
+        if o:
+            r["plain_explanation"] = o
+    log.info("Attached plain-language explanations to %d/%d risks",
+             sum(1 for r in top if r.get("plain_explanation")), len(top))
+    return risks

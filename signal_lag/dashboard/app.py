@@ -1008,6 +1008,17 @@ def render_foresight_section():
                             st.markdown(f"- [{t}]({u})" if u else f"- {t}")
                 elif fg.get("verified"):
                     st.caption("⚪ Prior-coverage check could not be completed for this risk.")
+                pe = r.get("plain_explanation")
+                if pe:
+                    with st.expander("🧩 In plain terms — how the tool reasoned"):
+                        for label, key in (("📄 The technical evidence", "technical_evidence"),
+                                           ("🌍 The real-world context", "societal_evidence"),
+                                           ("🔗 The gap (synthesis)", "the_gap"),
+                                           ("🤔 The tool's own skepticism", "skepticism")):
+                            if pe.get(key):
+                                st.markdown(f"**{label}:** {pe[key]}")
+                        if pe.get("bottom_line"):
+                            st.markdown(f"**✅ Bottom line:** {pe['bottom_line']}")
 
         risks = fg.get("risks", [])
         demoted = [r for r in risks
@@ -1323,6 +1334,20 @@ def intelligence_estimate_md(snap) -> str:
                 lines.append("- **Watch for:** " + "; ".join(sc["leading_indicators"]))
             if sc.get("candidate_mitigations"):
                 lines.append("- **Mitigations:** " + "; ".join(sc["candidate_mitigations"]))
+    # Plain-language briefings for the risks that have them (the top-N explained risks).
+    explained = [r for r in (fg.get("risks") or []) if r.get("plain_explanation")]
+    if explained:
+        lines += ["", "## In plain terms — how each top risk was reasoned"]
+        for i, r in enumerate(explained, 1):
+            pe = r["plain_explanation"]
+            lines.append(f"### {i}. {r.get('risk','')}")
+            for label, key in (("The technical evidence", "technical_evidence"),
+                               ("The real-world context", "societal_evidence"),
+                               ("The gap (synthesis)", "the_gap"),
+                               ("The tool's own skepticism", "skepticism"),
+                               ("Bottom line", "bottom_line")):
+                if pe.get(key):
+                    lines.append(f"- **{label}:** {pe[key]}")
     lines += ["", "## Confidence & caveats",
               "- Scores are AI-assigned and calibrated, not actuarial; likelihood is lowered "
               "where a risk leans on a contested or inferential claim.",
@@ -1716,6 +1741,13 @@ in estimative language + scenarios + confidence caveats) and a **Tabletop-Exerci
 (scenario setup, roles, escalating injects built from the leading indicators, discussion
 questions). Likelihood scores are shown throughout in **estimative-probability language**
 (*very unlikely → very likely*) so the output reads like an intelligence product.
+
+For the **top-N risks**, a further pass writes a **plain-language "🧩 In plain terms"
+walkthrough** — five sections that explain *how the tool reasoned*: the **technical evidence**
+(the actual papers + trend metric), the **real-world context** it crossed with, the **gap**
+(synthesis), the **tool's own skepticism** (where the evidence is contested or a projection),
+and a **bottom line** separating what's *observed* from what's *projected*. Shown as an
+expander on each risk and folded into the downloadable intelligence estimate.
 
 ### 16. Incidents & benchmark — the all-source layer (the 🌐 view)
 Everything above is **upstream** (the research signal — leading). This layer adds the

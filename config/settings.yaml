@@ -192,6 +192,12 @@ analysis:
     # fail-soft (skipped with no api_key). One call per refresh.
     scenarios: true
     max_scenarios: 3
+    # Plain-language "explain in simple terms" walkthrough for the top-N risks: a 5-part
+    # breakdown (technical evidence / real-world context / the gap / self-skepticism /
+    # bottom line) shown in-app and folded into the exports. One Claude call per explained
+    # risk (parallel, bounded by max_explainers); fail-soft.
+    explainers: true
+    max_explainers: 4
     # Live web context (#3): the fast arXiv data is crossed with a hand-maintained
     # context.md that can be months stale. When enabled, ONE pre-synthesis web search
     # pulls the CURRENT dated status of the flagged topics' real-world developments, so

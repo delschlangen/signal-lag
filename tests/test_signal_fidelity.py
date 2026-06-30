@@ -224,6 +224,27 @@ def test_generate_scenarios_failsoft_without_key():
     assert foresight.generate_scenarios([], "c", api_key="k") is None
 
 
+def test_attach_explanations_top_n_only(monkeypatch):
+    def fake_call(system, user, api_key, model="x", max_tokens=8000, tools=None):
+        return ('{"technical_evidence": "te", "societal_evidence": "se", "the_gap": "g",'
+                ' "skepticism": "sk", "bottom_line": "bl"}')
+
+    monkeypatch.setattr(foresight.llm, "call_claude", fake_call)
+    risks = [{"risk": "low", "priority": 4, "source_arxiv_ids": []},
+             {"risk": "high", "priority": 20, "source_arxiv_ids": ["a1"]}]
+    out = foresight.attach_explanations(risks, {"a1": {"title": "T", "abstract": "A"}},
+                                        "ctx", api_key="k", max_explainers=1)
+    hi = next(r for r in out if r["risk"] == "high")
+    lo = next(r for r in out if r["risk"] == "low")
+    assert hi["plain_explanation"]["bottom_line"] == "bl"   # top-priority explained
+    assert "plain_explanation" not in lo                    # below the cap, untouched
+
+
+def test_attach_explanations_failsoft_without_key():
+    out = foresight.attach_explanations([{"risk": "x", "priority": 5}], {}, "c", api_key=None)
+    assert "plain_explanation" not in out[0]
+
+
 def test_fetch_incidents_filters_unverifiable(monkeypatch):
     def fake_call(system, user, api_key, model="x", max_tokens=8000, tools=None):
         return ('{"incidents": ['

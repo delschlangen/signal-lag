@@ -527,6 +527,22 @@ def append_risk_register(snapshot: dict, path: Path) -> None:
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
+def _paper_lookup(snapshot: dict) -> dict:
+    """{arxiv_id -> {title, abstract}} from the snapshot's source + notable papers, so the
+    plain-language explainer can reference a risk's source papers by title/abstract."""
+    out: dict[str, dict] = {}
+    for rows in (snapshot.get("sources") or {}).values():
+        for r in rows:
+            if r.get("arxiv_id"):
+                out.setdefault(r["arxiv_id"],
+                               {"title": r.get("title"), "abstract": r.get("abstract")})
+    for n in ((snapshot.get("weekly") or {}).get("notable_papers") or []):
+        if n.get("arxiv_id"):
+            out.setdefault(n["arxiv_id"],
+                           {"title": n.get("title"), "abstract": n.get("abstract")})
+    return out
+
+
 def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | None) -> dict:
     """Run the Foresight Gap pass and attach analysis["foresight_gap"] to ``snapshot``.
 
@@ -574,6 +590,14 @@ def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | 
             )
             if scen:
                 fg["scenarios"] = scen
+        # Plain-language explanations for the top-N risks (legibility layer): a 5-part
+        # walkthrough (technical evidence / societal context / the gap / self-skepticism /
+        # bottom line) shown in-app + folded into the exports. Config-gated + fail-soft.
+        if fcfg.get("explainers"):
+            foresight.attach_explanations(
+                fg.get("risks") or [], _paper_lookup(snapshot), live_ctx or ctx,
+                api_key, model, max_explainers=int(fcfg.get("max_explainers", 4)),
+            )
         if snapshot.get("analysis") is None:
             snapshot["analysis"] = {}
         snapshot["analysis"]["foresight_gap"] = fg
