@@ -2,14 +2,20 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Patent-landscape-style **foresight on AI-safety research**. It treats research
-papers the way patent analysts treat filings — tracking *what* is being worked on,
-*how fast*, *by whom*, and crucially *what isn't* — to surface where the field is
-heading and where **safety attention lags capability**.
+Patent-landscape-style **foresight on the AI frontier**. It began as foresight on
+AI-safety research — treating papers the way patent analysts treat filings (*what* is
+worked on, *how fast*, *by whom*, and crucially *what isn't*) — and has grown into a full
+**emerging-risk pipeline**: from the research-trend signal, through **harm/misuse vectors**
+and a **scored, evergreen risk register**, to **6–24-month scenarios** and a **real-world
+incident benchmark**.
 
-The headline output is the **capability-vs-safety divergence**: for paired topics
-(e.g. *agentic/autonomy capability* ↔ *agentic monitoring*), it measures whether
-capability research is accelerating while the paired safety work stays flat.
+The original spine is the **capability-vs-safety divergence**: for paired topics
+(e.g. *agentic/autonomy capability* ↔ *agentic monitoring*), it measures whether capability
+research is accelerating while the paired safety work stays flat. On top of that, a
+Claude-powered **Foresight** layer turns the signal into novel, web-verified, **scored** risk
+calls — re-classified by which real-world **misuse** they could enable, developed into
+**scenarios**, **benchmarked against actual incidents**, and exportable as analyst-ready
+intelligence-estimate and tabletop packs.
 
 > ### 🧭 Analyst's note — read this first
 > signal-lag measures **research attention, not research success.** A spike in a topic
@@ -25,7 +31,7 @@ capability research is accelerating while the paired safety work stays flat.
 
 **▶️ Live demo: https://signal-lag-aw6rmrmp65nit9m9f8wmcq.streamlit.app**
 
-The live dashboard runs on **real arXiv + OpenAlex data**, refreshed **weekly** by a
+The live dashboard runs on **real arXiv + Semantic Scholar data**, refreshed **weekly** by a
 GitHub Action that pulls fresh papers, re-runs the analysis, and publishes a snapshot
 the app reads (see [How the live data works](#how-the-live-data-works)). It only ever
 shows a real, published snapshot — never synthetic or demo content. Hosting is free on
@@ -53,20 +59,30 @@ shows a real, published snapshot — never synthetic or demo content. Hosting is
 4. **Sentiment / confidence layer** — the share of *critical / limitation-focused*
    papers per topic (embedding-based), and whether it's **rising** — an early
    confidence-erosion warning, especially when volume is flat.
-5. **Citation dynamics** — rapid recent citation growth, plus "sleepers": previously-
-   quiet papers now spawning downstream work (early-heat signals).
+5. **Citation flow** — verifies cross-domain *borrowing* via real references (Semantic
+   Scholar): which capability papers actually **cite** core safety work, not just share its
+   vocabulary. (Year-by-year citation *heat* — rapid-growth / sleepers — needs OpenAlex,
+   which is currently unreachable from the CI runner, so that sub-view is hidden.)
 6. **Divergence layer (the headline product)** — per configured capability↔safety
    pairing, flags where capability is accelerating but the paired safety topic is flat.
 7. **Author/institution flow** — which labs are ramping activity in which subfields.
 8. **Weekly Claude analysis** — once per refresh, Claude (`claude-opus-4-8`) reads the
    computed metrics + real abstracts and writes the analytical headline, a per-tab read,
    and a *what-it-does / why-it-matters* note per driving paper (baked into the snapshot).
-9. **Foresight Gap** — a second Claude pass crosses the research-trend signals with a
-   living societal-context file to surface **novel cross-domain risks**, then **web-checks
-   each against current coverage** (verified novelty + disputing sources) and backfills
-   for quality. (See methodology section 10.)
+9. **Foresight layer** (Claude) — the emerging-risk engine, all baked into the snapshot:
+   - **Foresight Gap** — crosses the research signal with a living societal-context file to
+     surface **novel cross-domain risks**, **web-checks each** for novelty + disputes, and
+     backfills for quality (methodology §10).
+   - **Harm/misuse vectors** — re-classifies the same papers by which real-world **misuse**
+     they could enable, on a 0–24-month horizon (§13).
+   - **Scored risk register** — every risk scored by severity × likelihood × exposure ×
+     trajectory, accumulated into an evergreen, prioritized register (§14).
+   - **Scenarios + exports** — 6–24-month scenarios from the top risks, plus one-tap
+     intelligence-estimate and tabletop-exercise packs (§15).
+   - **Incident benchmark** — real, web-sourced incidents crossed against the research
+     signal into a leading-vs-lagging 2×2 (§16).
 10. **Output** — a Streamlit dashboard (8 tabs, led by a self-contained Weekly Summary)
-    plus exportable **markdown briefs**.
+    plus exportable **markdown briefs / estimates / tabletop packs**.
 
 ---
 

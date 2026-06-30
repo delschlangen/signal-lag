@@ -109,10 +109,12 @@ def view_toggle(key: str, available: bool) -> str:
 _key = SNAPSHOT.stat().st_mtime if SNAPSHOT.exists() else 0.0
 snap, prev = _load(_key)
 
-st.title("📡 signal-lag — AI safety research foresight")
+st.title("📡 signal-lag — AI emerging-risk foresight")
 st.caption(
-    "Patent-landscape-style foresight: topic velocity, sentiment, citation dynamics, "
-    "and the gap where safety attention lags capability."
+    "Strategic foresight on the AI frontier: from the research-trend signal "
+    "(topic velocity, sentiment, capability-vs-safety divergence) to harm/misuse vectors, "
+    "a scored risk register, 6–24-month scenarios, and a real-world incident benchmark — on "
+    "real arXiv data, refreshed weekly."
 )
 
 # Only ever show real data. No synthetic/demo fallback, ever.
@@ -1470,27 +1472,37 @@ with tab_sources:
         st.write("No tagged papers for this topic in the current snapshot.")
 
     st.divider()
-    if tab_analysis(snap, "citations"):
-        st.markdown(f"**🧠 Claude's read:** {tab_analysis(snap, 'citations')}")
-    ccol, scol = st.columns(2)
-    def _cite_line(r):
-        extra = f" · {r['influential_citations']} influential" if r.get("influential_citations") else ""
-        ven = f" · {r['venue']}" if r.get("venue") else ""
-        return f"- [{r['title']}]({r['url']}) — {r['cited_by_count']} cites{extra}{ven}"
+    cites = snap.get("citations") or {}
+    has_movers = bool(cites.get("rapid_growth") or cites.get("sleepers"))
+    if has_movers:
+        if tab_analysis(snap, "citations"):
+            st.markdown(f"**🧠 Claude's read:** {tab_analysis(snap, 'citations')}")
 
-    def _render_cites(bucket):
-        for r in snap["citations"].get(bucket, [])[:10]:
-            st.markdown(_cite_line(r))
-            d = short_desc(r, 160)
-            if d:
-                st.caption(d)
+        def _cite_line(r):
+            extra = (f" · {r['influential_citations']} influential"
+                     if r.get("influential_citations") else "")
+            ven = f" · {r['venue']}" if r.get("venue") else ""
+            return f"- [{r['title']}]({r['url']}) — {r['cited_by_count']} cites{extra}{ven}"
 
-    with ccol:
-        st.markdown("**🔥 Rapid citation growth**")
-        _render_cites("rapid_growth")
-    with scol:
-        st.markdown("**💤 Sleepers (early-heat)**")
-        _render_cites("sleepers")
+        def _render_cites(bucket):
+            for r in cites.get(bucket, [])[:10]:
+                st.markdown(_cite_line(r))
+                d = short_desc(r, 160)
+                if d:
+                    st.caption(d)
+
+        ccol, scol = st.columns(2)
+        with ccol:
+            st.markdown("**🔥 Rapid citation growth**")
+            _render_cites("rapid_growth")
+        with scol:
+            st.markdown("**💤 Sleepers (early-heat)**")
+            _render_cites("sleepers")
+    else:
+        st.caption("📊 Citation-velocity movers (rapid-growth / sleepers) need OpenAlex's "
+                   "year-by-year citation series, which is currently unreachable from the "
+                   "refresh runner — so this section is hidden. Per-paper citation counts and "
+                   "the **citation-verified borrowing** in Foresight come from Semantic Scholar.")
 
 # =============================================================== Methodology
 def render_glossary(snap):
