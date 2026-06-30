@@ -147,10 +147,11 @@ with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
         "the **strategic map** (volume × growth: emerging / hot / cooling / white-space).\n"
         "- **🔬 Sentiment** — share of *critical / limitation-focused* papers; a rising share "
         "is an early confidence-erosion warning.\n"
-        "- **🔮 Foresight** — novel cross-domain risks (web-checked for novelty), a "
-        "**⚠️ Harm vectors** toggle (the dual-use lens on which real-world **misuse** the "
-        "accelerating research could enable, 0–24 months), and a **📋 Risk register** view: "
-        "every surfaced risk scored by severity × likelihood × exposure × trajectory.\n"
+        "- **🔮 Foresight** — four views: novel **cross-domain risks** (web-checked for "
+        "novelty), **⚠️ Harm vectors** (dual-use misuse lens, 0–24 mo), a scored **📋 Risk "
+        "register** (severity × likelihood × exposure × trajectory), and **🎬 Scenarios** "
+        "(how the top risks could evolve, 6–24 mo) — plus downloadable intelligence-estimate "
+        "and tabletop-exercise packs.\n"
         "- **🔍 Sources** — the actual papers behind every topic, all linked.\n"
         "- **📖 Methodology** — how it all works + a glossary of every term.\n\n"
         "**Symbols you'll see**\n"
@@ -966,8 +967,8 @@ def render_foresight_section():
                         r.get("trajectory"), "")
                     st.markdown(
                         f"**🎚️ Priority {r.get('priority')}/25** · severity {r.get('severity')}/5 "
-                        f"· likelihood {r.get('likelihood')}/5 · exposure {r.get('exposure')}/5 "
-                        f"· trajectory {_traj} {r.get('trajectory','')}")
+                        f"· likelihood {r.get('likelihood')}/5 (*{estimative(r.get('likelihood'))}*) "
+                        f"· exposure {r.get('exposure')}/5 · trajectory {_traj} {r.get('trajectory','')}")
                 if r.get("research_anchor") and str(r["research_anchor"]).lower() != "none":
                     st.markdown(f"**📊 Research-trend anchor:** {r['research_anchor']}")
                 if r.get("domains_crossed"):
@@ -1178,7 +1179,8 @@ def render_register_section():
         lt = e.get("latest") or {}
         rows.append({
             "#": i, "Priority": lt.get("priority"), "Sev": lt.get("severity"),
-            "Lik": lt.get("likelihood"), "Exp": lt.get("exposure"),
+            "Lik": lt.get("likelihood"), "Estimative": estimative(lt.get("likelihood")),
+            "Exp": lt.get("exposure"),
             "Trajectory": lt.get("trajectory"), "Novelty": lt.get("novelty_rating"),
             "Risk": e.get("risk"), "First seen": e.get("first_seen"),
             "Last seen": e.get("last_seen"), "Seen ×": e.get("n_appearances"),
@@ -1236,18 +1238,160 @@ def render_register_section():
                "each risk has persisted.")
 
 
+# =================================================================== Scenarios
+# ICD-203-style estimative-probability vocabulary (Step 4): a 1-5 likelihood maps to a
+# calibrated word so the output reads like an intelligence product, not a number soup.
+ESTIMATIVE = {1: "very unlikely", 2: "unlikely", 3: "roughly even chance",
+              4: "likely", 5: "very likely"}
+
+
+def estimative(lik) -> str:
+    return ESTIMATIVE.get(lik, "—")
+
+
+def render_scenarios_section():
+    st.subheader("🎬 Scenarios — how the top risks could evolve (6–24 mo)")
+    st.info(
+        "**Scenario analysis**, not prediction: a few plausible ways the highest-priority "
+        "risks could unfold over the next 6–24 months — each with its **drivers**, the "
+        "**early indicators** to watch, the **branch points** where the future forks, and "
+        "**candidate mitigations**. Use them to pre-position, then pressure-test.", icon="🎬",
+    )
+    fg = get_analysis(snap).get("foresight_gap") or {}
+    scenarios = fg.get("scenarios") or []
+    if not scenarios:
+        st.warning("No scenarios in this snapshot. They populate on a refresh with the "
+                   "scenario pass enabled (`analysis.foresight.scenarios`).", icon="🔌")
+        return
+    for i, sc in enumerate(scenarios, 1):
+        with st.container(border=True):
+            st.markdown(f"### {i}. {sc.get('title','')}")
+            st.markdown(f"**🕐 Horizon:** {sc.get('horizon','—')}  ·  "
+                        f"**📊 Estimative likelihood:** *{sc.get('estimative_likelihood','—')}*")
+            if sc.get("narrative"):
+                st.markdown(sc["narrative"])
+            def _bullets(label, key):
+                items = sc.get(key) or []
+                if items:
+                    st.markdown(f"**{label}**")
+                    for it in items:
+                        st.markdown(f"- {it}")
+            _bullets("⚙️ Drivers", "drivers")
+            _bullets("📡 Leading indicators to watch", "leading_indicators")
+            _bullets("🔀 Branch points", "branch_points")
+            _bullets("🛡️ Candidate mitigations", "candidate_mitigations")
+            if sc.get("linked_risks"):
+                st.caption("Builds on: " + " · ".join(sc["linked_risks"]))
+
+
+def intelligence_estimate_md(snap) -> str:
+    """Templated Strategic Intelligence Estimate (Step 4) — no LLM, built from the snapshot."""
+    meta = snap.get("meta", {})
+    fg = get_analysis(snap).get("foresight_gap") or {}
+    reg = sorted(risk_register, key=lambda e: (e.get("latest") or {}).get("priority") or 0,
+                 reverse=True)
+    lines = [f"# Strategic Intelligence Estimate — signal-lag ({meta.get('refreshed_at','')})", ""]
+    lines.append("## Bottom line up front")
+    if reg:
+        top = reg[0]; lt = top.get("latest") or {}
+        lines.append(f"- Highest-priority risk (**P{lt.get('priority')}/25**, "
+                     f"*{estimative(lt.get('likelihood'))}*): {top.get('risk')}")
+    lines.append(f"- Tracking **{len(reg)} risks** across all refreshes; "
+                 f"**{len(fg.get('scenarios') or [])} active scenarios** (6–24 mo).")
+    lines += ["", "## Key risks (ranked by priority)"]
+    for i, e in enumerate(reg[:8], 1):
+        lt = e.get("latest") or {}
+        lines.append(
+            f"{i}. **[P{lt.get('priority')}]** {e.get('risk')}  \n"
+            f"   severity {lt.get('severity')}/5 · likelihood {lt.get('likelihood')}/5 "
+            f"(*{estimative(lt.get('likelihood'))}*) · exposure {lt.get('exposure')}/5 · "
+            f"trajectory {lt.get('trajectory')}")
+        if lt.get("leading_indicator"):
+            lines.append(f"   - Leading indicator: {lt['leading_indicator']}")
+    scen = fg.get("scenarios") or []
+    if scen:
+        lines += ["", "## Scenarios (6–24 months)"]
+        for i, sc in enumerate(scen, 1):
+            lines.append(f"### {i}. {sc.get('title','')} — {sc.get('horizon','')} "
+                         f"(*{sc.get('estimative_likelihood','')}*)")
+            if sc.get("narrative"):
+                lines.append(sc["narrative"])
+            if sc.get("leading_indicators"):
+                lines.append("- **Watch for:** " + "; ".join(sc["leading_indicators"]))
+            if sc.get("candidate_mitigations"):
+                lines.append("- **Mitigations:** " + "; ".join(sc["candidate_mitigations"]))
+    lines += ["", "## Confidence & caveats",
+              "- Scores are AI-assigned and calibrated, not actuarial; likelihood is lowered "
+              "where a risk leans on a contested or inferential claim.",
+              "- signal-lag measures research *attention*/enablement, not deployed abuse — "
+              "these are candidate hypotheses to pressure-test, not forecasts."]
+    return "\n".join(lines)
+
+
+def tabletop_pack_md(snap) -> str:
+    """Templated tabletop-exercise pack (Step 4) from the top scenario / top risk."""
+    fg = get_analysis(snap).get("foresight_gap") or {}
+    scen = fg.get("scenarios") or []
+    reg = sorted(risk_register, key=lambda e: (e.get("latest") or {}).get("priority") or 0,
+                 reverse=True)
+    base = scen[0] if scen else None
+    title = (base or {}).get("title") if base else (reg[0].get("risk") if reg else "AI emerging risk")
+    lines = [f"# Tabletop Exercise — {title}", "",
+             "**Format:** 60–90 min · 4–6 participants · facilitator-led", "",
+             "## Scenario setup"]
+    lines.append((base or {}).get("narrative") if base
+                 else (reg[0].get("risk") if reg else "(no scenario available)"))
+    lines += ["", "## Roles",
+              "- **Policy / Global Affairs** — regulatory & external-narrative response",
+              "- **Product / Safety** — mitigations on-surface",
+              "- **Detection / Intelligence** — what we'd see and when",
+              "- **Comms** — public posture", ""]
+    lines += ["## Injects (escalating)"]
+    inds = (base or {}).get("leading_indicators") or (
+        [reg[0].get("latest", {}).get("leading_indicator")] if reg else [])
+    for i, ind in enumerate([x for x in inds if x][:4], 1):
+        lines.append(f"{i}. **Inject {i}:** {ind} is now observed. What do we do in the next 72h?")
+    branches = (base or {}).get("branch_points") or []
+    for b in branches[:2]:
+        lines.append(f"- **Branch point:** {b}")
+    lines += ["", "## Discussion questions",
+              "1. What would we detect *first*, and is anyone currently watching that signal?",
+              "2. Which mitigation do we pull, who owns it, and what's the lead time?",
+              "3. Where do two teams each see half the problem but neither owns the whole?",
+              "4. What would make this *worse* faster than expected?",
+              "", "## Outputs",
+              "- A ranked action list with owners.", "- Gaps in detection/monitoring to close.",
+              "- A revised estimate of likelihood/severity after the discussion."]
+    return "\n".join(lines)
+
+
 with tab_foresight:
     _fmode = st.radio(
         "Foresight view",
-        ["🔮 Cross-domain risks", "⚠️ Harm vectors (dual-use)", "📋 Risk register"],
+        ["🔮 Cross-domain risks", "⚠️ Harm vectors (dual-use)", "📋 Risk register",
+         "🎬 Scenarios"],
         horizontal=True, label_visibility="collapsed",
     )
     if _fmode.startswith("⚠️"):
         render_harm_section()
     elif _fmode.startswith("📋"):
         render_register_section()
+    elif _fmode.startswith("🎬"):
+        render_scenarios_section()
     else:
         render_foresight_section()
+    # Analyst-ready exports (Step 4) — templated, available under every view.
+    if get_analysis(snap).get("foresight_gap") or risk_register:
+        st.divider()
+        c1, c2 = st.columns(2)
+        with c1:
+            st.download_button("⬇️ Intelligence estimate", data=intelligence_estimate_md(snap),
+                               file_name="signal_lag_intelligence_estimate.md",
+                               mime="text/markdown", width="stretch")
+        with c2:
+            st.download_button("⬇️ Tabletop pack", data=tabletop_pack_md(snap),
+                               file_name="signal_lag_tabletop.md",
+                               mime="text/markdown", width="stretch")
 
 
 # =================================================================== Sources
@@ -1494,6 +1638,18 @@ severity, bubble = exposure, colour = trajectory) plus a sortable table — the 
 frontier risk register and prioritization framework (severity, prevalence, exposure,
 trajectory)." Scores are deliberately calibrated, not alarmist: likelihood is lowered wherever
 a risk leans on a contested or inferential claim.
+
+### 15. Scenarios + intelligence-estimate / tabletop exports (the 🎬 view + ⬇️ buttons)
+A further Claude pass takes the **top-priority register risks** and develops a few **6–24
+month scenarios** — each with drivers, the early **leading indicators** to watch, the
+**branch points** where the future forks, candidate **mitigations**, and an ICD-203-style
+**estimative-likelihood** word. These map the possibility space (not predictions) so an
+analyst can pre-position. Two **templated, one-tap exports** (no extra model calls) turn the
+data into analyst-ready products: a **Strategic Intelligence Estimate** (BLUF + ranked risks
+in estimative language + scenarios + confidence caveats) and a **Tabletop-Exercise pack**
+(scenario setup, roles, escalating injects built from the leading indicators, discussion
+questions). Likelihood scores are shown throughout in **estimative-probability language**
+(*very unlikely → very likely*) so the output reads like an intelligence product.
 
 ### Caveats
 - High coverage of the **AI preprint literature**, not every publisher.

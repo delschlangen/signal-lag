@@ -202,6 +202,28 @@ def test_attach_scores_clamps_and_computes_priority():
     assert risks[1]["trajectory"] == "steady" and risks[1]["priority"] == 15
 
 
+def test_generate_scenarios_parses_and_uses_top_risks(monkeypatch):
+    captured = {}
+
+    def fake_call(system, user, api_key, model="x", max_tokens=8000, tools=None):
+        captured["user"] = user
+        return ('{"scenarios": [{"title": "Agentic fraud wave", "horizon": "12 months",'
+                ' "estimative_likelihood": "likely", "narrative": "n",'
+                ' "drivers": ["d"], "leading_indicators": ["li"], "branch_points": ["bp"],'
+                ' "candidate_mitigations": ["m"], "linked_risks": ["R-high"]}]}')
+
+    monkeypatch.setattr(foresight.llm, "call_claude", fake_call)
+    risks = [{"risk": "R-low", "priority": 4}, {"risk": "R-high", "priority": 20}]
+    scen = foresight.generate_scenarios(risks, "ctx", api_key="k", max_scenarios=2)
+    assert scen and scen[0]["title"] == "Agentic fraud wave"
+    assert "R-high" in captured["user"]            # top-priority risk fed to the pass
+
+
+def test_generate_scenarios_failsoft_without_key():
+    assert foresight.generate_scenarios([{"risk": "x", "priority": 5}], "c", api_key=None) is None
+    assert foresight.generate_scenarios([], "c", api_key="k") is None
+
+
 def test_risk_register_upsert_and_idempotency(tmp_path):
     from signal_lag import snapshot as snap_mod
 

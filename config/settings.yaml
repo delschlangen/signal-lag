@@ -186,6 +186,12 @@ analysis:
     # Server-side web search tool version (falls back to web_search_20250305 if the
     # account/platform lacks the newer one).
     web_search_tool: "web_search_20260209"
+    # Scenario analysis (Step 3): one extra Claude pass that develops 6-24 month scenarios
+    # from the top-priority surfaced risks (narrative, drivers, leading indicators, branch
+    # points, candidate mitigations, estimative likelihood). Baked into the snapshot;
+    # fail-soft (skipped with no api_key). One call per refresh.
+    scenarios: true
+    max_scenarios: 3
     # Live web context (#3): the fast arXiv data is crossed with a hand-maintained
     # context.md that can be months stale. When enabled, ONE pre-synthesis web search
     # pulls the CURRENT dated status of the flagged topics' real-world developments, so

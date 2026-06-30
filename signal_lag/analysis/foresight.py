@@ -696,3 +696,79 @@ def run_foresight(
         "n_surfaced": _surviving_count(risks) if verify else None,
         "live_context": live_context,
     }
+
+
+SCENARIO_SYSTEM = (
+    "You are a strategic-foresight analyst running SCENARIO ANALYSIS for an AI emerging-risks "
+    "team. Given a small set of already-surfaced, scored risks, you develop a few concrete, "
+    "plausible scenarios for how the situation could evolve over the next 6-24 months. You are "
+    "not predicting — you are mapping the possibility space so an analyst can pre-position. "
+    "Each scenario is specific and decision-relevant: it names the drivers, the early "
+    "observable indicators, the branch points where the future forks, and candidate "
+    "mitigations. You stay grounded in the provided risks and are honest about uncertainty."
+)
+
+
+def _scenario_instructions(max_scenarios: int) -> str:
+    return f"""\
+You are given TOP_RISKS (already surfaced and scored by severity/likelihood/exposure) and the \
+current real-world CONTEXT. Develop {max_scenarios} distinct, plausible SCENARIOS for how these \
+risks could evolve over the next 6-24 months. Prefer scenarios that cut across more than one \
+risk, and vary the horizon/severity across the set (not all worst-case). Return ONLY a JSON \
+object (no markdown) of this exact shape:
+
+{{
+  "scenarios": [
+    {{
+      "title": "short scenario name",
+      "horizon": "6 months | 12 months | 24 months",
+      "estimative_likelihood": "very unlikely | unlikely | roughly even | likely | very likely",
+      "narrative": "2-4 sentences: how it plausibly unfolds",
+      "drivers": ["the forces pushing it", "..."],
+      "leading_indicators": ["concrete, observable early-warning signs to watch for", "..."],
+      "branch_points": ["the decisions/uncertainties where the outcome forks", "..."],
+      "candidate_mitigations": ["actions that would reduce severity or likelihood", "..."],
+      "linked_risks": ["the TOP_RISKS statement(s) this builds on"]
+    }}
+  ]
+}}
+
+Use estimative-probability language (ICD-203 style) for "estimative_likelihood". Ground every \
+scenario in the provided risks/context; do not invent unrelated threats. Output valid JSON only."""
+
+
+def generate_scenarios(
+    risks: list, context: str, api_key: str | None, model: str = "claude-opus-4-8",
+    max_scenarios: int = 3, top_k: int = 6, live_context: str | None = None,
+) -> list | None:
+    """One Claude pass: develop 6-24 month scenarios from the top-priority risks.
+
+    Takes the highest-priority surfaced risks (already scored) and returns structured
+    scenarios (narrative, drivers, leading indicators, branch points, mitigations,
+    estimative likelihood). Fail-soft (-> None). One call; cheap relative to synthesis.
+    """
+    if not risks:
+        return None
+    top = sorted(risks, key=lambda r: r.get("priority") or 0, reverse=True)[:top_k]
+    payload = {
+        "TOP_RISKS": [
+            {"risk": r.get("risk"), "severity": r.get("severity"),
+             "likelihood": r.get("likelihood"), "exposure": r.get("exposure"),
+             "trajectory": r.get("trajectory"), "mechanism": r.get("mechanism"),
+             "leading_indicator": r.get("leading_indicator"),
+             "domains_crossed": r.get("domains_crossed")}
+            for r in top
+        ],
+        "CONTEXT": (live_context or context or "(none)")[:4000],
+    }
+    user = _scenario_instructions(max_scenarios) + "\n\nINPUTS:\n" + json.dumps(
+        payload, ensure_ascii=False)
+    text = llm.call_claude(SCENARIO_SYSTEM, user, api_key, model)
+    if text is None:
+        return None
+    result = llm.extract_json(text)
+    if not result or "scenarios" not in result:
+        log.warning("Could not parse scenarios JSON")
+        return None
+    log.info("Scenario analysis complete (%d scenarios)", len(result.get("scenarios") or []))
+    return result.get("scenarios") or []

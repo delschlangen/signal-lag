@@ -379,7 +379,10 @@ python scripts/generate_fixtures.py
   × trajectory** (priority = severity × likelihood, 1–25) and accumulates them into an
   evergreen `data/risk_register.json` — each risk keyed by a stable id with first-seen /
   last-seen and a per-refresh score history — rendered as a **priority matrix** + sortable
-  table. (The evergreen, prioritized frontier risk register.)
+  table. (The evergreen, prioritized frontier risk register.) A **🎬 Scenarios** view develops
+  **6–24 month scenarios** from the top risks (drivers, leading indicators, branch points,
+  mitigations, ICD-203 estimative likelihood), and two one-tap **exports** turn it all into
+  analyst-ready products: a **Strategic Intelligence Estimate** and a **Tabletop-exercise pack**.
 - **🔍 Sources** — the receipts: actual arXiv papers behind each topic (each with a
   short *what-it-does / why-it-matters* note — written by Claude when the analysis
   layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,

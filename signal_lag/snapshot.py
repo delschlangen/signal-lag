@@ -561,6 +561,16 @@ def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | 
         live_context=live_ctx,
     )
     if fg:
+        # Scenario analysis (Step 3): one Claude pass developing 6-24mo scenarios from the
+        # top-priority surfaced risks. Config-gated + fail-soft; baked into the snapshot.
+        if fcfg.get("scenarios"):
+            scen = foresight.generate_scenarios(
+                fg.get("risks") or [], ctx, api_key, model,
+                max_scenarios=int(fcfg.get("max_scenarios", 3)),
+                live_context=live_ctx,
+            )
+            if scen:
+                fg["scenarios"] = scen
         if snapshot.get("analysis") is None:
             snapshot["analysis"] = {}
         snapshot["analysis"]["foresight_gap"] = fg
