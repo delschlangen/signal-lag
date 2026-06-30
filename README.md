@@ -369,6 +369,14 @@ python scripts/generate_fixtures.py
   hypothesis (not a prediction) naming which communities see which half of the problem, with
   mechanism, leading indicator, calibration, and an explicit extrapolation line. See
   methodology section 10. Exportable as a brief.
+- **⚠️ Harm Foresight** — the **dual-use lens**: the same frontier papers re-classified by which
+  real-world **misuse** they could enable (cyber-offense, bio/chem uplift, influence ops, scams,
+  agentic misuse, surveillance, model-weight exfiltration, jailbreak/guardrail-evasion, child
+  safety, harassment), each with its own velocity — answering *"which harms is the literature
+  quietly making easier, and how fast?"* over a **0–24 month** horizon. Accelerating harm vectors
+  feed the Foresight Gap synthesis to frame **capability→harm enablement** risks. It's a foresight
+  signal over research, **not** on-platform abuse telemetry. Harm taxonomy: `config/taxonomy.yaml`
+  (`harm_topics`), fully editable.
 - **🔍 Sources** — the receipts: actual arXiv papers behind each topic (each with a
   short *what-it-does / why-it-matters* note — written by Claude when the analysis
   layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,

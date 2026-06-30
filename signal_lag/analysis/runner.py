@@ -200,6 +200,45 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
 
     new_clusters = [_clab(k) for k in new_cluster_keys]
 
+    # --- harm/misuse dual-use lens (parallel tagging track, source="harm") ---
+    # Classify the SAME papers by which real-world misuse they could enable, then track
+    # each harm vector's momentum. Independent of the capability/safety views.
+    harm = None
+    harm_ts = None
+    if taxonomy.harm_topics and settings.section("harm").get("enabled", True):
+        harm_centroids = tax_mod.build_topic_centroids_from(taxonomy.harm_topics, embedder)
+        harm_rows = tax_mod.tag_papers(ids, vecs, harm_centroids, taxonomy)
+        store.replace_tags("harm", harm_rows)
+        harm_tags = store.get_tags("harm")
+        harm_ts = velocity.drop_incomplete_tail(
+            velocity.topic_timeseries(papers, harm_tags), today
+        )
+        harm_infl = velocity.compute_inflections(
+            harm_ts, int(vcfg.get("inflection_window", 2)),
+            float(vcfg.get("inflection_threshold", 0.3)),
+        )
+        infl_by_key = {i["topic_key"]: i for i in harm_infl}
+        counts: dict[str, int] = {}
+        for _aid, _tags in harm_tags.items():
+            for _k, _ in _tags:
+                counts[_k] = counts.get(_k, 0) + 1
+        vectors = []
+        for t in taxonomy.harm_topics:
+            i = infl_by_key.get(t.key, {})
+            vectors.append({
+                "key": t.key, "label": t.label,
+                "n_tagged": counts.get(t.key, 0),
+                "change_pct": round(i.get("change", 0.0) * 100, 1),
+                "recent_per_qtr": round(i.get("recent_mean", 0.0), 1),
+                "direction": i.get("direction", "steady"),
+            })
+        vectors.sort(key=lambda v: v["change_pct"], reverse=True)
+        harm = {
+            "label_map": {t.key: t.label for t in taxonomy.harm_topics},
+            "vectors": vectors,
+            "accelerating": [v["key"] for v in vectors if v["direction"] == "acceleration"],
+        }
+
     # Analysis (Claude) config, hoisted so the sentiment/citation passes can reuse it.
     acfg = settings.analysis
     acfg_api_key = acfg.get("api_key") if acfg.get("enabled") else None
@@ -353,6 +392,8 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
         "paper_critical": paper_critical,
         "citation_flow": cflow,
         "author_migration": author_mig,
+        "harm": harm,
+        "harm_timeseries": harm_ts,
         "lab_posts": lab_posts,
         "signals": sigs,
         "brief": brief,

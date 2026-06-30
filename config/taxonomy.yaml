@@ -146,6 +146,97 @@ capability_topics:
       - "recursive self-improvement and self-training"
       - "models generating their own training data and curricula"
 
+# Harm / misuse "vectors": a parallel DUAL-USE lens. Where safety/capability topics
+# track the research itself, these track which real-world MISUSE a paper could enable
+# — so the tool can foresee how frontier harms may manifest over the next 0-24 months.
+# Tagged independently (source="harm"), so the capability<->safety views are unchanged.
+# Seeds are framed the way research papers describe these risks (we tag the literature,
+# not abuse incidents). Edit/extend freely.
+harm_topics:
+  - key: cyber_offense
+    label: "Offensive Cyber / Autonomous Exploitation"
+    kind: harm
+    seeds:
+      - "LLMs for autonomous vulnerability discovery and exploitation"
+      - "AI agents performing penetration testing and cyberattacks"
+      - "automated exploit generation and malware synthesis with language models"
+      - "using AI to find and weaponize software security flaws"
+
+  - key: bio_chem_uplift
+    label: "Bio / Chemical Uplift"
+    kind: harm
+    seeds:
+      - "large language models providing uplift for biological weapons"
+      - "AI assistance in chemical and biological threat design"
+      - "dual-use risks of AI in life sciences and pathogen research"
+      - "frontier models lowering barriers to dangerous biology"
+
+  - key: influence_ops
+    label: "Influence Operations / Persuasion"
+    kind: harm
+    seeds:
+      - "AI-generated disinformation and propaganda at scale"
+      - "large language models for influence operations and astroturfing"
+      - "persuasion and manipulation by conversational AI"
+      - "automated coordinated inauthentic behavior on social media"
+
+  - key: scams_fraud
+    label: "Scams / Fraud / Social Engineering"
+    kind: harm
+    seeds:
+      - "AI-enabled scams, phishing, and social engineering"
+      - "voice cloning and deepfakes for fraud and impersonation"
+      - "autonomous agents conducting fraud at scale"
+      - "language models generating convincing fraudulent content"
+
+  - key: child_safety
+    label: "Child Safety / Exploitation Risk"
+    kind: harm
+    seeds:
+      - "AI-generated child sexual abuse material risks"
+      - "grooming and child exploitation via chatbots"
+      - "detecting AI-facilitated child sexual exploitation"
+
+  - key: harassment_abuse
+    label: "Harassment / Coordinated Abuse"
+    kind: harm
+    seeds:
+      - "AI-generated targeted harassment and abuse"
+      - "non-consensual intimate imagery and deepfake harassment"
+      - "coordinated abuse and brigading enabled by generative AI"
+
+  - key: agentic_misuse
+    label: "Autonomous-Agent Misuse"
+    kind: harm
+    seeds:
+      - "misuse of autonomous AI agents to take harmful real-world actions"
+      - "agents pursuing unauthorized or unsafe goals across tools and accounts"
+      - "AI agents weaponized for large-scale automated abuse"
+
+  - key: surveillance_privacy
+    label: "Surveillance / Privacy Erosion"
+    kind: harm
+    seeds:
+      - "AI-enabled mass surveillance and facial recognition misuse"
+      - "deanonymization and re-identification of individuals with AI"
+      - "large-scale privacy erosion through model inference of personal data"
+
+  - key: model_exfiltration
+    label: "Model / Weight Exfiltration"
+    kind: harm
+    seeds:
+      - "theft and exfiltration of model weights"
+      - "model extraction and unauthorized replication of frontier models"
+      - "security of model weights against insider and nation-state threats"
+
+  - key: jailbreak_evasion
+    label: "Jailbreaks / Guardrail Evasion"
+    kind: harm
+    seeds:
+      - "jailbreaking and prompt injection to bypass safety guardrails"
+      - "adversarial attacks that evade content safety filters"
+      - "circumventing refusal training and alignment safeguards"
+
 # The headline product: paired capability<->safety topics. Divergence is measured
 # as (capability velocity) - (safety velocity) for each pair.
 pairings:

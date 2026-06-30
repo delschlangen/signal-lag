@@ -126,6 +126,15 @@ citation_flow:
   # Max verified-borrower examples to surface in the digest.
   max_examples: 30
 
+harm:
+  # Harm/misuse dual-use lens: re-tag the SAME papers by which real-world misuse they
+  # could enable (config/taxonomy.yaml: harm_topics), tracked as a parallel signal
+  # (source="harm") so the tool can foresee how frontier harms may manifest over the
+  # next 0-24 months. Independent of the capability/safety views; fail-soft (no
+  # harm_topics defined => skipped). The Foresight Gap pass uses accelerating harm
+  # vectors to frame capability→harm enablement risks.
+  enabled: true
+
 divergence:
   # Relative-velocity gap (capability minus safety) that triggers a signal.
   gap_threshold: 0.25

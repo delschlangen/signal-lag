@@ -163,6 +163,19 @@ def build_signal_digest(snap: dict, diff: dict) -> dict:
         ],
     }
 
+    # Harm/misuse dual-use lens: which real-world MISUSE the accelerating research could
+    # enable, with the momentum of each harm vector and a few enabling papers. Lets the
+    # synthesis frame risks as capability→harm enablement over 0-24 months.
+    harm = snap.get("harm") or {}
+    harm_vectors = [
+        {"harm_vector": v.get("label"), "trend_pct_per_qtr": v.get("change_pct"),
+         "recent_per_qtr": v.get("recent_per_qtr"), "n_tagged": v.get("n_tagged"),
+         "direction": v.get("direction"),
+         "enabling_papers": [rp.get("title") for rp in (v.get("rep_papers") or [])[:3]]}
+        for v in (harm.get("vectors") or [])
+        if v.get("n_tagged", 0) >= 3
+    ][:10]
+
     # What changed THIS week (weight movement, not just static state).
     changes = {
         "first_run": diff.get("first_run", False),
@@ -190,6 +203,7 @@ def build_signal_digest(snap: dict, diff: dict) -> dict:
         "quadrant": {"emerging": emerging, "white_space": white_space},
         "citation_movers": citation_movers,
         "citation_verified_borrowing": citation_verified,
+        "harm_vectors_dual_use": harm_vectors,
         "author_migration_experimental": author_migration,
         "new_emergent_clusters": new_clusters,
         "recent_lab_activity": lab_rows,
@@ -303,6 +317,14 @@ CRITICAL INSTRUCTIONS:
   NOISY signal off a sampled corpus. You may use it as soft corroboration of where talent
   is flowing, but NEVER let a risk rest on it alone, and say so in "calibration" if you
   lean on it.
+- FRAME HARMS AS 0–24 MONTH ENABLEMENT. SIGNAL_DIGEST includes "harm_vectors_dual_use":
+  real-world MISUSE categories (cyber-offense, bio/chem uplift, influence ops, scams, agentic
+  misuse, etc.) with the momentum of the research that could enable them and a few enabling
+  papers. Where a harm vector is accelerating, prefer surfacing risks framed as "accelerating
+  capability/technique X plausibly enables misuse Y on a 0–24 month horizon" — name a CONCRETE
+  LEADING INDICATOR that would show it materializing, name which defender/community is NOT
+  watching that seam, and keep calibration honest about the enablement inference (a research
+  trend is an *enabling* signal, not proof of imminent abuse).
 - REWARD FRAMING INVERSIONS. Where possible, look for risks that INVERT or COMPLICATE the
   conventional framing of a trend everyone treats as straightforwardly good or bad (e.g.
   "transparency regulation is a solution" → "it can freeze an unsound standard into law").

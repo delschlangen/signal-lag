@@ -148,6 +148,8 @@ with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
         "is an early confidence-erosion warning.\n"
         "- **🧭 Quadrant** — the field mapped by volume vs. growth (emerging / hot / cooling).\n"
         "- **🔮 Foresight Gap** — novel cross-domain risks, web-checked for novelty.\n"
+        "- **⚠️ Harm Foresight** — the *dual-use* lens: which real-world **misuse** the "
+        "accelerating research could enable, on a 0–24 month horizon.\n"
         "- **🔍 Sources** — the actual papers behind every topic, all linked.\n"
         "- **📖 Methodology** — how it all works + a glossary of every term.\n\n"
         "**Symbols you'll see**\n"
@@ -160,9 +162,10 @@ with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
     )
 
 (tab_summary, tab_div, tab_vel, tab_sentiment, tab_quad,
- tab_foresight, tab_sources, tab_method, tab_history) = st.tabs(
+ tab_foresight, tab_harm, tab_sources, tab_method, tab_history) = st.tabs(
     ["📋 Weekly Summary", "⚖️ Divergence", "📈 Velocity", "🔬 Sentiment",
-     "🧭 Quadrant", "🔮 Foresight Gap", "🔍 Sources", "📖 Methodology", "📜 History"]
+     "🧭 Quadrant", "🔮 Foresight Gap", "⚠️ Harm Foresight", "🔍 Sources",
+     "📖 Methodology", "📜 History"]
 )
 
 
@@ -1090,6 +1093,54 @@ with tab_foresight:
                            "only. Fill in `config/context.md` to sharpen it.")
 
 
+# =============================================================== Harm Foresight
+with tab_harm:
+    st.subheader("⚠️ Harm Foresight — the dual-use lens (0–24 months)")
+    st.info(
+        "A **dual-use foresight lens**: the same frontier papers, re-classified by which "
+        "real-world **misuse** they could enable (cyber-offense, bio/chem uplift, influence "
+        "ops, scams, agentic misuse, …) and how fast that enabling research is moving. It "
+        "answers *'which harms is the literature quietly making easier, and how soon?'* — "
+        "**a foresight signal over research, not on-platform abuse telemetry.**",
+        icon="⚠️",
+    )
+    harm = snap.get("harm") or {}
+    vectors = harm.get("vectors") or []
+    if not vectors:
+        st.warning("No harm-vector signal in this snapshot. Re-run the weekly refresh to "
+                   "populate it (requires the `harm_topics` taxonomy).", icon="🔌")
+    else:
+        accel = [v for v in vectors if v.get("direction") == "acceleration"]
+        if accel:
+            st.markdown("**🚀 Accelerating harm vectors** (enabling research speeding up):")
+            for v in accel:
+                st.markdown(f"- **{v['label']}** — {v['change_pct']:+.0f}%/qtr, "
+                            f"~{v['recent_per_qtr']:.0f} papers/qtr ({v['n_tagged']} tagged)")
+        st.divider()
+        st.markdown("**All harm vectors** (by momentum):")
+        import pandas as _pd
+        df = _pd.DataFrame([
+            {"Harm vector": v["label"], "Trend %/qtr": v["change_pct"],
+             "Recent/qtr": v["recent_per_qtr"], "Papers tagged": v["n_tagged"],
+             "Direction": v["direction"]}
+            for v in vectors
+        ])
+        st.dataframe(df, width="stretch", hide_index=True)
+        st.divider()
+        st.markdown("**What's driving each vector** — representative enabling papers:")
+        for v in vectors:
+            if not v.get("rep_papers"):
+                continue
+            with st.expander(f"{v['label']} · {v['change_pct']:+.0f}%/qtr · "
+                             f"{v['n_tagged']} papers"):
+                for rp in v["rep_papers"]:
+                    st.markdown(f"- [{rp['title']}]({rp['url']}) "
+                                f"<span style='color:gray'>· {rp['published']}</span>",
+                                unsafe_allow_html=True)
+                    if rp.get("abstract"):
+                        st.caption(rp["abstract"])
+
+
 # =================================================================== Sources
 with tab_sources:
     st.subheader("Source papers")
@@ -1308,6 +1359,19 @@ fail-soft (no API key ⇒ the prior behavior, unchanged):
   safety/oversight topic — a capability→safety talent flow that can precede a wave of
   safety work. **Clearly labeled experimental and noisy** (stratified sample + imperfect
   author IDs): it informs the brief, never gates an alert.
+
+### 13. Harm Foresight — the dual-use lens (the ⚠️ tab)
+The capability/safety taxonomy tracks the *research*; this layer re-classifies the **same
+papers** by which real-world **misuse** they could enable — a parallel "harm-vector" taxonomy
+(cyber-offense, bio/chem uplift, influence operations, scams & fraud, agentic misuse,
+surveillance, model-weight exfiltration, jailbreak/guardrail-evasion, child-safety,
+harassment). Each vector gets the same velocity treatment, so the tool answers *"which harms
+is the frontier literature quietly making easier, and how fast?"* over a **0–24 month** horizon.
+Accelerating harm vectors are fed into the Foresight Gap synthesis, which is instructed to
+frame risks as **capability → harm enablement** with a concrete leading indicator and the
+defender community that isn't watching that seam. It is a **foresight signal over research, not
+on-platform abuse telemetry** — an *enabling* signal, not proof of imminent abuse. The harm
+taxonomy lives in `config/taxonomy.yaml` (`harm_topics`) and is fully editable.
 
 ### Caveats
 - High coverage of the **AI preprint literature**, not every publisher.

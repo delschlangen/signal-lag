@@ -149,6 +149,59 @@ def test_fetch_live_context_failsoft_without_key():
     assert foresight.fetch_live_context("ctx", {}, api_key=None) is None
 
 
+# ------------------------------------------------------- harm/misuse dual-use lens
+def test_harm_tagging_via_generic_centroids():
+    from signal_lag.analysis import taxonomy as taxmod
+    from signal_lag.config import Taxonomy, Topic
+
+    vocab = ["cyber", "bioweapon", "influence"]
+
+    class FakeEmbedder:
+        def embed(self, texts):
+            out = []
+            for t in texts:
+                v = np.zeros(len(vocab), dtype=np.float32)
+                for i, w in enumerate(vocab):
+                    if w in t:
+                        v[i] = 1.0
+                nrm = np.linalg.norm(v)
+                out.append(v / nrm if nrm else v)
+            return np.vstack(out)
+
+    harm = [Topic("cyber_offense", "Cyber", "harm", ["cyber exploitation"]),
+            Topic("bio", "Bio", "harm", ["bioweapon uplift"]),
+            Topic("influence_ops", "Influence", "harm", ["influence operations"])]
+    tax = Taxonomy(safety_topics=[], capability_topics=[], pairings=[],
+                   harm_topics=harm, tag_threshold=0.5, max_tags_per_paper=3)
+    emb = FakeEmbedder()
+    cents = taxmod.build_topic_centroids_from(tax.harm_topics, emb)
+    assert set(cents) == {"cyber_offense", "bio", "influence_ops"}
+    # harm topics must NOT be in the research all_topics list
+    assert tax.all_topics == []
+
+    pv = emb.embed(["a paper about cyber attacks", "unrelated text with no signal"])
+    rows = taxmod.tag_papers(["p1", "p2"], pv, cents, tax)
+    tagged = {(a, k) for a, k, _ in rows}
+    assert ("p1", "cyber_offense") in tagged
+    assert not any(a == "p2" for a, k, _ in rows)   # no harm matched -> untagged
+
+
+def test_digest_includes_harm_vectors_and_filters_thin_ones():
+    snap = {"label_map": {}, "harm": {"vectors": [
+        {"key": "cyber_offense", "label": "Cyber", "n_tagged": 5, "change_pct": 120.0,
+         "recent_per_qtr": 4.0, "direction": "acceleration",
+         "rep_papers": [{"title": "Autonomous exploit paper"}]},
+        {"key": "rare", "label": "Rare", "n_tagged": 1, "change_pct": 0.0,
+         "recent_per_qtr": 0.0, "direction": "steady", "rep_papers": []}]}}
+    diff = {"first_run": True, "prev_date": None, "new_alerts": [],
+            "new_accelerations": [], "new_sleepers": []}
+    d = foresight.build_signal_digest(snap, diff)
+    hv = d["harm_vectors_dual_use"]
+    assert any(x["harm_vector"] == "Cyber" for x in hv)
+    assert all(x["harm_vector"] != "Rare" for x in hv)   # n_tagged < 3 filtered out
+    assert hv[0]["enabling_papers"] == ["Autonomous exploit paper"]
+
+
 # ----------------------------------------------------- ingestion round-trip (#2/#4)
 def test_store_persists_referenced_works_and_author_ids(tmp_path):
     from signal_lag.ingest.store import Store

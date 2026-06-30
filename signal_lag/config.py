@@ -45,6 +45,10 @@ class Taxonomy:
     capability_topics: list[Topic]
     pairings: list[Pairing]
     negativity_seeds: list[str] = field(default_factory=list)
+    # Dual-use harm/misuse "vectors" — a PARALLEL lens, tagged independently
+    # (source="harm"). Deliberately NOT part of `all_topics` so they don't dilute the
+    # capability/safety research tagging or the research label_map.
+    harm_topics: list[Topic] = field(default_factory=list)
     tag_threshold: float = 0.28
     max_tags_per_paper: int = 3
 
@@ -167,6 +171,7 @@ def load_taxonomy(path: Path | None = None) -> Taxonomy:
             for p in raw.get("pairings", [])
         ],
         negativity_seeds=list(raw.get("negativity_seeds", [])),
+        harm_topics=_topics(raw.get("harm_topics", [])),
         tag_threshold=float(tax_cfg.get("tag_threshold", 0.28)),
         max_tags_per_paper=int(tax_cfg.get("max_tags_per_paper", 3)),
     )

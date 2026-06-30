@@ -48,6 +48,7 @@ def build_snapshot(
     store = Store(settings.path("db_path"))
     papers = store.get_papers()
     tax_tags = store.get_tags("taxonomy")
+    harm_tags = store.get_tags("harm")
     # Prefer topic-tagged posts from the analysis; fall back to raw posts.
     posts = results.get("lab_posts") or store.get_posts(limit=60)
     store.close()
@@ -100,6 +101,30 @@ def build_snapshot(
         lst.sort(key=lambda r: r["published"], reverse=True)
         per_topic[k] = lst[:8]
 
+    # Harm/misuse dual-use lens: attach representative ENABLING papers per harm vector
+    # (the same per-topic representative-paper pattern), so the Harm Foresight tab can
+    # show what's driving each vector. Built from the parallel source="harm" tags.
+    harm_block = results.get("harm")
+    if harm_block:
+        harm_reps: dict[str, list[dict]] = {v["key"]: [] for v in harm_block["vectors"]}
+        for aid, tags in harm_tags.items():
+            p = by_id.get(aid)
+            if not p:
+                continue
+            for topic_key, score in tags:
+                if topic_key in harm_reps:
+                    harm_reps[topic_key].append({
+                        "arxiv_id": p.arxiv_id, "title": p.title,
+                        "url": arxiv_url(p.arxiv_id), "published": p.published.isoformat(),
+                        "abstract": (p.abstract or "")[:300], "score": round(float(score), 3),
+                    })
+        for k, lst in harm_reps.items():
+            lst.sort(key=lambda r: r["published"], reverse=True)
+            harm_reps[k] = lst[:6]
+        for v in harm_block["vectors"]:
+            v["rep_papers"] = harm_reps.get(v["key"], [])
+        harm_block["timeseries"] = _records(results.get("harm_timeseries"))
+
     # Add URLs + S2 fields to citation movers (these are older, cited papers that
     # Semantic Scholar is most likely to have indexed).
     cites = results["citations"]
@@ -148,6 +173,7 @@ def build_snapshot(
         "sentiment_llm_verify": results.get("sentiment_llm_verify"),
         "citation_flow": results.get("citation_flow"),
         "author_migration": results.get("author_migration"),
+        "harm": harm_block,
         "sources": per_topic,
         "lab_activity": posts,
         "analysis": results.get("analysis"),

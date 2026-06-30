@@ -16,13 +16,19 @@ from .embeddings import Embedder
 log = logging.getLogger("signal_lag.taxonomy")
 
 
-def build_topic_centroids(taxonomy: Taxonomy, embedder: Embedder) -> dict[str, np.ndarray]:
-    """Return {topic_key: centroid vector}. Uses the same embedder as papers."""
+def build_topic_centroids_from(topics, embedder: Embedder) -> dict[str, np.ndarray]:
+    """Return {topic_key: L2-normalized seed-centroid} for an arbitrary topic list.
+
+    Generic over any taxonomy track (research topics, harm/misuse vectors, ...): each
+    topic's seed phrases are embedded and averaged into one normalized vector.
+    """
     keys, texts = [], []
-    for topic in taxonomy.all_topics:
+    for topic in topics:
         for seed in topic.seeds:
             keys.append(topic.key)
             texts.append(seed)
+    if not texts:
+        return {}
     seed_vecs = embedder.embed(texts)
     centroids: dict[str, list[np.ndarray]] = {}
     for k, v in zip(keys, seed_vecs):
@@ -33,6 +39,11 @@ def build_topic_centroids(taxonomy: Taxonomy, embedder: Embedder) -> dict[str, n
         norm = np.linalg.norm(c)
         out[k] = (c / norm).astype(np.float32) if norm else c.astype(np.float32)
     return out
+
+
+def build_topic_centroids(taxonomy: Taxonomy, embedder: Embedder) -> dict[str, np.ndarray]:
+    """Return {topic_key: centroid vector} for the research taxonomy (all_topics)."""
+    return build_topic_centroids_from(taxonomy.all_topics, embedder)
 
 
 def tag_papers(
