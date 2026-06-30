@@ -56,30 +56,39 @@
  },
  {
   "date": "2026-06-30",
-  "n_papers": 12978,
+  "n_papers": 12306,
   "date_start": "2023-06-30",
   "date_end": "2026-06-29",
   "n_flagged": 2,
   "n_pairings": 6,
   "headline": {
    "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +22% / saf -5%)",
-   "meaning": "The dominant tension this quarter is rapidly accelerating agentic/autonomy capability racing ahead of the oversight and monitoring tooling meant to govern it.",
-   "why_it_matters": "Autonomy capability is the fastest-growing topic (+39.2% QoQ, 115.5 papers/qtr recent), while scalable oversight is contracting (-5.4%) and reward-hacking research is collapsing (-17.1%), meaning the governance layer for self-directed, long-horizon agents is thinning exactly as those agents become more capable."
+   "meaning": "The quarter's defining tension is between fast-accelerating agentic autonomy and a much slower-growing ability to monitor what those agents actually do at runtime.",
+   "why_it_matters": "Agentic capability is growing at +39% QoQ (recent ~115/qtr) while monitoring grows only +14%; as agents take longer, more consequential autonomous actions, the gap in being able to detect harmful behavior before it executes is the most acute near-term safety exposure."
   },
   "sentiment_rising": [],
   "overall_foresight": [
    {
-    "risk": "'Thinking-intervention' and refusal-decoding research borrowing alignment work is quietly building a reusable toolkit to extract refused knowledge from aligned models — turning the post-deployment monitoring pivot into an offense-enabling layer just as CAISI certifies models on bio/chem/cyber refusals.",
+    "risk": "Government pre-deployment frontier evaluations may institutionalize agentic-behavior monitoring tooling at the exact moment that tooling's research base is being out-paced 3-to-1 by the autonomy it must watch — freezing an immature monitoring standard into national-security practice.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Security/Geopolitical",
-     "Legal/Regulatory"
+     "Political",
+     "Legal/Regulatory",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "Privacy-preserving and confidential-inference techniques being borrowed into agentic deployments are closing off the very inspection surfaces that pre-deployment government evaluators (CAISI) and incident-reporting regimes (SB 53) implicitly assume they can access.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Technological"
     ]
    }
   ],
   "weekly_foresight": [
    {
-    "risk": "Robot manipulation policies are being validated with offline proxy metrics whose 'critical interval' weighting is researcher-chosen, letting unsafe physical-world VLA policies pass review precisely where harm concentrates.",
+    "risk": "Self-evolving world-model agents create a 'foresight laundering' gap where agent-generated predictions are trusted as oversight signals even as the safety subfield meant to audit them shrinks.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Technological",
@@ -87,10 +96,10 @@
     ]
    },
    {
-    "risk": "Generative molecular-design benchmarks are deliberately moving beyond drug-likeness into structurally novel chemical spaces (nanomaterials) just as biosecurity evaluation infrastructure remains anchored to drug/bio proxies — opening a dual-use chem-design seam that current pre-deployment evals are not built to screen.",
+    "risk": "Agentic medical-research platforms with 'introspective verification' will normalize self-graded evidence synthesis in clinical decision support faster than any external faithfulness check exists for them.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Security/Geopolitical",
+     "Technological",
      "Legal/Regulatory"
     ]
    }

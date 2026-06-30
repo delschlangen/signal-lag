@@ -444,6 +444,178 @@
   ]
  },
  {
+  "id": "d54182e955f3",
+  "risk": "Government pre-deployment frontier evaluations may institutionalize agentic-behavior monitoring tooling at the exact moment that tooling's research base is being out-paced 3-to-1 by the autonomy it must watch — freezing an immature monitoring standard into national-security practice.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "d54182e955f3",
+   "risk": "Government pre-deployment frontier evaluations may institutionalize agentic-behavior monitoring tooling at the exact moment that tooling's research base is being out-paced 3-to-1 by the autonomy it must watch — freezing an immature monitoring standard into national-security practice.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Political",
+    "Legal/Regulatory",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "CAISI/NIST publishing a fixed agentic-evaluation methodology or benchmark suite that is then referenced in procurement or the Great American AI Act's CAISI codification, without an attached cadence for revising it as autonomy horizons lengthen."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "f5d6cd457f6e",
+  "risk": "Multi-agent communication-security defenses are being borrowed into capability systems faster than scalable-oversight research is maturing, so the same agent-to-agent protocols hardened against external attackers create un-overseen internal coordination surfaces in critical infrastructure deployments.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "f5d6cd457f6e",
+   "risk": "Multi-agent communication-security defenses are being borrowed into capability systems faster than scalable-oversight research is maturing, so the same agent-to-agent protocols hardened against external attackers create un-overseen internal coordination surfaces in critical infrastructure deployments.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Technological",
+    "Economic"
+   ],
+   "leading_indicator": "Production multi-agent deployments (e.g., computer-use agents per Gemini 3.5 Flash / GPT-5.6) advertising MCP/channel-security certifications while lacking any human-in-the-loop interruption guarantee at the swarm level; incident reports of agent swarms completing harmful multi-step tasks no operator approved."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "74185ccdd983",
+  "risk": "Self-evolving world-model agents create a 'foresight laundering' gap where agent-generated predictions are trusted as oversight signals even as the safety subfield meant to audit them shrinks.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "74185ccdd983",
+   "risk": "Self-evolving world-model agents create a 'foresight laundering' gap where agent-generated predictions are trusted as oversight signals even as the safety subfield meant to audit them shrinks.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Technological",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "Deployment papers or system cards that cite a model's own world-model/foresight module as the safety/verification mechanism (rather than an independent monitor), and absence of an external oversight component in agent system cards for safety-critical domains (driving, clinical research)."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "00b76a4a041b",
+  "risk": "Agentic medical-research platforms with 'introspective verification' will normalize self-graded evidence synthesis in clinical decision support faster than any external faithfulness check exists for them.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "00b76a4a041b",
+   "risk": "Agentic medical-research platforms with 'introspective verification' will normalize self-graded evidence synthesis in clinical decision support faster than any external faithfulness check exists for them.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Technological",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "Clinical or pharma adoption of agentic deep-research tools whose only stated assurance is 'introspective/self-verification,' with no independent faithfulness benchmark; and citations of DEEPMED-style platforms in clinical-guideline or formulary workflows."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "8e533e56543b",
+  "risk": "Multi-teacher capability-distillation (MOPD) lets non-frontier labs cheaply fuse offensive-relevant skills below the FLOPS/compute thresholds that trigger CAISI evaluation and SB 53 disclosure.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "8e533e56543b",
+   "risk": "Multi-teacher capability-distillation (MOPD) lets non-frontier labs cheaply fuse offensive-relevant skills below the FLOPS/compute thresholds that trigger CAISI evaluation and SB 53 disclosure.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "Open-source or leaked models that demonstrate composed multi-domain capability (e.g., strong agentic + cyber-reasoning) with disclosed sub-threshold training compute; or distillation papers/repos explicitly fusing dual-use-relevant teachers; CAISI/eval coverage gaps for distilled derivatives of evaluated base models."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
   "id": "b2367e0063a7",
   "risk": "Bio/chemical-uplift capability is being driven less by 'how to make a pathogen' papers and more by autonomous SCIENTIFIC-RESEARCH-ORCHESTRATION agents (web-scale collaboration, persistent memory), shifting the uplift seam from knowledge to autonomous experimental workflow — a vector biosecurity reviewers focused on knowledge-elicitation are not watching.",
   "first_seen": "2026-06-30",
@@ -567,6 +739,41 @@
     "Security/Geopolitical"
    ],
    "leading_indicator": "Demonstrations (red-team or otherwise) where an orchestrated agent pipeline substantially outperforms the best single model on end-to-end wet-lab-relevant task completion; CAISI/lab evals beginning to add agentic-orchestration bio scenarios distinct from single-model Q&A."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 5,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 10
+   }
+  ]
+ },
+ {
+  "id": "953213096ced",
+  "risk": "Accelerating autonomous research agents tagged under Bio/Chemical Uplift are converging with agentic self-evolving planners, plausibly enabling closed-loop autonomous experiment design that lowers the human-expertise barrier to hazardous synthesis on a 0–24 month horizon — a seam biosecurity reviewers and agent-capability teams each watch only half of.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "953213096ced",
+   "risk": "Accelerating autonomous research agents tagged under Bio/Chemical Uplift are converging with agentic self-evolving planners, plausibly enabling closed-loop autonomous experiment design that lowers the human-expertise barrier to hazardous synthesis on a 0–24 month horizon — a seam biosecurity reviewers and agent-capability teams each watch only half of.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 5,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 10,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Technological",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "A published or deployed autonomous-research-agent system demonstrating end-to-end hypothesis-to-protocol loops in chemistry/biology with minimal human steering; dangerous-capability benchmarks adding (and failing) an 'autonomous discovery loop' rather than knowledge-recall task."
   },
   "history": [
    {
@@ -853,6 +1060,75 @@
   ]
  },
  {
+  "id": "0c8c7f69dae0",
+  "risk": "The deceleration of Reward Hacking and Deceptive Alignment research is occurring as Chain-of-Thought Faithfulness accelerates — risking a shift toward trusting visible reasoning traces precisely as the literature that explains why traces can be unfaithful goes quiet, just as faithfulness becomes a regulated transparency artifact.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "0c8c7f69dae0",
+   "risk": "The deceleration of Reward Hacking and Deceptive Alignment research is occurring as Chain-of-Thought Faithfulness accelerates — risking a shift toward trusting visible reasoning traces precisely as the literature that explains why traces can be unfaithful goes quiet, just as faithfulness becomes a regulated transparency artifact.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 9,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Social",
+    "Political"
+   ],
+   "leading_indicator": "Regulators or auditors citing chain-of-thought / reasoning transparency as compliance evidence under SB 53 or EU Article 50, without referencing faithfulness-limitation findings; a faithfulness-failure incident where a model's compliant-looking trace masked the actual (reward-hacked) behavior."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 9
+   }
+  ]
+ },
+ {
+  "id": "45ca45136b76",
+  "risk": "Red-teaming defenses for LLM search agents are being optimized against indirect prompt injection while the same accelerating search-agent autonomy turns Adversarial-SEO into a scalable, automatable influence-injection channel that persuasion-ops researchers and search-integrity teams track separately.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "45ca45136b76",
+   "risk": "Red-teaming defenses for LLM search agents are being optimized against indirect prompt injection while the same accelerating search-agent autonomy turns Adversarial-SEO into a scalable, automatable influence-injection channel that persuasion-ops researchers and search-integrity teams track separately.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "steady",
+   "priority": 9,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Social"
+   ],
+   "leading_indicator": "Disclosure (by a lab threat-intel team or platform) of a coordinated campaign that seeded web/retrieval sources specifically to manipulate the outputs of autonomous search/research agents, OR a measurable divergence between what human searchers see and what agents report on a contested topic (e.g., energy/data-center policy)."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "steady",
+    "priority": 9
+   }
+  ]
+ },
+ {
   "id": "6152fd6042da",
   "risk": "Training-free, confidence-driven test-time RL on robot/embodied (VLA) policies lets deployed physical agents rewrite their own behavior using self-generated reward signals — outside any weight-update audit trail and outside the bounded-task monitoring that physical-safety regulators actually run.",
   "first_seen": "2026-06-30",
@@ -1121,6 +1397,40 @@
     "likelihood": 2,
     "exposure": 3,
     "trajectory": "steady",
+    "priority": 6
+   }
+  ]
+ },
+ {
+  "id": "19376488cac7",
+  "risk": "Privacy-preserving and confidential-inference techniques being borrowed into agentic deployments are closing off the very inspection surfaces that pre-deployment government evaluators (CAISI) and incident-reporting regimes (SB 53) implicitly assume they can access.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "19376488cac7",
+   "risk": "Privacy-preserving and confidential-inference techniques being borrowed into agentic deployments are closing off the very inspection surfaces that pre-deployment government evaluators (CAISI) and incident-reporting regimes (SB 53) implicitly assume they can access.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 6,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Technological"
+   ],
+   "leading_indicator": "A frontier lab or enterprise vendor cites privacy/confidentiality (or trade-secret protection of context) as the reason a CAISI or SB-53-driven evaluation could not observe a specific agentic execution path; or a safety-incident report under SB 53 notes that root-cause analysis was blocked by confidential-inference state being unrecoverable."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
     "priority": 6
    }
   ]
