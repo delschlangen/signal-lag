@@ -570,13 +570,27 @@ INCIDENTS_SYSTEM = (
 )
 
 
-def _incidents_instructions(harm_vectors: list, max_incidents: int) -> str:
+def _incidents_instructions(harm_vectors: list, max_incidents: int, today: str = "") -> str:
     keys = "\n".join(f"  - {v.get('key')}: {v.get('label')}" for v in harm_vectors)
+    now_line = (f"TODAY IS {today}. " if today else "")
+    year = (today[:4] if today else "")
+    recency = (
+        f"{now_line}PRIORITIZE THE MOST RECENT incidents — especially ones from {year} and the "
+        f"last ~6 months — and SEARCH SPECIFICALLY for them (e.g. '{year} AI incident', "
+        f"'{year} AI misuse', recent AI Incident Database entries). Do NOT just return the "
+        f"well-known landmark cases from prior years; lead with the freshest verifiable ones, "
+        f"and include older landmark incidents only to fill out the list. Note that incident "
+        f"databases lag, so very recent items may be sparse — that's fine, return what is real."
+        if year else
+        "PRIORITIZE the most recent incidents (last ~6 months) and search specifically for them."
+    )
     return f"""\
-Search the web and compile up to {max_incidents} REAL, recent (last ~12 months) AI \
-misuse/harm INCIDENTS THAT ACTUALLY HAPPENED — drawn from the AI Incident Database, the OECD \
-AI Incidents Monitor, and reputable news. Categorize each into exactly one HARM_VECTOR key \
-from this list (pick the closest; skip incidents that fit none):
+Search the web and compile up to {max_incidents} REAL AI misuse/harm INCIDENTS THAT ACTUALLY \
+HAPPENED — drawn from the AI Incident Database, the OECD AI Incidents Monitor, and reputable \
+news. {recency}
+
+Categorize each into exactly one HARM_VECTOR key from this list (pick the closest; skip \
+incidents that fit none):
 {keys}
 
 Return ONLY a JSON object (no markdown) of this exact shape:
@@ -600,20 +614,21 @@ predicted, or unverifiable ones. If unsure, omit. Output valid JSON only."""
 
 def fetch_incidents(
     harm_vectors: list, api_key: str | None, model: str = "claude-opus-4-8",
-    tool_version: str = "web_search_20260209", max_incidents: int = 20,
+    tool_version: str = "web_search_20260209", max_incidents: int = 20, today: str = "",
 ) -> list | None:
     """Web-search pass that returns REAL recent AI-misuse incidents, tagged to harm vectors.
 
     The "lagging" / all-source half of the tool: actual incidents that have occurred, to
     cross against the upstream research-enablement signal. Gathered via Claude's server-side
     web search (the one external-data path that works in CI), constrained to verifiable,
-    dated, sourced incidents categorized into our harm-vector keys. Fail-soft (-> None);
-    tries the current tool version then the older one.
+    dated, sourced incidents categorized into our harm-vector keys. ``today`` anchors the
+    search on the current date and forces recency (else the model defaults to prior-year
+    landmark cases). Returns incidents sorted newest-first. Fail-soft (-> None).
     """
     if not harm_vectors:
         return None
     valid_keys = {v.get("key") for v in harm_vectors}
-    user = _incidents_instructions(harm_vectors, max_incidents)
+    user = _incidents_instructions(harm_vectors, max_incidents, today)
     for tv in (tool_version, "web_search_20250305"):
         text = llm.call_claude(
             INCIDENTS_SYSTEM, user, api_key, model,
@@ -627,6 +642,7 @@ def fetch_incidents(
                 r for r in (result.get("incidents") or [])
                 if r.get("harm_key") in valid_keys and r.get("source_url") and r.get("date")
             ]
+            incidents.sort(key=lambda r: r.get("date") or "", reverse=True)  # newest first
             log.info("Incident fetch: %d verifiable incidents tagged to harm vectors",
                      len(incidents))
             return incidents

@@ -627,6 +627,7 @@ def augment_incidents(settings: Settings, snapshot: dict) -> dict:
         vectors, acfg.get("api_key"), acfg.get("model", "claude-opus-4-8"),
         fcfg.get("web_search_tool", "web_search_20260209"),
         max_incidents=int(icfg.get("max_incidents", 20)),
+        today=snapshot.get("meta", {}).get("refreshed_at", ""),
     ) or []
     counts: dict[str, int] = {}
     for inc in incidents:
