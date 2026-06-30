@@ -63,43 +63,35 @@
   "n_pairings": 6,
   "headline": {
    "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +22% / saf -5%)",
-   "meaning": "The dominant tension this quarter is between fast-accelerating agentic autonomy and the comparatively slower-growing tooling to monitor and oversee those agents at deployment time.",
-   "why_it_matters": "Agentic capability is growing at ~39% q/q while its paired monitoring grows only ~14% and scalable oversight is actually contracting (-5.4%), meaning autonomy is being deployed faster than reliable means to supervise it."
+   "meaning": "The dominant tension this quarter is rapidly accelerating agentic/autonomy capability racing ahead of the oversight and monitoring tooling meant to govern it.",
+   "why_it_matters": "Autonomy capability is the fastest-growing topic (+39.2% QoQ, 115.5 papers/qtr recent), while scalable oversight is contracting (-5.4%) and reward-hacking research is collapsing (-17.1%), meaning the governance layer for self-directed, long-horizon agents is thinning exactly as those agents become more capable."
   },
   "sentiment_rising": [],
   "overall_foresight": [
    {
-    "risk": "As governments and CISA-led coalitions standardize agentic-AI monitoring around bounded-task threat taxonomies, the actual research frontier is shifting to long-horizon multi-agent autonomy whose oversight tooling is structurally lagging — freezing a soon-obsolete monitoring standard into procurement and audit law.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Legal/Regulatory",
-     "Technological"
-    ]
-   },
-   {
-    "risk": "Bio/chemical-uplift-relevant autonomous research-agent capability is accelerating (+9.5%/qtr) while the dangerous-capability EVALUATION community standardizes on single-model prompt-based bio benchmarks — leaving multi-agent 'web-scale scientific collaboration' agents that decompose hazardous tasks across cooperating sub-agents inside an eval blind spot.",
+    "risk": "'Thinking-intervention' and refusal-decoding research borrowing alignment work is quietly building a reusable toolkit to extract refused knowledge from aligned models — turning the post-deployment monitoring pivot into an offense-enabling layer just as CAISI certifies models on bio/chem/cyber refusals.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Security/Geopolitical",
-     "Technological"
+     "Legal/Regulatory"
     ]
    }
   ],
   "weekly_foresight": [
    {
-    "risk": "Inference-time 'concept removal' safety methods for image generators are being tuned to pass a safety-fidelity tradeoff that adversaries can re-open prompt-by-prompt, and the watermarking/disclosure laws coming into force assume the removal actually holds.",
+    "risk": "Robot manipulation policies are being validated with offline proxy metrics whose 'critical interval' weighting is researcher-chosen, letting unsafe physical-world VLA policies pass review precisely where harm concentrates.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Legal/Regulatory",
-     "Social"
+     "Technological",
+     "Legal/Regulatory"
     ]
    },
    {
-    "risk": "Decision-attribution explainability tools are arriving for predict-then-optimize systems just as US preemption strips state algorithmic-accountability law — creating tools that can prove the wrong thing to courts that no longer require the right thing.",
+    "risk": "Generative molecular-design benchmarks are deliberately moving beyond drug-likeness into structurally novel chemical spaces (nanomaterials) just as biosecurity evaluation infrastructure remains anchored to drug/bio proxies — opening a dual-use chem-design seam that current pre-deployment evals are not built to screen.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Legal/Regulatory",
-     "Political"
+     "Security/Geopolitical",
+     "Legal/Regulatory"
     ]
    }
   ],
