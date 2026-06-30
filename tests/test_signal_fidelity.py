@@ -171,6 +171,41 @@ def test_store_persists_referenced_works_and_author_ids(tmp_path):
     assert ids["Dr Y"] is None          # untouched author stays null
 
 
+def test_targeted_heat_selects_driving_papers_and_annotates(monkeypatch):
+    from signal_lag import snapshot as snap_mod
+    from signal_lag.ingest import pipeline as pl
+    from signal_lag.config import Settings
+
+    s = _p("S", 2024, 1)
+    c = _p("C", 2024, 2, refs=["S"])
+    by_id = {"S": s, "C": c}
+    tax_tags = {"S": [("saf", 1.0)], "C": [("cap", 1.0)]}
+    results = {
+        "divergence": [{"capability_topic": "cap", "safety_topic": "saf",
+                        "gap": 0.5, "lagging": True}],
+        "quadrant": [],
+        "citation_flow": {"verified_borrowers": [
+            {"arxiv_id": "C", "title": "C", "capability_topics": ["Capability"],
+             "cited_safety": [{"arxiv_id": "S", "title": "S"}], "n_cited_safety": 1}]},
+    }
+    captured = {}
+
+    def fake_enrich(settings, papers):
+        captured["ids"] = {p.arxiv_id for p in papers}
+        for p in papers:
+            p.cited_by_count = 42
+        return len(papers)
+
+    monkeypatch.setattr(pl, "enrich_specific_citations", fake_enrich)
+    settings = Settings(raw={"citations": {"targeted_heat_max": 300}})
+    n = snap_mod._enrich_targeted_heat(settings, results, _taxonomy(), tax_tags, by_id)
+    assert n == 2
+    assert captured["ids"] == {"S", "C"}           # only the driving papers
+    b = results["citation_flow"]["verified_borrowers"][0]
+    assert b["cited_by_count"] == 42               # borrower annotated
+    assert b["cited_safety"][0]["cited_by_count"] == 42
+
+
 def test_s2_enrichment_persists_refs_counts_and_author_ids(tmp_path):
     from signal_lag.ingest.store import Store
 

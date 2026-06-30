@@ -140,6 +140,33 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
     return total
 
 
+def enrich_specific_citations(settings: Settings, papers: list[Paper]) -> int:
+    """Targeted Semantic Scholar enrichment of a specific, SMALL set of papers.
+
+    Enriching the full ~12.7k-paper corpus keyless hits S2's rate limits and the
+    client's time budget before finishing, leaving recent/surfaced papers without a
+    citation count. This enriches just the handful of papers that drive the foresight
+    gaps (top divergence pairs + emerging quadrant + verified citation-flow borrowers),
+    so real citation heat lands exactly where it's shown. Enriches in place; fail-soft.
+    """
+    cfg = settings.semantic_scholar
+    if not cfg.get("enabled") or not papers:
+        return 0
+    from .semantic_scholar_client import SemanticScholarClient
+
+    api_key = cfg.get("api_key")
+    client = SemanticScholarClient(
+        api_key=api_key,
+        batch_size=200 if api_key else 50,
+        request_delay=0.5 if api_key else 1.3,
+    )
+    try:
+        return client.enrich(papers)
+    except Exception as e:  # never block snapshot assembly
+        log.warning("Targeted citation enrichment skipped: %s", e)
+        return 0
+
+
 def enrich_semantic_scholar(settings: Settings, store: Store | None = None) -> int:
     """Optional Semantic Scholar enrichment (TLDR, influential cites, venue, fields)."""
     cfg = settings.semantic_scholar

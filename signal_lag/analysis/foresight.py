@@ -146,7 +146,8 @@ def build_signal_digest(snap: dict, diff: dict) -> dict:
         {"arxiv_id": b.get("arxiv_id"), "title": b.get("title"),
          "capability_topics": b.get("capability_topics"),
          "cites_safety": [c.get("title") for c in (b.get("cited_safety") or [])][:5],
-         "n_cited_safety": b.get("n_cited_safety")}
+         "n_cited_safety": b.get("n_cited_safety"),
+         "cited_by_count": b.get("cited_by_count")}
         for b in (cflow.get("verified_borrowers") or [])[:12]
     ]
 

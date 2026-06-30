@@ -1049,7 +1049,9 @@ with tab_foresight:
                 for b in borrowers:
                     cap = ", ".join(b.get("capability_topics") or []) or "—"
                     cites = "; ".join(c for c in (b.get("cites_safety") or []) if c)
-                    st.markdown(f"- **{b.get('title')}** ({cap}) → cites "
+                    heat = (f" · {b['cited_by_count']:,} citations"
+                            if b.get("cited_by_count") else "")
+                    st.markdown(f"- **{b.get('title')}** ({cap}{heat}) → cites "
                                 f"{b.get('n_cited_safety')} safety paper(s): {cites}")
 
         # Author migration (#4, experimental leading indicator).

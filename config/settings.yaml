@@ -89,6 +89,13 @@ citations:
   # Share of a paper's citations arriving in the recent window to flag "heat".
   recent_window_periods: 4
   recent_share_threshold: 0.5
+  # Targeted citation-heat: keyless Semantic Scholar can't enrich all ~12.7k papers
+  # within its time budget, so at snapshot-build time fetch real citation counts for
+  # JUST the papers driving the foresight gaps (top divergence pairs + emerging quadrant
+  # + verified citation-flow borrowers). Bounded + fail-soft; live builds only.
+  # (Full by-year citation heat + institutions still require OpenAlex, unreachable in CI.)
+  targeted_heat: true
+  targeted_heat_max: 300
 
 sentiment:
   # A paper counts as "critical/negative" when cosine similarity of its abstract

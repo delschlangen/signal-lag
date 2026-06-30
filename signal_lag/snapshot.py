@@ -67,6 +67,13 @@ def build_snapshot(
     by_id = {p.arxiv_id: p for p in papers}
     label_map = {t.key: t.label for t in taxonomy.all_topics}
 
+    # Targeted citation-heat: a small, reliable enrichment of just the papers DRIVING
+    # the foresight gaps (top divergence pairs + emerging quadrant + verified citation-
+    # flow borrowers) so real citation counts land where they're shown — the full-corpus
+    # keyless S2 pass can't finish all ~12.7k papers in its time budget. Live-only.
+    if mode == "live" and settings.section("citations").get("targeted_heat", True):
+        _enrich_targeted_heat(settings, results, taxonomy, tax_tags, by_id)
+
     # Recent representative papers per topic (for the Sources tab + summary links).
     per_topic: dict[str, list[dict]] = {t.key: [] for t in taxonomy.all_topics}
     for aid, tags in tax_tags.items():
@@ -163,6 +170,67 @@ def build_snapshot(
     )
 
     return snap_out
+
+
+def _enrich_targeted_heat(settings, results, taxonomy, tax_tags, by_id) -> int:
+    """Fetch real citation counts for the papers driving the foresight gaps only.
+
+    Targets: the top-3 lagging-divergence pairs' topics, the emerging-quadrant topics,
+    and the verified citation-flow borrowers (+ the safety papers they cite). Enriches
+    those Paper objects in place (so per_topic + borrower cards pick up the counts) and
+    annotates the citation-flow borrowers with ``cited_by_count``. Bounded + fail-soft.
+    """
+    from .ingest.pipeline import enrich_specific_citations
+
+    cap = int(settings.section("citations").get("targeted_heat_max", 300))
+
+    # Topics that matter most this run.
+    target_keys: set[str] = set()
+    div = sorted([d for d in results.get("divergence", []) if d.get("lagging")],
+                 key=lambda d: d.get("gap", 0), reverse=True)[:3]
+    for d in div:
+        target_keys.add(d["capability_topic"])
+        target_keys.add(d["safety_topic"])
+    for q in results.get("quadrant", []) or []:
+        if q.get("quadrant") == "emerging":
+            target_keys.add(q["topic_key"])
+
+    # Most-recent papers per target topic (mirrors what the Sources tab shows).
+    topic_to_ids: dict[str, list[str]] = {}
+    for aid, tags in tax_tags.items():
+        if aid not in by_id:
+            continue
+        for tk, _ in tags:
+            if tk in target_keys:
+                topic_to_ids.setdefault(tk, []).append(aid)
+    target_ids: set[str] = set()
+    for tk, ids in topic_to_ids.items():
+        ids.sort(key=lambda a: by_id[a].published, reverse=True)
+        target_ids.update(ids[:8])
+
+    # Verified citation-flow borrowers + the safety papers they cite.
+    cf = results.get("citation_flow") or {}
+    for b in cf.get("verified_borrowers", []) or []:
+        target_ids.add(b.get("arxiv_id"))
+        for c in b.get("cited_safety", []) or []:
+            target_ids.add(c.get("arxiv_id"))
+    target_ids.discard(None)
+
+    targets = [by_id[a] for a in list(target_ids)[:cap] if a in by_id]
+    if not targets:
+        return 0
+    n = enrich_specific_citations(settings, targets)
+
+    # Annotate citation-flow borrowers with the freshly-fetched counts.
+    for b in cf.get("verified_borrowers", []) or []:
+        sp = by_id.get(b.get("arxiv_id"))
+        if sp is not None:
+            b["cited_by_count"] = sp.cited_by_count
+        for c in b.get("cited_safety", []) or []:
+            cp = by_id.get(c.get("arxiv_id"))
+            if cp is not None:
+                c["cited_by_count"] = cp.cited_by_count
+    return n
 
 
 def build_weekly(
