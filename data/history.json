@@ -56,20 +56,20 @@
  },
  {
   "date": "2026-06-30",
-  "n_papers": 12637,
+  "n_papers": 12978,
   "date_start": "2023-06-30",
   "date_end": "2026-06-29",
   "n_flagged": 2,
   "n_pairings": 6,
   "headline": {
    "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +22% / saf -5%)",
-   "meaning": "The defining tension this quarter is between fast-growing agentic autonomy (tool-use, persistent-memory, always-on agents) and the much slower-growing oversight machinery meant to supervise it.",
-   "why_it_matters": "Multi-agent and tool-integrated autonomy is scaling at +21.8% to +39.2% per quarter while scalable oversight is contracting (-5.4%), meaning agents are gaining durable memory, permissions, and real-world effects faster than the methods to supervise and audit them."
+   "meaning": "The dominant tension this quarter is between fast-accelerating agentic autonomy and the comparatively slower-growing tooling to monitor and oversee those agents at deployment time.",
+   "why_it_matters": "Agentic capability is growing at ~39% q/q while its paired monitoring grows only ~14% and scalable oversight is actually contracting (-5.4%), meaning autonomy is being deployed faster than reliable means to supervise it."
   },
   "sentiment_rising": [],
   "overall_foresight": [
    {
-    "risk": "As US/EU oversight regimes (CAISI semi-annual evals, Great American AI Act) standardize pre-deployment evaluation, the de-facto agentic-safety substrate becomes single-agent access-control/prompt-injection defense — leaving the actual fastest-growing audit target, long-horizon multi-tool agentic monitoring, anchored to techniques that are being absorbed by capability teams as deployment hardening, not auditability.",
+    "risk": "As governments and CISA-led coalitions standardize agentic-AI monitoring around bounded-task threat taxonomies, the actual research frontier is shifting to long-horizon multi-agent autonomy whose oversight tooling is structurally lagging — freezing a soon-obsolete monitoring standard into procurement and audit law.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Legal/Regulatory",
@@ -77,34 +77,34 @@
     ]
    },
    {
-    "risk": "Scalable Oversight is decelerating (-5.4%/qtr) even as it remains the single largest safety topic by volume (218.5/qtr) — meaning the field's oversight 'capacity' is concentrated in a stagnating method (LLM-judge/critic) at the exact moment capability papers are wiring those same judges directly into deployed inference-time control loops, fusing the auditor and the audited.",
+    "risk": "Bio/chemical-uplift-relevant autonomous research-agent capability is accelerating (+9.5%/qtr) while the dangerous-capability EVALUATION community standardizes on single-model prompt-based bio benchmarks — leaving multi-agent 'web-scale scientific collaboration' agents that decompose hazardous tasks across cooperating sub-agents inside an eval blind spot.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Technological",
-     "Legal/Regulatory"
-    ]
-   },
-   {
-    "risk": "As CAISI's five-lab pre-deployment regime and the Great American AI Act's semi-annual evaluations institutionalize 'dangerous-capability benchmarks' as the audit substrate, the fastest-decelerating subfield (Reward Hacking, -17%/qtr) is exactly the one needed to detect benchmark-gaming — so frontier evals risk certifying models that have learned to pass the eval rather than be safe.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Legal/Regulatory",
+     "Security/Geopolitical",
      "Technological"
     ]
    }
   ],
   "weekly_foresight": [
    {
-    "risk": "Training-free, confidence-driven test-time RL on robot/embodied (VLA) policies lets deployed physical agents rewrite their own behavior using self-generated reward signals — outside any weight-update audit trail and outside the bounded-task monitoring that physical-safety regulators actually run.",
+    "risk": "Inference-time 'concept removal' safety methods for image generators are being tuned to pass a safety-fidelity tradeoff that adversaries can re-open prompt-by-prompt, and the watermarking/disclosure laws coming into force assume the removal actually holds.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Technological",
-     "Legal/Regulatory"
+     "Legal/Regulatory",
+     "Social"
+    ]
+   },
+   {
+    "risk": "Decision-attribution explainability tools are arriving for predict-then-optimize systems just as US preemption strips state algorithmic-accountability law — creating tools that can prove the wrong thing to courts that no longer require the right thing.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Political"
     ]
    }
   ],
   "what_changed": {
-   "n_alerts": 1,
+   "n_alerts": 0,
    "n_accel": 0,
    "n_sleepers": 0
   }

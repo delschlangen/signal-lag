@@ -239,6 +239,109 @@
   ]
  },
  {
+  "id": "705bbc54172f",
+  "risk": "As governments and CISA-led coalitions standardize agentic-AI monitoring around bounded-task threat taxonomies, the actual research frontier is shifting to long-horizon multi-agent autonomy whose oversight tooling is structurally lagging — freezing a soon-obsolete monitoring standard into procurement and audit law.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "705bbc54172f",
+   "risk": "As governments and CISA-led coalitions standardize agentic-AI monitoring around bounded-task threat taxonomies, the actual research frontier is shifting to long-horizon multi-agent autonomy whose oversight tooling is structurally lagging — freezing a soon-obsolete monitoring standard into procurement and audit law.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Technological"
+   ],
+   "leading_indicator": "First CAISI/CISA agentic eval protocol that explicitly enumerates monitorable behaviors as a closed list, combined with a frontier lab system card reporting autonomous task horizons or multi-agent orchestration patterns not covered by that list; or audit-vendor checklists that test single-tool calls but not cross-agent delegation chains."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "72243675dfbe",
+  "risk": "The CISA-led 'Careful Adoption of Agentic AI Services' taxonomy lists 'structural cascading failures' as a named risk category, but the failure mechanism now accelerating in research is inter-agent communication-protocol compromise (MCP, agent-to-agent messaging) — a substrate that infrastructure operators secure as a networking/middleware problem, not an AI-safety problem, leaving a governance gap exactly where the two communities each assume the other owns it.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "72243675dfbe",
+   "risk": "The CISA-led 'Careful Adoption of Agentic AI Services' taxonomy lists 'structural cascading failures' as a named risk category, but the failure mechanism now accelerating in research is inter-agent communication-protocol compromise (MCP, agent-to-agent messaging) — a substrate that infrastructure operators secure as a networking/middleware problem, not an AI-safety problem, leaving a governance gap exactly where the two communities each assume the other owns it.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "A disclosed incident or red-team writeup where compromise propagated through an agent-communication protocol (MCP server / A2A message) across organizational boundaries, AND post-incident finger-pointing between the model vendor and the integrator over which CISA category it fell under; or procurement RFPs that cite the CISA five-category taxonomy without specifying who tests the comms layer."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "3aab3743b69e",
+  "risk": "Agentic memory-evaluation methodology is so confounded that organizations will deploy long-horizon agents on benchmark numbers that don't measure what they claim — and the new multi-government agentic-security guidance has no way to detect the gap.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "3aab3743b69e",
+   "risk": "Agentic memory-evaluation methodology is so confounded that organizations will deploy long-horizon agents on benchmark numbers that don't measure what they claim — and the new multi-government agentic-security guidance has no way to detect the gap.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Technological",
+    "Legal/Regulatory",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "Post-deployment incident reports (or CAISI/CISA case studies) where an agent's production reliability diverges sharply from its pre-deployment benchmark, AND vendors quietly revise benchmark protocols to control for non-method confounds — i.e., the MemDelta critique migrating into procurement RFP requirements."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
   "id": "b2367e0063a7",
   "risk": "Bio/chemical-uplift capability is being driven less by 'how to make a pathogen' papers and more by autonomous SCIENTIFIC-RESEARCH-ORCHESTRATION agents (web-scale collaboration, persistent memory), shifting the uplift seam from knowledge to autonomous experimental workflow — a vector biosecurity reviewers focused on knowledge-elicitation are not watching.",
   "first_seen": "2026-06-30",
@@ -302,6 +405,40 @@
     "likelihood": 2,
     "exposure": 3,
     "trajectory": "steady",
+    "priority": 10
+   }
+  ]
+ },
+ {
+  "id": "814f3a209204",
+  "risk": "Bio/chemical-uplift-relevant autonomous research-agent capability is accelerating (+9.5%/qtr) while the dangerous-capability EVALUATION community standardizes on single-model prompt-based bio benchmarks — leaving multi-agent 'web-scale scientific collaboration' agents that decompose hazardous tasks across cooperating sub-agents inside an eval blind spot.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "814f3a209204",
+   "risk": "Bio/chemical-uplift-relevant autonomous research-agent capability is accelerating (+9.5%/qtr) while the dangerous-capability EVALUATION community standardizes on single-model prompt-based bio benchmarks — leaving multi-agent 'web-scale scientific collaboration' agents that decompose hazardous tasks across cooperating sub-agents inside an eval blind spot.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 5,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 10,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Technological"
+   ],
+   "leading_indicator": "A multi-agent science framework demonstrating an end-to-end hazardous-adjacent workflow (e.g., protocol optimization) where each component model individually passes a published bio-capability eval; or CAISI/lab eval protocols explicitly scoped to single-model assessment without a composed-system clause."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 5,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
     "priority": 10
    }
   ]
@@ -410,6 +547,142 @@
   ]
  },
  {
+  "id": "98d616727c98",
+  "risk": "Chain-of-Thought Faithfulness research is accelerating (+34.9%/qtr) at the same time 'Thinking Intervention' techniques let operators steer reasoning traces — creating a near-term path to produce CoT that LOOKS faithful to auditors while the steering itself is the unmonitored channel, undermining the very transparency that SB 53-style frameworks lean on.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "98d616727c98",
+   "risk": "Chain-of-Thought Faithfulness research is accelerating (+34.9%/qtr) at the same time 'Thinking Intervention' techniques let operators steer reasoning traces — creating a near-term path to produce CoT that LOOKS faithful to auditors while the steering itself is the unmonitored channel, undermining the very transparency that SB 53-style frameworks lean on.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 9,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Social"
+   ],
+   "leading_indicator": "A published method (or red-team result) showing a model can be steered to emit a CoT that passes a faithfulness/consistency check while the decisive computation occurs through an un-disclosed path; or a compliance vendor offering 'audit-ready reasoning trace' tooling for SB 53/EU Article 50 submissions."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 9
+   }
+  ]
+ },
+ {
+  "id": "9c3a70af870f",
+  "risk": "PRC-linked influence operations already test narratives against AI data-center/electricity-cost grievances; the same multi-agent persuasion research now powering agentic systems is maturing precisely as US public sentiment toward AI hits record lows — enabling automated, agent-coordinated grievance amplification targeting AI infrastructure siting fights, a feedback loop no single defender owns.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "9c3a70af870f",
+   "risk": "PRC-linked influence operations already test narratives against AI data-center/electricity-cost grievances; the same multi-agent persuasion research now powering agentic systems is maturing precisely as US public sentiment toward AI hits record lows — enabling automated, agent-coordinated grievance amplification targeting AI infrastructure siting fights, a feedback loop no single defender owns.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 3,
+   "trajectory": "steady",
+   "priority": 9,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Environmental"
+   ],
+   "leading_indicator": "Detection of coordinated inauthentic accounts using LLM-agent coordination signatures concentrated in specific data-center permitting jurisdictions; or a sudden, geographically clustered surge in anti-siting organizing whose linguistic fingerprints suggest multi-persona automation around a single project."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 3,
+    "trajectory": "steady",
+    "priority": 9
+   }
+  ]
+ },
+ {
+  "id": "e272e7702dbf",
+  "risk": "Reward Hacking and Self-Improvement Risk research are both DECELERATING just as OpenAI/Broadcom ship LLM-optimized inference chips and agentic products optimize for engagement/task-completion at scale — meaning the specification-gaming literature is contracting precisely when economic incentives to deploy outcome-optimized agents into low-trust consumer markets are peaking.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "e272e7702dbf",
+   "risk": "Reward Hacking and Self-Improvement Risk research are both DECELERATING just as OpenAI/Broadcom ship LLM-optimized inference chips and agentic products optimize for engagement/task-completion at scale — meaning the specification-gaming literature is contracting precisely when economic incentives to deploy outcome-optimized agents into low-trust consumer markets are peaking.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "decelerating",
+   "priority": 9,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Economic",
+    "Social"
+   ],
+   "leading_indicator": "Consumer-protection complaints or FTC inquiries about agentic assistants steering users toward outcomes that benefit the operator (upsells, locked-in bookings) rather than the user; OR product safety docs that cite reward-hacking benchmarks more than ~18 months old because nothing newer was published."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "decelerating",
+    "priority": 9
+   }
+  ]
+ },
+ {
+  "id": "2e2c6de797b2",
+  "risk": "Inference-time 'concept removal' safety methods for image generators are being tuned to pass a safety-fidelity tradeoff that adversaries can re-open prompt-by-prompt, and the watermarking/disclosure laws coming into force assume the removal actually holds.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "2e2c6de797b2",
+   "risk": "Inference-time 'concept removal' safety methods for image generators are being tuned to pass a safety-fidelity tradeoff that adversaries can re-open prompt-by-prompt, and the watermarking/disclosure laws coming into force assume the removal actually holds.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "steady",
+   "priority": 9,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Social"
+   ],
+   "leading_indicator": "Documented cases of watermarked/disclosed image outputs containing disallowed content generated through a 'safety-filtered' pipeline; or platform safety teams reporting concept-removal bypass rates rising after deployment of negative-guidance filters to meet Aug 2026 deadlines."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "steady",
+    "priority": 9
+   }
+  ]
+ },
+ {
   "id": "6152fd6042da",
   "risk": "Training-free, confidence-driven test-time RL on robot/embodied (VLA) policies lets deployed physical agents rewrite their own behavior using self-generated reward signals — outside any weight-update audit trail and outside the bounded-task monitoring that physical-safety regulators actually run.",
   "first_seen": "2026-06-30",
@@ -475,6 +748,40 @@
     "exposure": 3,
     "trajectory": "steady",
     "priority": 8
+   }
+  ]
+ },
+ {
+  "id": "be10ca9ab43b",
+  "risk": "Decision-attribution explainability tools are arriving for predict-then-optimize systems just as US preemption strips state algorithmic-accountability law — creating tools that can prove the wrong thing to courts that no longer require the right thing.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "be10ca9ab43b",
+   "risk": "Decision-attribution explainability tools are arriving for predict-then-optimize systems just as US preemption strips state algorithmic-accountability law — creating tools that can prove the wrong thing to courts that no longer require the right thing.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 2,
+   "exposure": 4,
+   "trajectory": "steady",
+   "priority": 6,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Political"
+   ],
+   "leading_indicator": "ADMT-compliance audits or litigation where a system passes explainability requirements via forecast attribution yet the contested decision is shown to be driven by the (unexplained) optimization step; or standards bodies (NIST/CAISI) adopting forecast-level explainability without distinguishing decision-value attribution."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 2,
+    "exposure": 4,
+    "trajectory": "steady",
+    "priority": 6
    }
   ]
  }
