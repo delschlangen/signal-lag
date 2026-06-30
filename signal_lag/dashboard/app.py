@@ -87,6 +87,38 @@ def surfaced_foresight(snap, limit=3):
     return surfaced_risks(get_analysis(snap).get("foresight_gap"), limit)
 
 
+_PLAIN_SECTIONS = (("The technical evidence", "technical_evidence"),
+                   ("The real-world context", "societal_evidence"),
+                   ("The gap (synthesis)", "the_gap"),
+                   ("The tool's own skepticism", "skepticism"),
+                   ("Bottom line", "bottom_line"))
+
+
+def explained_risks(snap):
+    """Overall foresight risks that carry a plain-language walkthrough."""
+    fg = get_analysis(snap).get("foresight_gap") or {}
+    return [r for r in (fg.get("risks") or []) if r.get("plain_explanation")]
+
+
+def plain_language_brief_md(snap) -> str:
+    """Downloadable markdown of the plain-language 'how the tool reasoned' walkthroughs."""
+    date = snap.get("meta", {}).get("refreshed_at", "")
+    lines = [f"# signal-lag — Risks in plain terms ({date})", "",
+             "Plain-language walkthroughs of the top foresight risks: the technical evidence, "
+             "the real-world context, the gap, the tool's own skepticism, and a bottom line.", ""]
+    risks = explained_risks(snap)
+    if not risks:
+        lines.append("_No plain-language explanations in this snapshot._")
+    for i, r in enumerate(risks, 1):
+        pe = r["plain_explanation"]
+        lines.append(f"## {i}. {r.get('risk','')}")
+        for label, key in _PLAIN_SECTIONS:
+            if pe.get(key):
+                lines.append(f"- **{label}:** {pe[key]}")
+        lines.append("")
+    return "\n".join(lines)
+
+
 def weekly_block(snap):
     return snap.get("weekly") or {}
 
@@ -626,6 +658,29 @@ with tab_summary:
         render_weekly_summary()
     else:
         render_overall_summary()
+
+    # 🧩 Plain-language risk briefs — the "how the tool reasoned" walkthroughs from the
+    # (quarterly) foresight pass, surfaced here as a button + expanders under either toggle.
+    _explained = explained_risks(snap)
+    if _explained:
+        st.divider()
+        st.subheader("🧩 Risks in plain terms")
+        st.caption("Plain-language walkthroughs of the top risks — the technical evidence, "
+                   "the real-world context, the gap, the tool's own skepticism, and a bottom "
+                   "line (what's observed vs projected). Same content as the 🔮 Foresight tab "
+                   "and the downloadable intelligence estimate.")
+        st.download_button(
+            "🧩 Download risks in plain terms (markdown)",
+            data=plain_language_brief_md(snap),
+            file_name="signal_lag_plain_language_risks.md", mime="text/markdown",
+            width="stretch",
+        )
+        for i, r in enumerate(_explained, 1):
+            pe = r["plain_explanation"]
+            with st.expander(f"🧩 {i}. {(r.get('risk') or '')[:90]}"):
+                for label, key in _PLAIN_SECTIONS:
+                    if pe.get(key):
+                        st.markdown(f"**{label}:** {pe[key]}")
 
 
 # ---- This-week chart views (raw counts from the last window_days, not quarterly) ----
