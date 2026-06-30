@@ -560,6 +560,80 @@ def fetch_live_context(
     return None
 
 
+INCIDENTS_SYSTEM = (
+    "You are an all-source intelligence analyst compiling a register of REAL, already-occurred "
+    "AI misuse/harm incidents. You SEARCH THE WEB (AI Incident Database, OECD AI Incidents "
+    "Monitor, reputable news) and return only VERIFIABLE, DATED incidents with a real source "
+    "URL — never invented or hypothetical ones. Each incident is categorized into one of the "
+    "provided harm-vector keys. You are precise and conservative: if you cannot verify an "
+    "incident with a real source and date, you omit it."
+)
+
+
+def _incidents_instructions(harm_vectors: list, max_incidents: int) -> str:
+    keys = "\n".join(f"  - {v.get('key')}: {v.get('label')}" for v in harm_vectors)
+    return f"""\
+Search the web and compile up to {max_incidents} REAL, recent (last ~12 months) AI \
+misuse/harm INCIDENTS THAT ACTUALLY HAPPENED — drawn from the AI Incident Database, the OECD \
+AI Incidents Monitor, and reputable news. Categorize each into exactly one HARM_VECTOR key \
+from this list (pick the closest; skip incidents that fit none):
+{keys}
+
+Return ONLY a JSON object (no markdown) of this exact shape:
+
+{{
+  "incidents": [
+    {{
+      "title": "short incident title",
+      "date": "YYYY-MM or YYYY-MM-DD (the incident's date)",
+      "harm_key": "<one key from the list>",
+      "summary": "1-2 sentences: what happened",
+      "deployer": "the product/actor involved, if known (else '')",
+      "source_url": "a real URL to a report/article"
+    }}
+  ]
+}}
+
+Rules: ONLY real incidents you can source with a real URL and date — NEVER hypothetical, \
+predicted, or unverifiable ones. If unsure, omit. Output valid JSON only."""
+
+
+def fetch_incidents(
+    harm_vectors: list, api_key: str | None, model: str = "claude-opus-4-8",
+    tool_version: str = "web_search_20260209", max_incidents: int = 20,
+) -> list | None:
+    """Web-search pass that returns REAL recent AI-misuse incidents, tagged to harm vectors.
+
+    The "lagging" / all-source half of the tool: actual incidents that have occurred, to
+    cross against the upstream research-enablement signal. Gathered via Claude's server-side
+    web search (the one external-data path that works in CI), constrained to verifiable,
+    dated, sourced incidents categorized into our harm-vector keys. Fail-soft (-> None);
+    tries the current tool version then the older one.
+    """
+    if not harm_vectors:
+        return None
+    valid_keys = {v.get("key") for v in harm_vectors}
+    user = _incidents_instructions(harm_vectors, max_incidents)
+    for tv in (tool_version, "web_search_20250305"):
+        text = llm.call_claude(
+            INCIDENTS_SYSTEM, user, api_key, model,
+            tools=[{"type": tv, "name": "web_search"}],
+        )
+        if not text:
+            continue
+        result = llm.extract_json(text)
+        if result and "incidents" in result:
+            incidents = [
+                r for r in (result.get("incidents") or [])
+                if r.get("harm_key") in valid_keys and r.get("source_url") and r.get("date")
+            ]
+            log.info("Incident fetch: %d verifiable incidents tagged to harm vectors",
+                     len(incidents))
+            return incidents
+    log.warning("Incident fetch failed (fail-soft)")
+    return None
+
+
 def _synthesize_risks(
     digest: dict, context: str, api_key: str | None, model: str, max_risks: int,
     avoid_seams: list | None = None, lens: str = "", live_context: str | None = None,

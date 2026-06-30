@@ -383,6 +383,10 @@ python scripts/generate_fixtures.py
   **6–24 month scenarios** from the top risks (drivers, leading indicators, branch points,
   mitigations, ICD-203 estimative likelihood), and two one-tap **exports** turn it all into
   analyst-ready products: a **Strategic Intelligence Estimate** and a **Tabletop-exercise pack**.
+  A **🌐 Incidents** view adds the **all-source** layer: real, already-occurred AI-misuse
+  **incidents** (web-sourced from the AI Incident Database / OECD / news, verifiable + dated)
+  tagged to the harm vectors and **benchmarked** against the research signal into a
+  leading-vs-lagging 2×2 (🎯 foresight lead · 🔴 materializing · 🟠 active/known · ⚪ quiet).
 - **🔍 Sources** — the receipts: actual arXiv papers behind each topic (each with a
   short *what-it-does / why-it-matters* note — written by Claude when the analysis
   layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,

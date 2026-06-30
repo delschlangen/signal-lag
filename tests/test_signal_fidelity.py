@@ -224,6 +224,46 @@ def test_generate_scenarios_failsoft_without_key():
     assert foresight.generate_scenarios([], "c", api_key="k") is None
 
 
+def test_fetch_incidents_filters_unverifiable(monkeypatch):
+    def fake_call(system, user, api_key, model="x", max_tokens=8000, tools=None):
+        return ('{"incidents": ['
+                '{"title": "A", "date": "2026-01", "harm_key": "cyber_offense",'
+                ' "source_url": "http://x", "summary": "s"},'
+                '{"title": "B", "date": "2026-02", "harm_key": "NOTAKEY",'
+                ' "source_url": "http://y"},'
+                '{"title": "C", "harm_key": "cyber_offense", "source_url": "http://z"}]}')
+
+    monkeypatch.setattr(foresight.llm, "call_claude", fake_call)
+    out = foresight.fetch_incidents([{"key": "cyber_offense", "label": "Cyber"}], api_key="k")
+    assert len(out) == 1 and out[0]["title"] == "A"   # bad key + missing date dropped
+
+
+def test_fetch_incidents_failsoft():
+    assert foresight.fetch_incidents([{"key": "k", "label": "L"}], api_key=None) is None
+    assert foresight.fetch_incidents([], api_key="k") is None
+
+
+def test_augment_incidents_benchmark_quadrants(monkeypatch):
+    from signal_lag import snapshot as snap_mod
+    from signal_lag.config import Settings
+
+    monkeypatch.setattr(foresight, "fetch_incidents", lambda *a, **k: [
+        {"title": "I1", "date": "2026-01", "harm_key": "cyber_offense", "source_url": "u"}])
+    snap = {"harm": {"vectors": [
+        {"key": "cyber_offense", "label": "Cyber", "change_pct": 10, "n_tagged": 100},
+        {"key": "bio", "label": "Bio", "change_pct": 10, "n_tagged": 50},
+        {"key": "calm", "label": "Calm", "change_pct": 0, "n_tagged": 20},
+    ]}}
+    settings = Settings(raw={"analysis": {"incidents": {"enabled": True, "rising_pct": 4},
+                                          "foresight": {}}})
+    out = snap_mod.augment_incidents(settings, snap)
+    bench = {b["key"]: b["quadrant"] for b in out["incidents"]["benchmark"]}
+    assert bench["cyber_offense"] == "materializing"    # rising + incident
+    assert bench["bio"] == "foresight lead"             # rising, no incident
+    assert bench["calm"] == "quiet"                     # flat, no incident
+    assert out["incidents"]["n"] == 1
+
+
 def test_risk_register_upsert_and_idempotency(tmp_path):
     from signal_lag import snapshot as snap_mod
 

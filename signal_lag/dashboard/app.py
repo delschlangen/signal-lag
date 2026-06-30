@@ -147,11 +147,12 @@ with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
         "the **strategic map** (volume × growth: emerging / hot / cooling / white-space).\n"
         "- **🔬 Sentiment** — share of *critical / limitation-focused* papers; a rising share "
         "is an early confidence-erosion warning.\n"
-        "- **🔮 Foresight** — four views: novel **cross-domain risks** (web-checked for "
+        "- **🔮 Foresight** — five views: novel **cross-domain risks** (web-checked for "
         "novelty), **⚠️ Harm vectors** (dual-use misuse lens, 0–24 mo), a scored **📋 Risk "
-        "register** (severity × likelihood × exposure × trajectory), and **🎬 Scenarios** "
-        "(how the top risks could evolve, 6–24 mo) — plus downloadable intelligence-estimate "
-        "and tabletop-exercise packs.\n"
+        "register** (severity × likelihood × exposure × trajectory), **🎬 Scenarios** "
+        "(how the top risks could evolve, 6–24 mo), and **🌐 Incidents** (real-world incidents "
+        "crossed against the research signal: leading vs lagging) — plus downloadable "
+        "intelligence-estimate and tabletop-exercise packs.\n"
         "- **🔍 Sources** — the actual papers behind every topic, all linked.\n"
         "- **📖 Methodology** — how it all works + a glossary of every term.\n\n"
         "**Symbols you'll see**\n"
@@ -1365,11 +1366,62 @@ def tabletop_pack_md(snap) -> str:
     return "\n".join(lines)
 
 
+# =================================================================== Incidents
+_QUAD_EMOJI = {"materializing": "🔴", "foresight lead": "🎯",
+               "active / known": "🟠", "quiet": "⚪"}
+
+
+def render_incidents_section():
+    st.subheader("🌐 Incidents & benchmark — research lead vs. real-world reality")
+    st.info(
+        "The **all-source** layer: real, already-occurred AI-misuse **incidents** (gathered "
+        "via web search from the AI Incident Database / OECD / news, verifiable + dated) "
+        "**crossed against** each harm vector's research momentum. The 2×2: **🎯 foresight "
+        "lead** = research accelerating, *no public incidents yet* (the early-warning edge); "
+        "**🔴 materializing** = research up *and* incidents appearing; **🟠 active/known** = "
+        "incidents but research flat; **⚪ quiet** = neither.", icon="🌐",
+    )
+    inc = snap.get("incidents") or {}
+    bench = inc.get("benchmark") or []
+    records = inc.get("records") or []
+    if not bench:
+        st.warning("No incident benchmark in this snapshot. It populates on a refresh with "
+                   "the incidents pass enabled (`analysis.incidents`).", icon="🔌")
+        return
+    leads = [b for b in bench if b["quadrant"] == "foresight lead"]
+    if leads:
+        st.markdown("**🎯 Foresight leads** — research accelerating, *no public incidents yet*:")
+        for b in leads:
+            st.markdown(f"- **{b['label']}** — research {b['research_change_pct']:+.0f}%/qtr "
+                        f"over {b['n_research']} papers, 0 incidents")
+    st.markdown("**Benchmark — every harm vector:**")
+    bdf = pd.DataFrame([
+        {"": _QUAD_EMOJI.get(b["quadrant"], ""), "Harm vector": b["label"],
+         "Research Δ%/qtr": b["research_change_pct"], "Research papers": b["n_research"],
+         "Incidents": b["n_incidents"], "Status": b["quadrant"]}
+        for b in bench
+    ])
+    st.dataframe(bdf, width="stretch", hide_index=True)
+    st.divider()
+    st.markdown(f"**Recent real-world incidents** ({len(records)}):")
+    if not records:
+        st.caption("No verifiable incidents were surfaced this refresh.")
+    lm = (snap.get("harm") or {}).get("label_map", {})
+    for r in records:
+        label = lm.get(r.get("harm_key"), r.get("harm_key"))
+        url = r.get("source_url")
+        title = r.get("title", "")
+        head = f"[{title}]({url})" if url else title
+        st.markdown(f"- **{head}** · _{r.get('date','')}_ · {label}")
+        if r.get("summary"):
+            st.caption(r["summary"] + (f"  ·  {r['deployer']}" if r.get("deployer") else ""))
+
+
 with tab_foresight:
     _fmode = st.radio(
         "Foresight view",
         ["🔮 Cross-domain risks", "⚠️ Harm vectors (dual-use)", "📋 Risk register",
-         "🎬 Scenarios"],
+         "🎬 Scenarios", "🌐 Incidents"],
         horizontal=True, label_visibility="collapsed",
     )
     if _fmode.startswith("⚠️"):
@@ -1378,6 +1430,8 @@ with tab_foresight:
         render_register_section()
     elif _fmode.startswith("🎬"):
         render_scenarios_section()
+    elif _fmode.startswith("🌐"):
+        render_incidents_section()
     else:
         render_foresight_section()
     # Analyst-ready exports (Step 4) — templated, available under every view.
@@ -1650,6 +1704,18 @@ in estimative language + scenarios + confidence caveats) and a **Tabletop-Exerci
 (scenario setup, roles, escalating injects built from the leading indicators, discussion
 questions). Likelihood scores are shown throughout in **estimative-probability language**
 (*very unlikely → very likely*) so the output reads like an intelligence product.
+
+### 16. Incidents & benchmark — the all-source layer (the 🌐 view)
+Everything above is **upstream** (the research signal — leading). This layer adds the
+**downstream** half: REAL, already-occurred AI-misuse **incidents**, gathered via Claude's
+web search from the **AI Incident Database / OECD AI Incidents Monitor / news** (constrained
+to verifiable, dated, sourced incidents), categorized into the same **harm vectors**. Each
+vector is then **benchmarked** — research momentum vs incident count — into a leading-vs-
+lagging **2×2**: **🎯 foresight lead** (research accelerating, *no public incidents yet* — the
+early-warning edge), **🔴 materializing** (research up *and* incidents appearing), **🟠
+active/known** (incidents but research flat), **⚪ quiet**. This is the "all-source /
+competitive-benchmarking" dimension — though note it's *public external* incidents (which lag
+and have uneven coverage), **not** internal platform telemetry.
 
 ### Caveats
 - High coverage of the **AI preprint literature**, not every publisher.

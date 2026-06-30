@@ -188,6 +188,9 @@ def build_snapshot(
         prev_on_disk = None
     snap_out = augment_foresight(settings, snap_out, prev_on_disk)
 
+    # --- Step 5: real-world incident benchmark (leading research vs lagging incidents) ---
+    snap_out = augment_incidents(settings, snap_out)
+
     # --- "This week" lens: a focused analysis of just the last `window_days` of papers,
     # alongside the quarterly view (which is unaffected).
     snap_out = build_weekly(
@@ -574,6 +577,57 @@ def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | 
         if snapshot.get("analysis") is None:
             snapshot["analysis"] = {}
         snapshot["analysis"]["foresight_gap"] = fg
+    return snapshot
+
+
+def augment_incidents(settings: Settings, snapshot: dict) -> dict:
+    """Step 5: cross the upstream research-enablement signal with REAL-WORLD incidents.
+
+    Fetches verifiable recent AI-misuse incidents (via Claude web search), tags them to the
+    harm vectors, and benchmarks each vector's research momentum against its incident count
+    into a leading-vs-lagging 2×2: *materializing* (research up + incidents), *foresight
+    lead* (research up, no incidents yet — the tool's edge), *active/known* (incidents but
+    research flat/down), *quiet* (neither). Config-gated + fail-soft; baked into the snapshot.
+    """
+    acfg = settings.analysis or {}
+    icfg = acfg.get("incidents") or {}
+    if not icfg.get("enabled"):
+        return snapshot
+    vectors = (snapshot.get("harm") or {}).get("vectors") or []
+    if not vectors:
+        return snapshot
+    from .analysis import foresight
+
+    fcfg = acfg.get("foresight") or {}
+    incidents = foresight.fetch_incidents(
+        vectors, acfg.get("api_key"), acfg.get("model", "claude-opus-4-8"),
+        fcfg.get("web_search_tool", "web_search_20260209"),
+        max_incidents=int(icfg.get("max_incidents", 20)),
+    ) or []
+    counts: dict[str, int] = {}
+    for inc in incidents:
+        counts[inc.get("harm_key")] = counts.get(inc.get("harm_key"), 0) + 1
+    rising_pct = float(icfg.get("rising_pct", 4))
+    benchmark = []
+    for v in vectors:
+        n_inc = counts.get(v["key"], 0)
+        rising = (v.get("change_pct") or 0) >= rising_pct
+        if rising and n_inc:
+            quad = "materializing"
+        elif rising and not n_inc:
+            quad = "foresight lead"
+        elif n_inc:
+            quad = "active / known"
+        else:
+            quad = "quiet"
+        benchmark.append({
+            "key": v["key"], "label": v["label"],
+            "research_change_pct": v.get("change_pct"), "n_research": v.get("n_tagged"),
+            "n_incidents": n_inc, "quadrant": quad,
+        })
+    benchmark.sort(key=lambda b: (b["n_incidents"], b.get("research_change_pct") or 0),
+                   reverse=True)
+    snapshot["incidents"] = {"records": incidents, "benchmark": benchmark, "n": len(incidents)}
     return snapshot
 
 

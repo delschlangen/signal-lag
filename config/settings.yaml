@@ -204,6 +204,17 @@ analysis:
     # (Kept at 2: a 3rd round added ~5 min of web-search calls for marginal gain.)
     min_surfaced: 3
     max_rounds: 2
+  # Step 5 — real-world incident benchmark: cross the upstream research-enablement signal
+  # with ACTUAL recent AI-misuse incidents (gathered via Claude web search from the AI
+  # Incident Database / OECD / news — the one external-data path that works in CI), tagged
+  # to the harm vectors and benchmarked into a leading-vs-lagging 2x2. One web-search call
+  # per refresh; fail-soft (skipped with no api_key).
+  incidents:
+    enabled: true
+    max_incidents: 20
+    # Min harm-vector quarter-over-quarter growth (%) counted as "research rising".
+    rising_pct: 4
+
   # "This week" lens: alongside the 3-year quarterly view, analyze ONLY papers from the
   # last `window_days`. Adds a focused Claude summary + a full (web-verified) foresight
   # pass over just this week's papers, shown via a toggle on the Summary & Foresight tabs.
