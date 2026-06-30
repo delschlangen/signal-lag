@@ -56,28 +56,36 @@
  },
  {
   "date": "2026-06-30",
-  "n_papers": 12079,
+  "n_papers": 12637,
   "date_start": "2023-06-30",
-  "date_end": "2026-06-26",
-  "n_flagged": 1,
+  "date_end": "2026-06-29",
+  "n_flagged": 2,
   "n_pairings": 6,
   "headline": {
-   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +21% / saf -6%)",
-   "meaning": "The dominant tension this quarter is between rapidly expanding autonomous/multi-agent capabilities and a scalable-oversight effort that is actually contracting, leaving the fastest-growing capability area without proportionate governance research.",
-   "why_it_matters": "Multi-agent/tool-use capability is growing 20.7% per quarter while scalable oversight shrinks 5.6% and has only ~0.24 the paper volume of capability work, meaning the field is deploying agents into shared repositories and live systems faster than it builds methods to supervise their aggregate behavior."
+   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +22% / saf -5%)",
+   "meaning": "The defining tension this quarter is between fast-growing agentic autonomy (tool-use, persistent-memory, always-on agents) and the much slower-growing oversight machinery meant to supervise it.",
+   "why_it_matters": "Multi-agent and tool-integrated autonomy is scaling at +21.8% to +39.2% per quarter while scalable oversight is contracting (-5.4%), meaning agents are gaining durable memory, permissions, and real-world effects faster than the methods to supervise and audit them."
   },
   "sentiment_rising": [],
   "overall_foresight": [
    {
-    "risk": "As governments and labs adopt pre-deployment frontier evaluation as the de facto oversight mechanism, the underlying research method (scalable oversight) is quietly stalling — freezing today's imperfect evaluation techniques into the very institutions (CAISI, SB 53, EU) now built around them.",
+    "risk": "As US/EU oversight regimes (CAISI semi-annual evals, Great American AI Act) standardize pre-deployment evaluation, the de-facto agentic-safety substrate becomes single-agent access-control/prompt-injection defense — leaving the actual fastest-growing audit target, long-horizon multi-tool agentic monitoring, anchored to techniques that are being absorbed by capability teams as deployment hardening, not auditability.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Legal/Regulatory",
-     "Political"
+     "Technological"
     ]
    },
    {
-    "risk": "Government and SB 53 incident-reporting pipelines are being calibrated to single-model evaluations using membership-inference / contamination-detection methods that quietly stop being valid once agents retrieve live external data — so frontier 'risk frameworks' may certify a contamination property that retrieval-augmented agentic deployment silently breaks.",
+    "risk": "Scalable Oversight is decelerating (-5.4%/qtr) even as it remains the single largest safety topic by volume (218.5/qtr) — meaning the field's oversight 'capacity' is concentrated in a stagnating method (LLM-judge/critic) at the exact moment capability papers are wiring those same judges directly into deployed inference-time control loops, fusing the auditor and the audited.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Legal/Regulatory"
+    ]
+   },
+   {
+    "risk": "As CAISI's five-lab pre-deployment regime and the Great American AI Act's semi-annual evaluations institutionalize 'dangerous-capability benchmarks' as the audit substrate, the fastest-decelerating subfield (Reward Hacking, -17%/qtr) is exactly the one needed to detect benchmark-gaming — so frontier evals risk certifying models that have learned to pass the eval rather than be safe.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Legal/Regulatory",
@@ -87,24 +95,16 @@
   ],
   "weekly_foresight": [
    {
-    "risk": "Warmth/agreeableness tuning for consumer adoption is silently re-opening jailbreak surface in exactly the demographics being courted to fix AI's trust problem, and SB 53 incident-reporting won't catch it because the failures look like 'helpfulness,' not incidents.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Social",
-     "Legal/Regulatory"
-    ]
-   },
-   {
-    "risk": "Verifier-guided RL is being exported into wet-lab biology and single-cell perturbation prediction with verifiers that check biological *consistency*, not biosafety — building a dual-use capability scaffold whose oversight layer is optimized for the wrong target.",
+    "risk": "Training-free, confidence-driven test-time RL on robot/embodied (VLA) policies lets deployed physical agents rewrite their own behavior using self-generated reward signals — outside any weight-update audit trail and outside the bounded-task monitoring that physical-safety regulators actually run.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Technological",
-     "Security/Geopolitical"
+     "Legal/Regulatory"
     ]
    }
   ],
   "what_changed": {
-   "n_alerts": 0,
+   "n_alerts": 1,
    "n_accel": 0,
    "n_sleepers": 0
   }

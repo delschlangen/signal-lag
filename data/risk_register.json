@@ -1,0 +1,481 @@
+[
+ {
+  "id": "b7354a35f27d",
+  "risk": "As US/EU oversight regimes (CAISI semi-annual evals, Great American AI Act) standardize pre-deployment evaluation, the de-facto agentic-safety substrate becomes single-agent access-control/prompt-injection defense — leaving the actual fastest-growing audit target, long-horizon multi-tool agentic monitoring, anchored to techniques that are being absorbed by capability teams as deployment hardening, not auditability.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "b7354a35f27d",
+   "risk": "As US/EU oversight regimes (CAISI semi-annual evals, Great American AI Act) standardize pre-deployment evaluation, the de-facto agentic-safety substrate becomes single-agent access-control/prompt-injection defense — leaving the actual fastest-growing audit target, long-horizon multi-tool agentic monitoring, anchored to techniques that are being absorbed by capability teams as deployment hardening, not auditability.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Technological"
+   ],
+   "leading_indicator": "CAISI/lab eval reports or GAAIA rulemaking that cite single-agent access-control / prompt-injection benchmarks as the 'agentic safety' evidence base, with no long-horizon behavioral-trace audit methodology specified; or eval vendors marketing sandboxing tools as 'agent monitoring compliance.'"
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "b7ba59111fa7",
+  "risk": "Scalable Oversight is decelerating (-5.4%/qtr) even as it remains the single largest safety topic by volume (218.5/qtr) — meaning the field's oversight 'capacity' is concentrated in a stagnating method (LLM-judge/critic) at the exact moment capability papers are wiring those same judges directly into deployed inference-time control loops, fusing the auditor and the audited.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "b7ba59111fa7",
+   "risk": "Scalable Oversight is decelerating (-5.4%/qtr) even as it remains the single largest safety topic by volume (218.5/qtr) — meaning the field's oversight 'capacity' is concentrated in a stagnating method (LLM-judge/critic) at the exact moment capability papers are wiring those same judges directly into deployed inference-time control loops, fusing the auditor and the audited.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "decelerating",
+   "priority": 12,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Technological",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "Production systems (or lab system cards) describing inference-time output selection by an LLM judge with no independently-trained verifier; rising prompt-injection-against-judge exploit reports; absence of new reward-hacking-against-judge research while judge-as-controller deployment grows."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "decelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "daf48a495716",
+  "risk": "As CAISI's five-lab pre-deployment regime and the Great American AI Act's semi-annual evaluations institutionalize 'dangerous-capability benchmarks' as the audit substrate, the fastest-decelerating subfield (Reward Hacking, -17%/qtr) is exactly the one needed to detect benchmark-gaming — so frontier evals risk certifying models that have learned to pass the eval rather than be safe.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "daf48a495716",
+   "risk": "As CAISI's five-lab pre-deployment regime and the Great American AI Act's semi-annual evaluations institutionalize 'dangerous-capability benchmarks' as the audit substrate, the fastest-decelerating subfield (Reward Hacking, -17%/qtr) is exactly the one needed to detect benchmark-gaming — so frontier evals risk certifying models that have learned to pass the eval rather than be safe.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Technological"
+   ],
+   "leading_indicator": "Disclosed cases where a model passes a CAISI/SB 53 dangerous-capability eval but exhibits the same capability in deployment or red-team probing; or eval-contamination/overfitting findings in the semi-annual evaluation reports; or lab system cards citing eval-specific fine-tuning."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "b80331d6edf6",
+  "risk": "Agentic monitoring research is growing in paper count but its TECHNIQUES are being absorbed mainly as access-control/sandboxing for single agents, leaving multi-agent inter-agent collusion and emergent coordination unmonitored just as multi-agent deployment scales.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "b80331d6edf6",
+   "risk": "Agentic monitoring research is growing in paper count but its TECHNIQUES are being absorbed mainly as access-control/sandboxing for single agents, leaving multi-agent inter-agent collusion and emergent coordination unmonitored just as multi-agent deployment scales.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Technological",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "First reported incident where multiple individually-compliant deployed agents produce a harmful joint outcome (e.g. coordinated pricing, a multi-agent workflow that escalates privileges no single agent had) AND post-mortems reveal monitoring was per-agent only; or a benchmark explicitly testing inter-agent collusion appearing and showing near-zero defensive coverage."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "058a2e105e75",
+  "risk": "Deceptive-alignment and reward-hacking research are decelerating precisely as Chain-of-Thought Faithfulness accelerates, creating a regulatory trap: SB 53 / CAISI / federal semi-annual evals will lean on CoT 'reasoning transparency' as an audit substrate just as the field abandons the work needed to know whether that reasoning is honest.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "058a2e105e75",
+   "risk": "Deceptive-alignment and reward-hacking research are decelerating precisely as Chain-of-Thought Faithfulness accelerates, creating a regulatory trap: SB 53 / CAISI / federal semi-annual evals will lean on CoT 'reasoning transparency' as an audit substrate just as the field abandons the work needed to know whether that reasoning is honest.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Technological"
+   ],
+   "leading_indicator": "An eval/standard (CAISI, SB 53 guidance, or an EU GPAI code) that explicitly references CoT/reasoning traces as evidence of safety; concurrently, a paper or red-team result showing a model produces faithful-looking CoT that diverges from its actual decision under optimization pressure — with no corresponding rise in faithfulness-verification work."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "d8752223291e",
+  "risk": "Influence-operations capability is migrating from text generation toward persistent, memory-equipped agentic infrastructure aimed at AI-policy narratives themselves (data-center/electricity-cost debate), enabling self-reinforcing campaigns against AI oversight just as public anti-AI sentiment peaks — a reflexive attack on the governance process that platform trust-and-safety teams aren't modeling as agentic.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "d8752223291e",
+   "risk": "Influence-operations capability is migrating from text generation toward persistent, memory-equipped agentic infrastructure aimed at AI-policy narratives themselves (data-center/electricity-cost debate), enabling self-reinforcing campaigns against AI oversight just as public anti-AI sentiment peaks — a reflexive attack on the governance process that platform trust-and-safety teams aren't modeling as agentic.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "steady",
+   "priority": 12,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Political",
+    "Social"
+   ],
+   "leading_indicator": "A subsequent lab/platform disclosure of influence ops that (a) uses persistent autonomous agents rather than bulk generation and (b) explicitly targets AI-governance or energy-infrastructure debates; or measurable correlation between coordinated inauthentic activity and swings in legislator/public positions on preemption."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "steady",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "4477f8528518",
+  "risk": "Government and statutory frontier evaluations are being designed around single-output/bounded-task safety while frontier deployment moves to long-horizon agentic behavior — institutionalizing an evaluation paradigm that systematically misses the failure mode it most needs to catch.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "4477f8528518",
+   "risk": "Government and statutory frontier evaluations are being designed around single-output/bounded-task safety while frontier deployment moves to long-horizon agentic behavior — institutionalizing an evaluation paradigm that systematically misses the failure mode it most needs to catch.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Technological",
+    "Political"
+   ],
+   "leading_indicator": "CAISI evaluation protocols, SB 53 risk-framework disclosures, or the Great American AI Act semi-annual eval spec citing fixed-prompt/single-turn benchmark suites without long-horizon agentic-trajectory test requirements; OR a deployed agent failure that passed its mandated eval."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ]
+ },
+ {
+  "id": "b2367e0063a7",
+  "risk": "Bio/chemical-uplift capability is being driven less by 'how to make a pathogen' papers and more by autonomous SCIENTIFIC-RESEARCH-ORCHESTRATION agents (web-scale collaboration, persistent memory), shifting the uplift seam from knowledge to autonomous experimental workflow — a vector biosecurity reviewers focused on knowledge-elicitation are not watching.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "b2367e0063a7",
+   "risk": "Bio/chemical-uplift capability is being driven less by 'how to make a pathogen' papers and more by autonomous SCIENTIFIC-RESEARCH-ORCHESTRATION agents (web-scale collaboration, persistent memory), shifting the uplift seam from knowledge to autonomous experimental workflow — a vector biosecurity reviewers focused on knowledge-elicitation are not watching.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 5,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "steady",
+   "priority": 10,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Technological"
+   ],
+   "leading_indicator": "A dangerous-capability benchmark or CAISI eval that adds an AGENTIC/workflow-execution bio task (vs Q&A) and shows materially higher uplift than knowledge probes; or a published autonomous-science-agent demo that successfully chains literature→protocol→procurement steps in a regulated domain."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 5,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "steady",
+    "priority": 10
+   }
+  ]
+ },
+ {
+  "id": "f0593197a431",
+  "risk": "Bio/chemical-uplift research momentum is now riding on autonomous-research-orchestration and persistent-memory agent infrastructure (Clarus, Always-On Agents) rather than wet-lab knowledge — which means the same agent-memory tooling Microsoft/DeepMind are shipping for legitimate rare-disease and genomics reanalysis (Talos) becomes a dual-use scientific-autonomy substrate that biosecurity export/oversight regimes, scoped to models and knowledge, do not cover.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "f0593197a431",
+   "risk": "Bio/chemical-uplift research momentum is now riding on autonomous-research-orchestration and persistent-memory agent infrastructure (Clarus, Always-On Agents) rather than wet-lab knowledge — which means the same agent-memory tooling Microsoft/DeepMind are shipping for legitimate rare-disease and genomics reanalysis (Talos) becomes a dual-use scientific-autonomy substrate that biosecurity export/oversight regimes, scoped to models and knowledge, do not cover.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 5,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "steady",
+   "priority": 10,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Technological"
+   ],
+   "leading_indicator": "Open-source or commercial 'autonomous research lab' agents with persistent cross-session memory marketed for biology that can chain literature → protocol → simulation/order steps; biosecurity frameworks beginning to debate whether orchestration tooling (not just models) needs evaluation."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 5,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "steady",
+    "priority": 10
+   }
+  ]
+ },
+ {
+  "id": "e2d61ffd8dcb",
+  "risk": "Persistent-memory agent infrastructure (Always-On Agents, Memora, Neural Procedural Memory) is being shipped as a capability while the only safety subfield that studies durable agent state — Self-Improvement Risk & Control — is decelerating, leaving memory poisoning and slow cross-session drift as an unmonitored attack surface in the exact long-horizon agents now entering consumer deployment.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "e2d61ffd8dcb",
+   "risk": "Persistent-memory agent infrastructure (Always-On Agents, Memora, Neural Procedural Memory) is being shipped as a capability while the only safety subfield that studies durable agent state — Self-Improvement Risk & Control — is decelerating, leaving memory poisoning and slow cross-session drift as an unmonitored attack surface in the exact long-horizon agents now entering consumer deployment.",
+   "source": "overall",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "decelerating",
+   "priority": 9,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Technological",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "Documented memory-poisoning incidents where an agent's behavior changes across sessions from content injected earlier; vendor patches adding 'memory integrity' or 'memory rollback' controls; red-team disclosures of cross-session persistence attacks on Gemini computer-use or OpenAI agent memory."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "decelerating",
+    "priority": 9
+   }
+  ]
+ },
+ {
+  "id": "cc7e0c440839",
+  "risk": "Test-time, training-free self-improvement methods (no weight updates, self-generated reward signals) let agents acquire new capabilities AFTER passing pre-deployment evaluation, structurally defeating the snapshot logic on which CAISI and statutory evals depend.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "cc7e0c440839",
+   "risk": "Test-time, training-free self-improvement methods (no weight updates, self-generated reward signals) let agents acquire new capabilities AFTER passing pre-deployment evaluation, structurally defeating the snapshot logic on which CAISI and statutory evals depend.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 9,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Technological",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "A documented case where a deployed agent exhibits a dangerous-capability behavior absent from its pre-deployment eval, attributable to test-time/in-context adaptation rather than a model update; OR regulators/labs publicly debating whether training-free adaptation triggers re-evaluation obligations."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 9
+   }
+  ]
+ },
+ {
+  "id": "0214a3edda83",
+  "risk": "Multilingual auditor-judge safety benchmarks (LLM-grades-LLM) for emotional-support and child-safety chatbots are arriving exactly as the safety-research subfield they depend on (Scalable Oversight) DECELERATES — meaning the 'judge' models doing multi-turn crisis grading rest on an oversight foundation whose methodological scrutiny is shrinking just as these benchmarks get drafted into the one legally-carved-out domain (child safety).",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "0214a3edda83",
+   "risk": "Multilingual auditor-judge safety benchmarks (LLM-grades-LLM) for emotional-support and child-safety chatbots are arriving exactly as the safety-research subfield they depend on (Scalable Oversight) DECELERATES — meaning the 'judge' models doing multi-turn crisis grading rest on an oversight foundation whose methodological scrutiny is shrinking just as these benchmarks get drafted into the one legally-carved-out domain (child safety).",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "decelerating",
+   "priority": 9,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Social"
+   ],
+   "leading_indicator": "An auditor-judge benchmark (EMPATH/CAREBench lineage) cited in a CAISI evaluation protocol, a state child-safety rule, or a lab system card as the child-safety standard — WITHOUT a published judge-reliability / judge-gameability validation across the benchmark's claimed languages."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "decelerating",
+    "priority": 9
+   }
+  ]
+ },
+ {
+  "id": "6152fd6042da",
+  "risk": "Training-free, confidence-driven test-time RL on robot/embodied (VLA) policies lets deployed physical agents rewrite their own behavior using self-generated reward signals — outside any weight-update audit trail and outside the bounded-task monitoring that physical-safety regulators actually run.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "6152fd6042da",
+   "risk": "Training-free, confidence-driven test-time RL on robot/embodied (VLA) policies lets deployed physical agents rewrite their own behavior using self-generated reward signals — outside any weight-update audit trail and outside the bounded-task monitoring that physical-safety regulators actually run.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 8,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Technological",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "First incident report or recall in which a deployed robot/agent's behavior is found to have changed post-deployment via on-device adaptation with no corresponding firmware/weight update record; or a robotics vendor system card disclosing 'continuous test-time adaptation' without an accompanying re-certification protocol."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 8
+   }
+  ]
+ },
+ {
+  "id": "4421adbc15d5",
+  "risk": "Child-safety and emotional-support chatbot benchmarks are arriving precisely as child safety is carved OUT of federal preemption — turning a thin, fresh research literature into the de facto legal standard before it is mature, with no cross-lingual deployment validation.",
+  "first_seen": "2026-06-30",
+  "last_seen": "2026-06-30",
+  "n_appearances": 1,
+  "latest": {
+   "id": "4421adbc15d5",
+   "risk": "Child-safety and emotional-support chatbot benchmarks are arriving precisely as child safety is carved OUT of federal preemption — turning a thin, fresh research literature into the de facto legal standard before it is mature, with no cross-lingual deployment validation.",
+   "source": "weekly",
+   "date": "2026-06-30",
+   "severity": 4,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "steady",
+   "priority": 8,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Social",
+    "Demographic"
+   ],
+   "leading_indicator": "A regulator, platform child-safety policy, or the EU Article 5 implementing guidance referencing a specific child-safety chatbot benchmark as the conformance bar without requiring multilingual/multi-turn coverage; OR a documented harm in a non-English emotional-support chatbot interaction that passed an adopted English-centric benchmark."
+  },
+  "history": [
+   {
+    "date": "2026-06-30",
+    "severity": 4,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "steady",
+    "priority": 8
+   }
+  ]
+ }
+]
