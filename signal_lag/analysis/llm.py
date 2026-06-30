@@ -115,17 +115,19 @@ def call_claude(
         return None
 
 
-def analyze_weekly(payload: dict, api_key: str | None, model: str = "claude-opus-4-8") -> dict | None:
-    text = call_claude(
-        SYSTEM,
-        INSTRUCTIONS + "\n\nDATA:\n" + json.dumps(payload, ensure_ascii=False),
-        api_key, model,
-    )
-    if text is None:
-        return None
-    result = extract_json(text)
+def analyze_weekly(payload: dict, api_key: str | None, model: str = "claude-opus-4-8",
+                   retries: int = 3) -> dict | None:
+    user = INSTRUCTIONS + "\n\nDATA:\n" + json.dumps(payload, ensure_ascii=False)
+    result = None
+    for attempt in range(1, retries + 1):
+        text = call_claude(SYSTEM, user, api_key, model)
+        if text is None:
+            return None
+        result = extract_json(text)
+        if result is not None:
+            break
+        log.warning("Could not parse LLM analysis JSON (attempt %d/%d)", attempt, retries)
     if result is None:
-        log.warning("Could not parse LLM analysis JSON")
         return None
     log.info("LLM analysis complete (%d paper notes)", len(result.get("papers", [])))
     return result
@@ -222,18 +224,25 @@ def classify_limitation_focused(
     return out
 
 
-def summarize_week(payload: dict, api_key: str | None, model: str = "claude-opus-4-8") -> dict | None:
-    """Focused 'this week only' Claude summary. Fail-soft (-> None)."""
-    text = call_claude(
-        WEEK_SYSTEM,
-        WEEK_INSTRUCTIONS + "\n\nDATA:\n" + json.dumps(payload, ensure_ascii=False),
-        api_key, model,
-    )
-    if text is None:
-        return None
-    result = extract_json(text)
+def summarize_week(payload: dict, api_key: str | None, model: str = "claude-opus-4-8",
+                   retries: int = 3) -> dict | None:
+    """Focused 'this week only' Claude summary. Fail-soft (-> None).
+
+    Retries on an unparseable reply: the call usually succeeds (HTTP 200) but the model
+    occasionally wraps the JSON in prose, which ``extract_json`` can't recover — a single
+    such miss used to leave the whole this-week summary empty. Retrying re-rolls it.
+    """
+    user = WEEK_INSTRUCTIONS + "\n\nDATA:\n" + json.dumps(payload, ensure_ascii=False)
+    result = None
+    for attempt in range(1, retries + 1):
+        text = call_claude(WEEK_SYSTEM, user, api_key, model)
+        if text is None:
+            return None                      # no key / hard API failure -> give up
+        result = extract_json(text)
+        if result is not None:
+            break
+        log.warning("Could not parse weekly summary JSON (attempt %d/%d)", attempt, retries)
     if result is None:
-        log.warning("Could not parse weekly summary JSON")
         return None
     log.info("Weekly summary complete (%d notable notes)", len(result.get("notable", [])))
     return result
