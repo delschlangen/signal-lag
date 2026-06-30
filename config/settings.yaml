@@ -134,6 +134,10 @@ harm:
   # harm_topics defined => skipped). The Foresight Gap pass uses accelerating harm
   # vectors to frame capability→harm enablement risks.
   enabled: true
+  # Quarter-over-quarter growth that flags a harm vector as "accelerating". Lower than the
+  # research-topic threshold (velocity.inflection_threshold=0.30) because harm vectors are
+  # large, mature areas where even modest sustained growth is meaningful.
+  inflection_threshold: 0.08
 
 divergence:
   # Relative-velocity gap (capability minus safety) that triggers a signal.
@@ -191,8 +195,9 @@ analysis:
     # Quality-over-quantity backfill: if fewer than `min_surfaced` risks survive
     # verification (too many came back already-widely-discussed), re-run synthesis for
     # DIFFERENT seams up to `max_rounds` total rounds. Stops early once enough survive.
+    # (Kept at 2: a 3rd round added ~5 min of web-search calls for marginal gain.)
     min_surfaced: 3
-    max_rounds: 3
+    max_rounds: 2
   # "This week" lens: alongside the 3-year quarterly view, analyze ONLY papers from the
   # last `window_days`. Adds a focused Claude summary + a full (web-verified) foresight
   # pass over just this week's papers, shown via a toggle on the Summary & Foresight tabs.

@@ -845,8 +845,11 @@ def render_sentiment_overall():
                      color="trend_pts", color_continuous_scale="Reds",
                      labels={"trend_pts": "Critical-share change (pts, recent vs prior)",
                              "topic": ""},
-                     height=120 + 26 * len(sdf), template="plotly_dark")
-        fig.update_layout(margin=dict(l=10, r=10, t=10, b=30), coloraxis_showscale=False)
+                     height=140 + 34 * len(sdf), template="plotly_dark")
+        # Larger fonts + taller bars render crisper on mobile (the small default text
+        # upscales blurrily on high-DPI phone screens).
+        fig.update_layout(margin=dict(l=10, r=10, t=10, b=30), coloraxis_showscale=False,
+                          font=dict(size=14), bargap=0.25)
         st.plotly_chart(fig, width="stretch")
         if rising:
             st.markdown("**⚠️ Eroding-confidence warnings:**")
@@ -1166,38 +1169,71 @@ def render_register_section():
         st.warning("No scored risks yet. The register fills in once a refresh runs with the "
                    "scoring layer (severity / likelihood / exposure / trajectory).", icon="🔌")
         return
+    # Rank by priority (1 = highest). The rank number is printed on the matrix AND as the
+    # first table column, so you can match a dot to its row without hovering.
+    ranked = sorted(reg, key=lambda e: (e.get("latest") or {}).get("priority") or 0,
+                    reverse=True)
     rows = []
-    for e in reg:
+    for i, e in enumerate(ranked, 1):
         lt = e.get("latest") or {}
         rows.append({
-            "Priority": lt.get("priority"), "Sev": lt.get("severity"),
+            "#": i, "Priority": lt.get("priority"), "Sev": lt.get("severity"),
             "Lik": lt.get("likelihood"), "Exp": lt.get("exposure"),
             "Trajectory": lt.get("trajectory"), "Novelty": lt.get("novelty_rating"),
             "Risk": e.get("risk"), "First seen": e.get("first_seen"),
             "Last seen": e.get("last_seen"), "Seen ×": e.get("n_appearances"),
         })
     rdf = pd.DataFrame(rows)
+
+    st.markdown(
+        "**How to read the matrix:** each numbered dot is one risk, placed by **likelihood** "
+        "(x → how probable in ~24 mo) and **severity** (y → how bad if it happens). **Bubble "
+        "size = exposure** (breadth of impact); **colour = trajectory** (🔴 accelerating · "
+        "🟡 steady · 🟢 fading). **Top-right is the danger zone** (likely *and* severe). The "
+        "number on each dot is its priority rank — find it in the table below.")
+
     plot = rdf.dropna(subset=["Sev", "Lik"]).copy()
     if not plot.empty:
+        import math
+        plot["xj"] = plot["Lik"].astype(float)
+        plot["yj"] = plot["Sev"].astype(float)
+        # Spread dots that share the exact (likelihood, severity) cell so they don't stack.
+        groups: dict = {}
+        for idx, r in plot.iterrows():
+            groups.setdefault((r["Lik"], r["Sev"]), []).append(idx)
+        for (lik, sev), idxs in groups.items():
+            if len(idxs) > 1:
+                for k, idx in enumerate(idxs):
+                    ang = 2 * math.pi * k / len(idxs)
+                    plot.at[idx, "xj"] = lik + 0.20 * math.cos(ang)
+                    plot.at[idx, "yj"] = sev + 0.20 * math.sin(ang)
         plot["Exposure"] = plot["Exp"].fillna(3)
+        plot["label"] = plot["#"].astype(str)
         fig = px.scatter(
-            plot, x="Lik", y="Sev", size="Exposure", color="Trajectory", hover_name="Risk",
-            size_max=28, labels={"Lik": "Likelihood (1–5)", "Sev": "Severity (1–5)"},
+            plot, x="xj", y="yj", size="Exposure", color="Trajectory", text="label",
+            hover_name="Risk", custom_data=["#"], size_max=30,
+            labels={"xj": "Likelihood (1–5)", "yj": "Severity (1–5)"},
             category_orders={"Trajectory": ["accelerating", "steady", "decelerating"]},
             color_discrete_map={"accelerating": "#ff6b6b", "steady": "#ffd43b",
                                 "decelerating": "#69db7c"},
-            height=480, template="plotly_dark",
+            height=400, template="plotly_dark",
         )
-        fig.update_xaxes(range=[0.5, 5.5], dtick=1)
-        fig.update_yaxes(range=[0.5, 5.5], dtick=1)
-        fig.update_layout(margin=dict(t=10))
+        fig.update_traces(textposition="middle center",
+                          textfont=dict(size=11, color="black"),
+                          hovertemplate="#%{customdata[0]}: %{hovertext}<extra></extra>")
+        fig.add_vline(x=3, line_dash="dot", line_color="gray", opacity=0.4)
+        fig.add_hline(y=3, line_dash="dot", line_color="gray", opacity=0.4)
+        fig.update_xaxes(range=[0.4, 5.6], tickvals=[1, 2, 3, 4, 5])
+        fig.update_yaxes(range=[0.4, 5.6], tickvals=[1, 2, 3, 4, 5])
+        fig.update_layout(margin=dict(t=10, l=10, r=10, b=10),
+                          legend=dict(orientation="h", yanchor="bottom", y=1.02, title=None))
         st.plotly_chart(fig, width="stretch")
-        st.caption("Top-right = high-severity **and** high-likelihood. Bubble size = "
-                   "exposure; colour = trajectory of the enabling signal. Hover for the risk.")
-    st.dataframe(rdf.sort_values("Priority", ascending=False, na_position="last"),
-                 width="stretch", hide_index=True)
+
+    st.markdown("**Ranked register** (highest priority first):")
+    st.dataframe(rdf, width="stretch", hide_index=True)
     st.caption(f"{len(reg)} risks tracked across all refreshes. "
-               "Priority = severity × likelihood (1–25).")
+               "Priority = severity × likelihood (1–25). First-seen / last-seen show how long "
+               "each risk has persisted.")
 
 
 with tab_foresight:

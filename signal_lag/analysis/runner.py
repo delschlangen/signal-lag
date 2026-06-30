@@ -213,9 +213,11 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
         harm_ts = velocity.drop_incomplete_tail(
             velocity.topic_timeseries(papers, harm_tags), today
         )
+        # Harm vectors are large, mature areas — quarter-over-quarter growth is modest, so
+        # a lower acceleration threshold than the research topics (0.30) is appropriate.
         harm_infl = velocity.compute_inflections(
             harm_ts, int(vcfg.get("inflection_window", 2)),
-            float(vcfg.get("inflection_threshold", 0.3)),
+            float(settings.section("harm").get("inflection_threshold", 0.08)),
         )
         infl_by_key = {i["topic_key"]: i for i in harm_infl}
         counts: dict[str, int] = {}
