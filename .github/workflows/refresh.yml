@@ -63,6 +63,7 @@ jobs:
           [ -f data/risk_register.json ] && git add data/risk_register.json || true
           [ -f data/verify_cache.json ] && git add data/verify_cache.json || true
           [ -f data/benchmark_history.json ] && git add data/benchmark_history.json || true
+          [ -f data/citation_history.json ] && git add data/citation_history.json || true
           if git diff --cached --quiet; then
             echo "No snapshot changes."
           else

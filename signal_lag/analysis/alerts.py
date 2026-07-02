@@ -154,6 +154,39 @@ def benchmark_transitions(history_rows: list) -> dict:
             "open_leads": open_leads}
 
 
+def citation_velocity(history_rows: list, min_delta: int = 2, top_n: int = 10,
+                      sleeper_max_total: int = 30) -> dict:
+    """Week-over-week citation movement from the snapshotted count history (#37).
+
+    - ``movers``: papers gaining the most citations since the previous refresh
+      (adoption accelerating).
+    - ``sleepers``: papers still under ``sleeper_max_total`` total citations whose count
+      jumped ≥ ``min_delta`` — early heat on low-profile work.
+    Needs ≥2 dated snapshots; returns {"available": False, "n_dates": n} until then.
+    """
+    rows = sorted(history_rows or [], key=lambda r: r.get("date") or "")
+    if len(rows) < 2:
+        return {"available": False, "n_dates": len(rows)}
+    prev, cur = rows[-2], rows[-1]
+    pc, cc = prev.get("counts") or {}, cur.get("counts") or {}
+    deltas = []
+    for aid, now in cc.items():
+        before = pc.get(aid)
+        if before is None:
+            continue                      # newly enriched, not newly cited
+        d = now - before
+        if d >= min_delta:
+            deltas.append({"arxiv_id": aid, "delta": d, "now": now, "prev": before})
+    deltas.sort(key=lambda r: r["delta"], reverse=True)
+    sleepers = [r for r in deltas if r["now"] <= sleeper_max_total][:top_n]
+    return {
+        "available": True, "n_dates": len(rows),
+        "prev_date": prev.get("date"), "date": cur.get("date"),
+        "movers": deltas[:top_n], "sleepers": sleepers,
+        "n_tracked": len(set(cc) & set(pc)),
+    }
+
+
 def wilson_interval(share: float, n: int, z: float = 1.96) -> tuple[float, float]:
     """95% Wilson score interval for a proportion (#22) — safe at small n and share≈0/1."""
     if n <= 0:

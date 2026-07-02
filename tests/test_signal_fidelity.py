@@ -374,6 +374,32 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ---------------------------------------- #37 citation-velocity history
+def test_citation_history_appends_bounded_and_idempotent(tmp_path):
+    from signal_lag import snapshot as snap_mod
+    path = tmp_path / "cites.json"
+    for i in range(10):
+        snap_mod.append_citation_history({"a": i}, f"2026-07-{i+1:02d}", path, keep=3)
+    snap_mod.append_citation_history({"a": 99}, "2026-07-10", path, keep=3)  # overwrite
+    rows = json.loads(path.read_text())
+    assert [r["date"] for r in rows] == ["2026-07-08", "2026-07-09", "2026-07-10"]  # keep=3
+    assert rows[-1]["counts"]["a"] == 99                                            # overwrote
+
+
+def test_citation_velocity_movers_and_sleepers():
+    from signal_lag.analysis import alerts
+    rows = [
+        {"date": "2026-06-25", "counts": {"big": 100, "small": 4, "flat": 50, "new": 0}},
+        {"date": "2026-07-02", "counts": {"big": 112, "small": 9, "flat": 51,
+                                          "brandnew": 7}},
+    ]
+    cv = alerts.citation_velocity(rows, min_delta=2)
+    assert cv["available"] and cv["n_tracked"] == 3       # brandnew has no baseline
+    assert cv["movers"][0] == {"arxiv_id": "big", "delta": 12, "now": 112, "prev": 100}
+    assert [s["arxiv_id"] for s in cv["sleepers"]] == ["small"]   # low total, jumped
+    assert alerts.citation_velocity(rows[:1]) == {"available": False, "n_dates": 1}
+
+
 # ---------------------------------------- #1 tagging audit + thresholds + confidence
 def test_tag_papers_respects_per_topic_thresholds():
     from signal_lag.analysis import taxonomy as tax_mod

@@ -24,8 +24,9 @@ import json  # noqa: E402
 from signal_lag.config import load_all  # noqa: E402
 from signal_lag.ingest.pipeline import ingest  # noqa: E402
 from signal_lag.snapshot import (  # noqa: E402
-    append_benchmark_history, append_history, append_risk_register, augment_foresight,
-    build_snapshot, load_snapshot, save_snapshot,
+    append_benchmark_history, append_citation_history, append_history,
+    append_risk_register, augment_foresight, build_snapshot, load_snapshot,
+    save_snapshot,
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s",
@@ -105,6 +106,15 @@ def main(argv=None) -> int:
     append_history(snapshot, history_path, load_snapshot(out.with_name("snapshot_prev.json")))
     append_risk_register(snapshot, register_path)
     append_benchmark_history(snapshot, benchmark_path)
+    # Citation-velocity history (#37): snapshot per-paper citation totals so
+    # week-over-week deltas (adoption velocity) are computable next refresh.
+    from signal_lag.ingest.store import Store
+    _store = Store(settings.path("db_path"))
+    _counts = {p.arxiv_id: p.cited_by_count for p in _store.get_papers()
+               if p.cited_by_count is not None}
+    _store.close()
+    append_citation_history(_counts, snapshot["meta"]["refreshed_at"],
+                            ROOT / "data" / "citation_history.json")
     m = snapshot["meta"]
     log.info("Wrote %s: %d papers, %s..%s, %d/%d pairings flagged, backend=%s",
              out, m["n_papers"], m["date_start"], m["date_end"],

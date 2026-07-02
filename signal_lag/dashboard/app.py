@@ -454,6 +454,20 @@ def _load_bench_history(_cache_key: float):
 bench_history = _load_bench_history(
     BENCH_HISTORY_PATH.stat().st_mtime if BENCH_HISTORY_PATH.exists() else 0.0)
 
+CITE_HISTORY_PATH = SNAPSHOT.with_name("citation_history.json")
+
+
+@st.cache_data(ttl=1800)
+def _load_cite_history(_cache_key: float):
+    try:
+        return json.loads(CITE_HISTORY_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+
+cite_history = _load_cite_history(
+    CITE_HISTORY_PATH.stat().st_mtime if CITE_HISTORY_PATH.exists() else 0.0)
+
 
 def topic_links(snap, topic_key, n=3):
     """Markdown bullet list of recent papers for a topic, each with a short blurb."""
@@ -2379,10 +2393,43 @@ with tab_sources:
             st.markdown("**💤 Sleepers (early-heat)**")
             _render_cites("sleepers")
     else:
-        st.caption("📊 Citation-velocity movers (rapid-growth / sleepers) need OpenAlex's "
-                   "year-by-year citation series, which is currently unreachable from the "
-                   "refresh runner — so this section is hidden. Per-paper citation counts and "
-                   "the **citation-verified borrowing** in Foresight come from Semantic Scholar.")
+        st.caption("📊 OpenAlex's year-by-year citation series is unreachable from the "
+                   "refresh runner, so the classic movers view is hidden. Per-paper citation "
+                   "counts and the **citation-verified borrowing** in Foresight come from "
+                   "Semantic Scholar — and week-over-week velocity is rebuilt from our own "
+                   "snapshots below once two refreshes of history exist.")
+
+    # --- Citation velocity from our own count snapshots (#37) ---
+    cv = alerts.citation_velocity(cite_history)
+    if cv.get("available"):
+        st.divider()
+        st.markdown("### 📈 Citation velocity — who's being adopted right now")
+        st.caption(f"Per-paper Semantic Scholar citation totals are snapshotted each refresh; "
+                   f"these are the biggest gains **{cv.get('prev_date')} → {cv.get('date')}** "
+                   f"across {cv.get('n_tracked', 0):,} tracked papers. Adoption, not output.")
+        _cl = _arxiv_lookup(snap)
+
+        def _cite_mover_line(r):
+            t, u = _cl.get(r["arxiv_id"], (r["arxiv_id"], None))
+            head = f"[{t}]({u})" if u else t
+            return (f"- **{head}** — +{r['delta']} citations this refresh "
+                    f"({r['prev']} → {r['now']})")
+
+        m1, m2 = st.columns(2)
+        with m1:
+            st.markdown("**🔥 Fastest-growing (all papers)**")
+            for r in cv.get("movers", [])[:8]:
+                st.markdown(_cite_mover_line(r))
+        with m2:
+            st.markdown("**💤 Sleepers (low total, sudden heat)**")
+            slp = cv.get("sleepers", [])
+            for r in slp[:8]:
+                st.markdown(_cite_mover_line(r))
+            if not slp:
+                st.caption("No low-profile paper jumped this refresh.")
+    elif cite_history is not None and len(cite_history) == 1:
+        st.caption("⏳ Citation-count history started this refresh — week-over-week "
+                   "citation velocity (movers/sleepers) appears from the next refresh on.")
 
     # --- Citation cross-pollination (#16/#17/#18): do the communities actually engage? ---
     cg = snap.get("citation_graph") or {}

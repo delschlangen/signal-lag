@@ -678,6 +678,31 @@ def append_benchmark_history(snapshot: dict, path: Path) -> None:
     path.write_text(json.dumps(rows, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
+def append_citation_history(counts: dict, date: str, path: Path, keep: int = 8) -> None:
+    """Persist this refresh's per-paper citation counts (#37), idempotent per date.
+
+    Semantic Scholar gives a live total per paper but no time series; snapshotting the
+    totals each refresh builds our own — week-over-week deltas make citation *velocity*
+    (adoption) computable again despite OpenAlex being unreachable. Bounded to the last
+    ``keep`` refreshes. Fail-soft.
+    """
+    if not counts or not date:
+        return
+    path = Path(path)
+    try:
+        rows = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    except Exception:
+        rows = []
+    if not isinstance(rows, list):
+        rows = []
+    rows = [r for r in rows if r.get("date") != date]      # same-date re-run -> overwrite
+    rows.append({"date": date, "counts": {k: int(v) for k, v in counts.items()}})
+    rows.sort(key=lambda r: r.get("date") or "")
+    rows = rows[-keep:]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+
+
 def _paper_lookup(snapshot: dict) -> dict:
     """{arxiv_id -> {title, abstract}} from the snapshot's source + notable papers, so the
     plain-language explainer can reference a risk's source papers by title/abstract."""
