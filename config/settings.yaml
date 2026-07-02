@@ -74,8 +74,24 @@ taxonomy:
   max_tags_per_paper: 3
   # Per-topic threshold overrides (#1): tighten over-inclusive topics identified by the
   # tagging audit (Methodology tab shows per-topic precision) without penalizing the
-  # well-behaved ones. e.g.  mech_interp: 0.32
-  topic_thresholds: {}
+  # well-behaved ones. Values below derive from the 2026-07-02 audit (30 tags/topic,
+  # judged at the global 0.28 cutoff): precision <0.15 -> 0.36, <0.30 -> 0.33,
+  # <0.45 -> 0.31; agentic_capability (0.65, healthiest) keeps the global default.
+  # The audit re-runs every refresh, so the next one measures the improvement.
+  topic_thresholds:
+    rsi_control: 0.36          # audit precision 0.03 — swept in generic self-training work
+    interpretability: 0.36     # 0.07
+    deceptive_alignment: 0.36  # 0.08
+    reward_hacking: 0.36       # 0.10
+    self_improvement: 0.36     # 0.10
+    reasoning_cot: 0.36        # 0.13
+    scalable_oversight: 0.33   # 0.22
+    frontier_scaling: 0.33     # 0.27
+    cot_faithfulness: 0.33     # 0.28
+    evals_benchmarks: 0.31     # 0.32
+    rl_rlhf: 0.31              # 0.37
+    agentic_monitoring: 0.31   # 0.42
+    multiagent_tooluse: 0.31   # 0.43
 
 velocity:
   # Bucket size for time series. "Q" = calendar quarter.
