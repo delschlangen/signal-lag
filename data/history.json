@@ -109,5 +109,62 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-07-02",
+  "n_papers": 12437,
+  "date_start": "2023-09-13",
+  "date_end": "2026-06-30",
+  "n_flagged": 4,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Agentic / Autonomy Capability vs Agentic Behavior Monitoring (cap +290% / saf +188%)",
+   "meaning": "The defining tension this quarter is between rapidly maturing autonomous agents acting over long horizons and the comparatively thinner tooling to monitor what those agents actually do step-by-step. Capability work on agentic autonomy grew ~290% QoQ against ~188% for agentic behavior monitoring, leaving oversight structurally behind deployment.",
+   "why_it_matters": "As agents chain hundreds-to-thousands of actions with persistent memory, tool use, and payment access, undetected mid-trajectory drift or reward misattribution can commit failures before the failing action occurs — making step-level monitoring the binding constraint on safe autonomous deployment."
+  },
+  "sentiment_rising": [],
+  "overall_foresight": [
+   {
+    "risk": "The exploding 'Model / Weight Exfiltration' research vector, combined with surrogate-fidelity distillation, quietly turns third-party AI infrastructure partners (OEMs, integrators) into an unmonitored weight-leakage surface just as compute deals push frontier weights deeper into commercial supply chains.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Economic"
+    ]
+   },
+   {
+    "risk": "OpenAI's shift to biology-capability benchmarks (GeneBench-Pro) as a flagship 'scalable oversight' artifact risks establishing a benchmark that simultaneously advertises bio-uplift capability and anchors the eval standard — the same instrument doubling as a capability roadmap for the accelerating Bio/Chemical Uplift vector.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Security/Geopolitical"
+    ]
+   }
+  ],
+  "weekly_foresight": [
+   {
+    "risk": "The 'evaluation illusion' in clinical LLM reasoning — fluent explanations that mask wrong diagnoses — is being propagated into scalable-oversight pipelines just as US frontier evals go classified (NSA/Treasury), so a known unreliability mode gets no public scrutiny in the highest-stakes deployment sector.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Political",
+     "Social"
+    ]
+   },
+   {
+    "risk": "Mechanistic interpretability's pivot to 'surrogate' analysis of closed models (this week) creates a false assurance channel: safety claims about deployed closed models get inferred from open-model proxies, right as SB 53 risk frameworks need auditable interpretability evidence — freezing an unvalidated surrogate method into compliance practice.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Technological",
+     "Political"
+    ]
+   }
+  ],
+  "what_changed": {
+   "n_alerts": 2,
+   "n_accel": 12,
+   "n_sleepers": 0
+  }
  }
 ]
