@@ -72,6 +72,10 @@ taxonomy:
   tag_threshold: 0.28
   # A paper may carry multiple tags; cap how many per paper.
   max_tags_per_paper: 3
+  # Per-topic threshold overrides (#1): tighten over-inclusive topics identified by the
+  # tagging audit (Methodology tab shows per-topic precision) without penalizing the
+  # well-behaved ones. e.g.  mech_interp: 0.32
+  topic_thresholds: {}
 
 velocity:
   # Bucket size for time series. "Q" = calendar quarter.
@@ -169,6 +173,14 @@ analysis:
   # Set to null to run everything on the strong model.
   model_cheap: "claude-haiku-4-5"
   api_key: null
+  # Topic-tagging precision audit (#1): once per refresh, sample tagged papers per topic
+  # and LLM-judge each tag (true/partial/false/unclear) on the cheap tier -> per-topic
+  # precision shown in Methodology. Advisory: a human uses it to set
+  # taxonomy.topic_thresholds; the audit never changes tagging by itself.
+  tag_audit:
+    enabled: true
+    sample_per_topic: 30
+    batch_size: 25
   # How many representative papers per pairing side to send for grounding.
   papers_per_side: 3
   # Author migration (#4, EXPERIMENTAL leading indicator): using OpenAlex author ids

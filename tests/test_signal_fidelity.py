@@ -374,6 +374,51 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ---------------------------------------- #1 tagging audit + thresholds + confidence
+def test_tag_papers_respects_per_topic_thresholds():
+    from signal_lag.analysis import taxonomy as tax_mod
+    tax = _taxonomy()
+    ids = ["p1"]
+    vec = np.array([[1.0, 0.0]], dtype=np.float32)
+    centroids = {"saf": np.array([1.0, 0.0], dtype=np.float32),      # sim 1.0
+                 "cap": np.array([0.6, 0.8], dtype=np.float32)}      # sim 0.6
+    # Global threshold 0.28 tags both; a 0.7 override on cap drops it.
+    rows = tax_mod.tag_papers(ids, vec, centroids, tax, topic_thresholds={"cap": 0.7})
+    assert {(r[1]) for r in rows} == {"saf"}
+    rows2 = tax_mod.tag_papers(ids, vec, centroids, tax)
+    assert {(r[1]) for r in rows2} == {"saf", "cap"}
+
+
+def test_confidence_label_tiers():
+    from signal_lag.analysis.taxonomy import confidence_label
+    assert confidence_label(0.40, 0.28) == "high"      # ≥ thr+0.10
+    assert confidence_label(0.33, 0.28) == "medium"    # ≥ thr+0.04
+    assert confidence_label(0.29, 0.28) == "weak"
+
+
+def test_tag_audit_estimates_precision(monkeypatch):
+    from signal_lag.analysis import tag_audit
+
+    def fake_call(system, user, api_key, model="x", max_tokens=8000, tools=None):
+        items = json.loads(user.split("ITEMS:\n", 1)[1])
+        labels = []
+        for it in items:
+            v = ("true_positive" if it["arxiv_id"].startswith("good")
+                 else "false_positive")
+            labels.append({"arxiv_id": it["arxiv_id"], "verdict": v})
+        return json.dumps({"labels": labels})
+
+    monkeypatch.setattr(tag_audit.llm, "call_claude", fake_call)
+    tax = _taxonomy()
+    papers = [_p("good1", 2025, 1), _p("good2", 2025, 1), _p("bad1", 2025, 1)]
+    tags = {"good1": [("saf", 0.5)], "good2": [("saf", 0.4)], "bad1": [("saf", 0.3)]}
+    out = tag_audit.audit_tags(papers, tags, tax, api_key="k", sample_per_topic=10)
+    t = next(x for x in out["topics"] if x["key"] == "saf")
+    assert t["true_positive"] == 2 and t["false_positive"] == 1
+    assert t["precision"] == round(2 / 3, 2)
+    assert tag_audit.audit_tags(papers, tags, tax, api_key=None) is None  # fail-soft
+
+
 # ---------------------------------------- #6 watchlist statuses
 def test_register_status_derivation():
     from signal_lag import snapshot as snap_mod

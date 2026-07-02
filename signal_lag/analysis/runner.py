@@ -161,7 +161,13 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
 
     # --- supervised taxonomy tagging ---
     centroids = tax_mod.build_topic_centroids(taxonomy, embedder)
-    tax_rows = tax_mod.tag_papers(ids, vecs, centroids, taxonomy)
+    # Per-topic threshold overrides (#1): the audit's remedy for over-inclusive topics.
+    topic_thresholds = {
+        str(k): float(v)
+        for k, v in (settings.section("taxonomy").get("topic_thresholds") or {}).items()
+    }
+    tax_rows = tax_mod.tag_papers(ids, vecs, centroids, taxonomy,
+                                  topic_thresholds=topic_thresholds)
     store.replace_tags("taxonomy", tax_rows)
     tax_tags = store.get_tags("taxonomy")
 
@@ -183,6 +189,25 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
     inflections = velocity.compute_inflections(
         tax_ts, int(vcfg.get("inflection_window", 2)), float(vcfg.get("inflection_threshold", 0.3))
     )
+
+    # High-confidence volumes (#1): the same recent per-topic volume counting only tags
+    # comfortably above their topic's threshold (medium+high tiers, i.e. excluding weak
+    # borderline matches) — shown next to raw volume so tag-quality doubt is visible.
+    def _hc_min(k):
+        return topic_thresholds.get(k, taxonomy.tag_threshold) + 0.04
+
+    tax_tags_hc = {
+        aid: [(k, s) for k, s in tags if s >= _hc_min(k)]
+        for aid, tags in tax_tags.items()
+    }
+    tax_tags_hc = {aid: t for aid, t in tax_tags_hc.items() if t}
+    hc_ts = velocity.drop_incomplete_tail(velocity.topic_timeseries(papers, tax_tags_hc), today)
+    hc_recent: dict[str, float] = {}
+    if not hc_ts.empty:
+        _win = int(vcfg.get("inflection_window", 2))
+        _recent_p = sorted(hc_ts["period"].unique())[-_win:]
+        hc_recent = (hc_ts[hc_ts["period"].isin(_recent_p)]
+                     .groupby("topic_key")["count"].mean().round(1).to_dict())
 
     # --- velocity (clusters) for emergent/new-cluster detection ---
     cluster_ts = velocity.drop_incomplete_tail(
@@ -249,6 +274,19 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
     # classification) run on a cheap model; synthesis/verification/explanations keep the
     # strong one. Falls back to the strong model when unset.
     acfg_model_cheap = acfg.get("model_cheap") or acfg_model
+
+    # --- topic-tagging precision audit (#1): advisory per-topic precision estimate ---
+    tacfg = acfg.get("tag_audit") or {}
+    tag_audit_res = None
+    if tacfg.get("enabled") and acfg_api_key:
+        from . import tag_audit as tag_audit_mod
+        tag_audit_res = tag_audit_mod.audit_tags(
+            papers, tax_tags, taxonomy, acfg_api_key,
+            model=acfg_model_cheap,
+            sample_per_topic=int(tacfg.get("sample_per_topic", 30)),
+            batch_size=int(tacfg.get("batch_size", 25)),
+            seed=str(today),
+        )
 
     # --- negative / critical-signal layer ---
     scfg = settings.section("sentiment")
@@ -410,6 +448,12 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
         "citation_flow": cflow,
         "citation_graph": cgraph,
         "author_migration": author_mig,
+        "tag_audit": tag_audit_res,
+        "hc_recent": hc_recent,
+        "tag_thresholds": {
+            t.key: topic_thresholds.get(t.key, taxonomy.tag_threshold)
+            for t in taxonomy.all_topics
+        },
         "harm": harm,
         "harm_timeseries": harm_ts,
         "lab_posts": lab_posts,

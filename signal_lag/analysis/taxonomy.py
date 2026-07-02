@@ -51,18 +51,38 @@ def tag_papers(
     paper_vecs: np.ndarray,
     centroids: dict[str, np.ndarray],
     taxonomy: Taxonomy,
+    topic_thresholds: dict[str, float] | None = None,
 ) -> list[tuple[str, str, float]]:
-    """Return tag rows: (arxiv_id, topic_key, score)."""
+    """Return tag rows: (arxiv_id, topic_key, score).
+
+    ``topic_thresholds`` (#1) optionally overrides the global ``tag_threshold`` per
+    topic — the audit's remedy for over-inclusive topics: an overbroad centroid gets a
+    tighter cutoff instead of one global compromise value.
+    """
     keys = list(centroids.keys())
     cmat = np.vstack([centroids[k] for k in keys])  # (T, d)
     sims = paper_vecs @ cmat.T  # cosine (vectors are normalized) -> (N, T)
+    thr = {k: float((topic_thresholds or {}).get(k, taxonomy.tag_threshold)) for k in keys}
 
     rows: list[tuple[str, str, float]] = []
     for i, pid in enumerate(paper_ids):
         scores = sims[i]
         order = np.argsort(scores)[::-1][: taxonomy.max_tags_per_paper]
         for j in order:
-            if scores[j] >= taxonomy.tag_threshold:
+            if scores[j] >= thr[keys[j]]:
                 rows.append((pid, keys[j], float(scores[j])))
     log.info("Taxonomy tagged %d (paper,topic) pairs across %d papers", len(rows), len(paper_ids))
     return rows
+
+
+def confidence_label(score: float, threshold: float) -> str:
+    """Tag-confidence tier (#1): how far above its topic's cutoff a match scored.
+
+    high ≥ threshold+0.10 · medium ≥ threshold+0.04 · else weak (a borderline
+    semantic match that just cleared the bar).
+    """
+    if score >= threshold + 0.10:
+        return "high"
+    if score >= threshold + 0.04:
+        return "medium"
+    return "weak"

@@ -103,6 +103,19 @@ def explained_risks(snap):
     return [r for r in (fg.get("risks") or []) if r.get("plain_explanation")]
 
 
+def tag_confidence(score, threshold) -> str:
+    """Tag-confidence tier (#1): high >= thr+0.10, medium >= thr+0.04, else weak."""
+    try:
+        s, t = float(score), float(threshold)
+    except (TypeError, ValueError):
+        return "weak"
+    if s >= t + 0.10:
+        return "high"
+    if s >= t + 0.04:
+        return "medium"
+    return "weak"
+
+
 def all_fg_risks(snap):
     """Current overall + weekly foresight risks (for matching register statements)."""
     out = list((get_analysis(snap).get("foresight_gap") or {}).get("risks") or [])
@@ -1002,10 +1015,18 @@ def render_divergence_overall():
             return f"{growth*100:+.0f}%{band}"
 
         adj = {a["pairing"]: a for a in alerts.confidence_adjusted_divergence(snap)}
+        _hc = snap.get("hc_recent") or {}
+
+        def _with_hc(raw, topic_key):
+            hc = _hc.get(topic_key)
+            return f"{raw:.0f}" + (f" ({hc:.0f} hc)" if hc is not None else "")
+
         disp = pd.DataFrame({
             "Pairing": div["pairing"],
-            "Cap papers/qtr": div["cap_recent"].map(lambda x: f"{x:.0f}"),
-            "Saf papers/qtr": div["saf_recent"].map(lambda x: f"{x:.0f}"),
+            "Cap papers/qtr": [
+                _with_hc(r, k) for r, k in zip(div["cap_recent"], div["capability_topic"])],
+            "Saf papers/qtr": [
+                _with_hc(r, k) for r, k in zip(div["saf_recent"], div["safety_topic"])],
             "Volume balance": div["volume_ratio"].map(_vol_balance),
             "Capability growth/qtr": [
                 _g_with_ci(g, r) for g, r in zip(div["cap_growth"], div["cap_recent"])],
@@ -1034,7 +1055,10 @@ def render_divergence_overall():
                         f"- **{a['pairing']}** — raw {a['raw_gap']*100:+.0f} → adjusted "
                         f"{a['adjusted_gap']*100:+.0f} pts (cap conf {a['cap_confidence']}, "
                         f"saf conf {a['saf_confidence']}): {a['reason']}")
-        st.caption("**Volume balance** = which side has more papers now (cap÷saf ratio). "
+        st.caption("**(N hc)** = high-confidence volume: the same count keeping only tags "
+                   "comfortably above the topic's threshold (excludes weak borderline "
+                   "matches — see the tagging audit in Methodology). "
+                   "**Volume balance** = which side has more papers now (cap÷saf ratio). "
                    "**Growth balance** = which side is accelerating faster (gap = capability "
                    "growth − safety growth). A pairing is flagged *safety lagging* when the "
                    "growth gap clears the threshold, capability growth is positive, and "
@@ -2304,10 +2328,28 @@ with tab_sources:
     keys = list(snap["label_map"].keys())
     pick = st.selectbox("Topic", keys, format_func=lambda k: lbl(snap, k))
     topic_label = lbl(snap, pick)
-    for p in snap["sources"].get(pick, []):
+    _thr = (snap.get("tag_thresholds") or {}).get(pick, 0.28)
+    _papers_for_topic = snap["sources"].get(pick, [])
+    _hide_weak = st.checkbox(
+        "Hide weak semantic matches", value=False,
+        help="Keeps only tags comfortably above this topic's similarity threshold "
+             "(🟢 high / 🟡 medium confidence); ⚪ weak = a borderline match that just "
+             "cleared the bar. Per-topic precision estimates: Methodology tab.")
+    _conf_dot = {"high": "🟢", "medium": "🟡", "weak": "⚪"}
+    _shown = 0
+    for p in _papers_for_topic:
+        _c = tag_confidence(p.get("score"), _thr)
+        if _hide_weak and _c == "weak":
+            continue
+        st.caption(f"{_conf_dot.get(_c, '')} {_c}-confidence tag "
+                   f"(similarity {p.get('score', 0):.2f}, threshold {_thr:.2f})")
         render_paper_card(p, topic_label)
-    if not snap["sources"].get(pick):
+        _shown += 1
+    if not _papers_for_topic:
         st.write("No tagged papers for this topic in the current snapshot.")
+    elif not _shown:
+        st.caption("All of this topic's recent papers are weak matches — untick the filter "
+                   "to see them.")
 
     st.divider()
     cites = snap.get("citations") or {}
@@ -2470,6 +2512,28 @@ with tab_method:
                                data=json.dumps(snap, ensure_ascii=False),
                                file_name=f"snapshot_{date}.json", mime="application/json",
                                width="stretch")
+
+    audit = snap.get("tag_audit") or {}
+    if audit.get("topics"):
+        with st.expander("🧪 Tagging precision audit — how trustworthy is each topic's count?"):
+            st.caption(f"Once per refresh, {audit.get('n_judged', 0)} sampled (paper, topic) "
+                       "tags were independently judged by an LLM against each topic's "
+                       "definition. **Precision** counts a partial match as half a hit "
+                       "(unclear excluded). Low-precision topics are over-inclusive — their "
+                       "volumes run hot, which for safety topics makes the safety-lag look "
+                       "SMALLER than it is. Remedy: tighten that topic's threshold via "
+                       "`taxonomy.topic_thresholds` (the audit is advisory; it never changes "
+                       "tagging by itself).")
+            adf = pd.DataFrame([
+                {"Topic": t.get("label"), "Sampled": t.get("n_sampled"),
+                 "True +": t.get("true_positive"), "Partial": t.get("partial"),
+                 "False +": t.get("false_positive"), "Unclear": t.get("unclear"),
+                 "Precision": t.get("precision"),
+                 "": ("🔴" if (t.get("precision") or 1) < 0.6
+                      else ("🟡" if (t.get("precision") or 1) < 0.8 else "🟢"))}
+                for t in audit["topics"]
+            ])
+            st.dataframe(adf, width="stretch", hide_index=True)
 
     cats = ", ".join(meta.get("categories", []) or [])
     srcs = meta.get("source_counts") or {}
