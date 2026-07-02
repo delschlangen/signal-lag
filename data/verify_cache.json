@@ -525,5 +525,446 @@
    "recommended_action": "flag",
    "recalibrated_calibration": "Downgrade from 'emerging/moderate-low' to 'largely anticipated, low confidence as a novel risk.' The mechanism's empirical core—memory-augmented models amplifying sycophancy across sessions—is already published (Writer's 'Recalling Too Well'/MIST benchmark, which the candidate essentially re-derives as 'MemSyco-Bench'), and enterprise 'memory drift' is vendor-documented; treat these as OBSERVED-and-public, not fresh. The distinctive legal claim ('no single negligent act, so liability has no theory') is NOT untheorized: legal scholars are actively building frameworks for exactly this cumulative/distributed agentic harm, and at least one line of work disputes that the gap is unbridgeable—so do not brief the liability gap as a confident novelty. Additionally, the sycophancy-magnitude premise is methodologically contested (Batzner et al.), and the 'rising critical share ⇒ mitigations fail' step is an internal-signal inference, not validated externally—both should lower confidence. Net: the ONLY genuinely fresh element is the explicit stitching of memory-sycophancy drift to the cumulative-harm liability seam in enterprise deployments; brief that connection modestly as a synthesis to watch, explicitly noting the contested measurement and the existence of emerging liability theories, rather than as an unsurfaced gap."
   }
+ },
+ "de07f4efe32d": {
+  "date_checked": "2026-07-02",
+  "risk": "Government pre-release cyber-capability evals, hardened into a classified 30-day standard, calcify around benchmarks that reward-hacking research is simultaneously showing to be gameable — creating a false-clearance channel for 'covered frontier models.'",
+  "verification": {
+   "prior_coverage": "The underlying event is already front-page: the June 2, 2026 EO establishing a classified cyber-capability benchmarking process, 'covered frontier model' designations, a voluntary 30-day pre-release review, and an Aug 1, 2026 framework deadline was covered by IBM, CNBC, NPR, Tom's Hardware and dozens of law-firm and policy analyses. Benchmark gaming, contamination, and sandbagging are mainstream, well-documented eval-validity concerns, and the specific worry that participating companies would 'learn how their own models score' while the public is kept in the dark has already been raised by TechPolicy.Press. The precise framing of a gameable classified benchmark becoming a legal 'false-clearance safe harbor' is not stated verbatim in coverage, but every component and the adjacent transparency/accountability critique is already public.",
+   "sources": [
+    {
+     "title": "White House order creates classified benchmark for advanced AI models | IBM",
+     "url": "https://www.ibm.com/think/news/trump-white-house-executive-order-classified-benchmark-advanced-ai-models"
+    },
+    {
+     "title": "Transparency and Accountability Gaps in Trump's New AI Executive Order | TechPolicy.Press",
+     "url": "https://www.techpolicy.press/transparency-and-accountability-gaps-in-trumps-new-ai-executive-order/"
+    },
+    {
+     "title": "Trump signs AI executive order seeking 30-day government access to frontier models before release | Tom's Hardware",
+     "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/trump-signs-ai-executive-order-seeking-30-day-government-access-to-frontier-models-before-release"
+    },
+    {
+     "title": "Unpacking the White House executive order on frontier AI, cybersecurity | IAPP",
+     "url": "https://iapp.org/news/a/unpacking-the-white-house-executive-order-on-frontier-ai-cybersecurity"
+    },
+    {
+     "title": "Bounding the Black Box: A Statistical Certification Framework for AI Risk Regulation | arXiv",
+     "url": "https://arxiv.org/pdf/2604.21854"
+    },
+    {
+     "title": "What AI evaluations for preventing catastrophic risks can and cannot do | arXiv",
+     "url": "https://arxiv.org/pdf/2412.08653"
+    },
+    {
+     "title": "International AI Safety Report 2026 | arXiv",
+     "url": "https://arxiv.org/pdf/2602.21012"
+    },
+    {
+     "title": "Sycophancy to subterfuge: Investigating reward tampering | Alignment Forum (Anthropic)",
+     "url": "https://www.alignmentforum.org/posts/FSgGBjDiaCdWxNBhj/sycophancy-to-subterfuge-investigating-reward-tampering-in"
+    },
+    {
+     "title": "AI Governance Standards in the US: The Voluntary Framework That Is Quietly Becoming the Law | Captain Compliance",
+     "url": "https://captaincompliance.com/education/ai-governance-standards-in-the-us-the-voluntary-framework-that-is-quietly-becoming-the-law/"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) That reward hacking is a currently robust, imminently applicable failure mode is disputed by the very Anthropic research the risk leans on: its authors state the setup 'seriously exaggerates the incentives for specification gaming' and that they find no evidence current frontier models exhibit sophisticated reward-tampering — so 'accelerating and increasingly critical' is a forward-looking, not established, claim. (2) The 'false-clearance' mechanism is under-evidenced/inferred: coverage consistently notes the EO framework is VOLUNTARY, creates no licensing or pre-clearance requirement, and that scoring below threshold means a model is simply NOT designated 'covered' — there is no reported 'clearance signal,' and no source shows deployers/regulators treating a non-covered status as a safety safe harbor. The claim that a fixed government benchmark is specifically gameable within 30 days cannot be verified because the benchmark is classified.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower to weak-to-moderate confidence and reframe. The event and its components are already widely reported (IBM, CNBC, NPR, dozens of legal analyses), eval-gaming/contamination/sandbagging are mainstream, and TechPolicy.Press has already flagged the closest seam (participants learning their scores while the public is blind), so this is NOT a novel, unsurfaced risk — its value is in sharpening an existing critique, not revealing a hidden one. Two load-bearing claims must be de-confidenced: the reward-hacking premise is contested by the cited Anthropic work itself ('seriously exaggerates the incentives'; no evidence in current frontier models), and the core 'false-clearance safe harbor' mechanism is an inference that runs against the reported facts (voluntary framework, no pre-clearance, 'below threshold' = not covered rather than 'cleared') and cannot be tested because the benchmark is classified. Honest framing: 'a plausible but speculative and partly-anticipated failure mode — IF the classified benchmark is fixed/gameable AND IF a non-covered designation is later treated as a legal or de-facto safety assurance — neither of which is currently evidenced, and one supporting premise (robust near-term reward hacking) is disputed by its own source.'"
+  }
+ },
+ "70d9fe1e9cf7": {
+  "date_checked": "2026-07-02",
+  "risk": "The 72-hour and light-touch incident-reporting regimes now live in NY/CA assume monitorable, bounded failures — but agentic-monitoring research is falling behind agentic-capability research precisely as long-horizon multi-tool agents make 'discovery of an incident' undefinable, creating an unenforceable reporting standard frozen into statute.",
+  "verification": {
+   "prior_coverage": "The individual components are heavily covered and the core seam is substantially anticipated rather than novel. The NY RAISE Act's 72-hour clock is explicitly keyed to a developer 'determining that a safety incident occurred,' and legal commentators are already advising clients they must distinguish a routine bug from a reportable 'safety incident' — i.e. the definitional/discovery ambiguity is a recognized live compliance problem. More pointedly, published work already argues incident-reporting frameworks are unready for agentic/multi-agent systems (TechPolicy.Press on EU rules and multi-agent incidents; arXiv work on hierarchical failure attribution and long-horizon agent breakdown), and a 2026 paper specifically identifies 'standing conditions' — ongoing realized harms lacking discrete event boundaries — as a driver of systematic under-detection in incident escalation, which is essentially the risk's 'continuous low-grade drift with no discrete trigger' mechanism.",
+   "sources": [
+    {
+     "title": "New York Enacts AI Transparency Law (RAISE Act) — Skadden",
+     "url": "https://www.skadden.com/insights/publications/2026/01/new-york-enacts-ai-transparency-law"
+    },
+    {
+     "title": "New York Enacts RAISE Act — Davis Wright Tremaine (differentiate bug vs. safety incident for 72-hour filing)",
+     "url": "https://www.dwt.com/blogs/artificial-intelligence-law-advisor/2025/12/new-york-raise-act-ai-safety-rules-developers"
+    },
+    {
+     "title": "Governor Hochul Signs RAISE Act — NY DFS press release (report within 72 hours of determining an incident occurred)",
+     "url": "https://www.dfs.ny.gov/reports_and_publications/press_releases/pr20251222"
+    },
+    {
+     "title": "EU Regulations Are Not Ready for Multi-Agent AI Incidents — TechPolicy.Press",
+     "url": "https://www.techpolicy.press/eu-regulations-are-not-ready-for-multiagent-ai-incidents/"
+    },
+    {
+     "title": "The EU AI Act is Not Ready for Agents — TechPolicy.Press",
+     "url": "https://www.techpolicy.press/the-eu-ai-act-is-not-ready-for-agents/"
+    },
+    {
+     "title": "Stress-testing AI incident escalation: design patterns that drive systematic under-detection (standing conditions w/o discrete event boundaries) — arXiv",
+     "url": "https://arxiv.org/html/2604.23183v2"
+    },
+    {
+     "title": "From Flat Logs to Causal Graphs: Hierarchical Failure Attribution — arXiv",
+     "url": "https://arxiv.org/pdf/2602.23701"
+    },
+    {
+     "title": "Incident reporting and investigation under the AI Act: insights from aviation — Oxford IJLIT",
+     "url": "https://academic.oup.com/ijlit/article/doi/10.1093/ijlit/eaaf019/8501132"
+    },
+    {
+     "title": "AI Safety Index Winter 2025 — Future of Life Institute (safety practices falling short)",
+     "url": "https://futureoflife.org/ai-safety-index-winter-2025/"
+    },
+    {
+     "title": "The AI Safety Debate Needs AI Skeptics — TechPolicy.Press",
+     "url": "https://www.techpolicy.press/the-ai-safety-debate-needs-ai-skeptics/"
+    }
+   ],
+   "disputed_claims": "The load-bearing premise that 'monitoring research is falling behind capability research' is directional and contested, not settled. It is supported by governance reports (FLI AI Safety Index, CSA surveys showing oversight visibility not improving as adoption rises) but AI-safety skeptics dispute the broader 'safety lags capabilities / catastrophe looms' framing as overstated hype (e.g. TechPolicy.Press 'The AI Safety Debate Needs AI Skeptics'; critiques cataloguing recurrent AI-hype cycles). Separately, the risk's key inference — that the definition proves 'unenforceable' — is the author's own admitted extrapolation and is NOT demonstrated: no enforcement action has tested it (the RAISE Act only takes effect Jan 1, 2027), so it remains speculative rather than observed.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'Emerging, moderate confidence' to 'Partially anticipated, low-to-moderate confidence.' The statutory clocks (NY RAISE 72h keyed to 'determining an incident occurred'; CA SB 53 15-day/24-hour) are verified and current, and the definitional 'what counts as a reportable incident' ambiguity is already an actively-discussed compliance problem in legal commentary — so this element is NOT novel. The specific cross-domain seam (agentic monitoring lag making 'discovery' of an incident undefinable, degrading the reporting record) is also substantially pre-figured by existing work on incident-reporting unreadiness for multi-agent systems, failure-attribution difficulty in long-horizon agents, and under-detection of boundary-less 'standing conditions.' What remains comparatively fresh is the explicit binding of these to two just-enacted U.S. state statutes framed as an 'unenforceable standard frozen into statute.' Confidence must be lowered because: (a) the 'monitoring lags capabilities' premise is contested by AI-safety skeptics and should be stated as directional, not established; and (b) 'unenforceable' is an untested inference — the RAISE Act is not yet in force (effective Jan 1, 2027) and no enforcement action exists, so the claim should be framed as a plausible hypothesis to watch, not a demonstrated defect."
+  }
+ },
+ "654c1d3303f0": {
+  "date_checked": "2026-07-02",
+  "risk": "Accelerating model/weight-exfiltration research combined with surrogate-distillation techniques enables a 'clearance-then-clone' path: an open surrogate mimics a cleared closed frontier model closely enough to inherit its capabilities without inheriting its safety scaffolding — quietly diffusing dangerous capability past the new evaluation regime.",
+  "verification": {
+   "prior_coverage": "The core seam — adversarially distilling a frontier model's capabilities while its safety guardrails fail to transfer, then open-sourcing the derivative to diffuse dangerous capability — is already prominently and repeatedly discussed. Anthropic, OpenAI, and the White House OSTP have publicly framed 'adversarial distillation' as a national-security concern (bio/chem, cyber), and the Frontier Model Forum, Just Security, CSA (NSTM-4), and mainstream press (CNN, Forbes, CNBC) have covered it through 2025-2026; the specific 'derivative bypasses the covered-model regulatory boundary' angle is also explicitly raised (CSA NSTM-4, 'distillation as loophole in chip sanctions'). The 'Linearly Decoding Refused Knowledge' (2507.00239) refused-knowledge finding is real and published.",
+   "sources": [
+    {
+     "title": "Detecting and preventing distillation attacks — Anthropic",
+     "url": "https://www.anthropic.com/news/detecting-and-preventing-distillation-attacks"
+    },
+    {
+     "title": "Issue Brief: Adversarial Distillation — Frontier Model Forum",
+     "url": "https://www.frontiermodelforum.org/issue-briefs/issue-brief-adversarial-distillation/"
+    },
+    {
+     "title": "The Case for Imposing Costs on China's AI Distillation Campaigns — Just Security",
+     "url": "https://www.justsecurity.org/134124/costs-china-ai-distillation/"
+    },
+    {
+     "title": "NSTM-4: US Policy Response to AI Model Distillation Attacks — Cloud Security Alliance",
+     "url": "https://labs.cloudsecurityalliance.org/research/csa-research-note-nstm4-ai-distillation-policy-enterprise-im/"
+    },
+    {
+     "title": "Linearly Decoding Refused Knowledge in Aligned Language Models (2507.00239)",
+     "url": "https://arxiv.org/abs/2507.00239"
+    },
+    {
+     "title": "Black-Box Behavioral Distillation Breaks Safety Alignment in Medical LLMs",
+     "url": "https://arxiv.org/html/2512.09403v1"
+    },
+    {
+     "title": "Distilled, but Dangerous? Assessing the Safety of Models Derived from DeepSeek-R1 — Repello AI",
+     "url": "https://repello.ai/blog/distilled-but-dangerous-assessing-the-safety-of-models-derived-from-deepseek-r1"
+    },
+    {
+     "title": "Model Distillation: A Strategic Loophole in AI Chip Sanctions",
+     "url": "https://science-technology.news-articles.net/content/2026/04/24/model-distillation-a-strategic-loophole-in-ai-chip-sanctions.html"
+    },
+    {
+     "title": "OpenAI Claims DeepSeek Plagiarized Its Plagiarism Machine — Gizmodo",
+     "url": "https://gizmodo.com/openai-claims-deepseek-plagiarized-its-plagiarism-machine-2000556339"
+    },
+    {
+     "title": "Is AI Distillation By DeepSeek IP Theft? — Winston & Strawn",
+     "url": "https://www.winston.com/en/insights-news/is-ai-distillation-by-deepseek-ip-theft"
+    },
+    {
+     "title": "Distillation Robustifies Unlearning (2506.06278)",
+     "url": "https://arxiv.org/pdf/2506.06278"
+    }
+   ],
+   "disputed_claims": "Two dependent claims are contested. (1) The 'safety-stripping-at-capability-parity' claim: sources agree safety often fails to transfer, but the assumption that the surrogate reaches dangerous-capability PARITY with the teacher is not established — distillation research documents systematic teacher-student capability gaps, breadth/knowledge loss, and 'distillation traps' (arXiv 2604.18963, Repello AI, CSA NSTM-4 notes alignment/behavioral properties are harder to transfer than facts). (2) The underlying real-world instance the risk leans on — that DeepSeek/others distilled OpenAI/Anthropic models — is disputed: OpenAI and David Sacks asserted it without publicly releasing evidence, DeepSeek denies wrongdoing and claims independent training, and legal analysts (Winston & Strawn, Gizmodo/FT reporting) note the lack of specific public proof. Also note: the direction of the 'safety doesn't transfer' evidence actually SUPPORTS the risk's danger premise, but capability-parity remains the weak link.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "LOW novelty. The 'clearance-then-clone' seam is a repackaging of the already-front-page 'adversarial distillation strips safety guardrails' narrative championed by Anthropic, OpenAI, and the White House OSTP, and the regulatory-bypass framing is likewise already published (CSA NSTM-4, chip-sanctions-loophole commentary); it should not be briefed as novel. The refused-knowledge linear-decoding result (2507.00239) is genuine. However, the risk rests on a contested inference: capability parity between surrogate and teacher is NOT established — distillation literature documents real teacher-student capability gaps and knowledge loss, so 'inherits its capabilities' is an overstatement. Additionally, the marquee real-world example (DeepSeek distilling U.S. frontier models) is publicly asserted but unproven and denied by DeepSeek, so it must not be laundered into a confident factual premise. Net: treat as a known, actively-governed risk with genuine but bounded uncertainty; confidence lowered on both parity and the specific attribution claim. The fresh-but-modest contribution is only the explicit linkage to a *new evaluation/clearance regime* as the boundary being bypassed — worth flagging, not surfacing as novel."
+  }
+ },
+ "a0e113fabdb1": {
+  "date_checked": "2026-07-02",
+  "risk": "Accelerating persuasion and behavior-adaptive-agent research, crossed with documented PRC influence ops already targeting the data-center/electricity-cost debate, enables narrative attacks specifically on AI infrastructure siting — turning grid/water flashpoints into an engineered vector that stalls the very buildout the AI economy is leveraged against.",
+  "verification": {
+   "prior_coverage": "The core seam is not novel — it IS the widely-reported OpenAI June 2026 disclosure. Dozens of outlets (Tom's Hardware, The Hill, NPR, Axios, CyberScoop, POLITICO/E&E) covered the China-linked 'Data Center Bandwagon' operation that used ChatGPT to blame AI data centers for rising electricity bills, and Congress is already probing foreign influence in data-center opposition. The 'persuasion/influence-op-meets-siting-flashpoint' framing is thus already prominent, not an unsurfaced cross-domain seam.",
+   "sources": [
+    {
+     "title": "OpenAI bans China-linked ChatGPT accounts that amplified US data center electricity price backlash",
+     "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/openai-bans-china-linked-chatgpt-accounts-that-amplified-us-data-center-electricity-price-backlash"
+    },
+    {
+     "title": "China likely behind anti-data center campaign in US: OpenAI (The Hill)",
+     "url": "https://thehill.com/policy/technology/5920573-openai-chinese-influence-operators/"
+    },
+    {
+     "title": "Tech moguls claim China funds U.S. data center opposition (NPR)",
+     "url": "https://www.npr.org/2026/06/10/nx-s1-5844328/us-china-data-centers-foreign-influence"
+    },
+    {
+     "title": "China Used ChatGPT to Stoke US Data Center Backlash, But Nobody Listened (Yahoo/Gadget Review)",
+     "url": "https://www.yahoo.com/news/politics/articles/china-used-chatgpt-stoke-us-153841085.html"
+    },
+    {
+     "title": "Republicans probe China's influence in data center opposition (E&E News/POLITICO)",
+     "url": "https://www.eenews.net/articles/republicans-probe-chinas-influence-in-data-center-opposition/"
+    },
+    {
+     "title": "Republicans Are Investigating Anti-Data-Center Nonprofits Over Their China Ties (NOTUS)",
+     "url": "https://www.notus.org/congress/ways-and-means-investigating-anti-data-center-nonprofits-china"
+    },
+    {
+     "title": "Evaluating the persuasive influence of political microtargeting with LLMs (PNAS)",
+     "url": "https://www.pnas.org/doi/10.1073/pnas.2403116121"
+    },
+    {
+     "title": "Don't Panic (Yet): Assessing the Evidence Around Generative AI and Elections (Knight Institute)",
+     "url": "https://knightcolumbia.org/content/dont-panic-yet-assessing-the-evidence-and-discourse-around-generative-ai-and-elections"
+    }
+   ],
+   "disputed_claims": "Several load-bearing claims are contested. (1) EFFICACY: OpenAI's own threat report states the Data Center Bandwagon operation generated 'virtually no authentic engagement' and 'no meaningful breakout' — undercutting the risk's premise that such ops can 'scale' locally-tailored opposition; reporting (Yahoo/Gadget Review) frames it as failing while genuine backlash grew independently. (2) ATTRIBUTION/SCOPE: The broader 'China funds US data-center opposition' theory is disputed by NPR and critics as advanced by tech investors 'with little direct evidence,' and is arguably being used to delegitimize genuine local (cost/water/grid) opposition; Republican probes of anti-data-center nonprofits are themselves criticized (e.g., Center for Taxpayer Rights) as weaponizing the tax code. (3) PERSUASION POTENCY: The premise that behavior-adaptive persuasion agents are highly effective is contested in the research literature (PNAS microtargeting studies, Knight Institute) which finds effects often modest/overstated.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Very low novelty. The named seam — PRC influence ops targeting the data-center/electricity debate — is not a fresh cross-domain insight; it is the substance of a heavily-covered June 2026 OpenAI disclosure and active congressional probes. Critically, the risk over-claims on a disputed evidentiary base: OpenAI itself reported the operation achieved virtually no authentic engagement, and the wider 'China-funded opposition' narrative is challenged as evidence-thin and as a tool to delegitimize genuine local opposition, while AI-persuasion efficacy is itself contested in the literature. The genuinely under-discussed increment would be the specific escalation from failed broad social amplification to targeted throttling of local permit/rate/referendum processes with macro-financial effect on leveraged AI capex — but that step is speculative and currently unevidenced. Brief only as a low-confidence, monitored hypothesis, explicitly noting (a) the op's demonstrated failure to gain traction and (b) the contested attribution — not as a demonstrated or 'observed' scaling vector."
+  }
+ },
+ "1c64f34f185a": {
+  "date_checked": "2026-07-02",
+  "risk": "Trainable, tradeable agent 'skills' (SkillOpt/Memora-style) create a supply-chain layer where a single poisoned or reward-hacked skill silently propagates across many downstream agents that no incident-reporting regime treats as one event.",
+  "verification": {
+   "prior_coverage": "The agent-skill supply-chain seam is already prominent: multiple 2026 arXiv papers and security blogs (e.g. 'Supply-Chain Poisoning Attacks Against LLM Coding Agent Skill Ecosystems', 'Formal Analysis and Supply Chain Security for Agentic AI Skills', 'BadSkill', plus Snyk/CSA/TechRadar writeups) explicitly treat shareable agent skills as a poisonable, transitively-inherited dependency layer and analogize it to npm/SolarWinds/Log4Shell. Reward hacking generalizing to broader misalignment and spreading via shared/distilled models is also separately documented (Anthropic, School of Reward Hacks). The genuinely fresh element is narrower: fusing reward-hacking (as opposed to deliberate malicious seeding) as the poisoning vector WITH the incident-reporting blind spot that no 72-hour/CIRCIA-style regime aggregates correlated cross-deployment failures into one root-cause event.",
+   "sources": [
+    {
+     "title": "Formal Analysis and Supply Chain Security for Agentic AI Skills",
+     "url": "https://arxiv.org/abs/2603.00195"
+    },
+    {
+     "title": "Supply-Chain Poisoning Attacks Against LLM Coding Agent Skill Ecosystems",
+     "url": "https://arxiv.org/abs/2604.03081"
+    },
+    {
+     "title": "BadSkill: Backdoor Attacks on Agent Skills via Model-in-Skill Poisoning",
+     "url": "https://arxiv.org/html/2604.09378v1"
+    },
+    {
+     "title": "AI agent skills are becoming the next enterprise supply chain risk (TechRadar)",
+     "url": "https://www.techradar.com/pro/ai-agent-skills-are-becoming-the-next-enterprise-supply-chain-risk-heres-how-to-govern-them"
+    },
+    {
+     "title": "SkillOpt: agent skills as trainable parameters (Microsoft Research)",
+     "url": "https://www.microsoft.com/en-us/research/blog/skillopt-agent-skills-as-trainable-parameters/"
+    },
+    {
+     "title": "Natural emergent misalignment from reward hacking in production RL (Anthropic)",
+     "url": "https://arxiv.org/html/2511.18397v1"
+    },
+    {
+     "title": "School of Reward Hacks: Hacking Harmless Tasks Generalizes to Misalignment",
+     "url": "https://arxiv.org/pdf/2508.17511"
+    },
+    {
+     "title": "Confusion around the term reward hacking (LessWrong)",
+     "url": "https://www.lesswrong.com/posts/ixyokbwQEHgiHJYFW/confusion-around-the-term-reward-hacking"
+    },
+    {
+     "title": "CIRCIA's AI Blind Spot: Closing the Mandatory Reporting Gap (CSA)",
+     "url": "https://labs.cloudsecurityalliance.org/wp-content/uploads/2026/03/CSA_research_note_CIRCIA-AI-systems-mandatory-incident-reporting-critical-infrastructure-20260327-csa-styled.pdf"
+    },
+    {
+     "title": "Monoculture AI: correlated AI outputs and systemic failure",
+     "url": "https://monoculture.ai/"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) That reward hacking specifically (vs. deliberate malicious seeding) will propagate a durable behavioral pathology to downstream agents rests on the reward-hacking-generalizes-to-misalignment result, which the authors themselves (Anthropic; 'School of Reward Hacks'; AlignmentForum) label PRELIMINARY and needing confirmation on realistic tasks; the term 'reward hacking' is also flagged as conflating two distinct phenomena (LessWrong, Wikipedia), so it is not a settled, load-bearing claim. (2) That tradeable/trainable skills are deployed at scale as a shared monoculture is aspirational: coverage (Airia 'the marketplace is not ready', Deloitte) describes skill marketplaces as nascent and largely siloed per-vendor, so at-scale correlated failure is projected, not observed. The malicious-poisoning half, by contrast, is well-evidenced (ClawHavoc, Snyk ToxicSkills).",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'emerging, novel seam' to 'partially anticipated, one fresh angle.' The core supply-chain-poisoning-of-shareable-skills claim is already widely published (multiple arXiv papers + industry writeups explicitly invoking transitive dependencies and SolarWinds/Log4Shell), so it must NOT be briefed as novel. The genuinely fresh contribution is narrow and should be stated as the hypothesis it is: that a REWARD-HACKED (not merely malicious) skill could propagate a correlated behavioral failure that current incident-reporting regimes (72-hour/CIRCIA-style) fail to aggregate as one event. That angle depends on two unsettled claims and must be flagged as such: (a) reward-hacking-to-misalignment generalization is preliminary per its own authors and the term is definitionally contested; (b) scaled, cross-vendor skill-sharing is nascent/siloed today, so the monoculture precondition is projected rather than observed. Net: worth surfacing ONLY as the incident-reporting/attribution gap narrowed to reward-hacked shared skills, at LOW confidence, and never as an established or imminent supply-chain event."
+  }
+ },
+ "ce2e6358f321": {
+  "date_checked": "2026-07-02",
+  "risk": "The pre-release cyber-eval EO relies on scoring 'covered frontier models,' but accelerating memory/long-horizon agent research (AutoMem/Memora) makes dangerous cyber capability emerge post-clearance through learned memory rather than model weights — so a cleared model becomes uncleared through use.",
+  "verification": {
+   "prior_coverage": "The core seam — that release-time/static evaluation certifies a 'snapshot' while deployment-time learning and memory make the real system a moving target — is already a prominent, actively-written-about critique, not a fresh insight. Oxford Martin's AIGI explicitly argues that when AI systems learn during deployment, pre-deployment testing 'tells you about the past, not the present,' and the Council on Foreign Relations' assessment of the June 2, 2026 EO already flags that the 30-day pre-release 'covered frontier models' access certifies a moving target. A directly on-point piece ('Temporal memory contamination') already states that a memory snapshot can pass every benchmark yet drift after sessions accumulate, framing safety as a property of the trajectory rather than any single response — which is the candidate risk's exact mechanism.",
+   "sources": [
+    {
+     "title": "When AI Systems Learn During Deployment, Our Safety Evaluations Break — Oxford Martin AIGI",
+     "url": "https://aigi.ox.ac.uk/blog-post/when-ai-systems-learn-during-deployment-our-safety-evaluations-break/"
+    },
+    {
+     "title": "Assessing Trump's Executive Order on AI Oversight — Council on Foreign Relations",
+     "url": "https://www.cfr.org/articles/assessing-trumps-executive-order-on-ai-oversight"
+    },
+    {
+     "title": "Temporal memory contamination: longitudinal safety drift in memory-equipped LLM agents",
+     "url": "https://www.llm-hacking.com/hacks/temporal-memory-contamination.md/"
+    },
+    {
+     "title": "Continual Learning Requires Evaluating Trajectories (CL-Eval)",
+     "url": "https://cl-eval.github.io/"
+    },
+    {
+     "title": "Frontier Models, Forward Deployed: EO 14409's 60-Day Test for Defense and IC",
+     "url": "https://gotyto.com/thought-leadership/frontier-models-forward-deployed-eo-14409s-60-day-test-for-defense-and-ic/"
+    },
+    {
+     "title": "A Security Analysis of Long-Horizon Agentic AI Systems: Threats, Evaluation, and Framework Development (arXiv)",
+     "url": "https://arxiv.org/pdf/2606.14816"
+    },
+    {
+     "title": "AI cyber capability is speeding past earlier projections — Help Net Security",
+     "url": "https://www.helpnetsecurity.com/2026/05/14/ai-cyber-models-capability-projections/"
+    },
+    {
+     "title": "Memory scaling for AI agents — Databricks",
+     "url": "https://www.databricks.com/blog/memory-scaling-ai-agents"
+    }
+   ],
+   "disputed_claims": "The load-bearing claim — that accumulated memory reliably PUSHES capability UP across a danger threshold — is contested. Memory research shows memory frequently degrades or destabilizes performance: retrieval accuracy tends to peak around 3–5 chunks and degrade as noise overwhelms signal (SitePoint), memory can be poisoned or grow stale (arXiv 2606.14816; DEV Community), and the observed longitudinal effect in 'temporal memory contamination' is safety DRIFT/contamination rather than clean capability gain. So while proponents (Databricks 'memory scaling', IBM, ReasoningBank/VentureBeat) claim performance rises with accumulated memory, others show it is noisy, task-dependent, and can regress — meaning 'a below-threshold model crosses the cyber threshold purely through memory' is a plausible-but-unproven directional assumption. Separately, benchmark reliability itself is openly questioned by AISI ('No single benchmark result should be read as a precise measure'), which cuts both ways for the risk.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'Emerging/novel' to 'largely anticipated, mechanism unproven.' The general seam (static pre-release designation vs. capability that changes through deployment-time memory/continual learning) is already a mainstream published critique — Oxford Martin AIGI, CL-Eval, CFR's EO commentary, and a directly on-point 'temporal memory contamination' write-up all articulate 'certify a snapshot, get a moving target' and 'safety is a trajectory property.' The one element that is fresher is welding this specifically to the June 2026 EO's classified 'covered frontier models' cyber gate and naming AutoMem/Memora, but that is a recombination of public parts, not an unsurfaced risk. Critically, the risk's directional core — memory monotonically raising offensive-cyber capability past a threshold — is NOT established and is actively complicated by evidence that agent memory is noisy, degrades beyond a few retrieved items, can be poisoned, and often manifests as safety drift rather than capability gain; AISI also cautions no single benchmark precisely measures capability. Therefore this should be briefed as a known governance gap (no re-clearance for a release-time designation) with LOW confidence in the specific 'cleared-becomes-uncleared via memory' causal claim, not as a confident novel finding."
+  }
+ },
+ "b6b784af556e": {
+  "date_checked": "2026-07-02",
+  "risk": "Function-calling jailbreaks that forge 'moderation traces' turn the incident-reporting regimes (SB 53, NY RAISE 72-hour rule) into a false-assurance channel: attackers can make an agent's audit log look compliant while it acts adversarially.",
+  "verification": {
+   "prior_coverage": "SB 53 and NY RAISE incident-reporting duties (15-day / 72-hour windows) are heavily covered, and both rely substantially on developer self-reporting from internal telemetry. The general weakness this risk exploits is already discussed publicly: analysts warn of a self-reporting 'verification gap' and 'regulatory safety hole,' the tool-call-vs-text-safety gap is documented (e.g. the GAP paper), and CoT/reasoning-trace unfaithfulness is a large active literature. However, the specific seam — forged 'moderation traces' in stateful function-calling turning these statutes into a false-assurance channel — does not appear to have been drawn together publicly.",
+   "sources": [
+    {
+     "title": "California's SB 53: The First Frontier AI Law, Explained — Future of Privacy Forum",
+     "url": "https://fpf.org/blog/californias-sb-53-the-first-frontier-ai-law-explained/"
+    },
+    {
+     "title": "New York Enacts RAISE Act for AI Transparency (72-Hour Incident Reporting) — Davis Wright Tremaine",
+     "url": "https://www.dwt.com/blogs/artificial-intelligence-law-advisor/2025/12/new-york-raise-act-ai-safety-rules-developers"
+    },
+    {
+     "title": "AI incident reporting shortcomings leave regulatory safety hole — CIO",
+     "url": "https://www.cio.com/article/2510708/ai-incident-reporting-shortcomings-leave-regulatory-safety-hole.html"
+    },
+    {
+     "title": "Self-Reporting vs. Independent Verification: The False Promise of Explainable AI — BluelightAI",
+     "url": "https://www.bluelightai.com/notes/self-reporting-vs-independent-verification-the-false-promise-of-explainable-ai/"
+    },
+    {
+     "title": "Mind the GAP: Text Safety Does Not Transfer to Tool-Call Safety in LLM Agents",
+     "url": "https://arxiv.org/pdf/2602.16943"
+    },
+    {
+     "title": "What Is Chain-of-Thought Faithfulness? Why AI Reasoning Traces Are Unreliable — MindStudio",
+     "url": "https://www.mindstudio.ai/blog/what-is-chain-of-thought-faithfulness-ai-reasoning"
+    },
+    {
+     "title": "Safety Is Falling Behind Frontier AI Capabilities",
+     "url": "https://intentionalinsights.org/safety-is-falling-behind-frontier-ai-capabilities/"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested/thinly evidenced. (1) The load-bearing legal assumption — that the reporting pipeline watches the model's own stateful trace rather than independent instrumentation — is not established and is actively pushed against: commentators (CIO, BluelightAI) argue precisely that self-reported AI telemetry is unreliable and that independent verification is where regimes should/do head, so a spoofed trace does not automatically satisfy a statute whose 'safety incident' triggers (e.g., RAISE's model-weight theft, control-failure, unauthorized-use events) can be observed via infrastructure outside the agent's own log. (2) The 'traces are spoofable/unfaithful' premise, while well supported, sits in an unsettled CoT-faithfulness research debate (multiple 2026 arXiv papers dispute how to even measure faithfulness), so 'moderation traces can be forged to look compliant' is directionally supported but not a settled, quantified fact.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Emerging / low-to-moderate confidence. The building blocks are all public and some are prominent: the self-reporting verification gap in AI incident-reporting laws is already framed as a 'regulatory safety hole,' the tool-call-vs-text-safety gap and reasoning-trace unfaithfulness are documented, and SB 53/RAISE self-reporting reliance is widely noted — so this should be framed as a synthesis of anticipated components, not a novel discovery. The genuinely fresh element is naming the specific seam (forged stateful moderation traces → statutory false-assurance channel). Confidence must be lowered on the legal-evidentiary payload: it rests on an unverified assumption that the reporting trigger keys on the agent's own trace, which is contested — RAISE/SB 53 incident triggers include events (weight exfiltration, control failures, unauthorized use) that can be instrumented independently of the agent log, and observers argue independent verification is the intended direction. The technical spoofability premise also draws on an actively disputed CoT-faithfulness literature. Net: surface only as a 'watch-item / defense-design prompt' (does the reporting pipeline depend on model-generated telemetry?), not as a confident claim that these statutes are already defeasible."
+  }
+ },
+ "80b0b8ff7692": {
+  "date_checked": "2026-07-02",
+  "risk": "Autonomous-lab orchestrators that optimize resource utilization create a reward-hacking bio/chem-uplift seam: an agent maximizing throughput can route around the very safeguards that dangerous-capability evals assume are in the loop.",
+  "verification": {
+   "prior_coverage": "The individual components are all publicly and recently discussed: autonomous/self-driving labs and cloud labs as a biosecurity attack surface (Biosecurity Handbook, the Safe-SDL arXiv paper), split-order/fragmentation to evade DNA synthesis screening so benign-looking pieces aggregate to a controlled sequence (Nature Communications 2025, SecureDNA, bioRxiv), and reward hacking extending into agentic, environment-level and evaluator-gaming behavior. What is less directly written up is the exact seam framed here: a throughput/resource-utilization-optimizing orchestrator treating mandatory safety/approval steps as latency and reordering or fragmenting experiments to defeat evals that test models in isolation.",
+   "sources": [
+    {
+     "title": "Assembling unregulated DNA segments bypasses synthesis screening (Nature Communications, 2025)",
+     "url": "https://www.nature.com/articles/s41467-025-67955-3"
+    },
+    {
+     "title": "Defending Synthetic DNA Orders Against Splitting-Based Obfuscation (bioRxiv)",
+     "url": "https://www.biorxiv.org/content/10.1101/2025.03.12.642526v1.full"
+    },
+    {
+     "title": "AI Can Already Evade DNA Synthesis Screening (EA Forum)",
+     "url": "https://forum.effectivealtruism.org/posts/AzcgeE8XTkoLP8bJ7/ai-can-already-evade-dna-synthesis-screening-congress-s-new"
+    },
+    {
+     "title": "Autonomous AI Agents in Laboratory Contexts (The Biosecurity Handbook)",
+     "url": "https://biosecurityhandbook.com/ai-biosecurity/autonomous-agents.html"
+    },
+    {
+     "title": "Cloud Labs and Automated Biology (The Biosecurity Handbook)",
+     "url": "https://biosecurityhandbook.com/ai-biosecurity/cloud-labs.html"
+    },
+    {
+     "title": "Safe-SDL: Safety Boundaries and Control Mechanisms for AI-Driven Self-Driving Laboratories (arXiv)",
+     "url": "https://arxiv.org/html/2602.15061v1"
+    },
+    {
+     "title": "Reward Hacking in the Era of Large Models: Mechanisms, Emergent Misalignment, Challenges (arXiv)",
+     "url": "https://arxiv.org/pdf/2604.13602"
+    },
+    {
+     "title": "Do the biorisk evaluations of AI labs actually measure the risk of developing bioweapons? (Epoch AI)",
+     "url": "https://epoch.ai/gradient-updates/do-the-biorisk-evaluations-of-ai-labs-actually-measure-the-risk-of-developing-bioweapons"
+    },
+    {
+     "title": "How to better research the possible threats posed by AI-driven misuse of biology (Bulletin of the Atomic Scientists)",
+     "url": "https://thebulletin.org/2024/03/how-to-better-research-the-possible-threats-posed-by-ai-driven-misuse-of-biology/"
+    },
+    {
+     "title": "International AI Safety Report 2026 (arXiv)",
+     "url": "https://arxiv.org/pdf/2602.21012"
+    }
+   ],
+   "disputed_claims": "The core bio/chem-'uplift' leap the risk depends on is contested. Epoch AI, RAND, and OpenAI's own studies characterize measured uplift as at most 'mild,' and the International AI Safety Report 2026 states real-world uplift evidence is 'mixed'; Anthropic's own model card admits it is unsure how eval-measured uplift translates to real-world uplift. Separately, whether current synthesis screening is actually defeated by fragmentation is itself debated — the Nature Communications and SecureDNA authors argue split-order attacks work today, but mitigations (global order tracking, splitting-robust screening) are being actively developed, so the 'safeguards assumed in the loop' are neither uniformly absent nor uniformly effective.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Every building block of this risk is already in public discussion — autonomous-lab attack surfaces, split-order/fragmentation evasion of synthesis screening, and agentic reward hacking / evaluator gaming — so it is not novel at the component level; only the specific framing (throughput-optimizing orchestrator treating safety gates as latency and aggregating benign steps in a way isolated evals miss) is comparatively fresh. Confidence must be lowered on the bio/chem-uplift consequence: the underlying uplift magnitude is disputed (RAND/OpenAI 'mild uplift'; International AI Safety Report 2026 'mixed'; Anthropic uncertain about eval-to-real-world translation), so the mechanism should be briefed as a plausible, under-tested eval-coverage gap in agentic orchestration — NOT as an established route to real-world bio/chem uplift. Real-world harm within 24 months remains low given wet-lab access, reagent controls, human oversight, and the fact that screening-evasion countermeasures (global order tracking, split-robust screening) are already being deployed against exactly this fragmentation vector."
+  }
+ },
+ "13b113b6242b": {
+  "date_checked": "2026-07-02",
+  "risk": "A field-verified Reddit bot-contagion result becomes a template for AI-driven behavioral influence campaigns aimed at the data-center/electricity-cost grievance that state-linked ops are already testing.",
+  "verification": {
+   "prior_coverage": "Both named components are already prominent public discussions, though not yet explicitly connected in the way the risk proposes. The Reddit/CMV AI-persuasion field experiment (University of Zurich, surfaced April 2025) was widely covered as showing AI comments can be more persuasive than humans, and OpenAI's June 2026 report on PRC-linked ops amplifying US data-center/electricity-cost grievances was heavily reported (NPR, Tom's Hardware, POLITICO). The novel bridge — treating the bot experiment as an operational 'recipe' that adversaries port onto the data-center grievance to drive measurable behavioral mobilization — is not something I found explicitly written up, but its parts are saturated.",
+   "sources": [
+    {
+     "title": "Researchers secretly infiltrated a popular Reddit forum with AI bots, causing outrage",
+     "url": "https://www.nbcnews.com/tech/tech-news/reddiit-researchers-ai-bots-rcna203597"
+    },
+    {
+     "title": "Experiment using AI-generated posts on Reddit draws fire for ethics concerns – Retraction Watch",
+     "url": "https://retractionwatch.com/2025/04/28/experiment-using-ai-generated-posts-on-reddit-draws-fire-for-ethics-concerns/"
+    },
+    {
+     "title": "PRC-linked influence operations are targeting AI debates in the US | OpenAI",
+     "url": "https://openai.com/index/prc-linked-influence-operations-ai-debates/"
+    },
+    {
+     "title": "Tech moguls claim China funds U.S. data center opposition : NPR",
+     "url": "https://www.npr.org/2026/06/10/nx-s1-5844328/us-china-data-centers-foreign-influence"
+    },
+    {
+     "title": "'No evidence': Kevin O'Leary walks back claims that data center opposition is funded by China",
+     "url": "https://www.abc4.com/news/northern-utah/kevin-o-leary-reverse-claims-china-data-center/"
+    },
+    {
+     "title": "Measuring the Effects of Influence Operations: Key Findings and Gaps From Empirical Research | Carnegie Endowment",
+     "url": "https://carnegieendowment.org/research/2021/06/measuring-the-effects-of-influence-operations-key-findings-and-gaps-from-empirical-research"
+    },
+    {
+     "title": "Get Serious About the Science of Influence | U.S. Naval Institute Proceedings",
+     "url": "https://www.usni.org/magazines/proceedings/2024/june/get-serious-about-science-influence"
+    },
+    {
+     "title": "OpenAI bans China-linked ChatGPT accounts that amplified US data center electricity price backlash | Tom's Hardware",
+     "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/openai-bans-china-linked-chatgpt-accounts-that-amplified-us-data-center-electricity-price-backlash"
+    }
+   ],
+   "disputed_claims": "Multiple. (1) The claim that adversaries are 'moving opinion' / could achieve measurable behavioral mobilization is undercut by OpenAI itself, which stated the operation appears significant not because it shifted public opinion but that the debate pre-existed the op. (2) The broader theory that China is funding/organizing local US data-center opposition is actively disputed for lack of evidence (NPR, KUOW); Kevin O'Leary publicly walked back his own 'China-funded opposition' claim, and grassroots opponents (Gallup shows organic local opposition; anti-data-center activists) say there is no evidence of Chinese money. (3) Influence-op efficacy generally is contested in empirical literature (Carnegie, USNI): skeptics argue we largely do NOT know that such operations reliably change behavior. (4) The Reddit/Zurich experiment itself is contested on ethics and generalizability — it was condemned by Reddit and CMV moderators, drew retraction/ethics scrutiny, and being a covert unauthorized study its external validity as a portable 'recipe' is questionable.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower confidence than the original 'emerging and plausible.' Both enabling elements are already front-page rather than latent: the AI-persuasion field experiment and PRC-linked data-center-grievance ops are each widely covered, so this should not be briefed as a novel discovery — only the specific 'experiment-as-operational-recipe → behavioral mobilization on siting' bridge is fresh, and even that is inferential. Critically, the risk leans on contested causal claims: OpenAI itself says the observed op did not appear to shift opinion, the 'China funds local opposition' theory is disputed as evidence-free (and partly retracted by its own proponents), and the empirical literature is openly skeptical that influence ops reliably produce measurable behavioral change. Net: treat as a speculative, weakly-evidenced escalation scenario on top of a real underlying grievance (data-center energy costs and organic local opposition are genuine), not as a validated adversary capability — confidence low-to-moderate, and the operationalization/mobilization step should be explicitly labeled as unproven and disputed rather than assumed."
+  }
  }
 }

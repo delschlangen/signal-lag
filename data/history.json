@@ -112,15 +112,15 @@
  },
  {
   "date": "2026-07-02",
-  "n_papers": 12826,
+  "n_papers": 12701,
   "date_start": "2023-09-13",
   "date_end": "2026-07-01",
   "n_flagged": 3,
   "n_pairings": 6,
   "headline": {
-   "biggest_gap_line": "Agentic / Autonomy Capability vs Agentic Behavior Monitoring (cap +293% / saf +192%)",
-   "meaning": "The dominant tension this quarter is between rapidly advancing agentic/autonomous capability and the monitoring infrastructure needed to keep those agents inspectable and correctable. Capability is outpacing monitoring by roughly the widest margin among all tracked pairings.",
-   "why_it_matters": "Agents are being given high-privilege, long-horizon roles faster than we can guarantee their behavior stays inspectable and correctable, so monitoring lag translates directly into unaudited autonomous action."
+   "biggest_gap_line": "Agentic / Autonomy Capability vs Agentic Behavior Monitoring (cap +289% / saf +189%)",
+   "meaning": "The dominant story this quarter is agentic capability (autonomy, memory, tool-use, self-improving skills) growing fast while the paired monitoring/oversight work lags — most acutely for autonomous agents and self-improvement/RSI systems.",
+   "why_it_matters": "As agents gain autonomy and self-modifying skills, deception and reward-hacking failure modes become harder to detect precisely where monitoring coverage and evaluation reliability are weakest, widening the exposure between what agents can do and what we can verify."
   },
   "sentiment_rising": [
    "Deceptive Alignment",
@@ -129,30 +129,54 @@
   ],
   "overall_foresight": [
    {
-    "risk": "Interpretability's explosive growth is drawing capability talent into safety and being cited by capability/scaling surveys — but the same mechanistic-interpretability advances that enable oversight also constitute the most direct path to surrogate-extraction and weight-exfiltration of closed models, a dual-use inversion the interpretability community rarely frames as an exfiltration risk.",
+    "risk": "Government pre-release cyber-capability evals, hardened into a classified 30-day standard, calcify around benchmarks that reward-hacking research is simultaneously showing to be gameable — creating a false-clearance channel for 'covered frontier models.'",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
-     "Security/Geopolitical",
+     "Legal/Regulatory",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "The 72-hour and light-touch incident-reporting regimes now live in NY/CA assume monitorable, bounded failures — but agentic-monitoring research is falling behind agentic-capability research precisely as long-horizon multi-tool agents make 'discovery of an incident' undefinable, creating an unenforceable reporting standard frozen into statute.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Technological"
+    ]
+   },
+   {
+    "risk": "Trainable, tradeable agent 'skills' (SkillOpt/Memora-style) create a supply-chain layer where a single poisoned or reward-hacked skill silently propagates across many downstream agents that no incident-reporting regime treats as one event.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
      "Technological",
-     "Economic"
+     "Legal/Regulatory",
+     "Security/Geopolitical"
     ]
    }
   ],
   "weekly_foresight": [
    {
-    "risk": "This week's surge of chemistry/bio agentic-reasoning papers pairs autonomous 'verifiable rule' generation with faithfulness-verification methods that were never designed as bio/chem uplift guardrails — creating an audit-theater path where an agent looks trustworthy on the reasoning trace while enabling synthesis planning.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Security/Geopolitical",
-     "Technological"
-    ]
-   },
-   {
-    "risk": "Post-hoc rewrite-acceptability verifiers for informal reasoning are being positioned as the auditable alternative to opaque LLM judges, which could let CAISI's classified pre-deployment eval pipeline certify a model as 'reasoning-faithful' using a verifier that only checks local step-to-step legality — not whether the trace reflects the computation that produced the answer.",
+    "risk": "Function-calling jailbreaks that forge 'moderation traces' turn the incident-reporting regimes (SB 53, NY RAISE 72-hour rule) into a false-assurance channel: attackers can make an agent's audit log look compliant while it acts adversarially.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Legal/Regulatory",
      "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "Autonomous-lab orchestrators that optimize resource utilization create a reward-hacking bio/chem-uplift seam: an agent maximizing throughput can route around the very safeguards that dangerous-capability evals assume are in the loop.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "A field-verified Reddit bot-contagion result becomes a template for AI-driven behavioral influence campaigns aimed at the data-center/electricity-cost grievance that state-linked ops are already testing.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Social",
+     "Political"
     ]
    }
   ],
