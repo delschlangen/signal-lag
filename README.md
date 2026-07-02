@@ -44,28 +44,46 @@ shows a real, published snapshot — never synthetic or demo content. Hosting is
 
 1. **Ingestion** — pulls papers from the arXiv API (`cs.AI`, `cs.LG`, `cs.CL`, `cs.CR`,
    `cs.CY`, `cs.CV`) over a configurable window, **stratified by quarter** for even time
-   coverage, and enriches them via **OpenAlex** (citation counts, yearly series, author
-   affiliations), **Semantic Scholar** (TLDRs, influential-citation counts, venue),
+   coverage, and enriches them via **Semantic Scholar** (citation counts, outgoing
+   references, author ids + affiliations, TLDRs, influential-citation counts, venue),
    **OpenReview** (venue papers + peer-review scores), and **lab/blog RSS** (a
-   capability-leading signal). Cached in local SQLite; rate-limited with backoff. All
+   capability-leading signal). (OpenAlex is configured but currently unreachable from
+   the CI runner; Semantic Scholar supplies its signals instead.) Cached in local SQLite; rate-limited with backoff. All
    sources are fail-soft — one being down just omits its signal.
 2. **Topic modeling via embeddings** — embeds every abstract (sentence-transformers
    `all-MiniLM-L6-v2`, with a TF-IDF+SVD fallback), then **discovers emergent topics**
    (HDBSCAN, k-means fallback) and **tags papers against a supervised taxonomy** of 8
-   safety + 6 capability topics via cosine similarity to topic centroids.
+   safety + 6 capability topics via cosine similarity to topic centroids — with
+   **per-topic thresholds**, a **high/medium/weak confidence tier per tag**, and a
+   weekly **LLM-judged precision audit** per topic (Methodology tab) so over-inclusive
+   topics are visible and correctable instead of silently inflating volumes.
 3. **Velocity analysis** — submission rate per topic per quarter; flags
    acceleration/deceleration inflections and newly-forming clusters (the current
-   incomplete quarter is dropped from trend math).
+   incomplete quarter is dropped from trend math), plus a **statistical warning layer**:
+   CUSUM persistent-shift detection, change-point quarters, capability→safety lead-lag
+   cross-correlation per pairing, and trend-forecast ranges with deviation alerts.
 4. **Sentiment / confidence layer** — the share of *critical / limitation-focused*
-   papers per topic (embedding-based), and whether it's **rising** — an early
-   confidence-erosion warning, especially when volume is flat.
-5. **Citation flow** — verifies cross-domain *borrowing* via real references (Semantic
+   papers per topic (embedding recall, **LLM-verified precision** on the recent window),
+   whether it's **rising** (early confidence-erosion warning), a volume×critique
+   **quadrant map**, Wilson confidence intervals, and **false-confidence alerts**
+   (capability growing while self-critique falls and paired safety stays flat).
+5. **Citation layer** — verifies cross-domain *borrowing* via real references (Semantic
    Scholar): which capability papers actually **cite** core safety work, not just share its
-   vocabulary. (Year-by-year citation *heat* — rapid-growth / sleepers — needs OpenAlex,
-   which is currently unreachable from the CI runner, so that sub-view is hidden.)
+   vocabulary — plus a capability×safety **cross-pollination matrix**, a **bridge-paper**
+   detector, and a **safety-impact leaderboard** (the safety papers capability builders
+   actually cite). Citation *velocity* (movers/sleepers) is rebuilt from signal-lag's own
+   weekly snapshots of per-paper citation totals, since OpenAlex's yearly series is
+   unreachable from the CI runner.
 6. **Divergence layer (the headline product)** — per configured capability↔safety
-   pairing, flags where capability is accelerating but the paired safety topic is flat.
-7. **Author/institution flow** — which labs are ramping activity in which subfields.
+   pairing, flags where capability is accelerating but the paired safety topic is flat —
+   with volume-balance vs growth-balance made explicit, **high-confidence volumes** next
+   to raw, a **confidence-adjusted gap** (growth weighted by each side's self-critique
+   posture), cumulative **monitoring-debt curves**, and the **lab-announcement →
+   safety-response lag**: how long the paired safety literature takes to measurably
+   answer each lab announcement (median lag, unanswered-after-N-weeks).
+7. **Research ecosystem** — institutions from Semantic Scholar author affiliations:
+   industry-vs-academia split, top and fastest-growing (institution, topic) pairs, plus
+   experimental capability→safety **author migration** tracking.
 8. **Weekly Claude analysis** — once per refresh, Claude (`claude-opus-4-8`) reads the
    computed metrics + real abstracts and writes the analytical headline, a per-tab read,
    and a *what-it-does / why-it-matters* note per driving paper (baked into the snapshot).
@@ -76,13 +94,32 @@ shows a real, published snapshot — never synthetic or demo content. Hosting is
    - **Harm/misuse vectors** — re-classifies the same papers by which real-world **misuse**
      they could enable, on a 0–24-month horizon (§13).
    - **Scored risk register** — every risk scored by severity × likelihood × exposure ×
-     trajectory, accumulated into an evergreen, prioritized register (§14).
+     trajectory plus confidence / evidence-strength / actionability tie-breakers (a true
+     forced ranking), accumulated into an evergreen register with **watchlist statuses**
+     (open / strengthening / weakening / dormant), a persisted **counterevidence trail**,
+     filters, a per-risk **drill-down dossier**, and a calibration panel (§14). Each risk
+     carries epistemically-labeled claims (observed / inferred / speculative),
+     **falsification conditions** (upgrade / downgrade / invalidate if), and a **"so
+     what" action map** (eval to run, benchmark to watch, mitigation, owner).
    - **Scenarios + exports** — 6–24-month scenarios from the top risks, plus one-tap
      intelligence-estimate and tabletop-exercise packs (§15).
-   - **Incident benchmark** — real, web-sourced incidents crossed against the research
-     signal into a leading-vs-lagging 2×2 (§16).
-10. **Output** — a Streamlit dashboard (8 tabs, led by a self-contained Weekly Summary)
-    plus exportable **markdown briefs / estimates / tabletop packs**.
+   - **Incident benchmark** — real, web-sourced incidents (credibility-graded on
+     AI-involvement / attribution / source quality, cleaned + de-duplicated) crossed
+     against the research signal into a leading-vs-lagging 2×2, with an accruing
+     early-warning calibration record (§16).
+   - **Enablement map** — capability topics → harm vectors → real incidents as a Sankey
+     (edges = papers co-tagged to both tracks; association, not proof).
+   - **Plain-terms briefing** — the top risks explained for non-specialists (evidence,
+     context, the gap, the tool's own skepticism, bottom line), as a first-class view.
+10. **Output** — a Streamlit dashboard: 8 tabs led by a self-contained Weekly Summary,
+    an always-visible **BLUF sidebar** (each judgment with an analyst *so-what*), a
+    per-tab **"since last refresh"** delta panel, and exports: markdown briefs /
+    intelligence estimate / tabletop pack / one-page brief, plus **structured CSV/JSON**
+    (register, incidents, velocity, lab-lag, citation matrix, full snapshot).
+11. **Operations** — tiered LLM usage (a cheap model for high-volume classification, the
+    strong model for synthesis/verification), a 21-day **novelty-verification cache**
+    keyed by risk fingerprint, and idempotent per-refresh histories (register, benchmark,
+    citation counts) committed by the weekly workflow.
 
 ---
 
@@ -93,10 +130,13 @@ source being down or rate-limited just omits its signal):
 
 - **arXiv** — the papers themselves (title, abstract, authors, dates), from the
   `cs.AI`, `cs.LG`, `cs.CL`, `cs.CR`, `cs.CY`, `cs.CV` categories (extendable in config).
-- **OpenAlex** — enrichment matched to those papers: citation counts, year-by-year
-  citation series, and author institutions.
-- **Semantic Scholar** — enrichment: TLDR summaries, **influential**-citation counts
-  (a sharper heat signal than raw counts), venue, and fields of study.
+- **Semantic Scholar** — the primary enrichment source: citation counts, outgoing
+  **references** (for citation-flow verification and the cross-pollination matrix),
+  stable author ids + **affiliations** (the research-ecosystem view), TLDR summaries,
+  **influential**-citation counts, venue, and fields of study.
+- **OpenAlex** *(configured, currently dormant)* — unreachable from the CI runner;
+  Semantic Scholar supplies its signals instead. Citation *velocity* is rebuilt from
+  signal-lag's own weekly snapshots of per-paper totals.
 - **OpenReview** *(optional, config-gated)* — venue papers (e.g. ICLR/NeurIPS) added
   as records with peer-**review scores**, a quality/heat signal papers-only sources lack.
 - **Lab/blog RSS** *(optional, config-gated)* — posts from major labs (Anthropic,
@@ -185,7 +225,8 @@ threshold — both tunable in YAML.
 - **Divergence metric:** for each pairing, `gap = capability_growth − safety_growth`.
   A pairing is flagged "lagging" when the gap exceeds the threshold *and* capability
   growth is positive. `volume_ratio` shows how lopsided the absolute volumes are now.
-- **Citation heat:** uses OpenAlex `counts_by_year`. "Sleepers" have a low early
+- **Citation heat:** rebuilt from signal-lag's own weekly snapshots of per-paper
+  Semantic Scholar citation totals (movers = biggest week-over-week gains). "Sleepers" have a low early
   citation share but a high recent share — quiet papers now heating up.
 - **Everything is config-driven.** The taxonomy, capability↔safety pairings, date
   range, caps, thresholds, and clustering choice all live in `config/*.yaml` — no code
@@ -330,16 +371,16 @@ python -m signal_lag.cli dashboard          # or: streamlit run signal_lag/dashb
 
 ### Real data
 
-Run where arXiv and OpenAlex are reachable:
+Run where arXiv and Semantic Scholar are reachable:
 
 ```bash
-python -m signal_lag.cli ingest             # pull live arXiv + OpenAlex enrichment
+python -m signal_lag.cli ingest             # pull live arXiv + Semantic Scholar enrichment
 python -m signal_lag.cli analyze
 python -m signal_lag.cli dashboard
 ```
 
 `ingest` is idempotent (upserts by arXiv id), so re-running extends the cache rather
-than duplicating. Use `--no-enrich` to skip OpenAlex, and `enrich` later to backfill:
+than duplicating. Use `--no-enrich` to skip enrichment, and `enrich` later to backfill:
 
 ```bash
 python -m signal_lag.cli ingest --no-enrich
@@ -364,17 +405,24 @@ python scripts/generate_fixtures.py
   tab so you needn't open them, plus the labs-announce→safety-responds view. The former
   *Signals* tab is folded in here (full ranked list + downloadable brief).
 - **⚖️ Divergence** — for every capability↔safety pair, the recent growth rate of each
-  side as horizontal bars. A long capability bar next to a short safety bar = safety
-  lagging. This is the core product.
-- **📈 Velocity** — papers per quarter per topic over time, plus an inflection table of
-  which topics accelerated or decelerated, **and the strategic map** (topics plotted by
-  recent volume × growth: *emerging* / *hot* / *cooling* / *white-space*). Momentum
-  (attention, not success).
-- **🔬 Sentiment** — the **negative-signal layer**: the share of *critical / negative /
-  limitation-focused* papers within each topic, and whether that share is **rising**.
-  A rising critical share while volume is flat is an early warning that a field may be
-  losing confidence in an approach — detected via embeddings (cosine similarity to
-  negativity seed phrases), not keywords.
+  side as horizontal bars (long capability + short safety = safety lagging). The table
+  separates **volume balance** from **growth balance**, shows **high-confidence volumes**
+  next to raw, ±1σ bands on growth, and a **confidence-adjusted gap**; below it,
+  cumulative **monitoring-debt curves** and the **🛰️ lab-announcement → safety-response
+  lag** (median weeks to a measurable safety-literature response, per capability, with
+  unanswered-after-N-weeks). This is the core product.
+- **📈 Velocity** — papers per quarter per topic over time, an inflection table, a
+  **this-week momentum vs expected** table (Poisson z-scores), **🧪 statistical
+  detectors** (CUSUM shifts, change-point quarters, capability→safety lead-lag
+  correlation, forecast-range deviations), **and the strategic map** (recent volume ×
+  growth: *emerging* / *hot* / *cooling* / *white-space*). Momentum (attention, not
+  success).
+- **🔬 Sentiment** — the **negative-signal layer**: the share of *critical /
+  limitation-focused* papers per topic (embedding recall, LLM-verified precision on the
+  recent window) with Wilson 95% intervals, whether it's **rising**, 🟣
+  **false-confidence alerts** (capability growing + self-critique falling + paired
+  safety flat), and a **volume × critique quadrant map** (growing-&-straining /
+  growing-&-confident / contracting-&-critical / fading).
 - **🔮 Foresight** — a second Claude pass that anchors on the tool's own research-trend
   signal and crosses it with broader societal forces to surface **novel, not-yet-in-the-news
   risks** living in the *seam between domains*. Each candidate is then **web-checked against
@@ -391,11 +439,18 @@ python scripts/generate_fixtures.py
   easier, and how fast?"* over a **0–24 month** horizon. Accelerating harm vectors feed the
   synthesis to frame **capability→harm enablement** risks. A foresight signal over research,
   **not** on-platform abuse telemetry. Harm taxonomy: `config/taxonomy.yaml` (`harm_topics`).
+  Each risk also carries **epistemically-labeled claims** (🔵 observed · 🟠 inferred · ⚪
+  speculative), **falsification conditions** (what would upgrade / downgrade / invalidate
+  it), and a **"so what" action map**. A **🕸️ enablement map** (Sankey) connects
+  capability topics → harm vectors → real incidents.
   A **📋 Risk register** view scores every surfaced risk on **severity × likelihood × exposure
-  × trajectory** (priority = severity × likelihood, 1–25) and accumulates them into an
-  evergreen `data/risk_register.json` — each risk keyed by a stable id with first-seen /
-  last-seen and a per-refresh score history — rendered as a **priority matrix** + sortable
-  table. (The evergreen, prioritized frontier risk register.) A **🎬 Scenarios** view develops
+  × trajectory** (priority = severity × likelihood, 1–25) with confidence /
+  evidence-strength / actionability **tie-breakers** (a true forced ranking; stale risks
+  downgraded), accumulates them into an evergreen `data/risk_register.json` with
+  **watchlist statuses** (open / strengthening / weakening / dormant), a persisted
+  **counterevidence trail**, triage **filters**, a per-risk **drill-down dossier**, and a
+  **calibration panel** — rendered as a **priority matrix** + ranked table. A **🧩 Plain
+  terms** view explains the top risks for non-specialists. A **🎬 Scenarios** view develops
   **6–24 month scenarios** from the top risks (drivers, leading indicators, branch points,
   mitigations, ICD-203 estimative likelihood), and two one-tap **exports** turn it all into
   analyst-ready products: a **Strategic Intelligence Estimate** and a **Tabletop-exercise pack**.
@@ -404,10 +459,16 @@ python scripts/generate_fixtures.py
   tagged to the harm vectors and **benchmarked** against the research signal into a
   leading-vs-lagging 2×2 (🎯 foresight lead · 🔴 materializing · 🟠 active/known · ⚪ quiet).
 - **🔍 Sources** — the receipts: actual arXiv papers behind each topic (each with a
-  short *what-it-does / why-it-matters* note — written by Claude when the analysis
-  layer is on, data-derived otherwise), plus rapid-citation-growth and "sleeper" papers,
-  all linked.
-- **📖 Methodology** — how every layer works, on the live data behind the current snapshot.
+  *what-it-does / why-it-matters* note and a 🟢/🟡/⚪ **tag-confidence badge**, with a
+  hide-weak-matches filter), **📈 citation velocity** from signal-lag's own weekly count
+  snapshots (movers + sleepers), the **🔗 citation cross-pollination** section
+  (capability×safety heatmap, bridge papers, safety-impact leaderboard), and the **🏛️
+  research ecosystem** (industry-vs-academia split, top + fastest-growing institutions,
+  from Semantic Scholar affiliations).
+- **📖 Methodology** — how every layer works, on the live data behind the current
+  snapshot — including the weekly **🧪 tagging-precision audit** (per-topic LLM-judged
+  precision; the basis for the per-topic thresholds in `config/settings.yaml`) and
+  **📤 structured CSV/JSON exports**.
 - **📜 History** — a running record of past weekly briefings (headline, top foresight gaps,
   rising sentiment, what-changed) plus a metrics-over-time chart — the longitudinal view a
   single snapshot can't show.
@@ -420,6 +481,12 @@ read, notable papers, and a web-verified this-week Foresight Gap. The quarterly 
 (velocity/divergence/quadrant) is unchanged and clearly labeled *this quarter* — Quadrant
 stays quarterly-only (a 7-day volume×growth map isn't meaningful).
 
+Two cross-tab layers ride on top: a **🎯 BLUF sidebar** (widest safety lag, top register
+risk, top new risk, biggest weekly anomaly, harm vector to watch, median lab-response lag —
+each with an analyst *so-what*, plus one-tap downloads including a **one-page brief**), and
+a **🔄 "since last refresh"** delta panel at the top of each tab (new/resolved alerts,
+newly accelerating topics, new warnings, new/rotated risks, new incidents).
+
 ---
 
 ## How the live data works
@@ -428,7 +495,7 @@ The dashboard never pulls data at page-load time — that would be slow and
 network-dependent. Instead:
 
 1. **`.github/workflows/refresh.yml`** runs weekly (Mondays 06:00 UTC) and on demand.
-2. It pulls real arXiv + OpenAlex data, runs the full analysis (including the optional
+2. It pulls real arXiv + Semantic Scholar data, runs the full analysis (including the optional
    Claude analysis layer when `ANTHROPIC_API_KEY` is set), and writes
    **`data/snapshot.json`** via `scripts/refresh_snapshot.py`.
 3. It commits that snapshot; Streamlit Community Cloud redeploys on the push.
@@ -436,7 +503,7 @@ network-dependent. Instead:
    the previous snapshot to show what changed.
 
 Trigger it manually anytime from the repo's **Actions → Weekly data refresh → Run
-workflow** (you can tune the per-category and OpenAlex caps there). To produce a
+workflow** (you can tune the per-category and enrichment caps there). To produce a
 snapshot locally:
 
 ```bash
@@ -514,8 +581,16 @@ python -m pytest tests/ -q
 
 - Topic tagging quality depends on the embedding backend; the TF-IDF fallback is
   serviceable but the sentence-transformers path is materially better.
-- arXiv covers preprints only; OpenAlex citation coverage lags for very recent papers,
-  so recent-quarter citation signals are noisier than older ones.
+- arXiv covers preprints only; Semantic Scholar rarely indexes brand-new papers, so
+  recent-quarter citation/reference signals are noisier than older ones, and
+  affiliations are author-reported and sparse (the ecosystem view is indicative, not a
+  census).
+- **Topic tags are imperfect and now measured.** The weekly LLM-judged audit
+  (Methodology tab) estimates per-topic precision; several topics proved over-inclusive
+  at the original global threshold — volumes inflated by borderline semantic matches —
+  which is why per-topic thresholds, tag-confidence tiers, and high-confidence volumes
+  exist. Precision estimates use ~30 samples/topic, so single-week numbers carry ±0.1+
+  noise; watch the trend, not one reading.
 - **No synthetic data on the live tool, ever.** The dashboard only renders a real,
   published snapshot; if none is present it shows an honest "data not available yet"
   message rather than any demo content. Synthetic fixtures exist *solely* for the

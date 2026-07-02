@@ -1,7 +1,7 @@
 """Streamlit dashboard for signal-lag.
 
 Reads a precomputed snapshot (``data/snapshot.json``) produced weekly from real
-arXiv + OpenAlex (+ OpenReview, lab blogs) data by the refresh GitHub Action.
+arXiv + Semantic Scholar (+ OpenReview, lab blogs) data by the refresh GitHub Action.
 
 It only ever renders **real** data: if no live snapshot is present, it shows an
 honest "data not available yet" message rather than any synthetic/demo content.
@@ -315,7 +315,7 @@ st.caption(
 if snap is None or snap.get("meta", {}).get("mode") != "live":
     st.error(
         "**Live data isn't available yet.** The weekly refresh hasn't published a "
-        "snapshot to this branch. This dashboard only ever shows real arXiv / OpenAlex / "
+        "snapshot to this branch. This dashboard only ever shows real arXiv / Semantic Scholar / "
         "OpenReview / lab data — no synthetic or demo content is shown. "
         "Run **Actions → Weekly data refresh → Run workflow** (or wait for the Monday run)."
     )
@@ -380,24 +380,35 @@ with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
         icon="🧭",
     )
     st.markdown(
-        "**Start on 📋 Weekly Summary** — it digests every other tab in plain language, "
-        "so you only open the others for detail.\n\n"
+        "**Start with the 🎯 sidebar** (arrow at top-left on mobile) — the bottom line up "
+        "front: the week's main judgments, each with an analyst *so what*, plus one-tap "
+        "downloads (one-page brief, intelligence estimate, plain-terms briefing). Then "
+        "**📋 Weekly Summary** digests every tab in plain language. Each tab opens with a "
+        "**🔄 since-last-refresh** panel so you can scan what moved without re-reading.\n\n"
         "**The tabs**\n"
         "- **📋 Weekly Summary** — the briefing: what changed, the headline gap, a read of "
-        "every tab, and this week's best foresight risks.\n"
-        "- **⚖️ Divergence** — where capability research is outpacing the paired safety work.\n"
-        "- **📈 Velocity** — how fast each topic is moving (accelerating / cooling), plus "
-        "the **strategic map** (volume × growth: emerging / hot / cooling / white-space).\n"
-        "- **🔬 Sentiment** — share of *critical / limitation-focused* papers; a rising share "
-        "is an early confidence-erosion warning.\n"
-        "- **🔮 Foresight** — five views: novel **cross-domain risks** (web-checked for "
-        "novelty), **⚠️ Harm vectors** (dual-use misuse lens, 0–24 mo), a scored **📋 Risk "
-        "register** (severity × likelihood × exposure × trajectory), **🎬 Scenarios** "
-        "(how the top risks could evolve, 6–24 mo), and **🌐 Incidents** (real-world incidents "
-        "crossed against the research signal: leading vs lagging) — plus downloadable "
-        "intelligence-estimate and tabletop-exercise packs.\n"
-        "- **🔍 Sources** — the actual papers behind every topic, all linked.\n"
-        "- **📖 Methodology** — how it all works + a glossary of every term.\n\n"
+        "every tab, this week's best foresight risks, and risks in plain terms.\n"
+        "- **⚖️ Divergence** — where capability outpaces the paired safety work: volume vs "
+        "growth balance, high-confidence volumes, ±bands, the confidence-adjusted gap, "
+        "monitoring-debt curves, and the 🛰️ lab-announcement → safety-response lag.\n"
+        "- **📈 Velocity** — topic momentum, this-week vs expected (z-scores), 🧪 statistical "
+        "detectors (change-points, CUSUM, capability→safety lead-lag, forecast ranges), and "
+        "the strategic map (emerging / hot / cooling / white-space).\n"
+        "- **🔬 Sentiment** — critical-share warnings with 95% intervals, 🟣 false-confidence "
+        "alerts, and the volume × critique quadrant map.\n"
+        "- **🔮 Foresight** — six views: novel **cross-domain risks** (web-checked for "
+        "novelty; each with 🧬 labeled claims, 🔀 falsification conditions, and 🛠️ next "
+        "actions), **⚠️ Harm vectors** (dual-use lens, 0–24 mo, with the 🕸️ enablement "
+        "map), the **📋 Risk register** (forced ranking, watchlist statuses, filters, "
+        "⚖️ counterevidence, per-risk drill-down dossier), **🎬 Scenarios** (6–24 mo), "
+        "**🌐 Incidents** (credibility-graded real incidents benchmarked against the "
+        "research signal), and **🧩 Plain terms** (the policy-facing briefing) — plus "
+        "intelligence-estimate and tabletop exports.\n"
+        "- **🔍 Sources** — the papers behind every topic (with 🟢/🟡/⚪ tag-confidence "
+        "badges), 📈 citation velocity, 🔗 cross-pollination matrix + bridge papers + "
+        "safety-impact leaderboard, and the 🏛️ research ecosystem.\n"
+        "- **📖 Methodology** — how it all works, the 🧪 tagging-precision audit, "
+        "📤 structured CSV/JSON exports, and a glossary of every term.\n\n"
         "**Symbols you'll see**\n"
         "- 🟢 genuinely unsurfaced · 🟡 partially anticipated · 🔴 already widely discussed "
         "(the verified novelty of a foresight risk)\n"
@@ -1648,12 +1659,12 @@ def render_foresight_section():
                 st.markdown(live_ctx)
 
         # Citation-VERIFIED cross-domain borrowing (#2): capability papers that actually
-        # cite core safety work (via OpenAlex references), not just shared vocabulary.
+        # cite core safety work (via Semantic Scholar references), not just shared vocabulary.
         borrowers = (digest.get("citation_verified_borrowing") or [])
         if borrowers:
             with st.expander(f"🔗 Citation-verified borrowing ({len(borrowers)}) — "
                              "capability work that actually cites safety work"):
-                st.caption("Verified via OpenAlex outgoing references (not keyword overlap). "
+                st.caption("Verified via Semantic Scholar outgoing references (not keyword overlap). "
                            "Positive-only: absence from this list is **inconclusive**, never "
                            "evidence that a community ignores safety work.")
                 for b in borrowers:
@@ -2731,7 +2742,12 @@ it tracks *what* is being worked on, *how fast*, *by whom*, and — most importa
 ### 1. Data sources
 All free, all **fail-soft** (a source being down just omits its signal):
 - **arXiv** — papers (title, abstract, authors, dates) from `{cats}`.
-- **OpenAlex** — citation counts, year-by-year citation series, author institutions.
+- **Semantic Scholar** — citation counts, outgoing **references** (citation-flow +
+  cross-pollination), stable author ids + **affiliations** (research ecosystem), TLDRs,
+  *influential*-citation counts, venue, fields of study.
+- **OpenAlex** *(configured, dormant)* — unreachable from the refresh runner; Semantic
+  Scholar supplies its signals, and citation *velocity* is rebuilt from signal-lag's own
+  weekly snapshots of per-paper totals.
 - **Semantic Scholar** — TLDRs, *influential*-citation counts, venue, fields.
 - **OpenReview** — venue papers + peer-review scores, added as papers.
 - **Lab/blog RSS** — posts from major labs as a *capability-leading* signal (kept separate from paper velocity).
@@ -2764,7 +2780,8 @@ when the gap clears a threshold, capability growth is positive, *and* capability
 enough recent volume (a floor that suppresses noisy tiny-count topics).
 
 ### 6. Citation dynamics
-From OpenAlex yearly counts: **rapid recent growth**, and **sleepers** — papers that
+From signal-lag's own weekly snapshots of per-paper citation totals (OpenAlex's yearly
+series being unreachable): **rapid recent growth**, and **sleepers** — papers that
 were quiet early but are now accruing most of their citations (early-heat signals).
 
 ### 7. Author / institution flow
