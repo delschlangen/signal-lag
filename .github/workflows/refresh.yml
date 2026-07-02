@@ -26,7 +26,10 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    # arXiv throttling is bursty: ingestion normally takes ~25 min but has taken 80+ on a
+    # bad night (2026-07-02 run was killed by a 90-min cap while still ingesting). The cap
+    # is a runaway guard, not a target — size it for the bad nights.
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
 
