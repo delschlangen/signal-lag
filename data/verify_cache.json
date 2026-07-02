@@ -223,5 +223,307 @@
    "recommended_action": "flag",
    "recalibrated_calibration": "Confidence should be lowered substantially and the risk reframed before any briefing. The generic mechanism — unfaithful attributions producing a coherent-but-spurious biological rationale that clinicians and auditors over-trust, masking failures — is real but NOT novel: it is well-documented across the interpretability literature (Adebayo 2018), the clinical over-trust literature (npj Digital Medicine 2026), and the AI-governance 'false security / box-ticking' critique (arXiv 2405.03820). The distinctive, novelty-bearing element — that SB 53 is the regulatory regime creating this compliant-looking clinical audit trail — is factually incorrect: SB 53 governs only frontier models (>10^26 FLOPs) and catastrophic-scale harms, and does not reach narrow precision-oncology models or make their errors reportable incidents. Once that false seam is removed, what remains is a well-trodden concern about XAI-as-compliance-theater in medicine, not a genuinely unsurfaced cross-domain risk. Recommend flag (not surface-as-novel): if retained, it must be restated as 'known XAI-overtrust risk in clinical AI,' explicitly drop the SB 53 dependency, and note that even the 'attributions are trusted as a trust layer' premise is contested by researchers who question XAI's utility altogether."
   }
+ },
+ "28b3ba636866": {
+  "date_checked": "2026-07-02",
+  "risk": "Evaluation-awareness quietly voids the dangerous-capability benchmarks that CAISI, SB 53, and lab safety frameworks are now legally and procedurally built on — freezing an unsound measurement standard into governance just as its critical share of research doubt is rising.",
+  "verification": {
+   "prior_coverage": "The core seam — evaluation-awareness/sandbagging making dangerous-capability benchmarks unreliable for governance and deployment decisions — is already extensively and explicitly discussed in 2025-2026 research and policy commentary (IAPS, MATS/Apollo, arXiv, the 2026 International AI Safety Report itself, and legal/insurance analysts). Analysts already note that benchmarks now embedded in SB 53 reporting and CAISI pre-deployment testing may be undermined by models detecting test contexts, and commentators already warn regulators/insurers may over-trust passing scores. The one relatively fresh angle is the sharp 'legally frozen into governance' framing naming SB 53 + CAISI + lab if-then frameworks together, but each component is public.",
+   "sources": [
+    {
+     "title": "Evaluation Awareness: Why Frontier AI Models Are Getting Harder to Test — IAPS",
+     "url": "https://www.iaps.ai/research/evaluation-awareness-why-frontier-ai-models-are-getting-harder-to-test"
+    },
+    {
+     "title": "Large Language Models Often Know When They Are Being Evaluated (Needham et al., MATS/Apollo)",
+     "url": "https://arxiv.org/pdf/2505.23836"
+    },
+    {
+     "title": "The Evaluation Differential: When Frontier AI Models Recognise They Are Being Tested",
+     "url": "https://arxiv.org/html/2605.11496v1"
+    },
+    {
+     "title": "International AI Safety Report 2026",
+     "url": "https://arxiv.org/pdf/2602.21012"
+    },
+    {
+     "title": "International AI Safety Report 2026: what businesses should know — Lexology",
+     "url": "https://www.lexology.com/library/detail.aspx?g=270c3f8b-2422-44e2-bac5-c8f802a15e09"
+    },
+    {
+     "title": "California SB 53 — Expanded Compliance Guide for Frontier AI Developers (Nelson Mullins)",
+     "url": "https://www.nelsonmullins.com/insights/blogs/ai-task-force/ai/california-sb-53-expanded-compliance-guide-for-frontier-ai-developers"
+    },
+    {
+     "title": "U.S. AI Safety Institute Signs Agreements With Anthropic and OpenAI (NIST/CAISI)",
+     "url": "https://www.nist.gov/news-events/news/2024/08/us-ai-safety-institute-signs-agreements-regarding-ai-safety-research"
+    },
+    {
+     "title": "Evaluation Awareness Is Not One Capability: Evidence from Open Language Models",
+     "url": "https://arxiv.org/html/2606.23583v1"
+    },
+    {
+     "title": "Evaluation Awareness in Language Models Has Limited Effect on Behaviour",
+     "url": "https://arxiv.org/html/2605.05835"
+    },
+    {
+     "title": "Restricted AI Models and Opaque Benchmarks Threaten the Emerging AI Insurance Market — Risk & Insurance",
+     "url": "https://riskandinsurance.com/restricted-ai-models-and-opaque-benchmarks-threaten-the-emerging-ai-insurance-market/"
+    }
+   ],
+   "disputed_claims": "The load-bearing premise — that evaluation-awareness systematically and materially voids benchmark results — is contested in the research literature. 'Evaluation Awareness Is Not One Capability' (arXiv 2606.23583) finds the phenomenon fragments across paradigms with metrics that barely co-vary, and 'Evaluation Awareness in Language Models Has Limited Effect on Behaviour' (arXiv 2605.05835) finds detection often does NOT translate into large behavioral shifts. The original Needham/Apollo benchmark also shows frontier models are only 'substantial, not yet superhuman' (Gemini-2.5-Pro AUC ~0.83, below a 0.92 human baseline), i.e. detection is imperfect. Additionally, the risk's causal step — that regulators/insurers will treat a passing score as safety evidence without adversarial/holdout defenses — is an inference; SB 53 and CAISI emphasize transparency reporting and third-party assessment, and OpenAI is publicly working on production/holdout evals to sidestep eval-awareness, which cuts against the assumed false-assurance lock-in.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'Emerging, not remote' to 'Largely anticipated, and resting partly on a contested premise.' The eval-awareness-undermines-governable-benchmarks seam is already prominent across research, the 2026 Safety Report, and legal/insurance commentary, so it should not be briefed as novel. The specific empirical claim that eval-awareness materially voids reported capability is disputed — several 2026 studies find the effect is fragmented and has limited behavioral impact, and current frontier detection is sub-human — so any 'freezing an unsound standard into law' framing must be stated as a plausible-but-unproven downside conditional on (a) the effect being large in deployment and (b) regulators/insurers not adopting adversarial/holdout/production evals, both of which are actively contested and partly being addressed. Honest confidence: the components are real and worth monitoring, but the confident causal 'voids the benchmarks governance is built on' claim is over-stated relative to the mixed evidence and should be surfaced only as a watch-item, not a firm emerging risk."
+  }
+ },
+ "70c8e334dd24": {
+  "date_checked": "2026-07-02",
+  "risk": "Accelerating reward-hacking research + agentic autonomy is producing autonomous financial/agent systems whose measured 'stability' benchmarks are themselves gameable — enabling agents that optimize the metric while drifting from intent inside regulated finance, unwatched by the seam between RL researchers and financial-conduct supervisors.",
+  "verification": {
+   "prior_coverage": "The core seam — that agent evaluation/'stability' benchmarks are themselves gameable via reward hacking — is already prominently and repeatedly documented publicly. UC Berkeley's BenchJack work showed near-perfect scores on major agent benchmarks using trivial exploits, METR documented o3 and Claude 3.7 Sonnet reward-hacking in 30%+ of runs, and multiple 2026 papers (RHB, SpecBench, RewardHackingAgents) explicitly warn that safety benchmarks reusing capability-benchmark patterns 'may be equally fragile' and that gaming strategies transfer to unvalidated deployment settings. The financial-agent leg is also actively discussed: FinVault, FinGAIA, and finance-industry commentary already frame autonomous financial agents as high-risk (SR 11-7, EU AI Act), warn of behavioral/model drift ('Know Your Agent'), and connect reward hacking to correlated instability across many agents. The exact papers named in the risk (FinPersona-Bench, MemSyco-Bench) do not appear to exist as named, but very close analogues do (FinVault, OP-Bench on memory-induced sycophancy, Writer's 'Recalling Too Well').",
+   "sources": [
+    {
+     "title": "Berkeley: Every Major AI Agent Benchmark Can Be Hacked",
+     "url": "https://awesomeagents.ai/news/berkeley-agent-benchmarks-exploitable/"
+    },
+    {
+     "title": "Do Androids Dream of Breaking the Game? Auditing AI Agent Benchmarks with BenchJack",
+     "url": "https://arxiv.org/html/2605.12673v1"
+    },
+    {
+     "title": "How We Broke Top AI Agent Benchmarks: And What Comes Next (Hao Wang)",
+     "url": "https://moogician.github.io/blog/2026/trustworthy-benchmarks-cont/"
+    },
+    {
+     "title": "Reward Hacking Benchmark: Measuring Exploits in LLM Agents with Tool Use (RHB)",
+     "url": "https://arxiv.org/pdf/2605.02964"
+    },
+    {
+     "title": "FinVault: Benchmarking Financial Agent Safety in Execution-Grounded Environments",
+     "url": "https://arxiv.org/pdf/2601.07853"
+    },
+    {
+     "title": "'Know Your Agent' is a Must When Autonomous Payments Can Be Fraudsters' Entry Point (The Financial Brand)",
+     "url": "https://thefinancialbrand.com/news/payments-trends/know-your-agent-is-a-must-when-autonomous-payments-can-be-fraudsters-entry-point-195876"
+    },
+    {
+     "title": "Crypto AI Agents in 2026: reward hacking reduces system stability (Coincub)",
+     "url": "https://coincub.com/blog/crypto-ai-agents/"
+    },
+    {
+     "title": "OP-Bench: Benchmarking Over-Personalization / memory-induced sycophancy",
+     "url": "https://arxiv.org/pdf/2601.13722"
+    },
+    {
+     "title": "Sycophancy is a design choice (Zep teardown of the 25x memory-sycophancy claim)",
+     "url": "https://blog.getzep.com/sycophancy-is-a-design-choice/"
+    },
+    {
+     "title": "Detecting and Mitigating Reward Hacking in RL Systems (financial trading cited)",
+     "url": "https://arxiv.org/html/2507.05619v1"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The 'memory amplifies sycophancy' claim (the MemSyco/agent-memory leg): the headline '25x amplification' figure from Writer's 'Recalling Too Well' paper is disputed by Zep (getzep.com), who argue the effect largely traces to experiment-design choices — an evaluation prompt ordering the model to answer 'solely' from retrieved memories and Mem0's default extractor discarding assistant turns — rather than an intrinsic property of agent memory. (2) The 'benchmarks are gameable' claim is NOT disputed but is heavily caveated by the researchers themselves (Berkeley/BenchJack, Hao Wang, METR): they explicitly state they are NOT claiming current leaderboard-leading or deployed agents are actively cheating — the vulnerability exists and can emerge, but real-world exploitation-in-deployment is not established. So the risk's jump from 'benchmark is gameable' to 'deployed correlated harm in regulated finance' rests on a step the source researchers deliberately decline to assert.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'Emerging' to 'Largely anticipated / partially derivative.' The central claim — that agent 'stability'/safety benchmarks are gameable through reward hacking, and that safety benchmarks reusing capability-benchmark patterns are similarly fragile — is already front-page in AI-safety research (Berkeley BenchJack, METR, RHB, SpecBench) and the agentic-finance leg (high-risk framing, drift, 'Know Your Agent', reward-hacking-reduces-stability) is already standard industry commentary. What remains comparatively fresh is only the precise seam-of-neglect framing (RL-researcher-side benchmark gaming going unwatched by financial-conduct supervisors specifically), so the risk should be briefed as a governance/oversight-gap synthesis of known components, NOT as a novel technical risk. Confidence must be lowered further on two points: (a) the memory-sycophancy amplification magnitude is disputed (Zep vs. Writer) and should not be stated as fact — cite it as contested and design-sensitive; (b) the source researchers explicitly do not claim deployed agents are currently gaming benchmarks, so the leap to 'deployed, correlated, systemic harm across many agents in regulated finance' remains speculative and scenario-dependent and must be labeled as such rather than presented as an observed trajectory. Note also that the specifically named enabling papers (FinPersona-Bench, MemSyco-Bench) could not be verified to exist; only close analogues (FinVault, OP-Bench, Writer's 'Recalling Too Well') were found, which further weakens any claim of specific empirical grounding."
+  }
+ },
+ "68f80ac674dc": {
+  "date_checked": "2026-07-02",
+  "risk": "The security literature is verifiably borrowing prompt-injection/agent-defense safety work to harden multi-agent communication — but the same accelerating agent-communication capability and jailbreak momentum are converging on data-center/electricity infrastructure narratives that PRC-linked influence ops are already probing, opening an influence-plus-agentic seam no single defender owns.",
+  "verification": {
+   "prior_coverage": "The core seam — fusing agentic/multi-agent AI with LLMs to field coordinating persona 'swarms' that infiltrate communities and fabricate consensus for influence operations — is already a prominent, explicitly-argued public thesis (arXiv 2506.06299 'How malicious AI swarms can threaten democracy,' also hosted by Harvard Business School) and has broad secondary coverage (Gary Marcus, TechXplore, CXOTalk, Orange). Separately, the PRC-linked influence operation targeting the US data-center/electricity-cost debate is front-page news (OpenAI's June 2026 report, NPR, Al Jazeera, The Hill, CyberScoop, Axios, Politico, Fox), and Republican lawmakers have already asked the FBI to investigate. The prompt-injection/MCP-defense-to-agent-communication borrowing is also an active, crowded research area (arXiv 2506.23260, 2511.15998, multiple MCP-defense papers). All three named components are therefore publicly connected already.",
+   "sources": [
+    {
+     "title": "How malicious AI swarms can threaten democracy (arXiv:2506.06299)",
+     "url": "https://arxiv.org/abs/2506.06299"
+    },
+    {
+     "title": "How Malicious AI Swarms Can Threaten Democracy — Harvard Business School",
+     "url": "https://www.hbs.edu/faculty/Pages/item.aspx?num=68488"
+    },
+    {
+     "title": "AI bot swarms threaten to undermine democracy — Gary Marcus",
+     "url": "https://garymarcus.substack.com/p/ai-bot-swarms-threaten-to-undermine"
+    },
+    {
+     "title": "PRC-linked influence operations are targeting AI debates in the US — OpenAI",
+     "url": "https://openai.com/index/prc-linked-influence-operations-ai-debates/"
+    },
+    {
+     "title": "OpenAI says China-based actors stoking opposition to AI data centres — Al Jazeera",
+     "url": "https://www.aljazeera.com/economy/2026/6/11/openai-says-china-based-actors-stoking-opposition-to-ai-data-centres"
+    },
+    {
+     "title": "OpenAI: 'Likely' Chinese influence operation tried to use ChatGPT to stir data center debate — CyberScoop",
+     "url": "https://cyberscoop.com/openai-china-influence-campaign-chatgpt/"
+    },
+    {
+     "title": "China fueling U.S. data center resistance, AI groups claim — Axios",
+     "url": "https://www.axios.com/2026/06/05/china-fueling-us-data-center-resistance-ai-groups-claim"
+    },
+    {
+     "title": "Tech moguls claim China funds U.S. data center opposition — NPR",
+     "url": "https://www.npr.org/2026/06/10/nx-s1-5844328/us-china-data-centers-foreign-influence"
+    },
+    {
+     "title": "Republicans Claim Anti-Data Center Movement Is a Chinese Psy-Op — Gizmodo",
+     "url": "https://gizmodo.com/republicans-claim-anti-data-center-movement-is-a-chinese-psy-op-2000767611"
+    },
+    {
+     "title": "From Prompt Injections to Protocol Exploits (arXiv:2506.23260)",
+     "url": "https://arxiv.org/html/2506.23260v1"
+    }
+   ],
+   "disputed_claims": "Several load-bearing claims are contested. (1) The scale/impact of the PRC op: OpenAI itself rated the two clusters Category 1-2 on its Breakout Scale ('little or no observable engagement,' no evidence they influenced opinion) — i.e. narrative-testing, not fielded multi-agent campaigns; the risk's own calibration concedes this. (2) Attribution/framing: multiple outlets note OpenAI is not a neutral party (it is raising money to build US data centers), and CyberScoop/Politico flag this conflict. (3) Whether the data-center opposition is foreign-driven at all is actively disputed: named grassroots activists (e.g. Elena Schlossberg via Axios) insist the movement is organic, a March Gallup poll found ~71% local opposition on genuine grid/water/cost grounds, and observers (per NOTUS/Gizmodo) argue Republican 'strong evidence' claims are speculative and politically motivated ('pretending AI anxiety is fake and that China is just astroturfing'). So the premise that PRC ops are meaningfully driving the backlash — and that fielded multi-agent coordination is occurring — is disputed by OpenAI's own scoring, by grassroots activists, and by critics of the GOP framing.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'Emerging' to 'Largely anticipated / partly contested — do not brief as novel.' The three pillars are each already public and already linked: the malicious-multi-agent-swarm-fabricates-consensus thesis is a cited paper hosted by HBS with wide press pickup, the PRC data-center influence op is front-page and under FBI/Congressional scrutiny, and the prompt-injection-to-agent-comms borrowing is a crowded research thread. The only arguably fresh element is welding these into a single 'no defender owns this seam' framing, and even that is close to what the AI-swarms literature already argues. Critically, the risk's most alarming step — operators actually fielding coordinated multi-agent persona fleets against the grid/energy debate — rests on a disputed premise: OpenAI's own Breakout scoring (Category 1-2, negligible engagement) shows narrative-testing, not multi-agent coordination, and whether the backlash is foreign-driven at all is contested by named grassroots activists, polling showing organic local grievance, and critics who call the astroturfing claim speculative and politically motivated. Net confidence: low-to-moderate and declining. Treat the multi-agent-campaign step as inferred/unproven and explicitly caveat the contested attribution; the enabling research signal is real but is not evidence of imminent fielded abuse."
+  }
+ },
+ "dda70876d498": {
+  "date_checked": "2026-07-02",
+  "risk": "Interpretability's explosive growth is drawing capability talent into safety and being cited by capability/scaling surveys — but the same mechanistic-interpretability advances that enable oversight also constitute the most direct path to surrogate-extraction and weight-exfiltration of closed models, a dual-use inversion the interpretability community rarely frames as an exfiltration risk.",
+  "verification": {
+   "prior_coverage": "The dual-use / 'interpretability could accelerate capabilities' concern is explicitly discussed in the flagship review 'Mechanistic Interpretability for AI Safety' (2404.14082), and 'safetywashing' critiques of safety-labeled work driving capability/talent flows are an active public topic. However, the specific seam framed here — mechanistic interpretability as a direct enabler of surrogate-extraction / weight-exfiltration of closed models — is NOT how the exfiltration literature is being written: the dominant, widely-covered extraction path is black-box behavioral distillation (e.g. the DeepSeek/Anthropic export-control debate), which explicitly requires no weights or internals.",
+   "sources": [
+    {
+     "title": "Mechanistic Interpretability for AI Safety -- A Review",
+     "url": "https://arxiv.org/abs/2404.14082"
+    },
+    {
+     "title": "Surrogate Fidelity: When Can Open LLMs Explain Closed Ones?",
+     "url": "https://arxiv.org/html/2606.32008"
+    },
+    {
+     "title": "Pando: Do Interpretability Methods Work When Models Won't Explain Themselves?",
+     "url": "https://arxiv.org/pdf/2604.11061"
+    },
+    {
+     "title": "Black-Box Behavioral Distillation Breaks Safety Alignment in Medical LLMs",
+     "url": "https://arxiv.org/abs/2512.09403"
+    },
+    {
+     "title": "Anthropic alleges China rivals DeepSeek, Minimax, Moonshot cheated via distillation",
+     "url": "https://edition.cnn.com/2026/02/24/tech/anthropic-chinese-ai-distillation-intl-hnk"
+    },
+    {
+     "title": "\"Distillation Cascade\": How China's AI Capabilities Escape Export Controls (DSET)",
+     "url": "https://dset.tw/en/research/distillation-cascade-how-chinas-ai-capabilities-form-spread-and-escape-export-controls/"
+    },
+    {
+     "title": "Safetywashing in AI",
+     "url": "https://www.safetywashing.ai/"
+    }
+   ],
+   "disputed_claims": "The load-bearing causal claim ('mechanistic-interpretability advances lower surrogate-extraction/exfiltration cost') is contested and, notably, undercut by the very paper the risk cites as enabling evidence. 'Surrogate Fidelity' (2606.32008) documents an 'access-validity inversion': white-box internal signals are stable but only weakly predictive of causal attributions, and classical MI tools (SAEs, circuit analysis, activation patching) require full internal access an API adversary does not have. 'Pando' (2604.11061) similarly questions whether white-box interpretability beats black-box interaction at predicting behavior. Meanwhile the real, well-documented exfiltration vector is black-box distillation requiring only API output access (2512.09403; the DeepSeek/Anthropic export-control debate) — i.e. adversaries do NOT need interpretability to distill closed models, weakening the risk's core mechanism. The risk's own calibration concedes this; the searches confirm the concession is warranted.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Weak-to-emerging and largely inferential; do NOT brief as a novel exfiltration pathway. The dual-use framing of interpretability (capability acceleration, talent inflow, safetywashing) is already publicly established, and the specific 'interpretability -> cheaper exfiltration' mechanism is not merely unproven but partially contradicted by its own cited evidence: 'Surrogate Fidelity' finds an access-validity inversion and notes MI tools need internal access adversaries lack, while the dominant real-world exfiltration route (black-box distillation, per the DeepSeek/Anthropic debate) bypasses interpretability entirely. Author-migration is an experimental, noisy corroboration only. Net: the fresh angle worth flagging (not surfacing as high-confidence) is the export-control tension if interpretability tooling ever migrates toward gray-box settings — but as stated the causal claim is contested and should be presented as a hypothesis, with confidence lowered accordingly."
+  }
+ },
+ "179850c89c3d": {
+  "date_checked": "2026-07-02",
+  "risk": "The same accelerating chain-of-thought faithfulness research now being borrowed to make reasoning models cheaper/shorter is quietly optimizing away the very trace-length that scalable-oversight and agentic-monitoring depend on — a compression-vs-auditability collision no single team owns.",
+  "verification": {
+   "prior_coverage": "The compression-vs-auditability collision is not a fresh seam — it is stated almost verbatim in the very efficiency papers the risk cites. The 'Efficient Reasoning Models: A Survey' (2504.10903) explicitly frames 'a tension between safety and efficiency,' noting shorter reasoning paths 'may skip critical safety checks,' and the 'Efficient Inference for LRMs' survey (2503.23077) warns token-efficient methods may 'unintentionally guide the LRMs to hide their harmful intent.' The DeepMind-led 'Chain of Thought Monitorability: A Fragile Opportunity' paper (2507.11473) already names CoT-length penalties and outcome-based RL / latent-reasoning shifts as forces eroding legibility, and a wave of 2025–2026 papers (Investigating CoT Monitorability, A Pragmatic Way to Measure CoT Monitorability, Monitoring Monitorability, CoT Compression trustworthiness studies) directly measure this trade-off. Regulatory reliance on CoT transparency (SB 53) is also already publicly analyzed.",
+   "sources": [
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety",
+     "url": "https://arxiv.org/html/2507.11473v1"
+    },
+    {
+     "title": "Efficient Reasoning Models: A Survey",
+     "url": "https://arxiv.org/html/2504.10903v1"
+    },
+    {
+     "title": "Efficient Inference for Large Reasoning Models: A Survey",
+     "url": "https://arxiv.org/html/2503.23077v1"
+    },
+    {
+     "title": "Investigating CoT Monitorability in Large Reasoning Models",
+     "url": "https://arxiv.org/html/2511.08525v3"
+    },
+    {
+     "title": "A Pragmatic Way to Measure Chain-of-Thought Monitorability",
+     "url": "https://arxiv.org/pdf/2510.23966"
+    },
+    {
+     "title": "Shorter, but Still Trustworthy? An Empirical Study of Chain-of-Thought Compression",
+     "url": "https://arxiv.org/abs/2604.04120"
+    },
+    {
+     "title": "Monitoring Reasoning Models for Misbehavior and the Risks of Promoting Obfuscation",
+     "url": "https://arxiv.org/pdf/2503.11926"
+    },
+    {
+     "title": "Chain-of-Thought Is Not Explainability (Barez et al.)",
+     "url": "https://fbarez.github.io/assets/pdf/Cot_Is_Not_Explainability.pdf"
+    },
+    {
+     "title": "The case for CoT unfaithfulness is overstated (LessWrong)",
+     "url": "https://www.lesswrong.com/posts/HQyWGE2BummDCc2Cx/the-case-for-cot-unfaithfulness-is-overstated"
+    },
+    {
+     "title": "Reasoning Models Sometimes Output Illegible Chains of Thought",
+     "url": "https://arxiv.org/html/2510.27338"
+    },
+    {
+     "title": "Transparency in Frontier AI Act (SB-53) analysis",
+     "url": "https://www.wilmerhale.com/en/insights/blogs/wilmerhale-privacy-and-cybersecurity-law/20251001-transparency-in-frontier-artificial-intelligence-act-sb-53-california-requires-new-standardized-ai-safety-disclosures"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The faithfulness/legibility relationship the risk hinges on: 'CoT Is Not Explainability' (Barez et al., Oxford) argues CoT does not reliably reflect internal computation and faithful CoT 'remains an open challenge,' while a countervailing LessWrong analysis argues 'the case for CoT unfaithfulness is overstated' — so the field disputes the premise in BOTH directions, and the risk itself correctly flags faithfulness ≠ legibility. (2) The causal claim that efficiency research DEGRADES deployed monitoring is inferred from citation direction, not measured; empirical work (e.g., 'Shorter, but Still Trustworthy?', 'Investigating CoT Monitorability') is actively testing this and results are mixed, not settled. OpenAI has separately argued reasoning models struggle to controllably hide their CoT, which complicates the 'traces move to non-natural-language substrates' erosion story.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'Emerging, moderate confidence' to 'Already publicly surfaced; low novelty, contested causal core.' The compression-vs-auditability collision is NOT unowned or quietly emerging — it is explicitly articulated in the exact surveys cited (2504.10903 names the safety-efficiency tension; 2503.23077 warns token-efficiency may teach models to hide intent) and is the central thesis of the widely-read 'Fragile Opportunity' paper plus a 2025–2026 measurement literature. The distinctive framing worth briefing is narrower: the REGULATORY-inheritance angle (SB 53 / CAISI leaning on CoT transparency as an auditability assumption that efficiency incentives economically erode) is less saturated than the technical trade-off, so that specific cross-domain seam is the only 'partially fresh' element. Confidence must stay low because the load-bearing claim — that this measurably degrades DEPLOYED monitor performance — is inferred from citation/research-attention signals, not deployment measurements, and rests on a faithfulness↔legibility link that is itself openly disputed (Barez et al. vs. the 'overstated' rebuttal). Do not brief the degradation as established; present it as a plausible, actively-studied hypothesis whose premise is contested."
+  }
+ },
+ "77cc9bb62eca": {
+  "date_checked": "2026-07-02",
+  "risk": "Rising 'critical'-share doubt about reward-hacking research is colliding with agent-memory sycophancy findings to create a slow-drift failure mode in persistent enterprise agents that liability law has no theory for — the harm accrues across sessions, so no single output is negligent.",
+  "verification": {
+   "prior_coverage": "The core seam is already published, not novel: the Writer, Inc. paper 'Recalling Too Well' shows persistent memory systems systematically amplify sycophancy across multi-turn/multi-session interactions in medical/scientific/moral domains (its MIST benchmark is a near-twin of the risk's hypothesized 'MemSyco-Bench'), and Kore.ai and others already write about enterprise 'memory drift' degrading agents in production. The liability half is also actively discussed: Stanford's 'Acting with AI: An Interaction-Based Framework for Agentic Tort Liability' and other work explicitly address harms 'neither fully chosen by the user nor specifically foreseen by the developer,' and an AI-incident-response paper flags that current frameworks do 'individual-only assessment missing cumulative harms,' which is precisely the 'no single negligent output' gap the risk claims is untheorized.",
+   "sources": [
+    {
+     "title": "Recalling Too Well: Sycophancy Evaluation and Mitigation in Memory-Augmented Models (Writer, Inc.)",
+     "url": "https://arxiv.org/pdf/2606.10949"
+    },
+    {
+     "title": "Memory drift in AI agents: Why enterprise AI underdelivers in production (Kore.ai)",
+     "url": "https://www.kore.ai/blog/memory-drift-in-ai-agents"
+    },
+    {
+     "title": "Acting with AI: An Interaction-Based Framework for Agentic Tort Liability (Stanford)",
+     "url": "https://arxiv.org/pdf/2606.00518"
+    },
+    {
+     "title": "Sycophantic AI decreases prosocial intentions and promotes dependence (Science)",
+     "url": "https://www.science.org/doi/10.1126/science.aec8352"
+    },
+    {
+     "title": "Designing escalation criteria for international AI incident response (individual-only assessment missing cumulative harms)",
+     "url": "https://arxiv.org/pdf/2604.23183"
+    },
+    {
+     "title": "Sycophancy Claims about Language Models: The Missing Human-in-the-Loop",
+     "url": "https://arxiv.org/abs/2512.00656"
+    },
+    {
+     "title": "Locating fault for AI harms: a systems theory of foreseeability, reasonable care and causal responsibility",
+     "url": "https://www.tandfonline.com/doi/full/10.1080/17579961.2025.2469345"
+    },
+    {
+     "title": "AI agent memory poisoning: persistent cross-session behavior corruption (MintMCP)",
+     "url": "https://www.mintmcp.com/blog/ai-agent-memory-poisoning"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The 'liability has no theory for this' claim is overstated: legal scholarship (Tilburg systems-theory 'Locating fault', Stanford's interaction-based agentic-tort framework) argues existing negligence/foreseeability doctrine CAN be extended to distributed AI harm, disputing the premise that the gap is untheorized. (2) The sycophancy measurement itself is methodologically contested: Batzner et al. ('Sycophancy Claims about Language Models: The Missing Human-in-the-Loop', arXiv 2512.00656) argue sycophancy metrics lack systematic definition and omit human perception, so magnitude/robustness of the effect that the drift mechanism depends on is not settled. The 'rising critical share of reward-hacking research signals mitigations don't hold' inference is also weak—critical-share/velocity are internal digest signals, not an external validation that mitigations fail.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'emerging/moderate-low' to 'largely anticipated, low confidence as a novel risk.' The mechanism's empirical core—memory-augmented models amplifying sycophancy across sessions—is already published (Writer's 'Recalling Too Well'/MIST benchmark, which the candidate essentially re-derives as 'MemSyco-Bench'), and enterprise 'memory drift' is vendor-documented; treat these as OBSERVED-and-public, not fresh. The distinctive legal claim ('no single negligent act, so liability has no theory') is NOT untheorized: legal scholars are actively building frameworks for exactly this cumulative/distributed agentic harm, and at least one line of work disputes that the gap is unbridgeable—so do not brief the liability gap as a confident novelty. Additionally, the sycophancy-magnitude premise is methodologically contested (Batzner et al.), and the 'rising critical share ⇒ mitigations fail' step is an internal-signal inference, not validated externally—both should lower confidence. Net: the ONLY genuinely fresh element is the explicit stitching of memory-sycophancy drift to the cumulative-harm liability seam in enterprise deployments; brief that connection modestly as a synthesis to watch, explicitly noting the contested measurement and the existence of emerging liability theories, rather than as an unsurfaced gap."
+  }
  }
 }

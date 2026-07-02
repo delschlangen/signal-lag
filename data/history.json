@@ -127,7 +127,17 @@
    "Evals & Dangerous-Capability Benchmarks",
    "Reward Hacking"
   ],
-  "overall_foresight": [],
+  "overall_foresight": [
+   {
+    "risk": "Interpretability's explosive growth is drawing capability talent into safety and being cited by capability/scaling surveys — but the same mechanistic-interpretability advances that enable oversight also constitute the most direct path to surrogate-extraction and weight-exfiltration of closed models, a dual-use inversion the interpretability community rarely frames as an exfiltration risk.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Technological",
+     "Economic"
+    ]
+   }
+  ],
   "weekly_foresight": [
    {
     "risk": "This week's surge of chemistry/bio agentic-reasoning papers pairs autonomous 'verifiable rule' generation with faithfulness-verification methods that were never designed as bio/chem uplift guardrails — creating an audit-theater path where an agent looks trustworthy on the reasoning trace while enabling synthesis planning.",
