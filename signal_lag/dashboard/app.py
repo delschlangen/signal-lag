@@ -231,6 +231,51 @@ meta = snap["meta"]
 st.caption("🔎 " + provenance_line(meta) + "  ·  _all figures trace to this snapshot; "
            "no page-load API calls_")
 
+# Per-tab week-over-week deltas (#39), computed once from the previous snapshot.
+_DELTAS = alerts.tab_deltas(snap, prev)
+
+
+def delta_panel(tab_key: str):
+    """Compact 'what changed since last refresh' panel at the top of a tab (#39)."""
+    d = _DELTAS.get(tab_key) or {}
+    if not d or not any(v for v in d.values()):
+        return
+    L = lambda k: lbl(snap, k)  # noqa: E731
+    lines = []
+    if tab_key == "divergence":
+        if d.get("new_lagging"):
+            lines.append("🚨 **New safety-lag pairings:** " + ", ".join(d["new_lagging"]))
+        if d.get("resolved"):
+            lines.append("✅ **No longer lagging:** " + ", ".join(d["resolved"]))
+    elif tab_key == "velocity":
+        if d.get("new_accelerating"):
+            lines.append("📈 **Newly accelerating:** " + ", ".join(L(k) for k in d["new_accelerating"]))
+        if d.get("new_decelerating"):
+            lines.append("📉 **Newly decelerating:** " + ", ".join(L(k) for k in d["new_decelerating"]))
+    elif tab_key == "sentiment":
+        if d.get("new_rising"):
+            lines.append("⚠️ **New eroding-confidence warnings:** " + ", ".join(L(k) for k in d["new_rising"]))
+        if d.get("cleared"):
+            lines.append("✅ **Warnings cleared:** " + ", ".join(L(k) for k in d["cleared"]))
+        if d.get("biggest_shifts"):
+            lines.append("↕️ **Biggest critical-share shifts:** " + ", ".join(
+                f"{L(s['topic_key'])} ({s['shift_pts']:+.0f} pts)" for s in d["biggest_shifts"]))
+    elif tab_key == "foresight":
+        if d.get("new_risks"):
+            lines.append(f"🆕 **New risks this refresh ({len(d['new_risks'])}):** "
+                         + " · ".join(r[:80] for r in d["new_risks"][:3]))
+        if d.get("dropped_risks"):
+            lines.append(f"🗑️ **Rotated out:** {len(d['dropped_risks'])} risk(s) from last refresh")
+    elif tab_key == "incidents":
+        if d.get("new"):
+            lines.append("🆕 **New incidents since last refresh:** " + " · ".join(
+                f"{r['title']} ({r['date']})" for r in d["new"][:4]))
+    if lines:
+        with st.container(border=True):
+            st.caption(f"🔄 **Since last refresh** ({_DELTAS.get('prev_date', '')}):")
+            for ln in lines:
+                st.markdown(ln)
+
 with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
     # Analyst's note — the core framing for reading everything below.
     st.info(
@@ -958,6 +1003,7 @@ def render_lab_lag():
 
 with tab_div:
     st.subheader("⚖️ Capability vs. safety")
+    delta_panel("divergence")
     if view_toggle("div_view", bool(weekly_block(snap).get("counts_by_key"))) == "weekly":
         render_weekly_divergence()
     else:
@@ -1059,6 +1105,7 @@ def render_velocity_overall():
 
 with tab_vel:
     st.subheader("📈 Topic velocity & strategic map")
+    delta_panel("velocity")
     if view_toggle("vel_view", bool(weekly_block(snap).get("counts_by_key"))) == "weekly":
         render_weekly_velocity()
     else:
@@ -1131,6 +1178,7 @@ def render_sentiment_overall():
 
 with tab_sentiment:
     st.subheader("🔬 Confidence / negative-signal tracker")
+    delta_panel("sentiment")
     if view_toggle("sent_view", bool(weekly_block(snap).get("sentiment"))) == "weekly":
         render_weekly_sentiment()
     else:
@@ -1187,6 +1235,7 @@ def foresight_brief_md(fg) -> str:
 
 def render_foresight_section():
     st.subheader("🔮 Foresight Gap — novel risks in the seam")
+    delta_panel("foresight")
     weekly_fg = weekly_block(snap).get("foresight_gap")
     if view_toggle("foresight_view", bool(weekly_fg)) == "weekly":
         fg = weekly_fg
@@ -1780,6 +1829,7 @@ _QUAD_EMOJI = {"materializing": "🔴", "foresight lead": "🎯",
 
 def render_incidents_section():
     st.subheader("🌐 Incidents & benchmark — research lead vs. real-world reality")
+    delta_panel("incidents")
     st.info(
         "The **all-source** layer: real, already-occurred AI-misuse **incidents** (gathered "
         "via web search from the AI Incident Database / OECD / news, verifiable + dated) "
@@ -2294,6 +2344,56 @@ with tab_history:
         st.download_button("⬇️ Download full history (JSON)",
                            data=json.dumps(history, indent=1, ensure_ascii=False),
                            file_name="signal_lag_history.json", mime="application/json")
+
+# ============================================================ BLUF sidebar (#31)
+# Always-visible executive summary: the main judgments survive tab navigation.
+with st.sidebar:
+    st.markdown("### 🎯 Bottom line up front")
+    st.caption(f"Snapshot {meta.get('refreshed_at', '')}")
+
+    _flagged = sorted([d for d in snap.get("divergence") or [] if d.get("lagging")],
+                      key=lambda d: d.get("gap") or 0, reverse=True)
+    if _flagged:
+        st.markdown(f"**🚨 Widest safety lag:** {_flagged[0].get('pairing')} "
+                    f"(gap {_flagged[0].get('gap', 0)*100:+.0f} pts)")
+
+    _reg_ranked = sort_register(risk_register)
+    if _reg_ranked:
+        _lt = _reg_ranked[0].get("latest") or {}
+        st.markdown(f"**📋 Top register risk (P{_lt.get('priority')}):** "
+                    f"{(_reg_ranked[0].get('risk') or '')[:120]}")
+
+    _newr = (_DELTAS.get("foresight") or {}).get("new_risks") or []
+    if _newr:
+        st.markdown(f"**🆕 Top new risk this refresh:** {_newr[0][:120]}")
+
+    _mom = alerts.weekly_momentum(snap, window_days=weekly_block(snap).get("window_days", 7))
+    _spike = next((m for m in _mom if abs(m["z"]) >= 2), None)
+    if _spike:
+        st.markdown(f"**📊 Biggest weekly anomaly:** {lbl(snap, _spike['topic_key'])} "
+                    f"({_spike['pct']:+.0f}%, z {_spike['z']:+.1f})")
+
+    _bench = (snap.get("incidents") or {}).get("benchmark") or []
+    _hot = next((b for b in _bench if b.get("quadrant") == "materializing"),
+                next((b for b in _bench if b.get("quadrant") == "foresight lead"), None))
+    if _hot:
+        st.markdown(f"**⚠️ Harm vector to watch:** {_hot.get('label')} "
+                    f"({_QUAD_EMOJI.get(_hot.get('quadrant'), '')} {_hot.get('quadrant')})")
+
+    _ll = snap.get("lab_lag") or {}
+    if _ll.get("available") and _ll.get("median_weeks_to_measurable") is not None:
+        st.markdown(f"**🛰️ Median lab→safety response:** "
+                    f"{_ll['median_weeks_to_measurable']} wk "
+                    f"({_ll.get('n_posts_considered', 0)} announcements)")
+
+    st.divider()
+    st.download_button("⬇️ Intelligence estimate", data=intelligence_estimate_md(snap),
+                       file_name="signal_lag_intelligence_estimate.md",
+                       mime="text/markdown", width="stretch", key="sb_est")
+    if explained_risks(snap):
+        st.download_button("🧩 Risks in plain terms", data=plain_language_brief_md(snap),
+                           file_name="signal_lag_risks_in_plain_terms.md",
+                           mime="text/markdown", width="stretch", key="sb_plain")
 
 st.caption(
     f"Embedding backend: {meta['backend']} · snapshot v{meta.get('version', 1)} · "

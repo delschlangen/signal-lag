@@ -84,6 +84,70 @@ def weekly_momentum(snapshot: dict, window_days: int = 7, recent_periods: int = 
     return rows
 
 
+def tab_deltas(snapshot: dict, previous: dict | None) -> dict:
+    """Per-tab week-over-week deltas (#39): what changed since the previous snapshot.
+
+    Extends the summary-level ``diff_snapshots`` to every tab, so a returning reader can
+    scan movement without re-reading static state. Returns {} on a first run (no previous).
+    Keys: divergence / velocity / sentiment / foresight / incidents / sources — each a dict
+    of small lists ready to render.
+    """
+    if not previous:
+        return {}
+    prev_date = (previous.get("meta") or {}).get("refreshed_at")
+
+    def _lagging(s):
+        return {d["pairing"] for d in s.get("divergence") or [] if d.get("lagging")}
+
+    div_now, div_prev = _lagging(snapshot), _lagging(previous)
+
+    def _by_dir(s, direction):
+        return {i["topic_key"] for i in s.get("inflections") or []
+                if i.get("direction") == direction}
+
+    accel_now, accel_prev = _by_dir(snapshot, "acceleration"), _by_dir(previous, "acceleration")
+    decel_now, decel_prev = _by_dir(snapshot, "deceleration"), _by_dir(previous, "deceleration")
+
+    sent_now, sent_prev = snapshot.get("sentiment") or {}, previous.get("sentiment") or {}
+    rising_now = {k for k, v in sent_now.items() if v.get("rising")}
+    rising_prev = {k for k, v in sent_prev.items() if v.get("rising")}
+    shifts = sorted(
+        ({"topic_key": k,
+          "shift_pts": round((sent_now[k].get("trend") or 0) * 100
+                             - (sent_prev.get(k, {}).get("trend") or 0) * 100, 1)}
+         for k in sent_now if k in sent_prev),
+        key=lambda r: abs(r["shift_pts"]), reverse=True)
+    shifts = [s for s in shifts[:3] if abs(s["shift_pts"]) >= 2]
+
+    def _risks(s):
+        fg = (s.get("analysis") or {}).get("foresight_gap") or {}
+        return {(r.get("risk") or "") for r in fg.get("risks") or [] if r.get("risk")}
+
+    risks_now, risks_prev = _risks(snapshot), _risks(previous)
+
+    def _incidents(s):
+        return {(r.get("title"), r.get("date"))
+                for r in (s.get("incidents") or {}).get("records") or []}
+
+    inc_new = [{"title": t, "date": d}
+               for (t, d) in sorted(_incidents(snapshot) - _incidents(previous),
+                                    key=lambda x: x[1] or "", reverse=True)]
+
+    return {
+        "prev_date": prev_date,
+        "divergence": {"new_lagging": sorted(div_now - div_prev),
+                       "resolved": sorted(div_prev - div_now)},
+        "velocity": {"new_accelerating": sorted(accel_now - accel_prev),
+                     "new_decelerating": sorted(decel_now - decel_prev)},
+        "sentiment": {"new_rising": sorted(rising_now - rising_prev),
+                      "cleared": sorted(rising_prev - rising_now),
+                      "biggest_shifts": shifts},
+        "foresight": {"new_risks": sorted(risks_now - risks_prev),
+                      "dropped_risks": sorted(risks_prev - risks_now)},
+        "incidents": {"new": inc_new[:6]},
+    }
+
+
 def false_confidence_alerts(
     snapshot: dict, min_critical_drop: float = 0.02, min_recent_papers: int = 8,
 ) -> list[dict]:

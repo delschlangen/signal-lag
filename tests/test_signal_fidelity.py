@@ -374,6 +374,41 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ------------------------------------------------ #39 per-tab deltas
+def test_tab_deltas_reports_movement_per_tab():
+    from signal_lag.analysis import alerts
+    prev = {
+        "meta": {"refreshed_at": "2026-06-25"},
+        "divergence": [{"pairing": "A vs. B", "lagging": True},
+                       {"pairing": "C vs. D", "lagging": False}],
+        "inflections": [{"topic_key": "t1", "direction": "acceleration"}],
+        "sentiment": {"s1": {"rising": False, "trend": 0.01}},
+        "analysis": {"foresight_gap": {"risks": [{"risk": "Old risk"}]}},
+        "incidents": {"records": [{"title": "I-old", "date": "2026-05"}]},
+    }
+    cur = {
+        "meta": {"refreshed_at": "2026-07-02"},
+        "divergence": [{"pairing": "A vs. B", "lagging": False},
+                       {"pairing": "C vs. D", "lagging": True}],
+        "inflections": [{"topic_key": "t1", "direction": "acceleration"},
+                        {"topic_key": "t2", "direction": "acceleration"}],
+        "sentiment": {"s1": {"rising": True, "trend": 0.09}},
+        "analysis": {"foresight_gap": {"risks": [{"risk": "New risk"}]}},
+        "incidents": {"records": [{"title": "I-old", "date": "2026-05"},
+                                  {"title": "I-new", "date": "2026-06"}]},
+    }
+    d = alerts.tab_deltas(cur, prev)
+    assert d["divergence"]["new_lagging"] == ["C vs. D"]
+    assert d["divergence"]["resolved"] == ["A vs. B"]
+    assert d["velocity"]["new_accelerating"] == ["t2"]
+    assert d["sentiment"]["new_rising"] == ["s1"]
+    assert d["sentiment"]["biggest_shifts"][0]["shift_pts"] == 8.0
+    assert d["foresight"]["new_risks"] == ["New risk"]
+    assert d["foresight"]["dropped_risks"] == ["Old risk"]
+    assert d["incidents"]["new"] == [{"title": "I-new", "date": "2026-06"}]
+    assert alerts.tab_deltas(cur, None) == {}     # first run -> no deltas
+
+
 # ------------------------------------------------ #23 counterevidence persistence
 def _snap_with_risk(date, disputed):
     risk = foresight._attach_scores([{
