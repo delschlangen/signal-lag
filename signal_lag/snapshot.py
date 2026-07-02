@@ -467,11 +467,54 @@ def _register_entries(snapshot: dict) -> list[dict]:
                 "severity": r.get("severity"), "likelihood": r.get("likelihood"),
                 "exposure": r.get("exposure"), "trajectory": r.get("trajectory"),
                 "priority": r.get("priority"),
+                "confidence": r.get("confidence"),
+                "evidence_strength": r.get("evidence_strength"),
+                "actionability": r.get("actionability"),
                 "novelty_rating": (r.get("verification") or {}).get("novelty_rating"),
                 "domains_crossed": r.get("domains_crossed"),
                 "leading_indicator": r.get("leading_indicator"),
             })
     return out
+
+
+# Recalibration (#5): a total order over the register so risks don't pile up at one tie.
+# Primary = priority (severity × likelihood); ties broken by calibrated confidence, then
+# trajectory (a worsening signal outranks a fading one), then evidence freshness (more
+# recently re-seen = more current), then exposure. Stale risks (not surfaced in the latest
+# refresh) take a one-tier penalty so fresh evidence rises — "if everything is urgent,
+# nothing is".
+_TRAJ_RANK = {"accelerating": 2, "steady": 1, "decelerating": 0}
+_STALE_PENALTY = 6  # a full severity×likelihood tier
+
+
+def register_newest_date(register: list) -> str:
+    """The most recent last_seen across the register (the 'current refresh' marker)."""
+    return max((e.get("last_seen") or "" for e in register or []), default="")
+
+
+def register_is_stale(entry: dict, newest_date: str) -> bool:
+    """A risk is stale if it wasn't surfaced in the most recent refresh (no new evidence)."""
+    return bool(newest_date) and (entry.get("last_seen") or "") < newest_date
+
+
+def register_sort_key(entry: dict, newest_date: str) -> tuple:
+    """Multi-key descending sort key (see module note). Higher tuple = higher rank."""
+    lt = entry.get("latest") or {}
+    eff_priority = (lt.get("priority") or 0) - (
+        _STALE_PENALTY if register_is_stale(entry, newest_date) else 0)
+    return (
+        eff_priority,
+        lt.get("confidence") or 0,
+        _TRAJ_RANK.get(lt.get("trajectory"), 1),
+        entry.get("last_seen") or "",
+        lt.get("exposure") or 0,
+    )
+
+
+def sort_register(register: list) -> list:
+    """Return the register in recalibrated priority order (forced ranking, stale-downgraded)."""
+    newest = register_newest_date(register)
+    return sorted(register or [], key=lambda e: register_sort_key(e, newest), reverse=True)
 
 
 def append_risk_register(snapshot: dict, path: Path) -> None:
@@ -521,9 +564,7 @@ def append_risk_register(snapshot: dict, path: Path) -> None:
             else:                       # same date re-run -> overwrite, don't double-count
                 rec["history"][-1] = point
 
-    out = sorted(by_id.values(),
-                 key=lambda r: ((r.get("latest") or {}).get("priority") or 0,
-                                r.get("last_seen") or ""), reverse=True)
+    out = sort_register(list(by_id.values()))
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
 

@@ -23,7 +23,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from signal_lag.analysis import alerts  # noqa: E402
 from signal_lag.glossary import CAPABILITY_KEYS, GLOSSARY, SAFETY_KEYS  # noqa: E402
-from signal_lag.snapshot import diff_snapshots, load_snapshot  # noqa: E402
+from signal_lag.snapshot import (  # noqa: E402
+    diff_snapshots, load_snapshot, register_is_stale, register_newest_date, sort_register)
 
 st.set_page_config(page_title="signal-lag", layout="wide", page_icon="📡")
 
@@ -1170,6 +1171,11 @@ def render_foresight_section():
                         f"**🎚️ Priority {r.get('priority')}/25** · severity {r.get('severity')}/5 "
                         f"· likelihood {r.get('likelihood')}/5 (*{estimative(r.get('likelihood'))}*) "
                         f"· exposure {r.get('exposure')}/5 · trajectory {_traj} {r.get('trajectory','')}")
+                    if r.get("confidence") is not None:
+                        st.caption(
+                            f"confidence {r.get('confidence')}/5 · evidence {r.get('evidence_strength')}/5 "
+                            f"· actionability {r.get('actionability')}/5"
+                            + (f" — {r['score_rationale']}" if r.get("score_rationale") else ""))
                 if r.get("research_anchor") and str(r["research_anchor"]).lower() != "none":
                     st.markdown(f"**📊 Research-trend anchor:** {r['research_anchor']}")
                 if r.get("domains_crossed"):
@@ -1391,27 +1397,32 @@ def render_harm_section():
 def render_register_section():
     st.subheader("📋 Frontier risk register — prioritized")
     st.info(
-        "An **evergreen, scored register** of every risk the foresight passes have surfaced "
-        "— ranked by **priority (severity × likelihood)**, with **exposure** and "
-        "**trajectory**, and a first-seen / last-seen trail. The standing watch-list, not "
-        "just this week's snapshot.", icon="📋",
+        "An **evergreen, scored register** of every risk the foresight passes have surfaced. "
+        "Ranked by **priority (severity × likelihood)**, then broken out of ties by "
+        "**confidence → trajectory → evidence freshness → exposure** so there's a real top-5, "
+        "not a pile at Priority 12. Risks not re-seen in the latest refresh are **⏳ downgraded "
+        "as stale**. The standing watch-list, not just this week's snapshot.", icon="📋",
     )
     reg = risk_register
     if not reg:
         st.warning("No scored risks yet. The register fills in once a refresh runs with the "
                    "scoring layer (severity / likelihood / exposure / trajectory).", icon="🔌")
         return
-    # Rank by priority (1 = highest). The rank number is printed on the matrix AND as the
-    # first table column, so you can match a dot to its row without hovering.
-    ranked = sorted(reg, key=lambda e: (e.get("latest") or {}).get("priority") or 0,
-                    reverse=True)
+    # Forced ranking (#5): a total order (priority, then confidence/trajectory/freshness/
+    # exposure), with stale risks penalized — the rank number is printed on the matrix AND as
+    # the first table column, so you can match a dot to its row without hovering.
+    newest = register_newest_date(reg)
+    ranked = sort_register(reg)
     rows = []
     for i, e in enumerate(ranked, 1):
         lt = e.get("latest") or {}
+        stale = register_is_stale(e, newest)
         rows.append({
-            "#": i, "Priority": lt.get("priority"), "Sev": lt.get("severity"),
-            "Lik": lt.get("likelihood"), "Estimative": estimative(lt.get("likelihood")),
-            "Exp": lt.get("exposure"),
+            "#": i, "": "⏳" if stale else "", "Priority": lt.get("priority"),
+            "Sev": lt.get("severity"), "Lik": lt.get("likelihood"),
+            "Estimative": estimative(lt.get("likelihood")), "Exp": lt.get("exposure"),
+            "Conf": lt.get("confidence"), "Evid": lt.get("evidence_strength"),
+            "Act": lt.get("actionability"),
             "Trajectory": lt.get("trajectory"), "Novelty": lt.get("novelty_rating"),
             "Risk": e.get("risk"), "First seen": e.get("first_seen"),
             "Last seen": e.get("last_seen"), "Seen ×": e.get("n_appearances"),
@@ -1462,11 +1473,15 @@ def render_register_section():
                           legend=dict(orientation="h", yanchor="bottom", y=1.02, title=None))
         st.plotly_chart(fig, width="stretch")
 
-    st.markdown("**Ranked register** (highest priority first):")
+    st.markdown("**Ranked register** (forced ranking, highest priority first):")
     st.dataframe(rdf, width="stretch", hide_index=True)
-    st.caption(f"{len(reg)} risks tracked across all refreshes. "
-               "Priority = severity × likelihood (1–25). First-seen / last-seen show how long "
-               "each risk has persisted.")
+    n_stale = sum(1 for e in reg if register_is_stale(e, newest))
+    st.caption(f"{len(reg)} risks tracked across all refreshes"
+               + (f" · ⏳ {n_stale} stale (not re-seen in the latest refresh, downgraded)"
+                  if n_stale else "")
+               + ". Priority = severity × likelihood (1–25); **Conf** = calibrated confidence, "
+               "**Evid** = evidence strength, **Act** = actionability (these break priority "
+               "ties and set the forced rank). First-seen / last-seen show persistence.")
 
 
 # =================================================================== Scenarios
@@ -1519,8 +1534,7 @@ def intelligence_estimate_md(snap) -> str:
     """Templated Strategic Intelligence Estimate (Step 4) — no LLM, built from the snapshot."""
     meta = snap.get("meta", {})
     fg = get_analysis(snap).get("foresight_gap") or {}
-    reg = sorted(risk_register, key=lambda e: (e.get("latest") or {}).get("priority") or 0,
-                 reverse=True)
+    reg = sort_register(risk_register)
     lines = [f"# Strategic Intelligence Estimate — signal-lag ({meta.get('refreshed_at','')})", ""]
     lines.append("## Bottom line up front")
     if reg:
@@ -1598,8 +1612,7 @@ def tabletop_pack_md(snap) -> str:
     """Templated tabletop-exercise pack (Step 4) from the top scenario / top risk."""
     fg = get_analysis(snap).get("foresight_gap") or {}
     scen = fg.get("scenarios") or []
-    reg = sorted(risk_register, key=lambda e: (e.get("latest") or {}).get("priority") or 0,
-                 reverse=True)
+    reg = sort_register(risk_register)
     base = scen[0] if scen else None
     title = (base or {}).get("title") if base else (reg[0].get("risk") if reg else "AI emerging risk")
     lines = [f"# Tabletop Exercise — {title}", "",

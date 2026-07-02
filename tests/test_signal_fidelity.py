@@ -341,6 +341,39 @@ def test_false_confidence_silent_when_safety_growing():
     assert alerts.false_confidence_alerts(snap) == []
 
 
+# ------------------------------------------------ #5 register recalibration
+def test_attach_scores_normalizes_tiebreaker_fields():
+    r = foresight._attach_scores([{"risk": "R", "severity": 4, "likelihood": 3,
+                                   "confidence": "5", "evidence_strength": 99}])[0]
+    assert r["confidence"] == 5 and r["evidence_strength"] == 5   # clamped
+    assert r["actionability"] == 3                                # default when absent
+
+
+def _reg_entry(rid, priority, conf, traj, last_seen, exposure=3):
+    return {"id": rid, "risk": rid, "first_seen": "2026-01-01", "last_seen": last_seen,
+            "n_appearances": 1,
+            "latest": {"priority": priority, "confidence": conf, "trajectory": traj,
+                       "exposure": exposure}}
+
+
+def test_sort_register_breaks_priority_ties_by_confidence():
+    from signal_lag import snapshot as snap_mod
+    reg = [_reg_entry("A", 12, 3, "steady", "2026-07-01"),
+           _reg_entry("B", 12, 5, "steady", "2026-07-01")]
+    ranked = snap_mod.sort_register(reg)
+    assert [e["id"] for e in ranked] == ["B", "A"]   # same priority, higher confidence first
+
+
+def test_sort_register_downgrades_stale_risks():
+    from signal_lag import snapshot as snap_mod
+    # Fresh P12 vs stale P16 (not re-seen): stale penalty (6) drops it below the fresh one.
+    reg = [_reg_entry("stale", 16, 5, "accelerating", "2026-06-01"),
+           _reg_entry("fresh", 12, 3, "steady", "2026-07-01")]
+    ranked = snap_mod.sort_register(reg)
+    assert ranked[0]["id"] == "fresh"
+    assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
+
+
 def test_augment_incidents_benchmark_quadrants(monkeypatch):
     from signal_lag import snapshot as snap_mod
     from signal_lag.config import Settings

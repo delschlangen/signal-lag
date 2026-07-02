@@ -376,7 +376,10 @@ preamble) with exactly this shape:
       "likelihood": 1-5,         // probability it MATERIALIZES within ~24 months (5 = likely)
       "exposure": 1-5,           // BREADTH if it does — how many users / systems / surfaces / sectors (5 = broad)
       "trajectory": "accelerating | steady | decelerating",  // is the ENABLING signal getting worse, flat, or fading
-      "score_rationale": "1-2 sentences justifying the four scores, grounded in the digest",
+      "confidence": 1-5,          // your calibrated confidence the risk is REAL and material (5 = high); LOWER on contested/inferential claims
+      "evidence_strength": 1-5,   // how well-grounded in the digest's actual papers/metrics (5 = multiple concrete signals; 1 = mostly extrapolation)
+      "actionability": 1-5,       // how clearly it points to a concrete next step (eval/benchmark/mitigation) — feeds triage
+      "score_rationale": "1-2 sentences justifying the scores (why this severity, likelihood, and confidence), grounded in the digest",
       "change_of_mind": {{                       // explicit falsification conditions — make the risk disprovable
         "upgrade_if": "the concrete, observable evidence that would INCREASE concern",
         "downgrade_if": "the concrete evidence that would REDUCE concern",
@@ -401,6 +404,11 @@ alarmist — a genuinely low-probability risk should score low on likelihood eve
   LOWER this when the risk leans on a contested/inferential claim (consistent with calibration).
 - exposure: 1 niche · 3 a significant population/sector · 5 broad cross-sector/cross-product.
 - trajectory: read it off the digest's velocity/harm-vector momentum for the anchoring signal.
+- confidence: your calibrated confidence the risk is real/material — LOW when it leans on a
+  contested or inferential claim (must agree with "calibration"). This BREAKS TIES between
+  equally-severe risks, so do not default everything to 3: spread it honestly.
+- evidence_strength: 5 only when multiple concrete digest signals converge; 1-2 when it is
+  mostly your extrapolation. actionability: 5 when the action_map is concrete and ownable.
 Output must be valid JSON and nothing else."""
 
 
@@ -789,6 +797,10 @@ def _attach_scores(risks: list) -> list:
         lik = _coerce_score(r.get("likelihood"))
         exp = _coerce_score(r.get("exposure"))
         r["severity"], r["likelihood"], r["exposure"] = sev, lik, exp
+        # Tie-breaker / triage scores (default 3 when absent so older outputs stay scoreable).
+        r["confidence"] = _coerce_score(r.get("confidence"))
+        r["evidence_strength"] = _coerce_score(r.get("evidence_strength"))
+        r["actionability"] = _coerce_score(r.get("actionability"))
         traj = str(r.get("trajectory") or "steady").lower()
         r["trajectory"] = traj if traj in ("accelerating", "steady", "decelerating") else "steady"
         r["priority"] = sev * lik
