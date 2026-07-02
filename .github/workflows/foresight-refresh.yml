@@ -51,7 +51,11 @@ jobs:
             echo "No snapshot changes."
           else
             git commit -m "chore: foresight refresh (context) $(date -u +%Y-%m-%d)"
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            # -X theirs: favor this run's regenerated files if main moved underneath us
+            # (see refresh.yml — a bare rebase conflicts on the big snapshot JSON).
+            git pull --rebase -X theirs --autostash origin "${GITHUB_REF_NAME}" || {
+              echo "rebase failed; aborting cleanly"; git rebase --abort || true; exit 1;
+            }
             git push
             # Mirror to the dev branch too (fast-forward only).
             git push origin "HEAD:claude/ai-safety-foresight-analysis-fletm1" || \

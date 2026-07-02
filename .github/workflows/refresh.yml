@@ -71,8 +71,13 @@ jobs:
             echo "No snapshot changes."
           else
             git commit -m "chore: weekly data refresh $(date -u +%Y-%m-%d)"
-            # Rebase onto any concurrent pushes (e.g. docs) before pushing.
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            # Rebase onto anything pushed since this run checked out (docs, another data
+            # commit). -X theirs favors THIS run's freshly generated data files when both
+            # sides touched them — a bare rebase conflicts on the big snapshot JSON and a
+            # swallowed failure once left the repo mid-rebase and killed the push.
+            git pull --rebase -X theirs --autostash origin "${GITHUB_REF_NAME}" || {
+              echo "rebase failed; aborting cleanly"; git rebase --abort || true; exit 1;
+            }
             git push
             # Mirror the snapshot to the dev branch too (fast-forward only, so it's
             # skipped harmlessly if that branch has diverged). Keeps the live app
