@@ -2616,6 +2616,24 @@ with tab_history:
 
 # ============================================================ BLUF sidebar (#31)
 # Always-visible executive summary: the main judgments survive tab navigation.
+# Every item = the fact + an analyst "so what" underneath; text truncates at word
+# boundaries only (never mid-clause).
+def _ellipsize(text: str, n: int = 220) -> str:
+    """Truncate at a word boundary with an ellipsis — never mid-clause."""
+    text = (text or "").strip()
+    if len(text) <= n:
+        return text
+    cut = text[:n].rsplit(" ", 1)[0].rstrip(" ,;:—-")
+    return cut + "…"
+
+
+def _bluf_item(headline: str, so_what: str):
+    """One BLUF entry: the fact, then the analyst 'so what' underneath."""
+    st.markdown(headline)
+    if so_what:
+        st.caption(f"↳ **So what:** {so_what}")
+
+
 with st.sidebar:
     st.markdown("### 🎯 Bottom line up front")
     st.caption(f"Snapshot {meta.get('refreshed_at', '')}")
@@ -2623,37 +2641,75 @@ with st.sidebar:
     _flagged = sorted([d for d in snap.get("divergence") or [] if d.get("lagging")],
                       key=lambda d: d.get("gap") or 0, reverse=True)
     if _flagged:
-        st.markdown(f"**🚨 Widest safety lag:** {_flagged[0].get('pairing')} "
-                    f"(gap {_flagged[0].get('gap', 0)*100:+.0f} pts)")
+        _d0 = _flagged[0]
+        _bluf_item(
+            f"**🚨 Widest safety lag:** {_d0.get('pairing')} "
+            f"(gap {_d0.get('gap', 0)*100:+.0f} pts)",
+            f"Capability growing {(_d0.get('cap_growth') or 0)*100:+.0f}%/qtr vs safety "
+            f"{(_d0.get('saf_growth') or 0)*100:+.0f}% — the monitoring debt compounds every "
+            "quarter this persists. Details: Divergence tab.")
 
     _reg_ranked = sort_register(risk_register)
     if _reg_ranked:
-        _lt = _reg_ranked[0].get("latest") or {}
-        st.markdown(f"**📋 Top register risk (P{_lt.get('priority')}):** "
-                    f"{(_reg_ranked[0].get('risk') or '')[:120]}")
+        _top = _reg_ranked[0]
+        _lt = _top.get("latest") or {}
+        _watch = _lt.get("leading_indicator")
+        _bluf_item(
+            f"**📋 Top register risk (P{_lt.get('priority')}, "
+            f"*{estimative(_lt.get('likelihood'))}*):** {_ellipsize(_top.get('risk'))}",
+            (f"Watch for: {_ellipsize(_watch, 140)}" if _watch
+             else "Full scoring and evidence: Foresight → Risk register."))
 
     _newr = (_DELTAS.get("foresight") or {}).get("new_risks") or []
     if _newr:
-        st.markdown(f"**🆕 Top new risk this refresh:** {_newr[0][:120]}")
+        _fg_risks = (get_analysis(snap).get("foresight_gap") or {}).get("risks") or []
+        _new_obj = next((r for r in _fg_risks if r.get("risk") == _newr[0]), None)
+        _new_watch = (_new_obj or {}).get("leading_indicator")
+        _bluf_item(
+            f"**🆕 Top new risk this refresh:** {_ellipsize(_newr[0])}",
+            (f"New seam to pressure-test. Watch for: {_ellipsize(_new_watch, 130)}"
+             if _new_watch else
+             "Fresh this refresh — pressure-test it before it hardens into the register."))
 
     _mom = alerts.weekly_momentum(snap, window_days=weekly_block(snap).get("window_days", 7))
     _spike = next((m for m in _mom if abs(m["z"]) >= 2), None)
     if _spike:
-        st.markdown(f"**📊 Biggest weekly anomaly:** {lbl(snap, _spike['topic_key'])} "
-                    f"({_spike['pct']:+.0f}%, z {_spike['z']:+.1f})")
+        _dirn = "spike" if _spike["z"] > 0 else "lull"
+        _bluf_item(
+            f"**📊 Biggest weekly anomaly:** {lbl(snap, _spike['topic_key'])} "
+            f"({_spike['pct']:+.0f}%, z {_spike['z']:+.1f})",
+            f"A genuine {_dirn}, not weekly noise — read the This-week view to see *what* "
+            "landed before treating it as a trend (attention ≠ success).")
 
     _bench = (snap.get("incidents") or {}).get("benchmark") or []
     _hot = next((b for b in _bench if b.get("quadrant") == "materializing"),
                 next((b for b in _bench if b.get("quadrant") == "foresight lead"), None))
     if _hot:
-        st.markdown(f"**⚠️ Harm vector to watch:** {_hot.get('label')} "
-                    f"({_QUAD_EMOJI.get(_hot.get('quadrant'), '')} {_hot.get('quadrant')})")
+        _hot_sowhat = (
+            "Research momentum AND real incidents together — this needs mitigation "
+            "tracking now, not just monitoring."
+            if _hot.get("quadrant") == "materializing" else
+            "Research is accelerating before public incidents — the early-warning window "
+            "is open; pre-position defenses.")
+        _bluf_item(
+            f"**⚠️ Harm vector to watch:** {_hot.get('label')} "
+            f"({_QUAD_EMOJI.get(_hot.get('quadrant'), '')} {_hot.get('quadrant')})",
+            _hot_sowhat)
 
     _ll = snap.get("lab_lag") or {}
     if _ll.get("available") and _ll.get("median_weeks_to_measurable") is not None:
-        st.markdown(f"**🛰️ Median lab→safety response:** "
-                    f"{_ll['median_weeks_to_measurable']} wk "
-                    f"({_ll.get('n_posts_considered', 0)} announcements)")
+        _un = _ll.get("unanswered") or {}
+        _n_un = _un.get("4", 0)
+        _ll_sowhat = (
+            f"{_n_un} announcement(s) still unanswered after 4 weeks — those pairings are "
+            "where the response gap is real."
+            if _n_un else
+            "The literature reacts fast on average — the lag story is *depth* of response, "
+            "not speed. Per-announcement detail: Divergence tab.")
+        _bluf_item(
+            f"**🛰️ Median lab→safety response:** {_ll['median_weeks_to_measurable']} wk "
+            f"({_ll.get('n_posts_considered', 0)} announcements)",
+            _ll_sowhat)
 
     st.divider()
     st.download_button("📄 One-page brief", data=compact_brief_md(snap),
