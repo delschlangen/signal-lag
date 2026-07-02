@@ -855,7 +855,11 @@ def _synthesize_risks(
                  + avoid)
     user += "\n\nINPUTS:\n" + json.dumps(payload, ensure_ascii=False)
     for attempt in range(1, retries + 1):
-        text = llm.call_claude(SYSTEM, user, api_key, model)
+        # 20k output budget: with the extended per-risk schema (falsification, action
+        # map, labeled claims) 4 full risks overflow the 8k default and the JSON gets
+        # TRUNCATED — which parses as garbage identically on every retry (the 2026-07-02
+        # foresight run failed 3/3 exactly this way).
+        text = llm.call_claude(SYSTEM, user, api_key, model, max_tokens=20000)
         if text is None:
             return None                      # no key / hard API failure -> give up
         result = llm.extract_json(text)
