@@ -173,6 +173,7 @@ def build_snapshot(
         "sentiment_timeseries": _records(results.get("sentiment_timeseries")),
         "sentiment_llm_verify": results.get("sentiment_llm_verify"),
         "citation_flow": results.get("citation_flow"),
+        "citation_graph": results.get("citation_graph"),
         "author_migration": results.get("author_migration"),
         "harm": harm_block,
         "sources": per_topic,

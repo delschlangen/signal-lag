@@ -24,7 +24,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from signal_lag.analysis import alerts  # noqa: E402
 from signal_lag.glossary import CAPABILITY_KEYS, GLOSSARY, SAFETY_KEYS  # noqa: E402
 from signal_lag.snapshot import (  # noqa: E402
-    diff_snapshots, load_snapshot, register_is_stale, register_newest_date, sort_register)
+    arxiv_url, diff_snapshots, load_snapshot, register_is_stale, register_newest_date,
+    sort_register)
 
 st.set_page_config(page_title="signal-lag", layout="wide", page_icon="📡")
 
@@ -185,6 +186,17 @@ def lab_lag_csv(snap) -> str:
     cols = ["published", "lab", "announcement", "capability", "safety",
             "days_to_first", "weeks_to_measurable", "status", "baseline_per_week"]
     return pd.DataFrame([{c: p.get(c) for c in cols} for p in posts]).to_csv(index=False)
+
+
+def citation_matrix_csv(snap) -> str:
+    """Capability×safety citation matrix (long form) to CSV."""
+    rows = []
+    cg = snap.get("citation_graph") or {}
+    for direction, key in (("cap→saf", "matrix_cap_to_saf"), ("saf→cap", "matrix_saf_to_cap")):
+        for src, tgt_counts in (cg.get(key) or {}).items():
+            for tgt, n in tgt_counts.items():
+                rows.append({"direction": direction, "from": src, "to": tgt, "citations": n})
+    return pd.DataFrame(rows).to_csv(index=False)
 
 
 def weekly_block(snap):
@@ -2079,6 +2091,68 @@ with tab_sources:
                    "refresh runner — so this section is hidden. Per-paper citation counts and "
                    "the **citation-verified borrowing** in Foresight come from Semantic Scholar.")
 
+    # --- Citation cross-pollination (#16/#17/#18): do the communities actually engage? ---
+    cg = snap.get("citation_graph") or {}
+    if cg:
+        st.divider()
+        st.markdown("### 🔗 Citation cross-pollination — do the fields talk to each other?")
+        cov = cg.get("coverage") or {}
+        st.caption(f"Built from **real outgoing references** (Semantic Scholar), not shared "
+                   f"vocabulary. Coverage is partial — {cov.get('pct_with_references', 0)}% of "
+                   f"tagged papers ({cov.get('n_with_references', 0):,} of "
+                   f"{cov.get('n_tagged', 0):,}) had reference data — so **absence of an edge "
+                   "is inconclusive**, never proof two fields ignore each other.")
+
+        m = cg.get("matrix_cap_to_saf") or {}
+        if m:
+            st.markdown("**Capability → safety citations** (which capability fields cite "
+                        "which safety work):")
+            caps = sorted(m.keys())
+            safs = sorted({s for row in m.values() for s in row})
+            z = [[m.get(c, {}).get(s, 0) for s in safs] for c in caps]
+            fig = go.Figure(go.Heatmap(
+                z=z, x=safs, y=caps, colorscale="Blues",
+                text=z, texttemplate="%{text}", showscale=False))
+            fig.update_layout(height=120 + 42 * len(caps), template="plotly_dark",
+                              margin=dict(l=10, r=10, t=10, b=10),
+                              xaxis=dict(tickfont=dict(size=10)),
+                              yaxis=dict(tickfont=dict(size=10)))
+            st.plotly_chart(fig, width="stretch")
+
+        bridges = cg.get("bridge_papers") or []
+        if bridges:
+            st.markdown("**🌉 Bridge papers** — work connecting the two communities "
+                        "(often precedes field convergence):")
+            for b in bridges[:10]:
+                sides = []
+                if b.get("capability_topics"):
+                    sides.append("⚡ " + ", ".join(b["capability_topics"]))
+                if b.get("safety_topics"):
+                    sides.append("🛡️ " + ", ".join(b["safety_topics"]))
+                marks = []
+                if b.get("dual_tagged"):
+                    marks.append("dual-tagged")
+                if b.get("n_cross_citations"):
+                    marks.append(f"{b['n_cross_citations']} cross-boundary citation(s)")
+                url = arxiv_url(b["arxiv_id"]) if b.get("arxiv_id") else None
+                head = f"[{b.get('title')}]({url})" if url else b.get("title")
+                st.markdown(f"- **{head}** — {' · '.join(sides)}  \n"
+                            f"  _{' · '.join(marks)}_")
+
+        impact = cg.get("safety_impact") or []
+        if impact:
+            st.markdown("**🏆 Safety papers capability builders actually cite** — safety "
+                        "*uptake*, not just safety output:")
+            idf = pd.DataFrame([
+                {"Safety paper": r.get("title"),
+                 "Capability citers (in-corpus)": r.get("n_capability_citers"),
+                 "Total citations": r.get("cited_by_count"),
+                 "Influential": r.get("influential_citations"),
+                 "Topics": ", ".join(r.get("safety_topics") or [])}
+                for r in impact[:12]
+            ])
+            st.dataframe(idf, width="stretch", hide_index=True)
+
 # =============================================================== Methodology
 def render_glossary(snap):
     """Plain-language definition + read-more link for every tracked category."""
@@ -2136,6 +2210,10 @@ with tab_method:
                                    data=json.dumps(snap["harm"], ensure_ascii=False, indent=2),
                                    file_name=f"harm_vectors_{date}.json",
                                    mime="application/json", width="stretch")
+            if snap.get("citation_graph"):
+                st.download_button("⬇️ Citation matrix (CSV)", data=citation_matrix_csv(snap),
+                                   file_name=f"citation_matrix_{date}.csv", mime="text/csv",
+                                   width="stretch")
         with c3:
             st.download_button("⬇️ Full snapshot (JSON)",
                                data=json.dumps(snap, ensure_ascii=False),

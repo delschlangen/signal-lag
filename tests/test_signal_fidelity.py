@@ -374,6 +374,32 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ------------------------------- #16/#17/#18 citation matrix / bridges / safety impact
+def test_citation_graph_matrix_bridges_and_impact():
+    from signal_lag.analysis import citation_graph
+    tax = _taxonomy()
+    saf_p = _p("saf1", 2024, 1)                      # safety paper (the citation target)
+    cap_p = _p("cap1", 2025, 1, refs=["saf1"])       # capability paper citing it
+    dual_p = _p("dual1", 2025, 2, refs=["saf1"])     # tagged BOTH sides + cites across
+    plain = _p("plain", 2025, 2)                     # no refs -> coverage denominator only
+    saf_p.cited_by_count = 40
+    papers = [saf_p, cap_p, dual_p, plain]
+    tags = {"saf1": [("saf", 0.5)], "cap1": [("cap", 0.5)],
+            "dual1": [("cap", 0.5), ("saf", 0.4)], "plain": [("cap", 0.3)]}
+    out = citation_graph.citation_graph(papers, tags, tax)
+    # Matrix: capability -> safety edge counted (from cap1 and dual1).
+    assert out["matrix_cap_to_saf"]["Capability"]["Safety"] == 2
+    # Bridges: dual1 (dual-tagged + cross-citing) ranks first.
+    assert out["bridge_papers"][0]["arxiv_id"] == "dual1"
+    assert out["bridge_papers"][0]["dual_tagged"] is True
+    # Impact: saf1 cited by 2 capability-side papers in-corpus.
+    imp = {r["arxiv_id"]: r for r in out["safety_impact"]}
+    assert imp["saf1"]["n_capability_citers"] == 2
+    # Coverage honest: 2 of 4 tagged papers had references.
+    assert out["coverage"]["n_with_references"] == 2
+    assert out["coverage"]["n_tagged"] == 4
+
+
 # ------------------------------------- #11/#12/#22 sentiment quadrants + adjusted gap + CIs
 def test_wilson_interval_bounds_and_width():
     from signal_lag.analysis import alerts

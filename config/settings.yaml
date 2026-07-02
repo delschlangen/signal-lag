@@ -126,6 +126,15 @@ citation_flow:
   # Max verified-borrower examples to surface in the digest.
   max_examples: 30
 
+# Citation graph (#16/#17/#18): from the same real outgoing references, build the
+# capability×safety cross-pollination matrix, the bridge-paper list (papers connecting the
+# two communities), and the safety-impact leaderboard (safety papers capability work
+# actually cites). Positive-only + coverage-honest (S2 reference coverage is partial).
+citation_graph:
+  enabled: true
+  max_bridges: 15
+  max_impact: 15
+
 harm:
   # Harm/misuse dual-use lens: re-tag the SAME papers by which real-world misuse they
   # could enable (config/taxonomy.yaml: harm_topics), tracked as a parallel signal

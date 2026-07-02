@@ -335,6 +335,17 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
             max_examples=int(cfcfg.get("max_examples", 30)),
         )
 
+    # --- citation graph (#16/#17/#18): cross-pollination matrix, bridges, safety impact ---
+    cgcfg = settings.section("citation_graph")
+    cgraph = None
+    if cgcfg.get("enabled", True):
+        from . import citation_graph as citation_graph_mod
+        cgraph = citation_graph_mod.citation_graph(
+            papers, tax_tags, taxonomy,
+            max_bridges=int(cgcfg.get("max_bridges", 15)),
+            max_impact=int(cgcfg.get("max_impact", 15)),
+        )
+
     # --- divergence (headline) ---
     dcfg = settings.section("divergence")
     div = divergence.compute_divergence(
@@ -397,6 +408,7 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
         "sentiment_llm_verify": sent_llm_meta,
         "paper_critical": paper_critical,
         "citation_flow": cflow,
+        "citation_graph": cgraph,
         "author_migration": author_mig,
         "harm": harm,
         "harm_timeseries": harm_ts,
