@@ -5,15 +5,15 @@
   "label": "Autonomous-Agent Misuse",
   "quadrant": "materializing",
   "research_change_pct": 210.9,
-  "n_incidents": 1
+  "n_incidents": 4
  },
  {
   "date": "2026-07-02",
   "key": "bio_chem_uplift",
   "label": "Bio / Chemical Uplift",
-  "quadrant": "materializing",
+  "quadrant": "foresight lead",
   "research_change_pct": 191.5,
-  "n_incidents": 1
+  "n_incidents": 0
  },
  {
   "date": "2026-07-02",
@@ -37,7 +37,7 @@
   "label": "Harassment / Coordinated Abuse",
   "quadrant": "materializing",
   "research_change_pct": 100.0,
-  "n_incidents": 2
+  "n_incidents": 1
  },
  {
   "date": "2026-07-02",
@@ -51,17 +51,17 @@
   "date": "2026-07-02",
   "key": "jailbreak_evasion",
   "label": "Jailbreaks / Guardrail Evasion",
-  "quadrant": "materializing",
+  "quadrant": "foresight lead",
   "research_change_pct": 166.7,
-  "n_incidents": 1
+  "n_incidents": 0
  },
  {
   "date": "2026-07-02",
   "key": "model_exfiltration",
   "label": "Model / Weight Exfiltration",
-  "quadrant": "materializing",
+  "quadrant": "foresight lead",
   "research_change_pct": 485.0,
-  "n_incidents": 2
+  "n_incidents": 0
  },
  {
   "date": "2026-07-02",
@@ -69,7 +69,7 @@
   "label": "Scams / Fraud / Social Engineering",
   "quadrant": "materializing",
   "research_change_pct": 120.1,
-  "n_incidents": 3
+  "n_incidents": 4
  },
  {
   "date": "2026-07-02",
@@ -77,6 +77,6 @@
   "label": "Surveillance / Privacy Erosion",
   "quadrant": "materializing",
   "research_change_pct": 155.9,
-  "n_incidents": 1
+  "n_incidents": 2
  }
 ]

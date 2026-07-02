@@ -112,76 +112,48 @@
  },
  {
   "date": "2026-07-02",
-  "n_papers": 12701,
+  "n_papers": 12834,
   "date_start": "2023-09-13",
   "date_end": "2026-07-01",
-  "n_flagged": 3,
+  "n_flagged": 2,
   "n_pairings": 6,
   "headline": {
-   "biggest_gap_line": "Agentic / Autonomy Capability vs Agentic Behavior Monitoring (cap +289% / saf +189%)",
-   "meaning": "The dominant story this quarter is agentic capability (autonomy, memory, tool-use, self-improving skills) growing fast while the paired monitoring/oversight work lags — most acutely for autonomous agents and self-improvement/RSI systems.",
-   "why_it_matters": "As agents gain autonomy and self-modifying skills, deception and reward-hacking failure modes become harder to detect precisely where monitoring coverage and evaluation reliability are weakest, widening the exposure between what agents can do and what we can verify."
+   "biggest_gap_line": "Agentic / Autonomy Capability vs Agentic Behavior Monitoring (cap +289% / saf +198%)",
+   "meaning": "The dominant tension this quarter is agentic autonomy: models are being trained to manage their own memory, tools, skills, and long-horizon actions faster than the monitoring infrastructure that would track and audit those behaviors.",
+   "why_it_matters": "Agentic capability is growing ~289%/qtr against ~199% for its monitoring counterpart with a 1.36 capability-over-safety volume ratio, so autonomy is being deployed into memory, tools, and physical action faster than we can observe or hold it accountable."
   },
   "sentiment_rising": [
-   "Deceptive Alignment",
-   "Evals & Dangerous-Capability Benchmarks",
    "Reward Hacking"
   ],
   "overall_foresight": [
    {
-    "risk": "Government pre-release cyber-capability evals, hardened into a classified 30-day standard, calcify around benchmarks that reward-hacking research is simultaneously showing to be gameable — creating a false-clearance channel for 'covered frontier models.'",
+    "risk": "Reward-hacking evals are becoming the government's pre-deployment 'safety' proxy just as the underlying research shows the phenomenon is qualitatively worse than the metrics capture (critical-share rising), freezing an unsound test into procurement gates.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Legal/Regulatory",
-     "Security/Geopolitical"
-    ]
-   },
-   {
-    "risk": "The 72-hour and light-touch incident-reporting regimes now live in NY/CA assume monitorable, bounded failures — but agentic-monitoring research is falling behind agentic-capability research precisely as long-horizon multi-tool agents make 'discovery of an incident' undefinable, creating an unenforceable reporting standard frozen into statute.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Legal/Regulatory",
-     "Technological"
-    ]
-   },
-   {
-    "risk": "Trainable, tradeable agent 'skills' (SkillOpt/Memora-style) create a supply-chain layer where a single poisoned or reward-hacked skill silently propagates across many downstream agents that no incident-reporting regime treats as one event.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Technological",
-     "Legal/Regulatory",
-     "Security/Geopolitical"
-    ]
-   }
-  ],
-  "weekly_foresight": [
-   {
-    "risk": "Function-calling jailbreaks that forge 'moderation traces' turn the incident-reporting regimes (SB 53, NY RAISE 72-hour rule) into a false-assurance channel: attackers can make an agent's audit log look compliant while it acts adversarially.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Legal/Regulatory",
-     "Security/Geopolitical"
-    ]
-   },
-   {
-    "risk": "Autonomous-lab orchestrators that optimize resource utilization create a reward-hacking bio/chem-uplift seam: an agent maximizing throughput can route around the very safeguards that dangerous-capability evals assume are in the loop.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Technological",
-     "Security/Geopolitical"
-    ]
-   },
-   {
-    "risk": "A field-verified Reddit bot-contagion result becomes a template for AI-driven behavioral influence campaigns aimed at the data-center/electricity-cost grievance that state-linked ops are already testing.",
-    "novelty_rating": "partially_anticipated",
-    "domains_crossed": [
-     "Social",
      "Political"
     ]
+   },
+   {
+    "risk": "Prompt-injection defenses now propagate through capability surveys that CITE them, meaning a single flawed defense (e.g. type-directed privilege separation) can become an industry-standard agent 'safe pattern' before it is independently broken.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "Multi-agent tool-use security surveys are consolidating a self-referential canon of prompt-injection/agent-communication defenses, so a defense broken in one protocol propagates as 'the standard mitigation' across agent frameworks before its assumptions are re-validated in new deployment contexts.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
    }
   ],
+  "weekly_foresight": [],
   "what_changed": {
-   "n_alerts": 0,
+   "n_alerts": 1,
    "n_accel": 0,
    "n_sleepers": 0
   }

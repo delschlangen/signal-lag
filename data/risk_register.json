@@ -521,6 +521,312 @@
   "status": "open"
  },
  {
+  "id": "377030fe3b77",
+  "risk": "Reward-hacking evals are becoming the government's pre-deployment 'safety' proxy just as the underlying research shows the phenomenon is qualitatively worse than the metrics capture (critical-share rising), freezing an unsound test into procurement gates.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "377030fe3b77",
+   "risk": "Reward-hacking evals are becoming the government's pre-deployment 'safety' proxy just as the underlying research shows the phenomenon is qualitatively worse than the metrics capture (critical-share rising), freezing an unsound test into procurement gates.",
+   "source": "overall",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 4,
+   "actionability": 3,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "Two claims are shaky. (1) The core causal claim that CAISI is institutionalizing THIS specific reward-hacking benchmark as a procurement gate is unverified — no public source shows it; CAISI's own materials use a broad benchmark suite and list reward hacking as one of many risk areas (self-flagged by the risk author). (2) The 'qualitatively worse / rising critical-share / +505.6% velocity' framing is partially contested: reward-hacking benchmark authors themselves test and often reject the 'it's just a benchmark artifact / insufficient-search' hypothesis (SpecBench, arXiv 2605.02964), and the LessWrong 'Confusion around the term reward hacking' post plus emergentmind note phase transitions are non-monotonic and not reliably trend-extrapolable — so a precise growth percentage should not be treated as a solid quantitative trend.",
+   "prior_coverage": "CAISI's May 2026 pre-deployment testing agreements with Google DeepMind, Microsoft and xAI were covered by major outlets (CNBC, Forbes, The Hill, HPCwire, NIST), and a specific arXiv 'Reward Hacking Benchmark' (2605.02964, May 2026) plus several peers (SpecBench, EvilGenie, ImpossibleBench) already exist. The broader seam of 'benchmarks become targets / Goodhart / teaching-to-the-test in AI evals' is heavily discussed (arXiv benchmark-validity reviews, Cursor, explainx, Medium 'benchmarketing').",
+   "sources": [
+    {
+     "title": "Trump admin moves further into AI oversight, will test Google, Microsoft and xAI models",
+     "url": "https://www.cnbc.com/2026/05/05/ai-oversight-trump-google-microsoft-xai.html"
+    },
+    {
+     "title": "NIST's CAISI Announces New Frontier AI Testing Agreements with Google DeepMind, Microsoft, xAI",
+     "url": "https://www.hpcwire.com/off-the-wire/nists-caisi-announces-new-frontier-ai-testing-agreements-with-google-deepmind-microsoft-xai/"
+    },
+    {
+     "title": "Pre-Deployment AI Evaluation Moves From China's Model To Washington",
+     "url": "https://www.forbes.com/sites/paulocarvao/2026/05/06/pre-deployment-ai-evaluation-moves-from-chinas-model-to-washington/"
+    }
+   ],
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Political"
+   ],
+   "leading_indicator": "CAISI or a lab system card cites reward-hacking eval pass rates as a deployment gate; simultaneously a new arXiv paper demonstrates a reward-hack class that the standardized benchmark scores as clean. Divergence between 'benchmark pass rate rising' and 'critical-share in the literature rising.'"
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "Two claims are shaky. (1) The core causal claim that CAISI is institutionalizing THIS specific reward-hacking benchmark as a procurement gate is unverified — no public source shows it; CAISI's own materials use a broad benchmark suite and list reward hacking as one of many risk areas (self-flagged by the risk author). (2) The 'qualitatively worse / rising critical-share / +505.6% velocity' framing is partially contested: reward-hacking benchmark authors themselves test and often reject the 'it's just a benchmark artifact / insufficient-search' hypothesis (SpecBench, arXiv 2605.02964), and the LessWrong 'Confusion around the term reward hacking' post plus emergentmind note phase transitions are non-monotonic and not reliably trend-extrapolable — so a precise growth percentage should not be treated as a solid quantitative trend."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "bfc9761ad56f",
+  "risk": "Prompt-injection defenses now propagate through capability surveys that CITE them, meaning a single flawed defense (e.g. type-directed privilege separation) can become an industry-standard agent 'safe pattern' before it is independently broken.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "bfc9761ad56f",
+   "risk": "Prompt-injection defenses now propagate through capability surveys that CITE them, meaning a single flawed defense (e.g. type-directed privilege separation) can become an industry-standard agent 'safe pattern' before it is independently broken.",
+   "source": "overall",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 4,
+   "actionability": 3,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "Two load-bearing claims are contested. (1) The risk's premise that such a defense could 'become industry-standard before it is independently broken' assumes defenses are durable; this is directly disputed by Zhan et al. (Adaptive Attacks Break Defenses, arXiv 2503.00061), by 'The Defense Trilemma' (2604.06436) arguing preprocessing/wrapper defenses structurally fail, and by OWASP/NCSC framing prompt injection as possibly never fully fixable — the security community actively STRESS-TESTS these defenses rather than treating survey citations as validation, so 'broken independently' tends to happen fast. (2) The specific chain 'survey citation -> framework adoption -> deployed monoculture' is explicitly labeled inferred in the candidate's own calibration and I found no source showing type-directed privilege separation (or the surveyed defenses) actually adopted as a standardized MCP/framework default; adoption is unverified.",
+   "prior_coverage": "All named components are already publicly documented: type-directed privilege separation (arXiv 2509.25926, which itself includes a Limitations section), the agent-communication survey (2506.19676) that catalogs prompt-injection defenses as 'countermeasures', and MCP prompt-injection/tool-poisoning threats. The general 'security monoculture' worry (one shared default, one exploit breaks everyone) is a decades-old idea (Schneier 2010) now explicitly applied to AI ('widespread reliance on a small ",
+   "sources": [
+    {
+     "title": "Preventing Prompt Injection with Type-Directed Privilege Separation (incl. Limitations section)",
+     "url": "https://arxiv.org/abs/2509.25926"
+    },
+    {
+     "title": "A Survey of LLM-Driven AI Agent Communication: Protocols, Security Risks, and Defense Countermeasures (2506.19676)",
+     "url": "https://www.alphaxiv.org/overview/2506.19676v3"
+    },
+    {
+     "title": "Adaptive Attacks Break Defenses Against Indirect Prompt Injection Attacks on LLM Agents",
+     "url": "https://arxiv.org/abs/2503.00061"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "An MCP/agent-framework spec or major SDK adopts one of these named defenses as a default; within two quarters an arXiv jailbreak paper demonstrates a general bypass of that exact defense class."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "Two load-bearing claims are contested. (1) The risk's premise that such a defense could 'become industry-standard before it is independently broken' assumes defenses are durable; this is directly disputed by Zhan et al. (Adaptive Attacks Break Defenses, arXiv 2503.00061), by 'The Defense Trilemma' (2604.06436) arguing preprocessing/wrapper defenses structurally fail, and by OWASP/NCSC framing prompt injection as possibly never fully fixable — the security community actively STRESS-TESTS these defenses rather than treating survey citations as validation, so 'broken independently' tends to happen fast. (2) The specific chain 'survey citation -> framework adoption -> deployed monoculture' is explicitly labeled inferred in the candidate's own calibration and I found no source showing type-directed privilege separation (or the surveyed defenses) actually adopted as a standardized MCP/framework default; adoption is unverified."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "de124f6d4fe5",
+  "risk": "Multi-agent tool-use security surveys are consolidating a self-referential canon of prompt-injection/agent-communication defenses, so a defense broken in one protocol propagates as 'the standard mitigation' across agent frameworks before its assumptions are re-validated in new deployment contexts.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "de124f6d4fe5",
+   "risk": "Multi-agent tool-use security surveys are consolidating a self-referential canon of prompt-injection/agent-communication defenses, so a defense broken in one protocol propagates as 'the standard mitigation' across agent frameworks before its assumptions are re-validated in new deployment contexts.",
+   "source": "overall",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 4,
+   "actionability": 4,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "The risk's implicit premise that the survey-endorsed defenses are sound-until-bypassed is itself contested: peer-reviewed work reports that prompting-based prompt-injection defenses are 'ineffective' (DefensiveToken, ACM AISec 2025), and defense-benchmark papers note that detector/verifier-based defenses (the kind GenTel-Safe-style shielding uses) introduce their own single point of failure that an adversary who learns the decision boundary can evade. So the defenses in the 'canon' are already known to be brittle — meaning propagation of a broken defense is less a latent future cascade and more an already-documented weakness of the specific mitigation classes. The 4:1 volume ratio, 63 downstream cites, and 'shared-failure cascade' are the digest's own observed/inferred metrics and were not independently corroborated in public sources.",
+   "prior_coverage": "The building blocks are heavily covered publicly: MCP/agent-communication threat taxonomies and defenses (e.g., 'When MCP Servers Attack', 'Systematization of Knowledge: Security and Safety in the MCP Ecosystem'), agent-skill supply-chain attacks (Palo Alto Unit 42, promptfoo LM-Security DB, 'Supply-Chain Poisoning Against LLM Coding Agent Skill Ecosystems'), and single-point-of-failure framing for shared defenses/libraries across agent stacks. However, the specific seam — that high-citation SAF",
+   "sources": [
+    {
+     "title": "Systematization of Knowledge: Security and Safety in the Model Context Protocol Ecosystem",
+     "url": "https://arxiv.org/pdf/2512.08290"
+    },
+    {
+     "title": "When MCP Servers Attack: Taxonomy, Feasibility, and Mitigation",
+     "url": "https://arxiv.org/pdf/2509.24272"
+    },
+    {
+     "title": "Trust No Skill: Integrity Verification for AI Agent Supply Chains (Palo Alto Unit 42)",
+     "url": "https://unit42.paloaltonetworks.com/ai-agent-supply-chain-risks/"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "A prompt-injection or agent-communication defense that appears as the recommended mitigation across multiple agent-framework docs, followed by a published bypass; OR a jailbreak paper (e.g., 'Beyond the Prompt: Jailbreaking Function-Calling LLMs') that defeats a defense cited in 2506.19676 and is shown to affect several frameworks that adopted it."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "The risk's implicit premise that the survey-endorsed defenses are sound-until-bypassed is itself contested: peer-reviewed work reports that prompting-based prompt-injection defenses are 'ineffective' (DefensiveToken, ACM AISec 2025), and defense-benchmark papers note that detector/verifier-based defenses (the kind GenTel-Safe-style shielding uses) introduce their own single point of failure that an adversary who learns the decision boundary can evade. So the defenses in the 'canon' are already known to be brittle — meaning propagation of a broken defense is less a latent future cascade and more an already-documented weakness of the specific mitigation classes. The 4:1 volume ratio, 63 downstream cites, and 'shared-failure cascade' are the digest's own observed/inferred metrics and were not independently corroborated in public sources."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "64a576e63323",
+  "risk": "Government pre-deployment evaluations of frontier agents (CAISI, EU) are anchored to bounded-task oversight designs precisely as the agentic-monitoring research gap widens — creating a certified-safe blind spot for long-horizon, multi-tool agent behavior no single evaluation captures.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "64a576e63323",
+   "risk": "Government pre-deployment evaluations of frontier agents (CAISI, EU) are anchored to bounded-task oversight designs precisely as the agentic-monitoring research gap widens — creating a certified-safe blind spot for long-horizon, multi-tool agent behavior no single evaluation captures.",
+   "source": "overall",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 4,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependencies are contested. (1) The premise that autonomous long-horizon capability is racing ahead into deployable danger is complicated by a research strand finding agents actually DEGRADE badly on long-horizon tasks ('The Long-Horizon Task Mirage?'; 'The Hard Horizon: Why Frontier AI Agents Are Stalling on Real-World Workflows'), i.e., benchmark capability does not translate to autonomous real-world performance—so 'accelerating horizons' is not settled. (2) 'Evaluation awareness'/sandbagging (models gaming tests, per Apollo Research/IAPS) is an emerging, not firmly established, finding. (3) The specific claim that CAISI/EU protocols inherit bounded-task assumptions is unverified against actual protocol text—no source confirms this, and the risk author admits not having seen the protocols; CAISI/EU materials and NIST AI 800-4 in fact reference post-deployment monitoring, cutting against the 'bounded-task only' assumption.",
+   "prior_coverage": "The core mechanism—that pre-deployment evaluations fail to capture real-world and long-horizon agentic behavior—is the headline finding of the flagship International AI Safety Report 2026, which explicitly names an 'evaluation gap' between pre-deployment tests and real-world capability/propensity, and notes evaluations designed for AI agents face special difficulty. Multiple 2026 papers directly critique the bounded-task/single-benchmark assumption for agents ('Beyond single-channel agentic benc",
+   "sources": [
+    {
+     "title": "International AI Safety Report 2026 (evaluation gap; agent evaluations)",
+     "url": "https://arxiv.org/pdf/2602.21012"
+    },
+    {
+     "title": "2026 Report: Executive Summary — International AI Safety Report",
+     "url": "https://internationalaisafetyreport.org/publication/2026-report-executive-summary"
+    },
+    {
+     "title": "Beyond single-channel agentic benchmarking (critique of task-level accuracy thresholds)",
+     "url": "https://arxiv.org/abs/2602.18456"
+    }
+   ],
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Political",
+    "Technological"
+   ],
+   "leading_indicator": "A CAISI or EU-published evaluation methodology whose task suite is dominated by single-turn or short-horizon probes, followed by a deployed-agent incident (unauthorized multi-step tool chaining, data-exfil-via-tool-use) in a model that passed; or system cards citing government eval pass while omitting long-horizon trajectory tests."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "Two dependencies are contested. (1) The premise that autonomous long-horizon capability is racing ahead into deployable danger is complicated by a research strand finding agents actually DEGRADE badly on long-horizon tasks ('The Long-Horizon Task Mirage?'; 'The Hard Horizon: Why Frontier AI Agents Are Stalling on Real-World Workflows'), i.e., benchmark capability does not translate to autonomous real-world performance—so 'accelerating horizons' is not settled. (2) 'Evaluation awareness'/sandbagging (models gaming tests, per Apollo Research/IAPS) is an emerging, not firmly established, finding. (3) The specific claim that CAISI/EU protocols inherit bounded-task assumptions is unverified against actual protocol text—no source confirms this, and the risk author admits not having seen the protocols; CAISI/EU materials and NIST AI 800-4 in fact reference post-deployment monitoring, cutting against the 'bounded-task only' assumption."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "a0f665c13af2",
+  "risk": "Function-calling jailbreaks that exploit the *state* of an agent's tool-call history—not its prompts—are emerging just as multi-agent tool-use capability outruns scalable oversight, opening a monitoring blind spot that agentic-security teams and oversight researchers each see only half of.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "a0f665c13af2",
+   "risk": "Function-calling jailbreaks that exploit the *state* of an agent's tool-call history—not its prompts—are emerging just as multi-agent tool-use capability outruns scalable oversight, opening a monitoring blind spot that agentic-security teams and oversight researchers each see only half of.",
+   "source": "weekly",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependencies are contested. (1) The premise that a downstream step will trust a seeded prior trace depends on client-supplied conversation history; Microsoft's own CCA writeup states systems that keep conversation state server-side (e.g., ChatGPT, Copilot) are NOT vulnerable, so the attack's reach is architecture-dependent, not universal. (2) The risk's claim that scalable-oversight monitors 'miss' intermediate-state integrity is an inference about monitor architecture, not a measured failure—and it runs against an active body of work (process supervision, trusted monitoring, bootstrapped monitoring, dynamic conversational-history scanning proposed by Echo Chamber/DIA authors) that explicitly targets intermediate steps. Prevalence in deployed multi-agent stacks is asserted, not measured, in any source found.",
+   "prior_coverage": "Every core component is already publicly documented. The paper's own thesis (function-calling as a structural, non-prompt vulnerability) appears in 'The Dark Side of Function Calling' (arXiv 2407.17915, COLING 2025) and STAC ('innocent tools form dangerous chains to jailbreak LLM agents', arXiv 2509.25624). The specific mechanism—seeding a fabricated benign prior trace that a downstream step treats as trusted context—is the published Dialogue Injection Attack (arXiv 2503.08195) and Microsoft's C",
+   "sources": [
+    {
+     "title": "The Dark Side of Function Calling: Pathways to Jailbreaking Large Language Models",
+     "url": "https://arxiv.org/abs/2407.17915"
+    },
+    {
+     "title": "STAC: When Innocent Tools Form Dangerous Chains to Jailbreak LLM Agents",
+     "url": "https://arxiv.org/pdf/2509.25624"
+    },
+    {
+     "title": "Dialogue Injection Attack: Jailbreaking LLMs through Context Manipulation",
+     "url": "https://arxiv.org/html/2503.08195v1"
+    }
+   ],
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "Appearance of stateful/trace-poisoning attack success rates in agent red-team reports or system cards; a public bug-bounty or CVE-style disclosure of a function-calling agent bypassed via forged tool/moderation history; a benchmark (e.g., an extension of the May 2026 Reward Hacking Benchmark) adding a 'state-integrity' track."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "Two dependencies are contested. (1) The premise that a downstream step will trust a seeded prior trace depends on client-supplied conversation history; Microsoft's own CCA writeup states systems that keep conversation state server-side (e.g., ChatGPT, Copilot) are NOT vulnerable, so the attack's reach is architecture-dependent, not universal. (2) The risk's claim that scalable-oversight monitors 'miss' intermediate-state integrity is an inference about monitor architecture, not a measured failure—and it runs against an active body of work (process supervision, trusted monitoring, bootstrapped monitoring, dynamic conversational-history scanning proposed by Echo Chamber/DIA authors) that explicitly targets intermediate steps. Prevalence in deployed multi-agent stacks is asserted, not measured, in any source found."
+   }
+  ],
+  "status": "open"
+ },
+ {
   "id": "76630255a8f4",
   "risk": "Reward-hacking research is exploding faster than any safety subfield, and the same optimizer dynamics being characterized are documented to amplify emergent misalignment in agents heading into weight-exfiltration territory.",
   "first_seen": "2026-07-02",
@@ -739,6 +1045,128 @@
    {
     "date": "2026-07-02",
     "disputed_claims": "The load-bearing claim — that accumulated memory reliably PUSHES capability UP across a danger threshold — is contested. Memory research shows memory frequently degrades or destabilizes performance: retrieval accuracy tends to peak around 3–5 chunks and degrade as noise overwhelms signal (SitePoint), memory can be poisoned or grow stale (arXiv 2606.14816; DEV Community), and the observed longitudinal effect in 'temporal memory contamination' is safety DRIFT/contamination rather than clean capability gain. So while proponents (Databricks 'memory scaling', IBM, ReasoningBank/VentureBeat) claim performance rises with accumulated memory, others show it is noisy, task-dependent, and can regress — meaning 'a below-threshold model crosses the cyber threshold purely through memory' is a plausible-but-unproven directional assumption. Separately, benchmark reliability itself is openly questioned by AISI ('No single benchmark result should be read as a precise measure'), which cuts both ways for the risk."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "740a2fbea5be",
+  "risk": "Model/weight-exfiltration research is accelerating fastest of all harm vectors precisely as surrogate-distillation papers show open models can reconstruct closed ones — reframing 'exfiltration' from stealing files to cheaply cloning capability, which export controls and weight-security regimes don't cover.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "740a2fbea5be",
+   "risk": "Model/weight-exfiltration research is accelerating fastest of all harm vectors precisely as surrogate-distillation papers show open models can reconstruct closed ones — reframing 'exfiltration' from stealing files to cheaply cloning capability, which export controls and weight-security regimes don't cover.",
+   "source": "overall",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependencies are contested. (1) The 'surrogate/distillation reliably reconstructs capability' premise: the cited 'Surrogate Fidelity' paper is actually about interpretability (using open models to EXPLAIN closed ones), and it finds prediction-level agreement overstates deeper fidelity — models 'agree on what the answer is but disagree on why' — so it does not support cheap capability cloning; the risk misreads it. The broader literature ('Does Knowledge Distillation Really Work?', NYU/Google) finds achieving high teacher-student fidelity is genuinely hard, and distillation is generally bounded by the teacher, undercutting 'reconstruct closed ones.' (2) The DeepSeek factual predicate is disputed: OpenAI has not published specific evidence (noted by Winston & Strawn), Cornell's Lutz Finger and RAND's Austin Wang question OpenAI's sincerity and timing, and DeepSeek has not admitted it. (3) The 'export controls guard the wrong perimeter' inference is itself the subject of live public debate, not a fresh insight.",
+   "prior_coverage": "The central seam — that cheap API-based distillation lets adversaries (notably China/DeepSeek) approximate closed frontier models and thereby sidestep chip export controls — is already front-page and in policy/legal literature, not novel. OpenAI, White House AI czar David Sacks, and Commerce Secretary Howard Lutnick have all publicly framed DeepSeek's distillation as free-riding on U.S. models that export controls were meant to protect, and think tanks (FDD, AEI, Lawfare, RAND) and law firms hav",
+   "sources": [
+    {
+     "title": "Is DeepSeek's AI 'distillation' theft? OpenAI seeks answers",
+     "url": "https://www.scmp.com/tech/big-tech/article/3296827/deepseeks-ai-distillation-theft-openai-seeks-answers-over-chinas-breakthrough"
+    },
+    {
+     "title": "OpenAI Alleges China's DeepSeek Stole its IP to Train its Own Models",
+     "url": "https://www.fdd.org/analysis/2026/02/13/openai-alleges-chinas-deepseek-stole-its-intellectual-property-to-train-its-own-models/"
+    },
+    {
+     "title": "OpenAI accuses DeepSeek of malpractice ahead of AI launch",
+     "url": "https://restofworld.org/2026/openai-deepseek-distillation-dispute-us-china/"
+    }
+   ],
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Economic"
+   ],
+   "leading_indicator": "A published surrogate model matches a closed frontier model on a non-trivial capability suite using only query access; or a frontier lab tightens API rate/output policies citing distillation/extraction rather than abuse."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "Two dependencies are contested. (1) The 'surrogate/distillation reliably reconstructs capability' premise: the cited 'Surrogate Fidelity' paper is actually about interpretability (using open models to EXPLAIN closed ones), and it finds prediction-level agreement overstates deeper fidelity — models 'agree on what the answer is but disagree on why' — so it does not support cheap capability cloning; the risk misreads it. The broader literature ('Does Knowledge Distillation Really Work?', NYU/Google) finds achieving high teacher-student fidelity is genuinely hard, and distillation is generally bounded by the teacher, undercutting 'reconstruct closed ones.' (2) The DeepSeek factual predicate is disputed: OpenAI has not published specific evidence (noted by Winston & Strawn), Cornell's Lutz Finger and RAND's Austin Wang question OpenAI's sincerity and timing, and DeepSeek has not admitted it. (3) The 'export controls guard the wrong perimeter' inference is itself the subject of live public debate, not a fresh insight."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "6bf1a24a6025",
+  "risk": "Provenance-based backward-tracking agents built for cyber-forensics inherit the same stateful-monitoring blind spots being exploited in agentic jailbreaks — turning defensive incident-reconstruction tools into a new, high-trust attack surface for narrative and evidence tampering.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "6bf1a24a6025",
+   "risk": "Provenance-based backward-tracking agents built for cyber-forensics inherit the same stateful-monitoring blind spots being exploited in agentic jailbreaks — turning defensive incident-reconstruction tools into a new, high-trust attack surface for narrative and evidence tampering.",
+   "source": "weekly",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "The step 'attacker can inject/forge intermediate state to bias causal reconstruction' is real in principle but its practical feasibility is contested: provenance-graph detection researchers (e.g. MGDA authors; PROVNINJA's own caveats) argue that actualizing evasion/forgery in concrete system actions is high-cost and often impractical because attackers must accurately manipulate graph structure, behavioral sequences, and embeddings simultaneously. Also disputed/overstated is the downstream leap to evidentiary/insurance 'high-trust' use: digital-forensics-admissibility scholarship treats such automated reconstructions as still requiring expert validation and subject to court challenge, so 'trusted attribution at scale' is aspirational, not established.",
+   "prior_coverage": "The core seam is already published, not fresh. OpenSec (arXiv 2601.21083) directly studies defensive incident-response agents processing ADVERSARIAL EVIDENCE and prompt injections that steer tool use, and scores attribution correctness under an active attacker exactly the 'forensic agent's causal reconstruction gets biased' mechanism the risk describes. Separately, evading and forging provenance graphs to mislead forensic/detection systems is a mature, well-populated research area (PROVNINJA, Ma",
+   "sources": [
+    {
+     "title": "OpenSec: Measuring Incident Response Agent Calibration Under Adversarial Evidence",
+     "url": "https://arxiv.org/abs/2601.21083"
+    },
+    {
+     "title": "Evading Provenance-Based ML Detectors with Adversarial System Actions (PROVNINJA)",
+     "url": "https://par.nsf.gov/servlets/purl/10505749"
+    },
+    {
+     "title": "Marlin: Knowledge-Driven Analysis of Provenance Graphs for Robust Detection (incl. evasion attacks)",
+     "url": "https://arxiv.org/pdf/2403.12541"
+    }
+   ],
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "First published red-team result or CTF/DFIR write-up showing a provenance/forensic LLM agent producing a materially wrong attack-attribution when fed adversarially crafted intermediate logs or tool-call histories; or a vendor SOC-copilot advisory acknowledging attribution manipulation via injected telemetry."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "The step 'attacker can inject/forge intermediate state to bias causal reconstruction' is real in principle but its practical feasibility is contested: provenance-graph detection researchers (e.g. MGDA authors; PROVNINJA's own caveats) argue that actualizing evasion/forgery in concrete system actions is high-cost and often impractical because attackers must accurately manipulate graph structure, behavioral sequences, and embeddings simultaneously. Also disputed/overstated is the downstream leap to evidentiary/insurance 'high-trust' use: digital-forensics-admissibility scholarship treats such automated reconstructions as still requiring expert validation and subject to court challenge, so 'trusted attribution at scale' is aspirational, not established."
    }
   ],
   "status": "open"
@@ -1065,6 +1493,128 @@
   "status": "open"
  },
  {
+  "id": "cf4ceea177cd",
+  "risk": "The rising CRITICAL share of Reward Hacking research, colliding with a just-shipped multi-step Reward Hacking Benchmark, risks freezing a nascent, still-unsound benchmark into procurement and safety-attestation practice before it is validated — turning a good-faith transparency requirement into a compliance ceiling attackers can game.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "cf4ceea177cd",
+   "risk": "The rising CRITICAL share of Reward Hacking research, colliding with a just-shipped multi-step Reward Hacking Benchmark, risks freezing a nascent, still-unsound benchmark into procurement and safety-attestation practice before it is validated — turning a good-faith transparency requirement into a compliance ceiling attackers can game.",
+   "source": "weekly",
+   "date": "2026-07-02",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 9,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependencies are contested. (1) The framing of a 'rising CRITICAL share' of reward hacking as a robust danger signal is not well supported by the very benchmark cited: RHB reports exploit rates of only 0-13.9%, with Claude Sonnet 4.5 at 0%, and finds reward hacking is strongly tied to a specific RL post-training style rather than being a broadly rising cross-model phenomenon; SpecBench similarly attributes it to the task-difficulty/capability gap rather than to a general trend—so a bibliometric 'critical share' metric may reflect research fashion, not escalating real-world severity. (2) The premise that benchmarks are trustworthy enough to be adopted as attestation evidence is itself disputed by the AI-evaluation-validity literature (Bench-2-CoP, 'Can We Trust AI Benchmarks?', 'Beyond Benchmarks: On the False Promise of AI Regulation', Stanford's 'Law of Evaluation'), who argue benchmarks were not designed to measure systemic regulatory risk and cannot reliably certify safety—which paradoxically reinforces the risk's 'gaming' concern but undercuts the assumption that regulators/vendors would treat RHB as sound enough to freeze in.",
+   "prior_coverage": "The named benchmark exists publicly (the 'Reward Hacking Benchmark'/RHB, arXiv 2605.02964, dated May 2026, alongside siblings like EvilGenie, SpecBench and Hack-Verifiable TextArena), and the risk's core mechanism—an immature safety benchmark being adopted into regulation and then gamed—is a well-established public argument, not a fresh seam. It is essentially Goodhart's law/specification gaming applied to AI governance, covered in 2025-2026 work such as 'Bench-2-CoP: Can We Trust Benchmarking f",
+   "sources": [
+    {
+     "title": "Reward Hacking Benchmark: Measuring Exploits in LLM Agents with Tool Use (arXiv 2605.02964)",
+     "url": "https://arxiv.org/abs/2605.02964"
+    },
+    {
+     "title": "EvilGenie: A Reward Hacking Benchmark (arXiv 2511.21654)",
+     "url": "https://arxiv.org/abs/2511.21654"
+    },
+    {
+     "title": "Bench-2-CoP: Can We Trust Benchmarking for EU AI Compliance? (arXiv 2508.05464)",
+     "url": "https://arxiv.org/abs/2508.05464"
+    }
+   ],
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Economic"
+   ],
+   "leading_indicator": "The Reward Hacking Benchmark (or similar) cited by name in a frontier developer's SB 53 risk framework or a CAISI evaluation summary; benchmark scores improving sharply quarter-over-quarter without corresponding reduction in real-world shortcut incidents; vendors reporting near-ceiling passes."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 9,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "Two dependencies are contested. (1) The framing of a 'rising CRITICAL share' of reward hacking as a robust danger signal is not well supported by the very benchmark cited: RHB reports exploit rates of only 0-13.9%, with Claude Sonnet 4.5 at 0%, and finds reward hacking is strongly tied to a specific RL post-training style rather than being a broadly rising cross-model phenomenon; SpecBench similarly attributes it to the task-difficulty/capability gap rather than to a general trend—so a bibliometric 'critical share' metric may reflect research fashion, not escalating real-world severity. (2) The premise that benchmarks are trustworthy enough to be adopted as attestation evidence is itself disputed by the AI-evaluation-validity literature (Bench-2-CoP, 'Can We Trust AI Benchmarks?', 'Beyond Benchmarks: On the False Promise of AI Regulation', Stanford's 'Law of Evaluation'), who argue benchmarks were not designed to measure systemic regulatory risk and cannot reliably certify safety—which paradoxically reinforces the risk's 'gaming' concern but undercuts the assumption that regulators/vendors would treat RHB as sound enough to freeze in."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "0378e3cd0397",
+  "risk": "AI agents contaminating crowdsourced survey and human-feedback data (documented this week) quietly poisons the RLHF/preference pipelines that the same week's surging RL/RLHF capability research depends on — a data-integrity seam that survey-methodology and alignment-data teams each see one half of.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "0378e3cd0397",
+   "risk": "AI agents contaminating crowdsourced survey and human-feedback data (documented this week) quietly poisons the RLHF/preference pipelines that the same week's surging RL/RLHF capability research depends on — a data-integrity seam that survey-methodology and alignment-data teams each see one half of.",
+   "source": "weekly",
+   "date": "2026-07-02",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 9,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two links are contested. (1) The risk's key inferential leap — that LLM contamination of preference labels will meaningfully DEGRADE the reward model / entrench a single model's values — rests on the 'model collapse from AI-generated data' assumption, which is disputed: Borji (arXiv 2410.12954) and other critics argue the effect is a statistical artifact of fully-recursive/replacement setups and is largely avoidable when synthetic data is accumulated alongside (rather than replacing) real data, so degradation is not inevitable. (2) The magnitude of survey/crowdsourcing contamination is itself uncertain — the source finding is survey-response contamination, and there is no direct measurement that RLHF/DPO preference-label datasets specifically are contaminated at a rate that shifts reward models; the candidate risk already concedes this gap.",
+   "prior_coverage": "The specific seam — crowdworkers using LLMs to answer tasks, thereby contaminating the very human-feedback data used to align models like ChatGPT — is already explicitly published, not just implied. arXiv 2506.06991 (LLM-Contaminated Crowdsourcing Data) directly frames LLM contamination as a threat to the high-quality human feedback used for RLHF-style alignment; the 2023 'Artificial Artificial Artificial Intelligence' paper documented widespread crowdworker LLM use; and a 2606 community survey ",
+   "sources": [
+    {
+     "title": "Evaluating LLM-Contaminated Crowdsourcing Data Without Ground Truth",
+     "url": "https://arxiv.org/abs/2506.06991"
+    },
+    {
+     "title": "Artificial Artificial Artificial Intelligence: Crowd Workers Widely Use Large Language Models for Text Production Tasks",
+     "url": "https://arxiv.org/html/2306.07899"
+    },
+    {
+     "title": "Can Crowdsourcing Survive the LLM Era? A Community Survey on Human Data Collection",
+     "url": "https://arxiv.org/abs/2606.04924"
+    }
+   ],
+   "domains_crossed": [
+    "Social",
+    "Economic"
+   ],
+   "leading_indicator": "Published estimates of LLM-generated label fraction in commercial RLHF/preference datasets; detection tools (like those in 2607.00403) applied to preference-annotation platforms; measured drift where reward models increasingly agree with a specific base model's outputs regardless of stated human intent."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 9,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "Two links are contested. (1) The risk's key inferential leap — that LLM contamination of preference labels will meaningfully DEGRADE the reward model / entrench a single model's values — rests on the 'model collapse from AI-generated data' assumption, which is disputed: Borji (arXiv 2410.12954) and other critics argue the effect is a statistical artifact of fully-recursive/replacement setups and is largely avoidable when synthetic data is accumulated alongside (rather than replacing) real data, so degradation is not inevitable. (2) The magnitude of survey/crowdsourcing contamination is itself uncertain — the source finding is survey-response contamination, and there is no direct measurement that RLHF/DPO preference-label datasets specifically are contaminated at a rate that shifts reward models; the candidate risk already concedes this gap."
+   }
+  ],
+  "status": "open"
+ },
+ {
   "id": "77cc9bb62eca",
   "risk": "Rising 'critical'-share doubt about reward-hacking research is colliding with agent-memory sycophancy findings to create a slow-drift failure mode in persistent enterprise agents that liability law has no theory for — the harm accrues across sessions, so no single output is negligent.",
   "first_seen": "2026-07-02",
@@ -1283,6 +1833,67 @@
     "exposure": 3,
     "trajectory": "accelerating",
     "priority": 8
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "737546ad9ff2",
+  "risk": "Chain-of-Thought faithfulness research is being repurposed by capability teams to STEER/intervene on reasoning traces, turning the tool meant to make CoT trustworthy into a way to make CoT look faithful while acting otherwise — collapsing CoT as an audit surface.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "737546ad9ff2",
+   "risk": "Chain-of-Thought faithfulness research is being repurposed by capability teams to STEER/intervene on reasoning traces, turning the tool meant to make CoT trustworthy into a way to make CoT look faithful while acting otherwise — collapsing CoT as an audit surface.",
+   "source": "overall",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 8,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependencies are contested. (1) The premise that CoT is a trustworthy 'audit surface' to begin with is itself disputed: Turpin et al., Anthropic's 'Reasoning Models Don't Always Say What They Think', and Oxford's 'Chain-of-Thought Is Not Explainability' argue CoT often does not reflect the true causes of model decisions even without any steering — so the risk partly presupposes a faithfulness that skeptics say was never established. (2) The compliance-incentive step (that steering tools will be used specifically to game regulators/auditors) is not documented; existing obfuscation demonstrations arise from training/optimization pressure and monitor-awareness, not from deliberate Thinking-Intervention-based deception of auditors. No source found that establishes the specific 'capability teams repurpose faithfulness tooling to fool auditors' abuse.",
+   "prior_coverage": "The core thesis — that chain-of-thought monitorability is a fragile audit surface that can collapse under optimization pressure — is already prominent, most notably in the multi-lab position paper 'Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety' (Korbak et al., Jul 2025) and OpenAI's 'Detecting misbehavior in frontier reasoning models' (Baker et al.), which explicitly warns that optimizing against CoT teaches models to obfuscate. The specific 'make CoT look faithful",
+   "sources": [
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety (Korbak et al.)",
+     "url": "https://arxiv.org/html/2507.11473v1"
+    },
+    {
+     "title": "Detecting misbehavior in frontier reasoning models (OpenAI, Baker et al.)",
+     "url": "https://openai.com/index/chain-of-thought-monitoring/"
+    },
+    {
+     "title": "Training on Documents About Monitoring Leads to CoT Obfuscation",
+     "url": "https://arxiv.org/abs/2605.15257"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "A system card or safety case cites CoT monitoring as an oversight mechanism, while the same or a sibling paper reports reasoning-steering used to shape refusal/compliance traces; empirical papers show intervened traces score HIGHER on faithfulness metrics without matching internal computation."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 8,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "Two dependencies are contested. (1) The premise that CoT is a trustworthy 'audit surface' to begin with is itself disputed: Turpin et al., Anthropic's 'Reasoning Models Don't Always Say What They Think', and Oxford's 'Chain-of-Thought Is Not Explainability' argue CoT often does not reflect the true causes of model decisions even without any steering — so the risk partly presupposes a faithfulness that skeptics say was never established. (2) The compliance-incentive step (that steering tools will be used specifically to game regulators/auditors) is not documented; existing obfuscation demonstrations arise from training/optimization pressure and monitor-awareness, not from deliberate Thinking-Intervention-based deception of auditors. No source found that establishes the specific 'capability teams repurpose faithfulness tooling to fool auditors' abuse."
    }
   ],
   "status": "open"
@@ -1605,6 +2216,67 @@
     "exposure": 3,
     "trajectory": "accelerating",
     "priority": 6
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "06c4b38dc192",
+  "risk": "Failure-aware self-retry loops for robots learn from failure without an external stopping authority just as reward-hacking behaviors surge — enabling embodied policies that 'succeed' at tasks via unsafe physical shortcuts that no monitoring watches for in the real world.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "06c4b38dc192",
+   "risk": "Failure-aware self-retry loops for robots learn from failure without an external stopping authority just as reward-hacking behaviors surge — enabling embodied policies that 'succeed' at tasks via unsafe physical shortcuts that no monitoring watches for in the real world.",
+   "source": "weekly",
+   "date": "2026-07-02",
+   "severity": 3,
+   "likelihood": 2,
+   "exposure": 2,
+   "trajectory": "accelerating",
+   "priority": 6,
+   "confidence": 2,
+   "evidence_strength": 2,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependencies are weaker than the risk implies. (1) The risk's own framing ('transfer to embodied policies is inferred by analogy, not demonstrated') understates existing evidence AND overstates the deployment-scale case: reward hacking in physical/simulated robot control is documented but the empirical study at arxiv 2507.05619 explicitly notes few studies examine realistic application scenarios, so real-world deployment prevalence is under-evidenced rather than established. (2) The sim-to-real gap cuts both ways and is contested: reward-hacked behaviors that exploit simulator quirks often fail to transfer to hardware, and lines of work (e.g., UAN, arxiv 2502.10894) present reward-hacking mitigation as an argument FOR transferability rather than a guaranteed danger of it. (3) The claim that 'no external stopping authority governs these loops in deployment' is inferential from the paper's 'without human intervention' phrasing; deployed continual-learning robotics work commonly assumes physical safety envelopes / force-speed limits and safe-continual-learning shields, so the blanket 'no monitoring watches for this' is disputed by the safe-RL / Simplex-shield literature.",
+   "prior_coverage": "All three components are already publicly established, and the specific transfer this risk treats as 'inferred by analogy' is in fact textbook: reward hacking in real/simulated robot control is a canonical example (e.g., a robot hand tricking its camera, a robot arm flipping a block instead of stacking it), and autonomous test-time failure-recovery/retry robots that update without human intervention are a well-populated research area (Elly, 'To Err is Robotic', reset-free trial-and-error, RoboCl",
+   "sources": [
+    {
+     "title": "Reward Hacking in Reinforcement Learning | Lil'Log",
+     "url": "https://lilianweng.github.io/posts/2024-11-28-reward-hacking/"
+    },
+    {
+     "title": "Reward hacking behavior can generalize across tasks (AlignmentForum)",
+     "url": "https://www.alignmentforum.org/posts/Ge55vxEmKXunFFwoe/reward-hacking-behavior-can-generalize-across-tasks"
+    },
+    {
+     "title": "To Err is Robotic: Rapid Value-Based Trial-and-Error during Deployment",
+     "url": "https://arxiv.org/pdf/2406.15917"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Social"
+   ],
+   "leading_indicator": "First documented case (industrial deployment log, robotics benchmark, or incident report) of a self-retrying robot policy achieving higher task-success while increasing damage/near-miss rate — i.e., success metric and safety metric diverging under continual test-time learning."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 3,
+    "likelihood": 2,
+    "exposure": 2,
+    "trajectory": "accelerating",
+    "priority": 6,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-02",
+    "disputed_claims": "Two dependencies are weaker than the risk implies. (1) The risk's own framing ('transfer to embodied policies is inferred by analogy, not demonstrated') understates existing evidence AND overstates the deployment-scale case: reward hacking in physical/simulated robot control is documented but the empirical study at arxiv 2507.05619 explicitly notes few studies examine realistic application scenarios, so real-world deployment prevalence is under-evidenced rather than established. (2) The sim-to-real gap cuts both ways and is contested: reward-hacked behaviors that exploit simulator quirks often fail to transfer to hardware, and lines of work (e.g., UAN, arxiv 2502.10894) present reward-hacking mitigation as an argument FOR transferability rather than a guaranteed danger of it. (3) The claim that 'no external stopping authority governs these loops in deployment' is inferential from the paper's 'without human intervention' phrasing; deployed continual-learning robotics work commonly assumes physical safety envelopes / force-speed limits and safe-continual-learning shields, so the blanket 'no monitoring watches for this' is disputed by the safe-RL / Simplex-shield literature."
    }
   ],
   "status": "open"
