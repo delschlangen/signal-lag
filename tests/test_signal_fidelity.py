@@ -374,6 +374,45 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ------------------------------------------------ #23 counterevidence persistence
+def _snap_with_risk(date, disputed):
+    risk = foresight._attach_scores([{
+        "risk": "Contested risk", "severity": 4, "likelihood": 3, "exposure": 3,
+        "trajectory": "steady",
+        "verification": {"novelty_rating": "partially_anticipated",
+                         "disputed_claims": disputed,
+                         "prior_coverage": "some coverage",
+                         "sources": [{"title": "T", "url": "http://u"}]},
+    }])[0]
+    return {"meta": {"refreshed_at": date},
+            "analysis": {"foresight_gap": {"risks": [risk]}}, "weekly": {}}
+
+
+def test_register_persists_counterevidence_without_duplicates(tmp_path):
+    from signal_lag import snapshot as snap_mod
+    path = tmp_path / "register.json"
+    snap_mod.append_risk_register(_snap_with_risk("2026-07-01", "Claim X is contested"), path)
+    snap_mod.append_risk_register(_snap_with_risk("2026-07-08", "Claim X is contested"), path)
+    snap_mod.append_risk_register(_snap_with_risk("2026-07-15", "New dispute about Y"), path)
+    reg = json.loads(path.read_text())
+    e = reg[0]
+    assert e["latest"]["disputed_claims"] == "New dispute about Y"
+    assert e["latest"]["sources"] == [{"title": "T", "url": "http://u"}]
+    # Distinct disputes accumulate; the repeat on 07-08 does not duplicate.
+    assert [c["disputed_claims"] for c in e["counterevidence"]] == [
+        "Claim X is contested", "New dispute about Y"]
+    assert e["history"][-1]["disputed"] is True
+
+
+def test_register_none_found_is_not_a_dispute(tmp_path):
+    from signal_lag import snapshot as snap_mod
+    path = tmp_path / "register.json"
+    snap_mod.append_risk_register(_snap_with_risk("2026-07-01", "none found"), path)
+    e = json.loads(path.read_text())[0]
+    assert "counterevidence" not in e
+    assert e["history"][-1]["disputed"] is False
+
+
 # ------------------------------------------------ #2 lab -> safety-response lag
 def _lag_taxonomy():
     from signal_lag.config import Pairing

@@ -474,6 +474,7 @@ def _register_entries(snapshot: dict) -> list[dict]:
             stmt = r.get("risk")
             if not stmt:
                 continue
+            v = r.get("verification") or {}
             out.append({
                 "id": _risk_id(stmt), "risk": stmt, "source": src, "date": date,
                 "severity": r.get("severity"), "likelihood": r.get("likelihood"),
@@ -482,11 +483,23 @@ def _register_entries(snapshot: dict) -> list[dict]:
                 "confidence": r.get("confidence"),
                 "evidence_strength": r.get("evidence_strength"),
                 "actionability": r.get("actionability"),
-                "novelty_rating": (r.get("verification") or {}).get("novelty_rating"),
+                "novelty_rating": v.get("novelty_rating"),
+                # Counterevidence (#23): the web-verifier's dispute findings, persisted so
+                # a risk carries its evidence-against over time, not just this refresh's.
+                "disputed_claims": v.get("disputed_claims"),
+                "prior_coverage": (v.get("prior_coverage") or "")[:500] or None,
+                "sources": [{"title": s.get("title"), "url": s.get("url")}
+                            for s in (v.get("sources") or [])[:3]],
                 "domains_crossed": r.get("domains_crossed"),
                 "leading_indicator": r.get("leading_indicator"),
             })
     return out
+
+
+def _is_disputed(disputed_claims) -> bool:
+    """True when the verifier found a real dispute (not 'none found' boilerplate)."""
+    t = (disputed_claims or "").strip().lower()
+    return bool(t) and not t.startswith("none")
 
 
 # Recalibration (#5): a total order over the register so risks don't pile up at one tie.
@@ -560,12 +573,12 @@ def append_risk_register(snapshot: dict, path: Path) -> None:
         rid = e["id"]
         point = {"date": date, "severity": e["severity"], "likelihood": e["likelihood"],
                  "exposure": e["exposure"], "trajectory": e["trajectory"],
-                 "priority": e["priority"]}
+                 "priority": e["priority"], "disputed": _is_disputed(e.get("disputed_claims"))}
         rec = by_id.get(rid)
         if rec is None:
-            by_id[rid] = {"id": rid, "risk": e["risk"], "first_seen": date,
-                          "last_seen": date, "n_appearances": 1, "latest": e,
-                          "history": [point]}
+            by_id[rid] = rec = {"id": rid, "risk": e["risk"], "first_seen": date,
+                                "last_seen": date, "n_appearances": 1, "latest": e,
+                                "history": [point]}
         else:
             rec["last_seen"] = date
             rec["risk"] = e["risk"]
@@ -575,6 +588,12 @@ def append_risk_register(snapshot: dict, path: Path) -> None:
                 rec.setdefault("history", []).append(point)
             else:                       # same date re-run -> overwrite, don't double-count
                 rec["history"][-1] = point
+        # Counterevidence trail (#23): keep every DISTINCT dispute the verifier ever found
+        # for this risk, dated — evidence-against accumulates instead of being overwritten.
+        if _is_disputed(e.get("disputed_claims")):
+            trail = rec.setdefault("counterevidence", [])
+            if not any(c.get("disputed_claims") == e["disputed_claims"] for c in trail):
+                trail.append({"date": date, "disputed_claims": e["disputed_claims"]})
 
     out = sort_register(list(by_id.values()))
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -1473,12 +1473,57 @@ def render_register_section():
     # the first table column, so you can match a dot to its row without hovering.
     newest = register_newest_date(reg)
     ranked = sort_register(reg)
+
+    def _disputed(e):
+        t = ((e.get("latest") or {}).get("disputed_claims") or "").strip().lower()
+        return bool(t) and not t.startswith("none")
+
+    # --- Filters (#32): slice a growing register down to what you're triaging. ---
+    with st.expander("🔍 Filter the register", expanded=False):
+        f1, f2, f3 = st.columns(3)
+        with f1:
+            f_traj = st.multiselect("Trajectory", ["accelerating", "steady", "decelerating"],
+                                    default=[], help="Empty = all")
+            f_minp = st.slider("Min priority", 1, 25, 1)
+        with f2:
+            f_nov = st.multiselect("Novelty", ["genuinely_unsurfaced", "partially_anticipated",
+                                               "already_widely_discussed"], default=[])
+            f_minc = st.slider("Min confidence", 1, 5, 1)
+        with f3:
+            f_fresh = st.radio("Freshness", ["All", "Fresh only", "Stale only"], index=0)
+            f_disp = st.checkbox("⚖️ Disputed only",
+                                 help="Risks where the web-verifier found a contested claim")
+
+    def _keep(e):
+        lt = e.get("latest") or {}
+        if f_traj and lt.get("trajectory") not in f_traj:
+            return False
+        if (lt.get("priority") or 0) < f_minp:
+            return False
+        if f_nov and lt.get("novelty_rating") not in f_nov:
+            return False
+        if (lt.get("confidence") or 0) < f_minc and lt.get("confidence") is not None:
+            return False
+        stale = register_is_stale(e, newest)
+        if f_fresh == "Fresh only" and stale:
+            return False
+        if f_fresh == "Stale only" and not stale:
+            return False
+        if f_disp and not _disputed(e):
+            return False
+        return True
+
+    filtered = [e for e in ranked if _keep(e)]
+    if len(filtered) < len(ranked):
+        st.caption(f"Showing **{len(filtered)}** of {len(ranked)} risks after filters.")
+
     rows = []
-    for i, e in enumerate(ranked, 1):
+    for i, e in enumerate(filtered, 1):
         lt = e.get("latest") or {}
         stale = register_is_stale(e, newest)
         rows.append({
-            "#": i, "": "⏳" if stale else "", "Priority": lt.get("priority"),
+            "#": i, "": ("⏳" if stale else "") + ("⚖️" if _disputed(e) else ""),
+            "Priority": lt.get("priority"),
             "Sev": lt.get("severity"), "Lik": lt.get("likelihood"),
             "Estimative": estimative(lt.get("likelihood")), "Exp": lt.get("exposure"),
             "Conf": lt.get("confidence"), "Evid": lt.get("evidence_strength"),
@@ -1541,7 +1586,31 @@ def render_register_section():
                   if n_stale else "")
                + ". Priority = severity × likelihood (1–25); **Conf** = calibrated confidence, "
                "**Evid** = evidence strength, **Act** = actionability (these break priority "
-               "ties and set the forced rank). First-seen / last-seen show persistence.")
+               "ties and set the forced rank). ⚖️ = a dispute was found. First-seen / "
+               "last-seen show persistence.")
+
+    # --- Counterevidence (#23): the evidence AGAINST, persisted across refreshes. ---
+    disputed_risks = [e for e in filtered if _disputed(e) or e.get("counterevidence")]
+    if disputed_risks:
+        with st.expander(f"⚖️ Evidence & disputes ({len(disputed_risks)}) — what argues "
+                         "AGAINST these risks"):
+            st.caption("The web-verifier actively searches for disputing coverage; every "
+                       "distinct dispute it has ever found for a risk is kept here (dated), "
+                       "so counterevidence accumulates instead of being overwritten. A risk "
+                       "that only ever collects confirming evidence isn't calibrated.")
+            for e in disputed_risks:
+                lt = e.get("latest") or {}
+                st.markdown(f"**{e.get('risk','')}**")
+                if lt.get("prior_coverage"):
+                    st.markdown(f"- *Prior coverage:* {lt['prior_coverage']}")
+                for c in (e.get("counterevidence")
+                          or ([{"date": e.get("last_seen"),
+                                "disputed_claims": lt.get("disputed_claims")}]
+                              if _disputed(e) else [])):
+                    st.markdown(f"- *Disputed ({c.get('date','')}):* {c.get('disputed_claims','')}")
+                for s in (lt.get("sources") or []):
+                    t, u = s.get("title", ""), s.get("url", "")
+                    st.markdown(f"  - [{t}]({u})" if u else f"  - {t}")
 
 
 # =================================================================== Scenarios
