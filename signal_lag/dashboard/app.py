@@ -25,7 +25,7 @@ from signal_lag.analysis import alerts  # noqa: E402
 from signal_lag.glossary import CAPABILITY_KEYS, GLOSSARY, SAFETY_KEYS  # noqa: E402
 from signal_lag.snapshot import (  # noqa: E402
     arxiv_url, diff_snapshots, load_snapshot, register_is_stale, register_newest_date,
-    sort_register)
+    register_status, sort_register)
 
 st.set_page_config(page_title="signal-lag", layout="wide", page_icon="📡")
 
@@ -152,7 +152,7 @@ def register_csv(register) -> str:
     for e in register or []:
         lt = e.get("latest") or {}
         rows.append({
-            "id": e.get("id"), "risk": e.get("risk"),
+            "id": e.get("id"), "risk": e.get("risk"), "status": e.get("status"),
             "first_seen": e.get("first_seen"), "last_seen": e.get("last_seen"),
             "n_appearances": e.get("n_appearances"),
             "priority": lt.get("priority"), "severity": lt.get("severity"),
@@ -1700,9 +1700,16 @@ def render_register_section():
                                                "already_widely_discussed"], default=[])
             f_minc = st.slider("Min confidence", 1, 5, 1)
         with f3:
-            f_fresh = st.radio("Freshness", ["All", "Fresh only", "Stale only"], index=0)
+            f_status = st.multiselect(
+                "Status", ["open", "strengthening", "weakening", "dormant"], default=[],
+                help="Watchlist status derived from each risk's own score history: "
+                     "strengthening/weakening = re-seen with scores moving; dormant = not "
+                     "re-surfaced in the latest refresh. Empty = all.")
             f_disp = st.checkbox("⚖️ Disputed only",
                                  help="Risks where the web-verifier found a contested claim")
+
+    def _status(e):
+        return e.get("status") or register_status(e, newest)
 
     def _keep(e):
         lt = e.get("latest") or {}
@@ -1714,10 +1721,7 @@ def render_register_section():
             return False
         if (lt.get("confidence") or 0) < f_minc and lt.get("confidence") is not None:
             return False
-        stale = register_is_stale(e, newest)
-        if f_fresh == "Fresh only" and stale:
-            return False
-        if f_fresh == "Stale only" and not stale:
+        if f_status and _status(e) not in f_status:
             return False
         if f_disp and not _disputed(e):
             return False
@@ -1727,12 +1731,15 @@ def render_register_section():
     if len(filtered) < len(ranked):
         st.caption(f"Showing **{len(filtered)}** of {len(ranked)} risks after filters.")
 
+    _STATUS_EMOJI = {"strengthening": "📈", "weakening": "📉", "dormant": "💤", "open": "▫️"}
     rows = []
     for i, e in enumerate(filtered, 1):
         lt = e.get("latest") or {}
         stale = register_is_stale(e, newest)
+        stat = _status(e)
         rows.append({
             "#": i, "": ("⏳" if stale else "") + ("⚖️" if _disputed(e) else ""),
+            "Status": f"{_STATUS_EMOJI.get(stat, '')} {stat}",
             "Priority": lt.get("priority"),
             "Sev": lt.get("severity"), "Lik": lt.get("likelihood"),
             "Estimative": estimative(lt.get("likelihood")), "Exp": lt.get("exposure"),
@@ -1788,6 +1795,15 @@ def render_register_section():
                           legend=dict(orientation="h", yanchor="bottom", y=1.02, title=None))
         st.plotly_chart(fig, width="stretch")
 
+    _scounts = {}
+    for e in ranked:
+        s = _status(e)
+        _scounts[s] = _scounts.get(s, 0) + 1
+    st.caption("**Watchlist status:** " + " · ".join(
+        f"{_STATUS_EMOJI.get(s, '')} {n} {s}" for s, n in sorted(
+            _scounts.items(), key=lambda kv: -kv[1]))
+        + " — statuses come from each risk's own score history "
+        "(materialized/invalidated join once outcome-evidence linkage exists).")
     st.markdown("**Ranked register** (forced ranking, highest priority first):")
     st.dataframe(rdf, width="stretch", hide_index=True)
     n_stale = sum(1 for e in reg if register_is_stale(e, newest))

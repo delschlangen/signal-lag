@@ -374,6 +374,38 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ---------------------------------------- #6 watchlist statuses
+def test_register_status_derivation():
+    from signal_lag import snapshot as snap_mod
+    newest = "2026-07-02"
+
+    def _e(hist, n_app, last_seen="2026-07-02", conf=3):
+        return {"history": hist, "n_appearances": n_app, "last_seen": last_seen,
+                "latest": {"confidence": conf}}
+
+    up = _e([{"date": "2026-06-25", "priority": 9}, {"date": newest, "priority": 16}], 2)
+    down = _e([{"date": "2026-06-25", "priority": 16}, {"date": newest, "priority": 9}], 2)
+    flat = _e([{"date": "2026-06-25", "priority": 12}, {"date": newest, "priority": 12}], 2)
+    persistent = _e([{"date": d, "priority": 12} for d in
+                     ("2026-06-18", "2026-06-25", newest)], 3, conf=4)
+    new = _e([{"date": newest, "priority": 12}], 1)
+    stale = _e([{"date": "2026-06-25", "priority": 20}], 1, last_seen="2026-06-25")
+    assert snap_mod.register_status(up, newest) == "strengthening"
+    assert snap_mod.register_status(down, newest) == "weakening"
+    assert snap_mod.register_status(flat, newest) == "open"
+    assert snap_mod.register_status(persistent, newest) == "strengthening"  # 3× + conf 4
+    assert snap_mod.register_status(new, newest) == "open"
+    assert snap_mod.register_status(stale, newest) == "dormant"
+
+
+def test_register_write_stores_status(tmp_path):
+    from signal_lag import snapshot as snap_mod
+    path = tmp_path / "register.json"
+    snap_mod.append_risk_register(_snap_with_risk("2026-07-01", "none found"), path)
+    e = json.loads(path.read_text())[0]
+    assert e["status"] == "open"                    # first appearance, fresh
+
+
 # ---------------------------------------- #8 epistemic claim labels
 def test_attach_scores_normalizes_claim_basis():
     r = foresight._attach_scores([{

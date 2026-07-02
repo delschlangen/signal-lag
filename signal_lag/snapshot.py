@@ -553,6 +553,36 @@ def sort_register(register: list) -> list:
     return sorted(register or [], key=lambda e: register_sort_key(e, newest), reverse=True)
 
 
+def register_status(entry: dict, newest_date: str) -> str:
+    """Watchlist status (#6), derived from the entry's own score history + staleness.
+
+    - ``dormant``       — not re-surfaced in the latest refresh (no new evidence).
+    - ``strengthening`` — re-seen with priority or confidence moving UP vs the prior point.
+    - ``weakening``     — re-seen with priority moving DOWN.
+    - ``open``          — new this refresh, or re-seen with scores holding steady.
+
+    ``materialized`` / ``invalidated`` / ``partially confirmed`` are deliberately NOT
+    auto-derived: they require outcome evidence (a linked incident, a broken mechanism)
+    the pipeline can't yet establish — deriving them from score drift would fake
+    precision. They join the vocabulary when evidence linkage lands.
+    """
+    if register_is_stale(entry, newest_date):
+        return "dormant"
+    h = entry.get("history") or []
+    if len(h) >= 2:
+        prev_p, last_p = h[-2].get("priority") or 0, h[-1].get("priority") or 0
+        lt = entry.get("latest") or {}
+        if last_p > prev_p:
+            return "strengthening"
+        if last_p < prev_p:
+            return "weakening"
+        # Equal priority: growing persistence with high confidence still reads as
+        # strengthening evidence; otherwise it simply stays open.
+        if (entry.get("n_appearances") or 1) >= 3 and (lt.get("confidence") or 0) >= 4:
+            return "strengthening"
+    return "open"
+
+
 def append_risk_register(snapshot: dict, path: Path) -> None:
     """Upsert this refresh's scored risks into an evergreen register (idempotent per date).
 
@@ -607,6 +637,10 @@ def append_risk_register(snapshot: dict, path: Path) -> None:
                 trail.append({"date": date, "disputed_claims": e["disputed_claims"]})
 
     out = sort_register(list(by_id.values()))
+    # Watchlist status (#6), stored so exports/consumers of the JSON carry it too.
+    newest = register_newest_date(out)
+    for e in out:
+        e["status"] = register_status(e, newest)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
 
