@@ -192,6 +192,18 @@ def build_snapshot(
     # --- Step 5: real-world incident benchmark (leading research vs lagging incidents) ---
     snap_out = augment_incidents(settings, snap_out)
 
+    # --- Lab-announcement -> safety-response lag (#2): how long paired safety research
+    # takes to answer each lab announcement in the arXiv literature. ---
+    lcfg = (settings.analysis or {}).get("lab_lag") or {}
+    if lcfg.get("enabled", True):
+        from .analysis import lab_lag as lab_lag_mod
+        snap_out["lab_lag"] = lab_lag_mod.lab_response_lag(
+            posts, papers, tax_tags, taxonomy, today,
+            baseline_weeks=int(lcfg.get("baseline_weeks", 8)),
+            horizon_weeks=int(lcfg.get("horizon_weeks", 12)),
+            uptick_factor=float(lcfg.get("uptick_factor", 1.5)),
+        )
+
     # --- "This week" lens: a focused analysis of just the last `window_days` of papers,
     # alongside the quarterly view (which is unaffected).
     snap_out = build_weekly(

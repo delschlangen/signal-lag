@@ -179,6 +179,14 @@ def velocity_csv(snap) -> str:
     return pd.DataFrame(rows).to_csv(index=False)
 
 
+def lab_lag_csv(snap) -> str:
+    """Per-announcement lab→safety-response lag to CSV."""
+    posts = (snap.get("lab_lag") or {}).get("posts") or []
+    cols = ["published", "lab", "announcement", "capability", "safety",
+            "days_to_first", "weeks_to_measurable", "status", "baseline_per_week"]
+    return pd.DataFrame([{c: p.get(c) for c in cols} for p in posts]).to_csv(index=False)
+
+
 def weekly_block(snap):
     return snap.get("weekly") or {}
 
@@ -897,12 +905,64 @@ def render_divergence_overall():
         st.info("No pairings configured.")
 
 
+def render_lab_lag():
+    """🛰️ Lab-announcement → safety-response lag (#2) — the tool's namesake, quantified."""
+    ll = snap.get("lab_lag") or {}
+    st.divider()
+    st.markdown("#### 🛰️ Lab-announcement → safety-response lag")
+    if not ll.get("available"):
+        st.caption("Not enough lab announcements tagged to a paired capability topic (with an "
+                   "elapsed response window) to measure response lag in this snapshot.")
+        return
+    st.caption("For each lab/blog announcement tagged to a **capability** topic in a pairing, "
+               "how long the paired **safety** research takes to answer in the arXiv literature "
+               "— the first safety paper afterwards, and the first week safety volume rises "
+               "measurably above its pre-announcement baseline. Announcements whose window "
+               "hasn't elapsed are **pending**, not unanswered.")
+    c1, c2, c3 = st.columns(3)
+    mw = ll.get("median_weeks_to_measurable")
+    c1.metric("Median safety-response lag", f"{mw} wk" if mw is not None else "—")
+    md = ll.get("median_days_to_first")
+    c2.metric("Median days to first safety paper", f"{md:.0f}" if md is not None else "—")
+    c3.metric("Announcements measured", f"{ll.get('n_posts_considered', 0)}",
+              help=f"{ll.get('n_window_elapsed', 0)} have a fully-elapsed response window")
+    un = ll.get("unanswered") or {}
+    if ll.get("n_window_elapsed"):
+        st.markdown(
+            f"**Unanswered after** — 4 wk: **{un.get('4', 0)}** · 8 wk: **{un.get('8', 0)}** · "
+            f"12 wk: **{un.get('12', 0)}**  _(of {ll.get('n_window_elapsed')} elapsed-window "
+            "announcements)_")
+    byc = ll.get("by_capability") or []
+    if byc:
+        st.markdown("**Median response lag by capability topic:**")
+        st.dataframe(pd.DataFrame([
+            {"Capability topic": b["capability"], "Announcements": b["n"],
+             "Median days→first": b["median_days_to_first"],
+             "Median weeks→measurable": b["median_weeks_to_measurable"],
+             "Unanswered": b["n_unanswered"]}
+            for b in byc
+        ]), width="stretch", hide_index=True)
+    posts = ll.get("posts") or []
+    if posts:
+        _st_emoji = {"responded": "✅", "no measurable response": "⚠️", "pending": "⏳"}
+        with st.expander(f"Per-announcement detail ({len(posts)})"):
+            st.dataframe(pd.DataFrame([
+                {"": _st_emoji.get(p["status"], ""), "Published": p["published"],
+                 "Lab": p["lab"], "Announcement": p["announcement"],
+                 "Capability": p["capability"], "Paired safety": p["safety"],
+                 "Days→first": p["days_to_first"], "Weeks→measurable": p["weeks_to_measurable"],
+                 "Status": p["status"]}
+                for p in posts
+            ]), width="stretch", hide_index=True)
+
+
 with tab_div:
     st.subheader("⚖️ Capability vs. safety")
     if view_toggle("div_view", bool(weekly_block(snap).get("counts_by_key"))) == "weekly":
         render_weekly_divergence()
     else:
         render_divergence_overall()
+    render_lab_lag()
 
 # ================================================================== Velocity
 def render_velocity_overall():
@@ -1882,6 +1942,10 @@ with tab_method:
             st.download_button("⬇️ Topic velocity (CSV)", data=velocity_csv(snap),
                                file_name=f"topic_velocity_{date}.csv", mime="text/csv",
                                width="stretch")
+            if (snap.get("lab_lag") or {}).get("posts"):
+                st.download_button("⬇️ Lab-response lag (CSV)", data=lab_lag_csv(snap),
+                                   file_name=f"lab_response_lag_{date}.csv", mime="text/csv",
+                                   width="stretch")
         with c2:
             if (snap.get("incidents") or {}).get("records"):
                 st.download_button("⬇️ Incidents (CSV)", data=incidents_csv(snap),

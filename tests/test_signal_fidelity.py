@@ -374,6 +374,50 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ------------------------------------------------ #2 lab -> safety-response lag
+def _lag_taxonomy():
+    from signal_lag.config import Pairing
+    return Taxonomy(
+        safety_topics=[Topic("saf", "Oversight", "safety", ["s"])],
+        capability_topics=[Topic("cap", "Agents", "capability", ["c"])],
+        pairings=[Pairing(name="Agents vs. Oversight", capability="cap", safety="saf")],
+    )
+
+
+def _paper_on(aid, d):
+    return Paper(aid, aid, "abstract", d, None)
+
+
+def test_lab_lag_measures_response_and_marks_pending():
+    from signal_lag.analysis import lab_lag
+    tax = _lag_taxonomy()
+    today = dt.date(2026, 7, 1)
+    ann = dt.date(2026, 3, 1)
+    # Baseline: 1 safety paper in the 8 weeks before; then a burst of 6 within 3 weeks after.
+    papers = [_paper_on("b0", dt.date(2026, 2, 1))]
+    papers += [_paper_on(f"a{i}", ann + dt.timedelta(days=3 + i)) for i in range(6)]
+    tax_tags = {p.arxiv_id: [("saf", 0.5)] for p in papers}
+    posts = [
+        {"source": "OpenAI", "title": "Agent launch", "published": "2026-03-01", "topic": "cap"},
+        {"source": "OpenAI", "title": "Too recent", "published": "2026-06-20", "topic": "cap"},
+        {"source": "OpenAI", "title": "Untagged", "published": "2026-03-01", "topic": None},
+    ]
+    out = lab_lag.lab_response_lag(posts, papers, tax_tags, tax, today)
+    assert out["available"] is True
+    assert out["n_posts_considered"] == 2            # untagged post excluded
+    responded = [p for p in out["posts"] if p["announcement"] == "Agent launch"][0]
+    assert responded["status"] == "responded" and responded["weeks_to_measurable"] == 1
+    recent = [p for p in out["posts"] if p["announcement"] == "Too recent"][0]
+    assert recent["status"] == "pending"             # window not elapsed -> not "unanswered"
+    assert out["n_window_elapsed"] == 1
+
+
+def test_lab_lag_failsoft_without_posts_or_pairings():
+    from signal_lag.analysis import lab_lag
+    tax = _lag_taxonomy()
+    assert lab_lag.lab_response_lag([], [], {}, tax, dt.date(2026, 7, 1)) == {"available": False}
+
+
 def test_augment_incidents_benchmark_quadrants(monkeypatch):
     from signal_lag import snapshot as snap_mod
     from signal_lag.config import Settings

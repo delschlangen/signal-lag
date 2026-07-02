@@ -221,6 +221,22 @@ analysis:
     # Min harm-vector quarter-over-quarter growth (%) counted as "research rising".
     rising_pct: 4
 
+  # Lab-announcement -> safety-response lag (#2): operationalizes the tool's name. For each
+  # lab/blog announcement tagged to a CAPABILITY topic that sits in a capability<->safety
+  # pairing, measure how long the paired SAFETY topic takes to respond in the arXiv
+  # literature — first safety paper afterwards, and the first week safety volume rises
+  # measurably above its pre-announcement baseline. Computed at snapshot-build time (needs the
+  # full papers + tags); fail-soft. Announcements whose response window hasn't elapsed are
+  # reported as "pending", never "unanswered".
+  lab_lag:
+    enabled: true
+    # Weeks before an announcement used as the safety-volume baseline.
+    baseline_weeks: 8
+    # Weeks after an announcement to watch for a response before calling it unanswered.
+    horizon_weeks: 12
+    # How far above baseline the safety volume must rise to count as a measurable response.
+    uptick_factor: 1.5
+
   # "This week" lens: alongside the 3-year quarterly view, analyze ONLY papers from the
   # last `window_days`. Adds a focused Claude summary + a full (web-verified) foresight
   # pass over just this week's papers, shown via a toggle on the Summary & Foresight tabs.
