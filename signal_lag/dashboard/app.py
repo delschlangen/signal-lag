@@ -103,6 +103,13 @@ def explained_risks(snap):
     return [r for r in (fg.get("risks") or []) if r.get("plain_explanation")]
 
 
+def all_fg_risks(snap):
+    """Current overall + weekly foresight risks (for matching register statements)."""
+    out = list((get_analysis(snap).get("foresight_gap") or {}).get("risks") or [])
+    out += list(((snap.get("weekly") or {}).get("foresight_gap") or {}).get("risks") or [])
+    return out
+
+
 def provenance_line(meta: dict) -> str:
     """Compact one-line provenance/trust metadata from the snapshot meta (#21)."""
     n_papers = meta.get("n_papers") or 0
@@ -1858,6 +1865,104 @@ def render_register_section():
                 "quarters of history. The tracking is in place now; those metrics will appear "
                 "honestly as the register ages, rather than being simulated today.")
 
+    # --- Risk drill-down (#10): the full evidence dossier for one risk. ---
+    st.divider()
+    st.markdown("#### 🔎 Risk drill-down — the full evidence dossier")
+    if filtered:
+        _opts = {f"#{i} (P{(e.get('latest') or {}).get('priority')}) "
+                 f"{(e.get('risk') or '')[:90]}": e
+                 for i, e in enumerate(filtered, 1)}
+        _pick = st.selectbox("Pick a risk to audit", list(_opts))
+        _e = _opts[_pick]
+        _lt = _e.get("latest") or {}
+        _fr = next((x for x in all_fg_risks(snap) if x.get("risk") == _e.get("risk")), None)
+        with st.container(border=True):
+            st.markdown(f"### {_e.get('risk', '')}")
+            st.markdown(
+                f"**Status:** {_STATUS_EMOJI.get(_status(_e), '')} {_status(_e)} · "
+                f"first seen {_e.get('first_seen')} · last seen {_e.get('last_seen')} · "
+                f"seen {_e.get('n_appearances')}× · "
+                f"**P{_lt.get('priority')}** (sev {_lt.get('severity')}/5, "
+                f"lik {_lt.get('likelihood')}/5 *{estimative(_lt.get('likelihood'))}*, "
+                f"exp {_lt.get('exposure')}/5) · conf {_lt.get('confidence')}/5 · "
+                f"evid {_lt.get('evidence_strength')}/5 · act {_lt.get('actionability')}/5")
+            if _fr and _fr.get("score_rationale"):
+                st.caption(f"**Why these scores:** {_fr['score_rationale']}")
+
+            _hist = _e.get("history") or []
+            if len(_hist) >= 2:
+                _hdf = pd.DataFrame(_hist)
+                _figh = px.line(_hdf, x="date", y="priority", markers=True, height=220,
+                                template="plotly_dark",
+                                labels={"date": "", "priority": "priority (sev × lik)"})
+                _figh.update_layout(margin=dict(t=10, b=10), yaxis=dict(range=[0, 26]))
+                st.plotly_chart(_figh, width="stretch")
+
+            if _fr:
+                if _fr.get("derived_from"):
+                    st.markdown(f"**📐 Derived from:** {_fr['derived_from']}")
+                if _fr.get("communities"):
+                    st.markdown(f"**👥 Communities:** {_fr['communities']}")
+                if _fr.get("mechanism"):
+                    st.markdown(f"**⚙️ Mechanism:** {_fr['mechanism']}")
+                _claims = _fr.get("claims") or []
+                if _claims:
+                    _bf = {"observed": ("🔵", "blue", "Observed"),
+                           "inferred": ("🟠", "orange", "Inferred"),
+                           "speculative": ("⚪", "gray", "Speculative")}
+                    st.markdown("**🧬 Key claims:**")
+                    for _c in _claims:
+                        _dot, _col, _w = _bf.get(_c.get("basis"), _bf["speculative"])
+                        st.markdown(f"- {_dot} :{_col}[**{_w}:**] {_c.get('text', '')}")
+                _com = _fr.get("change_of_mind") or {}
+                if any(_com.values()):
+                    st.markdown("**🔀 What would change our mind:**")
+                    for _lbl2, _k in (("⬆️ Upgrade if", "upgrade_if"),
+                                      ("⬇️ Downgrade if", "downgrade_if"),
+                                      ("❌ Invalidate if", "invalidate_if")):
+                        if _com.get(_k):
+                            st.markdown(f"- **{_lbl2}:** {_com[_k]}")
+                _am = _fr.get("action_map") or {}
+                if any(_am.values()):
+                    st.markdown("**🛠️ Next actions:**")
+                    for _lbl2, _k in (("🧪 Eval", "eval_to_run"),
+                                      ("📊 Benchmark", "benchmark_to_monitor"),
+                                      ("🛡️ Mitigation", "mitigation"),
+                                      ("🏛️ Policy question", "policy_question"),
+                                      ("👤 Owner", "owner_community"),
+                                      ("🛰️ Data source", "data_source_to_watch")):
+                        if _am.get(_k):
+                            st.markdown(f"- **{_lbl2}:** {_am[_k]}")
+                _look = _arxiv_lookup(snap)
+                _ids = [a for a in (_fr.get("source_arxiv_ids") or []) if a in _look]
+                if _ids:
+                    st.markdown("**📄 Source papers:** " + " · ".join(
+                        f"[{_look[a][0]}]({_look[a][1]})" if _look[a][1] else _look[a][0]
+                        for a in _ids))
+                _pe = _fr.get("plain_explanation") or {}
+                if _pe:
+                    with st.expander("🧩 In plain terms"):
+                        for _lbl2, _k in _PLAIN_SECTIONS:
+                            if _pe.get(_k):
+                                st.markdown(f"**{_lbl2}:** {_pe[_k]}")
+            else:
+                if _lt.get("leading_indicator"):
+                    st.markdown(f"**📡 Leading indicator:** {_lt['leading_indicator']}")
+                st.caption("This risk isn't in the current refresh's foresight output "
+                           "(it persists from an earlier one), so only its register "
+                           "fields are shown — scores, history, and evidence above.")
+
+            if _lt.get("prior_coverage") or _e.get("counterevidence"):
+                st.markdown("**⚖️ Evidence against / prior coverage:**")
+                if _lt.get("prior_coverage"):
+                    st.markdown(f"- *Prior coverage:* {_lt['prior_coverage']}")
+                for _c in (_e.get("counterevidence") or []):
+                    st.markdown(f"- *Disputed ({_c.get('date', '')}):* "
+                                f"{_c.get('disputed_claims', '')}")
+                for _s in (_lt.get("sources") or []):
+                    _t, _u = _s.get("title", ""), _s.get("url", "")
+                    st.markdown(f"  - [{_t}]({_u})" if _u else f"  - {_t}")
+
 
 # =================================================================== Scenarios
 # ICD-203-style estimative-probability vocabulary (Step 4): a 1-5 likelihood maps to a
@@ -2641,18 +2746,11 @@ def _bluf_item(headline: str, so_what: str):
         st.caption(f"↳ **So what:** {so_what}")
 
 
-def _all_fg_risks(snap):
-    """Current overall + weekly foresight risks (for matching register statements)."""
-    out = list((get_analysis(snap).get("foresight_gap") or {}).get("risks") or [])
-    out += list((weekly_block(snap).get("foresight_gap") or {}).get("risks") or [])
-    return out
-
-
 with st.sidebar:
     st.markdown("### 🎯 Bottom line up front")
     st.caption(f"Snapshot {meta.get('refreshed_at', '')}")
 
-    _fg_risks = _all_fg_risks(snap)
+    _fg_risks = all_fg_risks(snap)
 
     def _risk_substance(statement, fallback_indicator=None):
         """The most substantive 'so what' held for a risk: its plain-language bottom
