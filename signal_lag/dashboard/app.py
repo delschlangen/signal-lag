@@ -21,6 +21,7 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
+from signal_lag.analysis import alerts  # noqa: E402
 from signal_lag.glossary import CAPABILITY_KEYS, GLOSSARY, SAFETY_KEYS  # noqa: E402
 from signal_lag.snapshot import diff_snapshots, load_snapshot  # noqa: E402
 
@@ -770,19 +771,67 @@ def render_divergence_overall():
             margin=dict(l=10, r=20, t=10, b=40),
         )
         st.plotly_chart(fig, width="stretch")
+        def _vol_balance(x):
+            if pd.isna(x):
+                return "—"
+            if x >= 1.15:
+                return f"cap-heavy {x:.2f}×"
+            if x <= 0.87:
+                return f"safety-heavy {1/x:.2f}×"
+            return f"even {x:.2f}×"
+
+        def _growth_balance(cap, saf):
+            g = (cap - saf) * 100
+            side = "capability" if g > 0 else ("safety" if g < 0 else "—")
+            return f"{side} +{abs(g):.0f} pts" if side != "—" else "even"
+
         disp = pd.DataFrame({
             "Pairing": div["pairing"],
+            "Cap papers/qtr": div["cap_recent"].map(lambda x: f"{x:.0f}"),
+            "Saf papers/qtr": div["saf_recent"].map(lambda x: f"{x:.0f}"),
+            "Volume balance": div["volume_ratio"].map(_vol_balance),
             "Capability growth/qtr": (div["cap_growth"] * 100).map(lambda x: f"{x:+.0f}%"),
             "Safety growth/qtr": (div["saf_growth"] * 100).map(lambda x: f"{x:+.0f}%"),
-            "Gap": (div["gap"] * 100).map(lambda x: f"{x:+.0f} pts"),
-            "Volume ratio (cap÷saf)": div["volume_ratio"].map(
-                lambda x: f"{x:.2f}×" if pd.notna(x) else "—"),
-            "Safety lagging?": div["lagging"].map(lambda b: "⚠️ yes" if b else "—"),
+            "Growth balance": [
+                _growth_balance(c, s) for c, s in zip(div["cap_growth"], div["saf_growth"])],
+            "Lag status": div["lagging"].map(
+                lambda b: "⚠️ safety lagging" if b else "keeping pace"),
         })
         st.dataframe(disp, width="stretch", hide_index=True)
-        st.caption("Gap = capability growth − safety growth. A pairing is flagged when the "
-                   "gap clears the threshold, capability growth is positive, and capability "
-                   "has enough recent volume.")
+        st.caption("**Volume balance** = which side has more papers now (cap÷saf ratio). "
+                   "**Growth balance** = which side is accelerating faster (gap = capability "
+                   "growth − safety growth). A pairing is flagged *safety lagging* when the "
+                   "growth gap clears the threshold, capability growth is positive, and "
+                   "capability has enough recent volume.")
+        st.info("**Reading it:** safety can have *more papers overall* (safety-heavy volume "
+                "balance) yet still be **lagging** if capability is accelerating while safety "
+                "is flat or shrinking — the two columns answer different questions (how big vs. "
+                "how fast).", icon="🧭")
+
+        # --- Monitoring-debt curves (#3): cumulative capability-minus-safety backlog. ---
+        debt = alerts.monitoring_debt(snap)
+        debt = [d for d in debt if any(d["debt"])]
+        if debt:
+            st.divider()
+            st.markdown("#### 📉 Monitoring-debt curves — accumulated backlog per pairing")
+            st.caption("Cumulative Σ(capability − safety) papers per quarter. A one-quarter "
+                       "gap is noise; a **rising** curve is persistent structural imbalance "
+                       "(capability consistently out-producing its paired safety topic). The "
+                       "*slope* is the signal — topics start at different baselines.")
+            fig = go.Figure()
+            for d in debt:
+                fig.add_trace(go.Scatter(
+                    x=d["periods"], y=d["debt"], mode="lines+markers", name=d["pairing"]))
+            fig.update_layout(
+                height=460, template="plotly_dark", xaxis_title=None,
+                yaxis_title="cumulative capability − safety (papers)",
+                legend=dict(orientation="h", yanchor="bottom", y=1.02, title=None),
+                margin=dict(t=10))
+            fig.add_hline(y=0, line_dash="dot", line_color="gray")
+            st.plotly_chart(fig, width="stretch")
+            worsening = [d["pairing"] for d in debt if d["rising"] and d["latest"] > 0]
+            if worsening:
+                st.markdown("**Debt still rising this quarter:** " + ", ".join(worsening))
     else:
         st.info("No pairings configured.")
 
@@ -835,6 +884,24 @@ def render_velocity_overall():
         st.dataframe(disp, width="stretch", hide_index=True)
     else:
         st.caption("No inflection data.")
+
+    # --- Momentum vs. expected (#14): this week's volume against the quarterly baseline. ---
+    wd = weekly_block(snap).get("window_days", 7)
+    mom = alerts.weekly_momentum(snap, window_days=wd)
+    if mom:
+        st.divider()
+        st.markdown(f"#### 📊 This week vs. expected — momentum (last {wd} days)")
+        st.caption("Each topic's actual count this week against the count expected from its "
+                   "recent quarterly baseline (scaled to the window). **z** is a Poisson "
+                   "deviation (√expected) — |z| ≳ 2 is an anomalous spike/lull, not ordinary "
+                   "weekly noise.")
+        mdf = pd.DataFrame([
+            {"Topic": lbl(snap, m["topic_key"]), "This week": m["actual"],
+             "Expected": m["expected"], "Δ%": f"{m['pct']:+.0f}%", "z": f"{m['z']:+.1f}",
+             "": ("🔥" if m["z"] >= 2 else ("❄️" if m["z"] <= -2 else ""))}
+            for m in mom
+        ])
+        st.dataframe(mdf, width="stretch", hide_index=True)
 
     # --- Strategic map (formerly the Quadrant tab) — the same velocity data plotted as
     # recent volume × growth: emerging / hot / cooling / white-space. Quarterly only.
@@ -917,6 +984,22 @@ def render_sentiment_overall():
                     f"- **{lbl(snap, k)}** — critical share {v['prior_share']*100:.0f}% → "
                     f"{v['recent_share']*100:.0f}% (+{v['trend']*100:.0f} pts, {v['n_recent']} recent papers)"
                 )
+        # --- False-confidence alerts (#13): rising capability + falling self-critique. ---
+        fc = alerts.false_confidence_alerts(snap)
+        if fc:
+            st.markdown("**🟣 Possible false-confidence signals** — *investigate, not confirmed*:")
+            st.caption("A capability topic growing while its **critical share is falling** and "
+                       "the paired safety topic is flat/shrinking. Falling criticism in a "
+                       "fast-growing field can be genuine resolution — or premature deployment "
+                       "confidence outrunning scrutiny. Distinct from safety-lag and "
+                       "sentiment-erosion.")
+            for a in fc:
+                lab = " · 🛰️ recent lab activity" if a.get("lab_active") else ""
+                st.markdown(
+                    f"- **{lbl(snap, a['capability_topic'])}** growing "
+                    f"{a['cap_growth']*100:+.0f}%/qtr, critical share {a['critical_trend']*100:+.0f} "
+                    f"pts, paired safety **{lbl(snap, a['safety_topic'])}** "
+                    f"{a['saf_growth']*100:+.0f}%/qtr{lab}")
         st.dataframe(sdf, width="stretch", hide_index=True)
         st.caption("Critical detection is embedding-based (cosine similarity to negative/"
                    "limitation seed phrases), not keyword matching — and it's a proxy, "

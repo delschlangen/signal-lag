@@ -289,6 +289,58 @@ def test_fetch_incidents_dedupes_and_requires_title(monkeypatch):
     assert len(out) == 1 and out[0]["title"] == "Dup"    # case-insensitive dupe + empty title dropped
 
 
+# -------------------------------------- #3/#13/#14 derived-signal alerts module
+def _alerts_snapshot():
+    return {
+        "timeseries": [
+            {"topic_key": "cap", "period": "2025Q1", "count": 10},
+            {"topic_key": "cap", "period": "2025Q2", "count": 20},
+            {"topic_key": "saf", "period": "2025Q1", "count": 5},
+            {"topic_key": "saf", "period": "2025Q2", "count": 6},
+        ],
+        "divergence": [
+            {"pairing": "Cap vs. Saf", "capability_topic": "cap", "safety_topic": "saf",
+             "cap_growth": 0.5, "saf_growth": 0.0, "cap_recent": 20, "saf_recent": 6,
+             "volume_ratio": 3.3, "lagging": True},
+        ],
+        "sentiment": {"cap": {"trend": -0.05, "n_recent": 40}},
+        "lab_activity": [{"topic": "cap", "published": "2026-06-01"}],
+        "weekly": {"counts_by_key": {"cap": 40}},
+    }
+
+
+def test_monitoring_debt_accumulates_capability_minus_safety():
+    from signal_lag.analysis import alerts
+    debt = alerts.monitoring_debt(_alerts_snapshot())
+    assert len(debt) == 1
+    # Q1: (10-5)=5 ; Q2 cumulative: 5 + (20-6)=19
+    assert debt[0]["debt"] == [5, 19]
+    assert debt[0]["rising"] is True and debt[0]["latest"] == 19
+
+
+def test_weekly_momentum_flags_spike_vs_expected():
+    from signal_lag.analysis import alerts
+    mom = alerts.weekly_momentum(_alerts_snapshot(), window_days=7)
+    row = next(m for m in mom if m["topic_key"] == "cap")
+    # recent quarterly mean = (10+20)/2 = 15 -> expected weekly = 15 * 7/91.31 ≈ 1.15
+    assert row["expected"] < 3 and row["actual"] == 40
+    assert row["z"] > 2                                   # 40 vs ~1.15 is a huge spike
+
+
+def test_false_confidence_fires_on_rising_cap_falling_critique():
+    from signal_lag.analysis import alerts
+    fc = alerts.false_confidence_alerts(_alerts_snapshot())
+    assert len(fc) == 1
+    assert fc[0]["capability_topic"] == "cap" and fc[0]["lab_active"] is True
+
+
+def test_false_confidence_silent_when_safety_growing():
+    from signal_lag.analysis import alerts
+    snap = _alerts_snapshot()
+    snap["divergence"][0]["saf_growth"] = 0.4          # safety keeping pace -> no alert
+    assert alerts.false_confidence_alerts(snap) == []
+
+
 def test_augment_incidents_benchmark_quadrants(monkeypatch):
     from signal_lag import snapshot as snap_mod
     from signal_lag.config import Settings
