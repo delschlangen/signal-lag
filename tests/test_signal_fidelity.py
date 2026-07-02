@@ -374,6 +374,45 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ------------------------------------- #11/#12/#22 sentiment quadrants + adjusted gap + CIs
+def test_wilson_interval_bounds_and_width():
+    from signal_lag.analysis import alerts
+    lo, hi = alerts.wilson_interval(0.2, 100)
+    assert 0.12 < lo < 0.2 < hi < 0.3
+    lo2, hi2 = alerts.wilson_interval(0.2, 10)
+    assert (hi2 - lo2) > (hi - lo)                 # smaller n -> wider interval
+    assert alerts.wilson_interval(0.5, 0) == (0.0, 1.0)
+
+
+def test_sentiment_quadrants_classify_by_momentum_and_critique():
+    from signal_lag.analysis import alerts
+    snap = {
+        "inflections": [{"topic_key": "a", "change": 0.4, "recent_mean": 50},
+                        {"topic_key": "b", "change": 0.4, "recent_mean": 50},
+                        {"topic_key": "c", "change": -0.3, "recent_mean": 20}],
+        "sentiment": {"a": {"trend": 0.05, "n_recent": 30, "recent_share": 0.2},
+                      "b": {"trend": -0.04, "n_recent": 30, "recent_share": 0.1},
+                      "c": {"trend": 0.06, "n_recent": 20, "recent_share": 0.3}},
+    }
+    q = {r["topic_key"]: r["quadrant"] for r in alerts.sentiment_quadrants(snap)}
+    assert q == {"a": "growing & straining", "b": "growing & confident",
+                 "c": "contracting & critical"}
+
+
+def test_confidence_adjusted_divergence_strengthens_uncritical_capability():
+    from signal_lag.analysis import alerts
+    snap = {
+        "divergence": [{"pairing": "P", "capability_topic": "cap", "safety_topic": "saf",
+                        "cap_growth": 0.4, "saf_growth": 0.2, "gap": 0.2}],
+        "sentiment": {"cap": {"recent_share": 0.02, "n_recent": 40},   # little self-critique
+                      "saf": {"recent_share": 0.40, "n_recent": 40}},  # very critical safety
+    }
+    a = alerts.confidence_adjusted_divergence(snap)[0]
+    # cap 0.4*0.98 - saf 0.2*0.60 = 0.392-0.12 = 0.272 > raw 0.2 -> warning strengthens
+    assert a["adjusted_gap"] > a["raw_gap"]
+    assert "self-critique" in a["reason"]
+
+
 # ------------------------------------------------ #25 verification cache
 def test_verify_attach_reuses_fresh_cache(monkeypatch):
     calls = {"n": 0}

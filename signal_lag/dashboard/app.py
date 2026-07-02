@@ -899,19 +899,46 @@ def render_divergence_overall():
             side = "capability" if g > 0 else ("safety" if g < 0 else "—")
             return f"{side} +{abs(g):.0f} pts" if side != "—" else "even"
 
+        def _g_with_ci(growth, recent):
+            """Growth% with a ±1σ Poisson band (#22); '—' band when a side is too thin."""
+            prior = recent / (1 + growth) if growth > -0.99 else 0
+            unc = alerts.growth_uncertainty(recent, prior)
+            band = f" ±{unc*100:.0f}" if unc is not None else ""
+            return f"{growth*100:+.0f}%{band}"
+
+        adj = {a["pairing"]: a for a in alerts.confidence_adjusted_divergence(snap)}
         disp = pd.DataFrame({
             "Pairing": div["pairing"],
             "Cap papers/qtr": div["cap_recent"].map(lambda x: f"{x:.0f}"),
             "Saf papers/qtr": div["saf_recent"].map(lambda x: f"{x:.0f}"),
             "Volume balance": div["volume_ratio"].map(_vol_balance),
-            "Capability growth/qtr": (div["cap_growth"] * 100).map(lambda x: f"{x:+.0f}%"),
-            "Safety growth/qtr": (div["saf_growth"] * 100).map(lambda x: f"{x:+.0f}%"),
+            "Capability growth/qtr": [
+                _g_with_ci(g, r) for g, r in zip(div["cap_growth"], div["cap_recent"])],
+            "Safety growth/qtr": [
+                _g_with_ci(g, r) for g, r in zip(div["saf_growth"], div["saf_recent"])],
             "Growth balance": [
                 _growth_balance(c, s) for c, s in zip(div["cap_growth"], div["saf_growth"])],
+            "Adj. gap": div["pairing"].map(
+                lambda p: f"{adj[p]['adjusted_gap']*100:+.0f} pts" if p in adj else "—"),
             "Lag status": div["lagging"].map(
                 lambda b: "⚠️ safety lagging" if b else "keeping pace"),
         })
         st.dataframe(disp, width="stretch", hide_index=True)
+        # Confidence-adjusted divergence (#12): why the adjusted gap differs from raw.
+        notable_adj = [a for a in adj.values()
+                       if abs((a["adjusted_gap"] or 0) - (a["raw_gap"] or 0)) >= 0.03]
+        if notable_adj:
+            with st.expander("🎛️ Confidence-adjusted gap — where and why it differs from raw"):
+                st.caption("Growth is weighted by each side's **confidence posture** "
+                           "(1 − recent critical share): capability growth with little "
+                           "self-critique reads as deployment-grade momentum (stronger "
+                           "warning); safety growth that is itself highly critical is weaker "
+                           "reassurance. Shown next to the raw gap, never replacing it.")
+                for a in notable_adj:
+                    st.markdown(
+                        f"- **{a['pairing']}** — raw {a['raw_gap']*100:+.0f} → adjusted "
+                        f"{a['adjusted_gap']*100:+.0f} pts (cap conf {a['cap_confidence']}, "
+                        f"saf conf {a['saf_confidence']}): {a['reason']}")
         st.caption("**Volume balance** = which side has more papers now (cap÷saf ratio). "
                    "**Growth balance** = which side is accelerating faster (gap = capability "
                    "growth − safety growth). A pairing is flagged *safety lagging* when the "
@@ -1125,10 +1152,12 @@ def render_sentiment_overall():
     if sent:
         rows = []
         for k, v in sent.items():
+            lo, hi = alerts.wilson_interval(v.get("recent_share", 0), v.get("n_recent", 0))
             rows.append({
                 "topic": lbl(snap, k),
                 "critical_share": round(v.get("critical_share", 0) * 100, 1),
                 "recent_share": round(v.get("recent_share", 0) * 100, 1),
+                "recent_95CI": f"{lo*100:.0f}–{hi*100:.0f}%",
                 "prior_share": round(v.get("prior_share", 0) * 100, 1),
                 "trend_pts": round(v.get("trend", 0) * 100, 1),
                 "n_recent": v.get("n_recent", 0),
@@ -1171,7 +1200,39 @@ def render_sentiment_overall():
         st.dataframe(sdf, width="stretch", hide_index=True)
         st.caption("Critical detection is embedding-based (cosine similarity to negative/"
                    "limitation seed phrases), not keyword matching — and it's a proxy, "
-                   "so use it to decide where to read, not as a verdict.")
+                   "so use it to decide where to read, not as a verdict. **recent_95CI** is "
+                   "the Wilson interval on the recent share — wide intervals mean too few "
+                   "papers to over-read a shift.")
+
+        # --- Volume × critical-share quadrants (#11): momentum disambiguates sentiment. ---
+        qrows = alerts.sentiment_quadrants(snap)
+        if qrows:
+            st.divider()
+            st.markdown("#### 🧭 Sentiment quadrants — volume momentum × self-critique")
+            st.caption("The same critical-share number means different things depending on "
+                       "momentum. **Growing & straining** = expanding but hitting problems · "
+                       "**growing & confident** = expanding with falling self-critique (check "
+                       "the false-confidence list above) · **contracting & critical** = "
+                       "shrinking into post-mortem · **fading/stabilizing** = cooling off.")
+            qdf = pd.DataFrame(qrows)
+            qdf["topic"] = qdf["topic_key"].map(lambda k: lbl(snap, k))
+            fig = px.scatter(
+                qdf, x="vol_change", y="crit_trend", color="quadrant", size="n_recent",
+                size_max=28, hover_name="topic", text="topic",
+                labels={"vol_change": "Volume change (growth rate)",
+                        "crit_trend": "Critical-share trend (pts)"},
+                height=520, template="plotly_dark",
+                color_discrete_map={"growing & straining": "#ff6b6b",
+                                    "growing & confident": "#ffd43b",
+                                    "contracting & critical": "#845ef7",
+                                    "fading / stabilizing": "#868e96"},
+            )
+            fig.update_traces(textposition="top center", textfont=dict(size=10))
+            fig.add_hline(y=0, line_dash="dot", line_color="gray", opacity=0.5)
+            fig.add_vline(x=0, line_dash="dot", line_color="gray", opacity=0.5)
+            fig.update_layout(margin=dict(t=10),
+                              legend=dict(orientation="h", yanchor="bottom", y=1.02, title=None))
+            st.plotly_chart(fig, width="stretch")
     else:
         st.info("No sentiment data in this snapshot.")
 

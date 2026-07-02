@@ -84,6 +84,103 @@ def weekly_momentum(snapshot: dict, window_days: int = 7, recent_periods: int = 
     return rows
 
 
+def wilson_interval(share: float, n: int, z: float = 1.96) -> tuple[float, float]:
+    """95% Wilson score interval for a proportion (#22) — safe at small n and share≈0/1."""
+    if n <= 0:
+        return (0.0, 1.0)
+    share = min(1.0, max(0.0, share))
+    denom = 1 + z * z / n
+    center = (share + z * z / (2 * n)) / denom
+    half = (z / denom) * math.sqrt(share * (1 - share) / n + z * z / (4 * n * n))
+    return (max(0.0, center - half), min(1.0, center + half))
+
+
+def growth_uncertainty(recent_mean: float, prior_mean: float, window: int = 2) -> float | None:
+    """±1σ uncertainty (in growth points) on growth = recent/prior − 1 (#22).
+
+    Treats per-quarter counts as Poisson: with w quarters per side, the relative error of
+    the ratio is √(1/(recent·w) + 1/(prior·w)). Returns None when a side is ~0 (growth is
+    undefined-noisy there anyway).
+    """
+    if recent_mean <= 0 or prior_mean <= 0:
+        return None
+    rel = math.sqrt(1 / (recent_mean * window) + 1 / (prior_mean * window))
+    return (recent_mean / prior_mean) * rel
+
+
+def sentiment_quadrants(snapshot: dict) -> list[dict]:
+    """Volume-change × critical-share-trend quadrants per topic (#11).
+
+    The same critical-share number means different things depending on momentum:
+    growing+more-critical = a field straining against problems; growing+less-critical =
+    confidence (or premature certainty); shrinking+more-critical = post-mortem;
+    shrinking+less-critical = fading/stabilizing. Reads inflections (volume change) and
+    sentiment (critical-share trend) already in the snapshot.
+    """
+    infl = {i.get("topic_key"): i for i in snapshot.get("inflections") or []}
+    out = []
+    for k, v in (snapshot.get("sentiment") or {}).items():
+        i = infl.get(k)
+        if not i:
+            continue
+        vol, crit = i.get("change") or 0, v.get("trend") or 0
+        if vol >= 0 and crit >= 0:
+            quad = "growing & straining"
+        elif vol >= 0:
+            quad = "growing & confident"
+        elif crit >= 0:
+            quad = "contracting & critical"
+        else:
+            quad = "fading / stabilizing"
+        out.append({
+            "topic_key": k, "vol_change": round(vol, 3), "crit_trend": round(crit, 3),
+            "quadrant": quad, "n_recent": v.get("n_recent", 0),
+            "recent_share": v.get("recent_share", 0),
+            "recent_per_qtr": i.get("recent_mean"),
+        })
+    return out
+
+
+def confidence_adjusted_divergence(snapshot: dict) -> list[dict]:
+    """Divergence gap weighted by each side's confidence posture (#12).
+
+    Confidence posture = 1 − recent critical share: growth in a field publishing little
+    self-critique reads as deployment-grade momentum (stronger warning); safety growth that
+    is itself highly critical is weaker reassurance. adjusted_gap =
+    cap_growth·cap_conf − saf_growth·saf_conf, shown NEXT TO the raw gap, never replacing
+    it. Pairs missing sentiment data fall back to confidence 0.85 (the corpus-typical
+    posture) so one thin topic doesn't zero the adjustment.
+    """
+    sent = snapshot.get("sentiment") or {}
+
+    def conf(topic_key):
+        v = sent.get(topic_key)
+        if not v or (v.get("n_recent") or 0) < 5:
+            return 0.85, False
+        return 1 - (v.get("recent_share") or 0), True
+
+    out = []
+    for d in snapshot.get("divergence") or []:
+        cc, c_real = conf(d.get("capability_topic"))
+        sc, s_real = conf(d.get("safety_topic"))
+        cap_g, saf_g = d.get("cap_growth") or 0, d.get("saf_growth") or 0
+        adjusted = cap_g * cc - saf_g * sc
+        reason_bits = []
+        if c_real and cc >= 0.9:
+            reason_bits.append("capability shows little self-critique (stronger warning)")
+        if c_real and cc < 0.75:
+            reason_bits.append("capability is unusually self-critical (softens the gap)")
+        if s_real and sc < 0.75:
+            reason_bits.append("safety growth is itself highly critical (weaker reassurance)")
+        out.append({
+            "pairing": d.get("pairing"), "raw_gap": d.get("gap"),
+            "adjusted_gap": round(adjusted, 3),
+            "cap_confidence": round(cc, 2), "saf_confidence": round(sc, 2),
+            "reason": "; ".join(reason_bits) or "both sides near corpus-typical self-critique",
+        })
+    return out
+
+
 def tab_deltas(snapshot: dict, previous: dict | None) -> dict:
     """Per-tab week-over-week deltas (#39): what changed since the previous snapshot.
 
