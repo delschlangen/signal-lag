@@ -374,6 +374,29 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ----------------------------------- foresight synthesis parse-retry regression
+def test_synthesize_risks_retries_unparseable_reply(monkeypatch):
+    calls = {"n": 0}
+
+    def flaky_call(system, user, api_key, model="x", max_tokens=8000, tools=None):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return "Sure! Here are the risks you asked for..."   # prose, no JSON
+        return '{"risks": [{"risk": "R", "severity": 3, "likelihood": 3}]}'
+
+    monkeypatch.setattr(foresight.llm, "call_claude", flaky_call)
+    risks = foresight._synthesize_risks({}, "", api_key="k", model="m", max_risks=1)
+    assert calls["n"] == 2 and risks and risks[0]["risk"] == "R"
+
+
+def test_synthesize_risks_gives_up_on_hard_api_failure(monkeypatch):
+    calls = {"n": 0}
+    monkeypatch.setattr(foresight.llm, "call_claude",
+                        lambda *a, **k: calls.__setitem__("n", calls["n"] + 1))
+    assert foresight._synthesize_risks({}, "", api_key="k", model="m", max_risks=1) is None
+    assert calls["n"] == 1               # None = API-level failure -> no pointless retries
+
+
 # ---------------------------------------- #4 statistical warning layer
 def _stat_snapshot():
     periods = [f"2024Q{q}" for q in (1, 2, 3, 4)] + [f"2025Q{q}" for q in (1, 2, 3, 4)]

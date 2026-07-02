@@ -823,8 +823,15 @@ def fetch_incidents(
 def _synthesize_risks(
     digest: dict, context: str, api_key: str | None, model: str, max_risks: int,
     avoid_seams: list | None = None, lens: str = "", live_context: str | None = None,
+    retries: int = 3,
 ) -> list | None:
-    """One synthesis round -> list of candidate risks (or None on failure)."""
+    """One synthesis round -> list of candidate risks (or None on failure).
+
+    Retries on an unparseable reply (same pattern as ``llm.summarize_week``): the call
+    usually succeeds but the model occasionally wraps or truncates the JSON — with the
+    extended risk schema the payload is large, and a single unretried miss used to
+    silently drop the ENTIRE overall foresight block for the week.
+    """
     payload = {
         "SIGNAL_DIGEST": {k: v for k, v in digest.items() if k != "what_changed_this_week"},
         "WHAT_CHANGED_THIS_WEEK": digest.get("what_changed_this_week", {}),
@@ -847,14 +854,15 @@ def _synthesize_risks(
                  "DIFFERENT, fresh seams; do NOT repeat or lightly reword any of these:\n"
                  + avoid)
     user += "\n\nINPUTS:\n" + json.dumps(payload, ensure_ascii=False)
-    text = llm.call_claude(SYSTEM, user, api_key, model)
-    if text is None:
-        return None
-    result = llm.extract_json(text)
-    if result is None or "risks" not in result:
-        log.warning("Could not parse foresight JSON")
-        return None
-    return _attach_scores(result.get("risks") or [])
+    for attempt in range(1, retries + 1):
+        text = llm.call_claude(SYSTEM, user, api_key, model)
+        if text is None:
+            return None                      # no key / hard API failure -> give up
+        result = llm.extract_json(text)
+        if result is not None and "risks" in result:
+            return _attach_scores(result.get("risks") or [])
+        log.warning("Could not parse foresight JSON (attempt %d/%d)", attempt, retries)
+    return None
 
 
 def _coerce_score(v, default: int = 3) -> int:
