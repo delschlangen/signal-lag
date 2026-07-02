@@ -623,13 +623,67 @@ Return ONLY a JSON object (no markdown) of this exact shape:
       "harm_key": "<one key from the list>",
       "summary": "1-2 sentences: what happened",
       "deployer": "the product/actor involved, if known (else '')",
-      "source_url": "a real URL to a report/article"
+      "source_url": "a real URL to a report/article",
+      "affected_sector": "the sector/domain affected (e.g. elections, finance, healthcare) or ''",
+      "severity": "low | medium | high",
+      "ai_involvement_confidence": "high | medium | low",   // how sure AI was actually the cause, not just alleged
+      "attribution_confidence": "high | medium | low",       // how sure the named deployer/actor is correct
+      "source_quality": "high | medium | low"                // primary/reputable report vs. a single unclear post
     }}
   ]
 }}
 
 Rules: ONLY real incidents you can source with a real URL and date — NEVER hypothetical, \
-predicted, or unverifiable ones. If unsure, omit. Output valid JSON only."""
+predicted, or unverifiable ones. Public incident data is uneven and attribution is often \
+uncertain: set the confidence fields HONESTLY (use "low" when AI involvement is merely alleged, \
+the actor is unclear, or the only source is weak) rather than defaulting everything to "high". \
+If unsure whether an incident is real at all, omit it. Output valid JSON only."""
+
+
+_CONF_LEVELS = {"high", "medium", "low"}
+# Overall credibility tier = the weakest of the evidence signals (a chain is only as strong
+# as its weakest link: a high-quality source on a merely-alleged AI cause is still "low").
+_CONF_RANK = {"high": 3, "medium": 2, "low": 1}
+_CONF_UNRANK = {3: "high", 2: "medium", 1: "low"}
+
+
+def _clean_incident_text(s: str) -> str:
+    """Normalize incident text artifacts: OCR 'Al'->'AI', collapse whitespace, trim.
+
+    Public incident summaries scraped from mixed sources carry small artifacts (a capital-I
+    'AI' rendered as 'Al', doubled spaces, stray leading punctuation) that read as sloppiness
+    in a rigor-focused tool. Conservative: only fixes the standalone 'Al' token so real words
+    like 'Alibaba' or 'Alert' are untouched.
+    """
+    import re
+    if not s:
+        return ""
+    s = re.sub(r"\bAl\b", "AI", s)                 # standalone 'Al' token -> 'AI'
+    s = re.sub(r"\s+", " ", s).strip()             # collapse whitespace
+    s = re.sub(r"^[\s\-–—•·]+", "", s)             # strip leading bullet/punctuation junk
+    return s
+
+
+def _norm_conf(v, default: str = "medium") -> str:
+    """Clamp a confidence value to {high, medium, low} (default on garbage)."""
+    v = str(v or "").strip().lower()
+    return v if v in _CONF_LEVELS else default
+
+
+def _normalize_incident(r: dict) -> dict:
+    """Clean text + normalize confidence fields + derive an overall credibility tier."""
+    r = dict(r)
+    r["title"] = _clean_incident_text(r.get("title", ""))
+    r["summary"] = _clean_incident_text(r.get("summary", ""))
+    r["deployer"] = _clean_incident_text(r.get("deployer", ""))
+    for f in ("ai_involvement_confidence", "attribution_confidence", "source_quality"):
+        r[f] = _norm_conf(r.get(f))
+    sev = str(r.get("severity") or "").strip().lower()
+    r["severity"] = sev if sev in ("low", "medium", "high") else "medium"
+    weakest = min(_CONF_RANK[r[f]] for f in
+                  ("ai_involvement_confidence", "attribution_confidence", "source_quality"))
+    r["confidence"] = _CONF_UNRANK[weakest]
+    return r
 
 
 def fetch_incidents(
@@ -658,12 +712,21 @@ def fetch_incidents(
             continue
         result = llm.extract_json(text)
         if result and "incidents" in result:
-            incidents = [
-                r for r in (result.get("incidents") or [])
-                if r.get("harm_key") in valid_keys and r.get("source_url") and r.get("date")
-            ]
+            incidents, seen = [], set()
+            for r in (result.get("incidents") or []):
+                r = _normalize_incident(r)
+                # Validation gate: require title + date + source + a real harm vector.
+                if not (r.get("title") and r.get("date") and r.get("source_url")
+                        and r.get("harm_key") in valid_keys):
+                    continue
+                # Dedupe on (title, date, harm_key) so the same event isn't double-counted.
+                dk = (r["title"].lower(), r["date"], r["harm_key"])
+                if dk in seen:
+                    continue
+                seen.add(dk)
+                incidents.append(r)
             incidents.sort(key=lambda r: r.get("date") or "", reverse=True)  # newest first
-            log.info("Incident fetch: %d verifiable incidents tagged to harm vectors",
+            log.info("Incident fetch: %d verifiable, de-duplicated incidents tagged to harm vectors",
                      len(incidents))
             return incidents
     log.warning("Incident fetch failed (fail-soft)")

@@ -1528,15 +1528,41 @@ def render_incidents_section():
     st.markdown(f"**Recent real-world incidents** ({len(records)}):")
     if not records:
         st.caption("No verifiable incidents were surfaced this refresh.")
+    st.caption("Public incident data is uneven and attribution is often uncertain, so each "
+               "incident is graded by credibility (🟢 high · 🟡 medium · ⚪ low) — the weakest "
+               "of AI-involvement confidence, attribution confidence, and source quality. "
+               "Lower-confidence reports are tucked below.")
     lm = (snap.get("harm") or {}).get("label_map", {})
-    for r in records:
+    _conf_emoji = {"high": "🟢", "medium": "🟡", "low": "⚪"}
+    _sev_emoji = {"high": "🔴", "medium": "🟠", "low": "🟡"}
+
+    def _render_incident(r):
         label = lm.get(r.get("harm_key"), r.get("harm_key"))
         url = r.get("source_url")
         title = r.get("title", "")
         head = f"[{title}]({url})" if url else title
-        st.markdown(f"- **{head}** · _{r.get('date','')}_ · {label}")
+        badge = _conf_emoji.get(r.get("confidence"), "")
+        meta = f"_{r.get('date','')}_ · {label}"
+        if r.get("severity"):
+            meta += f" · severity {_sev_emoji.get(r['severity'],'')} {r['severity']}"
+        if r.get("affected_sector"):
+            meta += f" · {r['affected_sector']}"
+        st.markdown(f"- {badge} **{head}** · {meta}")
         if r.get("summary"):
-            st.caption(r["summary"] + (f"  ·  {r['deployer']}" if r.get("deployer") else ""))
+            extra = f"  ·  {r['deployer']}" if r.get("deployer") else ""
+            conf = (f"  ·  AI-involvement {r.get('ai_involvement_confidence','?')}, "
+                    f"attribution {r.get('attribution_confidence','?')}, "
+                    f"source {r.get('source_quality','?')}")
+            st.caption(r["summary"] + extra + conf)
+
+    higher = [r for r in records if r.get("confidence") != "low"]
+    lower = [r for r in records if r.get("confidence") == "low"]
+    for r in higher:
+        _render_incident(r)
+    if lower:
+        with st.expander(f"⚪ Lower-confidence reports ({len(lower)}) — alleged / weakly-sourced"):
+            for r in lower:
+                _render_incident(r)
 
 
 with tab_foresight:

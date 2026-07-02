@@ -264,6 +264,31 @@ def test_fetch_incidents_failsoft():
     assert foresight.fetch_incidents([], api_key="k") is None
 
 
+def test_incident_text_cleanup_and_confidence_tier():
+    r = foresight._normalize_incident({
+        "title": "  Al agent  scams users ", "summary": "-- An Al   model failed",
+        "deployer": "Alibaba bot", "harm_key": "scams_fraud", "date": "2026-03",
+        "source_url": "http://x", "ai_involvement_confidence": "high",
+        "attribution_confidence": "low", "source_quality": "medium", "severity": "HIGH"})
+    assert r["title"] == "AI agent scams users"          # 'Al'->'AI', whitespace collapsed
+    assert r["summary"] == "An AI model failed"          # leading junk stripped, 'Al'->'AI'
+    assert r["deployer"] == "Alibaba bot"                # real word 'Alibaba' untouched
+    assert r["severity"] == "high"                       # normalized to lowercase vocab
+    assert r["confidence"] == "low"                      # weakest link (attribution=low) wins
+
+
+def test_fetch_incidents_dedupes_and_requires_title(monkeypatch):
+    def fake_call(system, user, api_key, model="x", max_tokens=8000, tools=None):
+        return ('{"incidents": ['
+                '{"title": "Dup", "date": "2026-01", "harm_key": "cyber_offense", "source_url": "u1"},'
+                '{"title": "dup", "date": "2026-01", "harm_key": "cyber_offense", "source_url": "u2"},'
+                '{"title": "", "date": "2026-02", "harm_key": "cyber_offense", "source_url": "u3"}]}')
+
+    monkeypatch.setattr(foresight.llm, "call_claude", fake_call)
+    out = foresight.fetch_incidents([{"key": "cyber_offense", "label": "Cyber"}], api_key="k")
+    assert len(out) == 1 and out[0]["title"] == "Dup"    # case-insensitive dupe + empty title dropped
+
+
 def test_augment_incidents_benchmark_quadrants(monkeypatch):
     from signal_lag import snapshot as snap_mod
     from signal_lag.config import Settings
