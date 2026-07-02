@@ -245,6 +245,10 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
     acfg = settings.analysis
     acfg_api_key = acfg.get("api_key") if acfg.get("enabled") else None
     acfg_model = acfg.get("model", "claude-opus-4-8")
+    # Tiered LLM usage (#24): high-volume, mechanical passes (batched boolean sentiment
+    # classification) run on a cheap model; synthesis/verification/explanations keep the
+    # strong one. Falls back to the strong model when unset.
+    acfg_model_cheap = acfg.get("model_cheap") or acfg_model
 
     # --- negative / critical-signal layer ---
     scfg = settings.section("sentiment")
@@ -279,7 +283,7 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
             for aid in subset if aid in by_id_p
         ]
         labels = llm.classify_limitation_focused(
-            payload, acfg_api_key, acfg_model,
+            payload, acfg_api_key, acfg_model_cheap,
             batch_size=int(scfg.get("llm_verify_batch", 50)),
         )
         flipped = 0

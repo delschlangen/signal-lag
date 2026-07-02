@@ -366,6 +366,9 @@ def build_weekly(
         max_rounds=int(wcfg.get("max_rounds", 2)),
         lens=lens,
         live_context=live_ctx,
+        verify_cache_path=_verify_cache_path(settings, fcfg),
+        today=snapshot.get("meta", {}).get("refreshed_at", ""),
+        verify_cache_days=int(fcfg.get("verify_cache_days", 21)),
     )
 
     snapshot["weekly"] = {
@@ -454,6 +457,13 @@ def append_history(snapshot: dict, path: Path, prev_snapshot: dict | None = None
     existing.sort(key=lambda e: e.get("date") or "")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(existing, indent=1, ensure_ascii=False), encoding="utf-8")
+
+
+def _verify_cache_path(settings: Settings, fcfg: dict):
+    """Path for the novelty-verification cache (#25), or None when disabled."""
+    if not fcfg.get("verify_cache", True):
+        return None
+    return settings.root / "data" / "verify_cache.json"
 
 
 def _risk_id(statement: str) -> str:
@@ -651,6 +661,9 @@ def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | 
         min_surfaced=int(fcfg.get("min_surfaced", 3)),
         max_rounds=int(fcfg.get("max_rounds", 3)),
         live_context=live_ctx,
+        verify_cache_path=_verify_cache_path(settings, fcfg),
+        today=snapshot.get("meta", {}).get("refreshed_at", ""),
+        verify_cache_days=int(fcfg.get("verify_cache_days", 21)),
     )
     if fg:
         # Scenario analysis (Step 3): one Claude pass developing 6-24mo scenarios from the

@@ -503,16 +503,85 @@ def _surviving_count(risks: list) -> int:
     )
 
 
-def _verify_attach(risks, api_key, model, tool_version, max_workers=4) -> list:
-    """Verify each risk's novelty in parallel and attach ``verification`` (no sort)."""
+def _risk_fingerprint(statement: str) -> str:
+    """Stable cache key for a risk = sha1 of its normalized statement (12 hex chars).
+
+    A material rewording changes the fingerprint, which naturally forces a re-verify.
+    """
+    import hashlib
+    norm = " ".join((statement or "").lower().split())
+    return hashlib.sha1(norm.encode("utf-8")).hexdigest()[:12]
+
+
+def load_verify_cache(path) -> dict:
+    """Load the novelty-verification cache (#25). Fail-soft -> {}."""
+    from pathlib import Path
+    p = Path(path)
+    if not p.exists():
+        return {}
+    try:
+        cache = json.loads(p.read_text(encoding="utf-8"))
+        return cache if isinstance(cache, dict) else {}
+    except Exception as e:
+        log.warning("Could not read verify cache %s: %s", p, e)
+        return {}
+
+
+def save_verify_cache(path, cache: dict) -> None:
+    """Persist the novelty-verification cache. Fail-soft (a cache is never worth a crash)."""
+    from pathlib import Path
+    try:
+        p = Path(path)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(cache, ensure_ascii=False, indent=1), encoding="utf-8")
+    except Exception as e:
+        log.warning("Could not write verify cache %s: %s", path, e)
+
+
+def _cache_fresh(entry: dict, today: str, max_age_days: int) -> bool:
+    import datetime as dt
+    try:
+        checked = dt.date.fromisoformat((entry.get("date_checked") or "")[:10])
+        now = dt.date.fromisoformat(today[:10])
+        return (now - checked).days < max_age_days
+    except ValueError:
+        return False
+
+
+def _verify_attach(risks, api_key, model, tool_version, max_workers=4,
+                   cache: dict | None = None, today: str = "",
+                   max_age_days: int = 21) -> list:
+    """Verify each risk's novelty in parallel and attach ``verification`` (no sort).
+
+    With a ``cache`` (#25), a risk whose fingerprint was verified within ``max_age_days``
+    reuses the cached result instead of re-searching the web — faster, cheaper, and
+    reproducible. A material rewording changes the fingerprint and re-verifies; live
+    results are written back into the cache (caller persists it).
+    """
     if not risks:
         return risks
-    from concurrent.futures import ThreadPoolExecutor
+    todo = []
+    for r in risks:
+        fp = _risk_fingerprint(r.get("risk") or "")
+        hit = (cache or {}).get(fp)
+        if hit and today and _cache_fresh(hit, today, max_age_days) and hit.get("verification"):
+            r["verification"] = hit["verification"]
+            r["verification_cached"] = True
+        else:
+            todo.append((fp, r))
+    if cache is not None and len(todo) < len(risks):
+        log.info("Verify cache: %d/%d risks reused from cache", len(risks) - len(todo), len(risks))
+    if todo:
+        from concurrent.futures import ThreadPoolExecutor
 
-    with ThreadPoolExecutor(max_workers=max_workers) as ex:
-        vs = list(ex.map(lambda r: verify_novelty(r, api_key, model, tool_version), risks))
-    for r, v in zip(risks, vs):
-        r["verification"] = v
+        with ThreadPoolExecutor(max_workers=max_workers) as ex:
+            vs = list(ex.map(
+                lambda t: verify_novelty(t[1], api_key, model, tool_version), todo))
+        for (fp, r), v in zip(todo, vs):
+            r["verification"] = v
+            if cache is not None and v is not None:
+                cache[fp] = {"date_checked": today, "risk": r.get("risk"),
+                             "verification": v}
     return risks
 
 
@@ -837,6 +906,7 @@ def run_foresight(
     tool_version: str = "web_search_20260209",
     min_surfaced: int = 3, max_rounds: int = 3, lens: str = "",
     live_context: str | None = None,
+    verify_cache_path=None, today: str = "", verify_cache_days: int = 21,
 ) -> dict | None:
     """Full foresight pass: synthesize -> verify -> backfill until enough survive.
 
@@ -854,7 +924,10 @@ def run_foresight(
 
     rounds = 1
     if verify:
-        _verify_attach(risks, api_key, model, tool_version)
+        # Verification cache (#25): reuse recent verdicts for unchanged risk statements.
+        cache = load_verify_cache(verify_cache_path) if verify_cache_path else None
+        _kw = dict(cache=cache, today=today, max_age_days=verify_cache_days)
+        _verify_attach(risks, api_key, model, tool_version, **_kw)
         while _surviving_count(risks) < min_surfaced and rounds < max_rounds:
             need = max(2, min_surfaced - _surviving_count(risks))
             avoid = [r.get("risk", "") for r in risks]
@@ -863,11 +936,13 @@ def run_foresight(
                                      live_context=live_context)
             if not more:
                 break
-            _verify_attach(more, api_key, model, tool_version)
+            _verify_attach(more, api_key, model, tool_version, **_kw)
             risks.extend(more)
             rounds += 1
             log.info("Foresight backfill round %d: %d surviving of %d",
                      rounds, _surviving_count(risks), len(risks))
+        if verify_cache_path and cache is not None:
+            save_verify_cache(verify_cache_path, cache)
         _sort_by_novelty(risks)
 
     return {

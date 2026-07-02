@@ -374,6 +374,49 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ------------------------------------------------ #25 verification cache
+def test_verify_attach_reuses_fresh_cache(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_verify(risk, api_key, model, tool_version):
+        calls["n"] += 1
+        return {"novelty_rating": "genuinely_unsurfaced"}
+
+    monkeypatch.setattr(foresight, "verify_novelty", fake_verify)
+    fp = foresight._risk_fingerprint("Cached risk")
+    cache = {fp: {"date_checked": "2026-06-25",
+                  "verification": {"novelty_rating": "partially_anticipated"}}}
+    risks = [{"risk": "Cached risk"}, {"risk": "Fresh risk"}]
+    foresight._verify_attach(risks, "k", "m", "tv", cache=cache, today="2026-07-02",
+                             max_age_days=21)
+    assert calls["n"] == 1                                        # only the uncached one
+    assert risks[0]["verification"]["novelty_rating"] == "partially_anticipated"
+    assert risks[0].get("verification_cached") is True
+    # The live result was written back into the cache.
+    assert cache[foresight._risk_fingerprint("Fresh risk")]["date_checked"] == "2026-07-02"
+
+
+def test_verify_attach_expires_stale_cache(monkeypatch):
+    calls = {"n": 0}
+    monkeypatch.setattr(foresight, "verify_novelty",
+                        lambda *a, **k: calls.__setitem__("n", calls["n"] + 1) or
+                        {"novelty_rating": "genuinely_unsurfaced"})
+    fp = foresight._risk_fingerprint("Old risk")
+    cache = {fp: {"date_checked": "2026-05-01",
+                  "verification": {"novelty_rating": "partially_anticipated"}}}
+    risks = [{"risk": "Old risk"}]
+    foresight._verify_attach(risks, "k", "m", "tv", cache=cache, today="2026-07-02",
+                             max_age_days=21)
+    assert calls["n"] == 1                                        # expired -> re-verified
+    assert risks[0]["verification"]["novelty_rating"] == "genuinely_unsurfaced"
+
+
+def test_risk_fingerprint_changes_on_rewording():
+    a = foresight._risk_fingerprint("Agents  fail  SILENTLY")
+    assert a == foresight._risk_fingerprint("agents fail silently")   # normalization
+    assert a != foresight._risk_fingerprint("agents fail loudly")     # rewording -> re-verify
+
+
 # ------------------------------------------------ #39 per-tab deltas
 def test_tab_deltas_reports_movement_per_tab():
     from signal_lag.analysis import alerts

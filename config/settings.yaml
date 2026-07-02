@@ -154,6 +154,11 @@ analysis:
   # fail-soft: with no key it's skipped and the dashboard uses its templated text.
   enabled: true
   model: "claude-opus-4-8"
+  # Tiered LLM usage (#24): the batched first-pass sentiment classifier (up to ~400 papers
+  # per refresh, boolean labels) runs on this cheaper model; foresight synthesis, novelty
+  # verification, scenarios, and plain-language explainers keep the strong model above.
+  # Set to null to run everything on the strong model.
+  model_cheap: "claude-haiku-4-5"
   api_key: null
   # How many representative papers per pairing side to send for grounding.
   papers_per_side: 3
@@ -183,6 +188,12 @@ analysis:
     # whether it's already publicly discussed and whether any claim it rests on is
     # disputed. Baked into the snapshot (so it's cached, not re-run at page load).
     verify_novelty: true
+    # Verification cache (#25): reuse a risk's web-verification verdict across refreshes
+    # while its statement is unchanged and the verdict is younger than verify_cache_days.
+    # A material rewording changes the fingerprint and re-verifies. Faster, cheaper,
+    # reproducible; data/verify_cache.json is committed by the refresh workflow.
+    verify_cache: true
+    verify_cache_days: 21
     # Server-side web search tool version (falls back to web_search_20250305 if the
     # account/platform lacks the newer one).
     web_search_tool: "web_search_20260209"
