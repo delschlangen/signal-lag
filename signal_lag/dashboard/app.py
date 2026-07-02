@@ -1746,6 +1746,53 @@ def render_harm_section():
                                 unsafe_allow_html=True)
                     if rp.get("abstract"):
                         st.caption(rp["abstract"])
+        render_enablement_map()
+
+
+def render_enablement_map():
+    """#26: capability topics → harm vectors → real incidents, as a Sankey."""
+    harm = snap.get("harm") or {}
+    links = harm.get("links") or []
+    if not links:
+        return
+    st.divider()
+    st.markdown("#### 🕸️ Enablement map — research → misuse → reality")
+    st.caption("Edge width = papers co-tagged to a **capability topic** and a **harm "
+               "vector** (left→middle: which research areas could enable which misuse), "
+               "and real incidents per vector this period (middle→right: which of those "
+               "harms is already occurring). Co-tagging is a semantic association, not "
+               "proof of enablement — read with the tagging-audit caveats in Methodology.")
+    hlm = harm.get("label_map") or {}
+    inc_counts = {b.get("key"): b.get("n_incidents") or 0
+                  for b in (snap.get("incidents") or {}).get("benchmark") or []}
+    caps = sorted({l["capability"] for l in links})
+    harms = sorted({l["harm"] for l in links})
+    nodes = ([lbl(snap, c) for c in caps] + [hlm.get(h, h) for h in harms]
+             + ["Real incidents"])
+    idx_cap = {c: i for i, c in enumerate(caps)}
+    idx_harm = {h: len(caps) + i for i, h in enumerate(harms)}
+    inc_idx = len(caps) + len(harms)
+    src_l, tgt_l, val_l = [], [], []
+    for l in links:
+        src_l.append(idx_cap[l["capability"]])
+        tgt_l.append(idx_harm[l["harm"]])
+        val_l.append(l["n"])
+    for h in harms:
+        n = inc_counts.get(h, 0)
+        if n:
+            src_l.append(idx_harm[h])
+            tgt_l.append(inc_idx)
+            val_l.append(n * 10)   # scale so incident edges are visible next to paper counts
+    fig = go.Figure(go.Sankey(
+        node=dict(label=nodes, pad=14, thickness=14,
+                  color=(["#4c8bf5"] * len(caps) + ["#ffa94d"] * len(harms) + ["#ff6b6b"])),
+        link=dict(source=src_l, target=tgt_l, value=val_l),
+    ))
+    fig.update_layout(height=520, template="plotly_dark", margin=dict(t=10, b=10),
+                      font=dict(size=11))
+    st.plotly_chart(fig, width="stretch")
+    st.caption("Incident edges are scaled ×10 for visibility (papers are counted in "
+               "hundreds; incidents in single digits).")
 
 
 # =============================================================== Risk register
@@ -2366,6 +2413,51 @@ with tab_foresight:
                                mime="text/markdown", width="stretch")
 
 
+def render_ecosystem():
+    """#19: who is doing the research — institutions, lab-vs-academia (S2 affiliations)."""
+    inst = pd.DataFrame(snap.get("institution_trends") or [])
+    st.divider()
+    st.markdown("### 🏛️ Research ecosystem — who is doing this work")
+    if inst.empty:
+        st.caption("⏳ Institution data comes from Semantic Scholar author affiliations and "
+                   "populates on the next weekly refresh. Coverage will be partial "
+                   "(affiliations are author-reported and often missing) — treat shares as "
+                   "indicative, not census.")
+        return
+    _IND = ("google", "deepmind", "openai", "anthropic", "meta", "microsoft", "nvidia",
+            "amazon", "apple", "ibm", "baidu", "alibaba", "tencent", "huawei", "bytedance",
+            "xai", "cohere", "mistral", "salesforce", "adobe", "samsung", "intel",
+            "qualcomm", "netflix", "uber", "airbnb", " inc", " labs", " ltd", " llc",
+            " corp", "research lab")
+
+    def _is_industry(name: str) -> bool:
+        n = (name or "").lower()
+        return any(m in n for m in _IND)
+
+    inst["industry"] = inst["institution"].map(_is_industry)
+    total_recent = inst["recent"].sum()
+    ind_share = inst.loc[inst["industry"], "recent"].sum() / total_recent if total_recent else 0
+    st.caption(f"From author-reported Semantic Scholar affiliations (partial coverage — "
+               f"indicative, not census). Recent tagged output: **{ind_share*100:.0f}% "
+               f"industry / {100-ind_share*100:.0f}% academia+other** by paper-institution "
+               "pairs.")
+    top = (inst.groupby(["institution", "industry"])["recent"].sum()
+           .reset_index().sort_values("recent", ascending=False).head(12))
+    edf = pd.DataFrame({
+        "Institution": top["institution"],
+        "Type": top["industry"].map({True: "🏢 industry", False: "🎓 academia/other"}),
+        "Recent tagged papers": top["recent"].astype(int),
+    })
+    st.dataframe(edf, width="stretch", hide_index=True)
+    grow = (inst[inst["recent"] >= 3].sort_values("growth", ascending=False).head(6))
+    if not grow.empty:
+        st.markdown("**Fastest-growing (institution, topic) pairs:**")
+        for _, r in grow.iterrows():
+            st.markdown(f"- **{r['institution']}** in {lbl(snap, r['topic_key'])} — "
+                        f"{r['recent']} recent vs {r['prior']} prior "
+                        f"({r['growth']*100:+.0f}%)")
+
+
 # =================================================================== Sources
 with tab_sources:
     st.subheader("Source papers")
@@ -2532,6 +2624,8 @@ with tab_sources:
                 for r in impact[:12]
             ])
             st.dataframe(idf, width="stretch", hide_index=True)
+
+    render_ecosystem()
 
 # =============================================================== Methodology
 def render_glossary(snap):

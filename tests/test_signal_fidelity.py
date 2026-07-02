@@ -963,6 +963,23 @@ def test_s2_enrichment_persists_refs_counts_and_author_ids(tmp_path):
     assert ids["Dr Y"] is None
 
 
+def test_s2_enrichment_persists_affiliations_and_institutions(tmp_path):
+    from signal_lag.ingest.store import Store
+
+    p = _p("a2", 2024, 1, auths=[Author("Dr A"), Author("Dr B")])
+    store = Store(tmp_path / "db.sqlite")
+    store.upsert_papers([p])
+    # S2 affiliations (#19): per-author + paper-level institution list.
+    p.authors[0].affiliation = "Anthropic"
+    p.institutions = ["Anthropic", "MIT"]
+    store.update_s2_enrichment(p)
+    got = store.get_papers()[0]
+    store.close()
+    assert got.institutions == ["Anthropic", "MIT"]
+    affs = {a.name: a.affiliation for a in got.authors}
+    assert affs["Dr A"] == "Anthropic" and affs["Dr B"] is None
+
+
 # ------------------------------------------- #7 falsification + #33 action map
 def test_instructions_request_falsification_and_action_fields():
     instr = foresight._instructions(3)

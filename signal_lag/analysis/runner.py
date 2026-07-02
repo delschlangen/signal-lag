@@ -260,10 +260,23 @@ def run_analysis(settings: Settings, taxonomy: Taxonomy) -> dict:
                 "direction": i.get("direction", "steady"),
             })
         vectors.sort(key=lambda v: v["change_pct"], reverse=True)
+        # Enablement links (#26): papers co-tagged (capability topic, harm vector) —
+        # the edge weights for the capability→harm→incident enablement map.
+        _cap_keys = {t.key for t in taxonomy.capability_topics}
+        _links: dict[tuple, int] = {}
+        for _aid, _htags in harm_tags.items():
+            _ctopics = {k for k, _ in tax_tags.get(_aid, []) if k in _cap_keys}
+            for _hk, _ in _htags:
+                for _ck in _ctopics:
+                    _links[(_ck, _hk)] = _links.get((_ck, _hk), 0) + 1
         harm = {
             "label_map": {t.key: t.label for t in taxonomy.harm_topics},
             "vectors": vectors,
             "accelerating": [v["key"] for v in vectors if v["direction"] == "acceleration"],
+            "links": [
+                {"capability": ck, "harm": hk, "n": n}
+                for (ck, hk), n in sorted(_links.items(), key=lambda kv: -kv[1])
+            ][:60],
         }
 
     # Analysis (Claude) config, hoisted so the sentiment/citation passes can reuse it.

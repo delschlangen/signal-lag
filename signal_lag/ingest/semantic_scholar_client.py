@@ -30,7 +30,8 @@ S2_BATCH = "https://api.semanticscholar.org/graph/v1/paper/batch"
 # S2 graph API. references gives the outgoing bibliography; authors gives stable ids.
 FIELDS = (
     "externalIds,tldr,influentialCitationCount,venue,fieldsOfStudy,"
-    "citationCount,references.externalIds,authors.authorId,authors.name"
+    "citationCount,references.externalIds,authors.authorId,authors.name,"
+    "authors.affiliations"
 )
 
 
@@ -128,13 +129,23 @@ class SemanticScholarClient:
                         refs.append(rid)
                 if refs:
                     p.referenced_works = refs
-                # Stable author ids (author-migration #4): match S2 authors to ours.
+                # Stable author ids (author-migration #4) + affiliations (#19 ecosystem):
+                # match S2 authors to ours positionally.
                 s2_authors = rec.get("authors") or []
+                insts: list[str] = []
                 for j, a in enumerate(p.authors):
-                    if a.openalex_id:
-                        continue
-                    if j < len(s2_authors) and s2_authors[j].get("authorId"):
-                        a.openalex_id = s2_authors[j]["authorId"]
+                    s2a = s2_authors[j] if j < len(s2_authors) else {}
+                    if not a.openalex_id and s2a.get("authorId"):
+                        a.openalex_id = s2a["authorId"]
+                    affs = s2a.get("affiliations") or []
+                    if affs and not a.affiliation:
+                        a.affiliation = str(affs[0])[:120]
+                    for aff in affs:
+                        aff = str(aff)[:120]
+                        if aff and aff not in insts:
+                            insts.append(aff)
+                if insts and not p.institutions:
+                    p.institutions = insts
                 enriched += 1
             log.info("  S2 enriched %d/%d", min(i + self.batch_size, len(ids)), len(ids))
         return enriched

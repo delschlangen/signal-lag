@@ -193,7 +193,8 @@ class Store:
         self.conn.execute(
             "UPDATE papers SET s2_tldr=?, s2_influential=?, venue=?, fields_of_study=?, "
             "cited_by_count=COALESCE(?, cited_by_count), "
-            "referenced_works=? "
+            "referenced_works=?, "
+            "institutions=CASE WHEN ? != '[]' THEN ? ELSE institutions END "
             "WHERE arxiv_id=?",
             (
                 paper.s2_tldr,
@@ -202,16 +203,25 @@ class Store:
                 json.dumps(paper.fields_of_study),
                 paper.cited_by_count,
                 json.dumps(paper.referenced_works),
+                json.dumps(paper.institutions),
+                json.dumps(paper.institutions),
                 paper.arxiv_id,
             ),
         )
-        # Persist stable author ids captured from S2 (mirrors update_enrichment).
+        # Persist stable author ids + affiliations captured from S2 (#4 migration,
+        # #19 ecosystem). Mirrors update_enrichment.
         for a in paper.authors:
             if a.openalex_id:
                 self.conn.execute(
                     "UPDATE authors SET openalex_id=? "
                     "WHERE arxiv_id=? AND name=? AND openalex_id IS NULL",
                     (a.openalex_id, paper.arxiv_id, a.name),
+                )
+            if a.affiliation:
+                self.conn.execute(
+                    "UPDATE authors SET affiliation=? "
+                    "WHERE arxiv_id=? AND name=? AND affiliation IS NULL",
+                    (a.affiliation, paper.arxiv_id, a.name),
                 )
         self.conn.commit()
 
