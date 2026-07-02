@@ -344,6 +344,12 @@ CRITICAL INSTRUCTIONS:
 - GROUND every risk in the provided signals. In "derived_from", cite the ACTUAL topics,
   papers (by title/arxiv_id), or divergences from the digest. In "extrapolation", give an
   honest note of what you assumed that the data does NOT show.
+- LABEL EVERY KEY CLAIM BY EPISTEMIC BASIS. In "claims", break the risk into its 3-5
+  load-bearing claims and label each: "observed" = directly measured from the digest's
+  papers/metrics/incidents/lab posts; "inferred" = reasoned from multiple observed signals;
+  "speculative" = scenario-dependent or forward-looking. Be strict: a research-ATTENTION
+  metric is observed, but "deployed systems lack X" inferred from it is NOT observed. This
+  stops research-attention signals being mistaken for deployment evidence.
 - MAKE EACH RISK FALSIFIABLE AND ACTIONABLE. Fill "change_of_mind" with the SPECIFIC,
   OBSERVABLE evidence that would raise, lower, or invalidate the risk (a disciplined analyst
   states in advance what would change their mind — not vague "more research"). Fill
@@ -392,7 +398,11 @@ preamble) with exactly this shape:
         "policy_question": "the governance/policy question this raises",
         "owner_community": "which team/community should own watching this seam",
         "data_source_to_watch": "a concrete source (system cards, an incident DB, a feed) that would show it moving"
-      }}
+      }},
+      "claims": [                                // 3-5 key claims, each labeled by epistemic basis
+        {{"text": "one factual claim this risk rests on",
+          "basis": "observed | inferred | speculative"}}
+      ]
     }}
   ]
 }}
@@ -873,6 +883,16 @@ def _attach_scores(risks: list) -> list:
         traj = str(r.get("trajectory") or "steady").lower()
         r["trajectory"] = traj if traj in ("accelerating", "steady", "decelerating") else "steady"
         r["priority"] = sev * lik
+        # Epistemic claim labels (#8): clamp basis to the three-value vocabulary.
+        claims = []
+        for c in (r.get("claims") or []):
+            if not isinstance(c, dict) or not c.get("text"):
+                continue
+            basis = str(c.get("basis") or "").strip().lower()
+            claims.append({"text": c["text"],
+                           "basis": basis if basis in ("observed", "inferred", "speculative")
+                           else "speculative"})
+        r["claims"] = claims
     return risks
 
 

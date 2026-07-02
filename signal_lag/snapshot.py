@@ -611,6 +611,36 @@ def append_risk_register(snapshot: dict, path: Path) -> None:
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
+def append_benchmark_history(snapshot: dict, path: Path) -> None:
+    """Persist this refresh's harm-vector benchmark rows (#28), idempotent per date.
+
+    Accumulates {date, key, label, quadrant, research_change_pct, n_incidents} per refresh
+    so 'foresight lead → later incidents' transitions (time-to-incident, false-positive
+    rate) become computable as history builds. Same compact JSON-list pattern as the
+    register; fail-soft.
+    """
+    bench = (snapshot.get("incidents") or {}).get("benchmark") or []
+    date = snapshot.get("meta", {}).get("refreshed_at")
+    if not bench or not date:
+        return
+    path = Path(path)
+    try:
+        rows = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    except Exception:
+        rows = []
+    if not isinstance(rows, list):
+        rows = []
+    rows = [r for r in rows if r.get("date") != date]      # same-date re-run -> overwrite
+    for b in bench:
+        rows.append({"date": date, "key": b.get("key"), "label": b.get("label"),
+                     "quadrant": b.get("quadrant"),
+                     "research_change_pct": b.get("research_change_pct"),
+                     "n_incidents": b.get("n_incidents")})
+    rows.sort(key=lambda r: (r.get("date") or "", r.get("key") or ""))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(rows, indent=1, ensure_ascii=False), encoding="utf-8")
+
+
 def _paper_lookup(snapshot: dict) -> dict:
     """{arxiv_id -> {title, abstract}} from the snapshot's source + notable papers, so the
     plain-language explainer can reference a risk's source papers by title/abstract."""

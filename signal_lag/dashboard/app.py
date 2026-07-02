@@ -358,6 +358,20 @@ def _load_register(_cache_key: float):
 
 risk_register = _load_register(REGISTER_PATH.stat().st_mtime if REGISTER_PATH.exists() else 0.0)
 
+BENCH_HISTORY_PATH = SNAPSHOT.with_name("benchmark_history.json")
+
+
+@st.cache_data(ttl=1800)
+def _load_bench_history(_cache_key: float):
+    try:
+        return json.loads(BENCH_HISTORY_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+
+bench_history = _load_bench_history(
+    BENCH_HISTORY_PATH.stat().st_mtime if BENCH_HISTORY_PATH.exists() else 0.0)
+
 
 def topic_links(snap, topic_key, n=3):
     """Markdown bullet list of recent papers for a topic, each with a short blurb."""
@@ -1383,6 +1397,18 @@ def render_foresight_section():
                 st.markdown(f"**📡 Leading indicator:** {r.get('leading_indicator','')}")
                 st.markdown(f"**🎯 Calibration:** {r.get('calibration','')}")
                 st.markdown(f"**⚠️ Extrapolation beyond the data:** {r.get('extrapolation','')}")
+                # Epistemic claim labels (#8): observed / inferred / speculative, color-coded.
+                claims = r.get("claims") or []
+                if claims:
+                    _basis_fmt = {"observed": ("🔵", "blue", "Observed"),
+                                  "inferred": ("🟠", "orange", "Inferred"),
+                                  "speculative": ("⚪", "gray", "Speculative")}
+                    st.markdown("**🧬 Key claims by epistemic basis** "
+                                "(🔵 measured · 🟠 reasoned from signals · ⚪ forward-looking):")
+                    for c in claims:
+                        dot, color, word = _basis_fmt.get(c.get("basis"),
+                                                          _basis_fmt["speculative"])
+                        st.markdown(f"- {dot} :{color}[**{word}:**] {c.get('text','')}")
                 com = r.get("change_of_mind") or {}
                 if any(com.get(k) for k in ("upgrade_if", "downgrade_if", "invalidate_if")):
                     with st.expander("🔀 What would change my mind (falsification conditions)"):
@@ -1734,6 +1760,26 @@ def render_register_section():
                     t, u = s.get("title", ""), s.get("url", "")
                     st.markdown(f"  - [{t}]({u})" if u else f"  - {t}")
 
+    # --- Forecast-validation scaffold (#9): what the register's own history shows so far. ---
+    cal = alerts.register_calibration(reg)
+    if cal.get("n"):
+        with st.expander("📏 Calibration & validation — is the register accountable to itself?"):
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Risks re-seen ≥2×", cal.get("n_reseen", 0),
+                      help="Persistence: a risk that keeps re-surfacing is a strengthening signal")
+            c2.metric("Priority upgraded", cal.get("n_upgraded", 0),
+                      help="First-seen vs latest history point")
+            c3.metric("Priority downgraded", cal.get("n_downgraded", 0))
+            c4.metric("Ever disputed", cal.get("n_ever_disputed", 0),
+                      help="The web-verifier found counterevidence at least once")
+            st.caption(
+                f"Score history spans **{cal.get('n_refreshes', 0)} refresh(es)** "
+                f"({cal.get('first_date', '—')} → {cal.get('last_date', '—')}). Full forecast "
+                "validation — hit rate, false-positive rate, time-to-confirmation, Brier-style "
+                "likelihood calibration — needs materialized/invalidated outcomes over several "
+                "quarters of history. The tracking is in place now; those metrics will appear "
+                "honestly as the register ages, rather than being simulated today.")
+
 
 # =================================================================== Scenarios
 # ICD-203-style estimative-probability vocabulary (Step 4): a 1-5 likelihood maps to a
@@ -1932,6 +1978,28 @@ def render_incidents_section():
         for b in bench
     ])
     st.dataframe(bdf, width="stretch", hide_index=True)
+
+    # --- Early-warning calibration scaffold (#28): do foresight leads predict incidents? ---
+    trans = alerts.benchmark_transitions(bench_history)
+    if trans.get("n_refreshes", 0) >= 1:
+        with st.expander("⏱️ Early-warning calibration — do 🎯 foresight leads materialize?"):
+            st.caption("Each refresh's benchmark is persisted, so 'research accelerating with "
+                       "no incidents yet' episodes can be checked against LATER refreshes for "
+                       "incidents appearing — time-to-incident and false-positive rates for "
+                       "the harm-vector framework itself.")
+            if trans.get("materialized"):
+                st.markdown("**Leads that materialized** (incidents appeared after the lead):")
+                for m in trans["materialized"]:
+                    st.markdown(f"- 🎯→🔴 **{m['label']}** — lead {m['lead_date']} → "
+                                f"incidents by {m['incident_date']}")
+            if trans.get("open_leads"):
+                st.markdown("**Open leads** (research accelerating, still no public incidents):")
+                for m in trans["open_leads"]:
+                    st.markdown(f"- 🎯 **{m['label']}** — leading since {m['lead_date']}")
+            if trans["n_refreshes"] < 3:
+                st.caption(f"⏳ Only **{trans['n_refreshes']} refresh(es)** of benchmark "
+                           "history so far — time-to-incident and false-positive rates need "
+                           "several quarters to be meaningful. They will accrue automatically.")
     st.divider()
     st.markdown(f"**Recent real-world incidents** ({len(records)}):")
     if not records:

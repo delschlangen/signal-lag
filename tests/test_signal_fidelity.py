@@ -374,6 +374,61 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ---------------------------------------- #8 epistemic claim labels
+def test_attach_scores_normalizes_claim_basis():
+    r = foresight._attach_scores([{
+        "risk": "R", "severity": 3, "likelihood": 3,
+        "claims": [{"text": "measured", "basis": "OBSERVED"},
+                   {"text": "guessy", "basis": "wild-guess"},
+                   {"basis": "observed"},                     # no text -> dropped
+                   {"text": "reasoned", "basis": "inferred"}],
+    }])[0]
+    assert [c["basis"] for c in r["claims"]] == ["observed", "speculative", "inferred"]
+
+
+# ---------------------------------------- #9/#28 validation scaffolds
+def test_register_calibration_counts_movement_and_disputes():
+    from signal_lag.analysis import alerts
+    reg = [
+        {"n_appearances": 3, "history": [
+            {"date": "2026-06-01", "priority": 9, "disputed": False},
+            {"date": "2026-07-01", "priority": 16, "disputed": True}],
+         "counterevidence": [{"date": "2026-07-01", "disputed_claims": "x"}]},
+        {"n_appearances": 1, "history": [{"date": "2026-07-01", "priority": 12}]},
+        {"n_appearances": 2, "history": [
+            {"date": "2026-06-01", "priority": 12}, {"date": "2026-07-01", "priority": 6}]},
+    ]
+    cal = alerts.register_calibration(reg)
+    assert cal["n"] == 3 and cal["n_reseen"] == 2
+    assert cal["n_upgraded"] == 1 and cal["n_downgraded"] == 1
+    assert cal["n_ever_disputed"] == 1
+    assert cal["n_refreshes"] == 2 and cal["last_date"] == "2026-07-01"
+
+
+def test_benchmark_history_appends_and_transitions(tmp_path):
+    from signal_lag import snapshot as snap_mod
+    from signal_lag.analysis import alerts
+    path = tmp_path / "bench.json"
+
+    def _snap(date, quadrant, n_inc):
+        return {"meta": {"refreshed_at": date},
+                "incidents": {"benchmark": [
+                    {"key": "cyber", "label": "Cyber", "quadrant": quadrant,
+                     "research_change_pct": 10, "n_incidents": n_inc}]}}
+
+    snap_mod.append_benchmark_history(_snap("2026-07-01", "foresight lead", 0), path)
+    snap_mod.append_benchmark_history(_snap("2026-07-01", "foresight lead", 0), path)  # idempotent
+    snap_mod.append_benchmark_history(_snap("2026-07-08", "materializing", 2), path)
+    rows = json.loads(path.read_text())
+    assert len(rows) == 2                                   # same-date re-run overwrote
+    trans = alerts.benchmark_transitions(rows)
+    assert trans["n_refreshes"] == 2
+    assert trans["materialized"] == [{"key": "cyber", "label": "Cyber",
+                                      "lead_date": "2026-07-01",
+                                      "incident_date": "2026-07-08"}]
+    assert trans["open_leads"] == []
+
+
 # ------------------------------- #16/#17/#18 citation matrix / bridges / safety impact
 def test_citation_graph_matrix_bridges_and_impact():
     from signal_lag.analysis import citation_graph

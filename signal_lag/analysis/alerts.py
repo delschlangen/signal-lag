@@ -84,6 +84,76 @@ def weekly_momentum(snapshot: dict, window_days: int = 7, recent_periods: int = 
     return rows
 
 
+def register_calibration(register: list) -> dict:
+    """Forecast-validation scaffold (#9): what the register's own history shows so far.
+
+    True hit-rate / Brier calibration needs materialized-vs-invalidated outcomes over
+    several quarters; the register only recently started accumulating. This computes the
+    honest precursors available NOW from score history — persistence, score movement,
+    dispute exposure — and reports how much history exists so the display can say plainly
+    what is and isn't yet measurable.
+    """
+    n = len(register or [])
+    if not n:
+        return {"n": 0}
+    reseen = [e for e in register if (e.get("n_appearances") or 1) >= 2]
+    upgraded = downgraded = 0
+    for e in reseen:
+        h = e.get("history") or []
+        if len(h) >= 2 and h[-1].get("priority") is not None and h[0].get("priority") is not None:
+            if h[-1]["priority"] > h[0]["priority"]:
+                upgraded += 1
+            elif h[-1]["priority"] < h[0]["priority"]:
+                downgraded += 1
+    ever_disputed = sum(
+        1 for e in register
+        if e.get("counterevidence") or any((p.get("disputed") for p in e.get("history") or []))
+    )
+    dates = sorted({p.get("date") for e in register for p in (e.get("history") or [])
+                    if p.get("date")})
+    return {
+        "n": n,
+        "n_reseen": len(reseen),
+        "n_upgraded": upgraded,
+        "n_downgraded": downgraded,
+        "n_ever_disputed": ever_disputed,
+        "n_refreshes": len(dates),
+        "first_date": dates[0] if dates else None,
+        "last_date": dates[-1] if dates else None,
+    }
+
+
+def benchmark_transitions(history_rows: list) -> dict:
+    """Harm-vector early-warning calibration scaffold (#28).
+
+    Given the per-refresh benchmark history rows ({date, key, label, quadrant,
+    n_incidents}), find each vector's 'foresight lead' episodes and whether incidents
+    appeared at a LATER date (a lead that materialized) — the raw material for
+    time-to-incident and false-positive rates once several refreshes accumulate.
+    """
+    by_key: dict[str, list] = {}
+    for r in history_rows or []:
+        if r.get("key"):
+            by_key.setdefault(r["key"], []).append(r)
+    materialized, open_leads = [], []
+    for key, rows in by_key.items():
+        rows.sort(key=lambda r: r.get("date") or "")
+        label = rows[-1].get("label") or key
+        lead_date = None
+        for r in rows:
+            if r.get("quadrant") == "foresight lead" and lead_date is None:
+                lead_date = r.get("date")
+            elif lead_date and (r.get("n_incidents") or 0) > 0:
+                materialized.append({"key": key, "label": label, "lead_date": lead_date,
+                                     "incident_date": r.get("date")})
+                lead_date = None
+        if lead_date:
+            open_leads.append({"key": key, "label": label, "lead_date": lead_date})
+    dates = sorted({r.get("date") for r in history_rows or [] if r.get("date")})
+    return {"n_refreshes": len(dates), "materialized": materialized,
+            "open_leads": open_leads}
+
+
 def wilson_interval(share: float, n: int, z: float = 1.96) -> tuple[float, float]:
     """95% Wilson score interval for a proportion (#22) — safe at small n and share≈0/1."""
     if n <= 0:
