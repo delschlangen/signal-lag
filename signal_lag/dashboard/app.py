@@ -1052,6 +1052,25 @@ def render_foresight_section():
                 st.markdown(f"**📡 Leading indicator:** {r.get('leading_indicator','')}")
                 st.markdown(f"**🎯 Calibration:** {r.get('calibration','')}")
                 st.markdown(f"**⚠️ Extrapolation beyond the data:** {r.get('extrapolation','')}")
+                com = r.get("change_of_mind") or {}
+                if any(com.get(k) for k in ("upgrade_if", "downgrade_if", "invalidate_if")):
+                    with st.expander("🔀 What would change my mind (falsification conditions)"):
+                        for lbl, key in (("⬆️ Upgrade if", "upgrade_if"),
+                                         ("⬇️ Downgrade if", "downgrade_if"),
+                                         ("❌ Invalidate if", "invalidate_if")):
+                            if com.get(key):
+                                st.markdown(f"**{lbl}:** {com[key]}")
+                am = r.get("action_map") or {}
+                if any(am.values()):
+                    with st.expander("🛠️ So what — next actions"):
+                        for lbl, key in (("🧪 Eval to run", "eval_to_run"),
+                                         ("📊 Benchmark to monitor", "benchmark_to_monitor"),
+                                         ("🛡️ Mitigation to consider", "mitigation"),
+                                         ("🏛️ Policy question", "policy_question"),
+                                         ("👤 Owner community", "owner_community"),
+                                         ("🛰️ Data source to watch", "data_source_to_watch")):
+                            if am.get(key):
+                                st.markdown(f"**{lbl}:** {am[key]}")
                 if v:
                     with st.expander("🔎 Prior-coverage check (web-verified)",
                                      expanded=(rating != "genuinely_unsurfaced")):
@@ -1403,6 +1422,27 @@ def intelligence_estimate_md(snap) -> str:
                                ("Bottom line", "bottom_line")):
                 if pe.get(key):
                     lines.append(f"- **{label}:** {pe[key]}")
+    # Falsification conditions + next actions (from the surfaced risks that carry them).
+    surfaced = [r for r in (fg.get("risks") or [])
+                if (r.get("verification") or {}).get("novelty_rating") != "already_widely_discussed"]
+    fa = [r for r in surfaced if r.get("change_of_mind") or r.get("action_map")]
+    if fa:
+        lines += ["", "## What would change our mind & next actions"]
+        for i, r in enumerate(fa, 1):
+            lines.append(f"### {i}. {r.get('risk','')}")
+            com = r.get("change_of_mind") or {}
+            for label, key in (("Upgrade if", "upgrade_if"), ("Downgrade if", "downgrade_if"),
+                               ("Invalidate if", "invalidate_if")):
+                if com.get(key):
+                    lines.append(f"- **{label}:** {com[key]}")
+            am = r.get("action_map") or {}
+            for label, key in (("Eval to run", "eval_to_run"),
+                               ("Benchmark to monitor", "benchmark_to_monitor"),
+                               ("Mitigation", "mitigation"), ("Policy question", "policy_question"),
+                               ("Owner community", "owner_community"),
+                               ("Data source to watch", "data_source_to_watch")):
+                if am.get(key):
+                    lines.append(f"- **{label}:** {am[key]}")
     lines += ["", "## Confidence & caveats",
               "- Scores are AI-assigned and calibrated, not actuarial; likelihood is lowered "
               "where a risk leans on a contested or inferential claim.",

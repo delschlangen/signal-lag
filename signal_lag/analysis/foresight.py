@@ -344,6 +344,13 @@ CRITICAL INSTRUCTIONS:
 - GROUND every risk in the provided signals. In "derived_from", cite the ACTUAL topics,
   papers (by title/arxiv_id), or divergences from the digest. In "extrapolation", give an
   honest note of what you assumed that the data does NOT show.
+- MAKE EACH RISK FALSIFIABLE AND ACTIONABLE. Fill "change_of_mind" with the SPECIFIC,
+  OBSERVABLE evidence that would raise, lower, or invalidate the risk (a disciplined analyst
+  states in advance what would change their mind — not vague "more research"). Fill
+  "action_map" with the concrete next steps: the eval to run, the benchmark to watch, a
+  mitigation, the policy question, who should own it, and the data source that would show it
+  moving. Every entry must be concrete and specific to THIS risk; use '' only where a field
+  genuinely does not apply.
 
 Generate {max_risks} novel risk implications (fewer is fine if you cannot find that many
 genuinely novel, well-grounded ones). Return ONLY a JSON object (no markdown, no
@@ -369,7 +376,20 @@ preamble) with exactly this shape:
       "likelihood": 1-5,         // probability it MATERIALIZES within ~24 months (5 = likely)
       "exposure": 1-5,           // BREADTH if it does — how many users / systems / surfaces / sectors (5 = broad)
       "trajectory": "accelerating | steady | decelerating",  // is the ENABLING signal getting worse, flat, or fading
-      "score_rationale": "1-2 sentences justifying the four scores, grounded in the digest"
+      "score_rationale": "1-2 sentences justifying the four scores, grounded in the digest",
+      "change_of_mind": {{                       // explicit falsification conditions — make the risk disprovable
+        "upgrade_if": "the concrete, observable evidence that would INCREASE concern",
+        "downgrade_if": "the concrete evidence that would REDUCE concern",
+        "invalidate_if": "what observation would break the causal mechanism entirely"
+      }},
+      "action_map": {{                           // 'so what' — turn the flag into next steps (leave a field '' if none fits)
+        "eval_to_run": "an evaluation/probe that would test whether this is real",
+        "benchmark_to_monitor": "a benchmark or metric to track over time",
+        "mitigation": "a concrete mitigation to consider now",
+        "policy_question": "the governance/policy question this raises",
+        "owner_community": "which team/community should own watching this seam",
+        "data_source_to_watch": "a concrete source (system cards, an incident DB, a feed) that would show it moving"
+      }}
     }}
   ]
 }}

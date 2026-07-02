@@ -401,3 +401,28 @@ def test_s2_enrichment_persists_refs_counts_and_author_ids(tmp_path):
     ids = {a.name: a.openalex_id for a in got.authors}
     assert ids["Dr X"] == "S2-AUTHOR-1"
     assert ids["Dr Y"] is None
+
+
+# ------------------------------------------- #7 falsification + #33 action map
+def test_instructions_request_falsification_and_action_fields():
+    instr = foresight._instructions(3)
+    for key in ("change_of_mind", "upgrade_if", "downgrade_if", "invalidate_if",
+                "action_map", "eval_to_run", "benchmark_to_monitor", "policy_question",
+                "owner_community", "data_source_to_watch"):
+        assert key in instr, f"schema field {key} missing from synthesis instructions"
+
+
+def test_synthesize_preserves_change_of_mind_and_action_map(monkeypatch):
+    def fake_call(system, user, api_key, model="x", max_tokens=8000, tools=None):
+        return ('{"risks": [{"risk": "R", "severity": 4, "likelihood": 3, "exposure": 3,'
+                ' "trajectory": "accelerating",'
+                ' "change_of_mind": {"upgrade_if": "u", "downgrade_if": "d", "invalidate_if": "i"},'
+                ' "action_map": {"eval_to_run": "e", "benchmark_to_monitor": "b",'
+                ' "mitigation": "m", "policy_question": "p", "owner_community": "o",'
+                ' "data_source_to_watch": "s"}}]}')
+
+    monkeypatch.setattr(foresight.llm, "call_claude", fake_call)
+    risks = foresight._synthesize_risks({}, "", api_key="k", model="x", max_risks=1)
+    assert risks and risks[0]["priority"] == 12                 # 4 × 3, scoring still runs
+    assert risks[0]["change_of_mind"]["invalidate_if"] == "i"   # falsification preserved
+    assert risks[0]["action_map"]["owner_community"] == "o"     # action map preserved
