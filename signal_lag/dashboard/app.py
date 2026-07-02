@@ -199,6 +199,68 @@ def citation_matrix_csv(snap) -> str:
     return pd.DataFrame(rows).to_csv(index=False)
 
 
+def compact_brief_md(snap) -> str:
+    """One-page weekly brief (#38): top-3s + recommended actions, print-friendly markdown.
+
+    Only called at render time (from the sidebar), so it can safely use globals defined
+    later in the script (_DELTAS, risk_register).
+    """
+    date = snap.get("meta", {}).get("refreshed_at", "")
+    lines = [f"# signal-lag — one-page brief ({date})", ""]
+
+    d = _DELTAS or {}
+    changes = []
+    for p in (d.get("divergence") or {}).get("new_lagging", []):
+        changes.append(f"🚨 New safety-lag pairing: {p}")
+    for k in (d.get("velocity") or {}).get("new_accelerating", []):
+        changes.append(f"📈 Newly accelerating: {lbl(snap, k)}")
+    for r in (d.get("incidents") or {}).get("new", []):
+        changes.append(f"🌐 New incident: {r['title']} ({r['date']})")
+    for r in (d.get("foresight") or {}).get("new_risks", []):
+        changes.append(f"🆕 New risk: {r[:100]}")
+    lines.append("## Top changes this refresh")
+    lines += [f"- {c}" for c in changes[:3]] or ["- (no week-over-week movement recorded)"]
+
+    reg = sort_register(risk_register)[:3]
+    lines += ["", "## Top risks (register, forced ranking)"]
+    for i, e in enumerate(reg, 1):
+        lt = e.get("latest") or {}
+        lines.append(f"{i}. **[P{lt.get('priority')}]** {e.get('risk')} "
+                     f"(*{estimative(lt.get('likelihood'))}*, {lt.get('trajectory', '')})")
+
+    lines += ["", "## Indicators to watch"]
+    inds = [(e.get("latest") or {}).get("leading_indicator") for e in reg]
+    lines += [f"- {i}" for i in inds if i][:3] or ["- (none recorded)"]
+
+    lines += ["", "## Notable papers"]
+    notable = (weekly_block(snap).get("summary") or {}).get("notable") or []
+    look = _arxiv_lookup(snap)
+    n_added = 0
+    for r in notable:
+        aid = r.get("arxiv_id")
+        if aid in look and n_added < 3:
+            title, url = look[aid]
+            lines.append(f"- [{title}]({url}) — {r.get('why_it_matters', '')}")
+            n_added += 1
+    if not n_added:
+        lines.append("- (no this-week notables in this snapshot)")
+
+    lines += ["", "## Recommended actions"]
+    fg = get_analysis(snap).get("foresight_gap") or {}
+    acts = []
+    for r in sorted(fg.get("risks") or [], key=lambda r: r.get("priority") or 0, reverse=True):
+        am = r.get("action_map") or {}
+        for k in ("eval_to_run", "benchmark_to_monitor", "mitigation"):
+            if am.get(k) and len(acts) < 4:
+                acts.append(am[k])
+    lines += [f"- {a}" for a in acts] or ["- (populates when risks carry action maps)"]
+
+    lines += ["", "---", "_Full detail: the signal-lag dashboard (Divergence · Velocity · "
+              "Sentiment · Foresight · Sources). Research-attention signal, not deployment "
+              "telemetry — candidate hypotheses to pressure-test._"]
+    return "\n".join(lines)
+
+
 def weekly_block(snap):
     return snap.get("weekly") or {}
 
@@ -2594,6 +2656,9 @@ with st.sidebar:
                     f"({_ll.get('n_posts_considered', 0)} announcements)")
 
     st.divider()
+    st.download_button("📄 One-page brief", data=compact_brief_md(snap),
+                       file_name="signal_lag_one_page_brief.md",
+                       mime="text/markdown", width="stretch", key="sb_brief")
     st.download_button("⬇️ Intelligence estimate", data=intelligence_estimate_md(snap),
                        file_name="signal_lag_intelligence_estimate.md",
                        mime="text/markdown", width="stretch", key="sb_est")
