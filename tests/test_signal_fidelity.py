@@ -374,6 +374,49 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ---------------------------------------- #4 statistical warning layer
+def _stat_snapshot():
+    periods = [f"2024Q{q}" for q in (1, 2, 3, 4)] + [f"2025Q{q}" for q in (1, 2, 3, 4)]
+    ts = []
+    shift = [10, 10, 11, 10, 30, 31, 30, 32]        # clear regime change at 2025Q1
+    cap = [5, 10, 15, 20, 25, 30, 35, 40]           # capability ramps...
+    saf = [4, 5, 10, 15, 20, 25, 30, 35]            # ...safety follows ~1 quarter later
+    flat = [20, 21, 19, 20, 20, 21, 20, 90]         # forecast-range breaker in last qtr
+    for i, p in enumerate(periods):
+        ts += [{"topic_key": "shift", "period": p, "count": shift[i]},
+               {"topic_key": "cap", "period": p, "count": cap[i]},
+               {"topic_key": "saf", "period": p, "count": saf[i]},
+               {"topic_key": "flat", "period": p, "count": flat[i]}]
+    return {"timeseries": ts,
+            "divergence": [{"pairing": "Cap vs. Saf", "capability_topic": "cap",
+                            "safety_topic": "saf"}]}
+
+
+def test_statistical_detectors_find_shift_lag_and_deviation():
+    from signal_lag.analysis import alerts
+    det = alerts.statistical_detectors(_stat_snapshot())
+    # Change-point on the shifted series at the right quarter.
+    cp = next(r for r in det["change_points"] if r["topic_key"] == "shift")
+    assert cp["period"] == "2025Q1" and cp["after_mean"] > cp["before_mean"]
+    # CUSUM flags the sustained rise too.
+    assert any(r["topic_key"] == "shift" and r["direction"] == "up" for r in det["cusum"])
+    # Lead-lag: safety trails capability by ~1 quarter with strong correlation.
+    lc = next(r for r in det["lagged_correlations"] if r["pairing"] == "Cap vs. Saf")
+    assert lc["lag_quarters"] == 1 and lc["r"] >= 0.9
+    # Forecast deviation: 'flat' jumping to 90 falls outside its trend range.
+    f = next(r for r in det["forecasts"] if r["topic_key"] == "flat")
+    assert f["deviation"] is True and f["expected_hi"] < 90
+
+
+def test_statistical_detectors_need_enough_history():
+    from signal_lag.analysis import alerts
+    snap = {"timeseries": [{"topic_key": "a", "period": "2025Q1", "count": 5},
+                           {"topic_key": "a", "period": "2025Q2", "count": 6}],
+            "divergence": []}
+    det = alerts.statistical_detectors(snap)
+    assert det["n_topics"] == 0 and det["cusum"] == [] and det["forecasts"] == []
+
+
 # ---------------------------------------- #37 citation-velocity history
 def test_citation_history_appends_bounded_and_idempotent(tmp_path):
     from signal_lag import snapshot as snap_mod

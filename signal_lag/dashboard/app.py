@@ -1230,6 +1230,46 @@ def render_velocity_overall():
         ])
         st.dataframe(mdf, width="stretch", hide_index=True)
 
+    # --- Statistical detectors (#4): defensible warnings, not just recent-vs-prior. ---
+    det = alerts.statistical_detectors(snap)
+    if det.get("n_topics"):
+        with st.expander("🧪 Statistical detectors — change-points, CUSUM, lead-lag, forecasts"):
+            st.caption(f"Classical, explainable statistics over {det['n_quarters']} complete "
+                       f"quarters × {det['n_topics']} topics — these make the warning layer "
+                       "statistically defensible rather than descriptive.")
+            if det.get("cusum"):
+                st.markdown("**Persistent shifts (CUSUM, k=0.5 · h=4):** small sustained "
+                            "drifts a recent-vs-prior comparison misses.")
+                for r in det["cusum"][:6]:
+                    arrow = "↑" if r["direction"] == "up" else "↓"
+                    st.markdown(f"- {arrow} **{lbl(snap, r['topic_key'])}** — sustained "
+                                f"{'rise' if r['direction']=='up' else 'decline'} "
+                                f"(CUSUM {r['score']})")
+            if det.get("change_points"):
+                st.markdown("**Regime changes (best mean-shift split, t ≥ 3):**")
+                for r in det["change_points"][:6]:
+                    st.markdown(f"- **{lbl(snap, r['topic_key'])}** — changed at "
+                                f"**{r['period']}** ({r['before_mean']:.0f} → "
+                                f"{r['after_mean']:.0f} papers/qtr, t={r['t_stat']})")
+            if det.get("lagged_correlations"):
+                st.markdown("**Capability → safety lead-lag (best cross-correlation, "
+                            "|r| ≥ 0.5):** how many quarters safety activity trails "
+                            "capability activity. *Correlation, not causation.*")
+                for r in det["lagged_correlations"][:6]:
+                    lagtxt = ("moves in the same quarter" if r["lag_quarters"] == 0
+                              else f"safety trails by ~{r['lag_quarters']} quarter(s)")
+                    st.markdown(f"- **{r['pairing']}** — {lagtxt} (r={r['r']})")
+            devs = [f for f in det.get("forecasts", []) if f["deviation"]]
+            if devs:
+                st.markdown("**Outside the forecast range (linear trend ±1.96σ):**")
+                for f in devs[:6]:
+                    st.markdown(f"- **{lbl(snap, f['topic_key'])}** — latest quarter "
+                                f"{f['actual']:.0f} vs expected {f['expected_lo']:.0f}–"
+                                f"{f['expected_hi']:.0f}; next quarter expected "
+                                f"{f['next_expected_lo']:.0f}–{f['next_expected_hi']:.0f}")
+            elif det.get("forecasts"):
+                st.caption("No topic fell outside its trend-forecast range this quarter.")
+
     # --- Strategic map (formerly the Quadrant tab) — the same velocity data plotted as
     # recent volume × growth: emerging / hot / cooling / white-space. Quarterly only.
     st.divider()

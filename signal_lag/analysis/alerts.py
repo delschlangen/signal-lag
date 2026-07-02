@@ -154,6 +154,138 @@ def benchmark_transitions(history_rows: list) -> dict:
             "open_leads": open_leads}
 
 
+def _mean(xs):
+    return sum(xs) / len(xs) if xs else 0.0
+
+
+def _std(xs):
+    if len(xs) < 2:
+        return 0.0
+    m = _mean(xs)
+    return math.sqrt(sum((x - m) ** 2 for x in xs) / (len(xs) - 1))
+
+
+def _corr(a, b):
+    if len(a) != len(b) or len(a) < 3:
+        return None
+    ma, mb, sa, sb = _mean(a), _mean(b), _std(a), _std(b)
+    if sa == 0 or sb == 0:
+        return None
+    cov = sum((x - ma) * (y - mb) for x, y in zip(a, b)) / (len(a) - 1)
+    return cov / (sa * sb)
+
+
+def _linfit(ys):
+    """Least-squares fit over x = 0..n-1 -> (slope, intercept, residual_std)."""
+    n = len(ys)
+    xs = list(range(n))
+    mx, my = _mean(xs), _mean(ys)
+    denom = sum((x - mx) ** 2 for x in xs)
+    slope = (sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / denom) if denom else 0.0
+    intercept = my - slope * mx
+    resid = [y - (slope * x + intercept) for x, y in zip(xs, ys)]
+    return slope, intercept, _std(resid)
+
+
+def statistical_detectors(snapshot: dict, min_quarters: int = 6) -> dict:
+    """Statistical warning layer (#4) over the quarterly topic timeseries.
+
+    Four detectors, all classical and explainable (no fitting beyond least squares):
+    - ``cusum``: one-sided standardized CUSUM (k=0.5, h=4) — persistent small shifts
+      that a recent-vs-prior mean comparison misses.
+    - ``change_points``: best single mean-shift split per topic (two-sample t ≥ 3) —
+      when a topic's trend regime changed.
+    - ``lagged_correlations``: per pairing, corr(capability[t−k], safety[t]) for
+      k = 0..3 quarters — does capability activity precede safety activity, and by
+      how long? (Correlation, not causation; reported only when |r| ≥ 0.5.)
+    - ``forecasts``: linear-trend fit excluding the latest complete quarter, a
+      ±1.96σ expected range for that quarter, and a deviation flag when the actual
+      landed outside it — plus the expected range for next quarter.
+    Topics need ≥ ``min_quarters`` complete quarters to participate.
+    """
+    by_topic, periods = _counts_by_topic(snapshot)
+    series = {}
+    for k in by_topic:
+        ys = [float(by_topic[k].get(p, 0) or 0) for p in periods]
+        if len(ys) >= min_quarters and _std(ys) > 0:
+            series[k] = ys
+
+    cusum = []
+    for k, ys in series.items():
+        # Baseline = the first half of the series (the pre-period), so a later shift
+        # doesn't contaminate its own reference. σ floored at the Poisson noise of the
+        # baseline mean so near-constant early series don't over-fire.
+        half = ys[: max(3, len(ys) // 2)]
+        base = _mean(half)
+        sd = max(_std(half), math.sqrt(max(base, 1.0)))
+        s_pos = s_neg = 0.0
+        for y in ys[len(half):]:
+            z = (y - base) / sd
+            s_pos = max(0.0, s_pos + z - 0.5)
+            s_neg = min(0.0, s_neg + z + 0.5)
+        if s_pos > 4 or s_neg < -4:
+            cusum.append({"topic_key": k, "direction": "up" if s_pos > 4 else "down",
+                          "score": round(max(s_pos, -s_neg), 1)})
+    cusum.sort(key=lambda r: r["score"], reverse=True)
+
+    change_points = []
+    for k, ys in series.items():
+        best_t, best_i = 0.0, None
+        for i in range(2, len(ys) - 1):
+            a, b = ys[:i], ys[i:]
+            sa, sb = _std(a), _std(b)
+            se = math.sqrt((sa * sa) / len(a) + (sb * sb) / len(b)) or 1e-9
+            t = abs(_mean(b) - _mean(a)) / se
+            if t > best_t:
+                best_t, best_i = t, i
+        if best_i is not None and best_t >= 3:
+            change_points.append({
+                "topic_key": k, "period": str(periods[best_i]), "t_stat": round(best_t, 1),
+                "before_mean": round(_mean(ys[:best_i]), 1),
+                "after_mean": round(_mean(ys[best_i:]), 1)})
+    change_points.sort(key=lambda r: r["t_stat"], reverse=True)
+
+    lagged = []
+    for d in snapshot.get("divergence") or []:
+        ck, sk = d.get("capability_topic"), d.get("safety_topic")
+        if ck not in series or sk not in series:
+            continue
+        cap, saf = series[ck], series[sk]
+        best = None
+        for lag in range(0, 4):
+            a = cap[: len(cap) - lag] if lag else cap
+            b = saf[lag:]
+            r = _corr(a, b)
+            if r is not None and (best is None or abs(r) > abs(best[1])):
+                best = (lag, r)
+        if best and abs(best[1]) >= 0.5:
+            lagged.append({"pairing": d.get("pairing"), "lag_quarters": best[0],
+                           "r": round(best[1], 2)})
+    lagged.sort(key=lambda r: abs(r["r"]), reverse=True)
+
+    forecasts = []
+    for k, ys in series.items():
+        slope, intercept, rstd = _linfit(ys[:-1])
+        n = len(ys) - 1
+        expected_last = slope * n + intercept
+        band = 1.96 * max(rstd, math.sqrt(max(expected_last, 1.0)))  # Poisson floor
+        lo, hi = max(0.0, expected_last - band), expected_last + band
+        actual = ys[-1]
+        next_expected = slope * (n + 1) + intercept
+        forecasts.append({
+            "topic_key": k, "actual": actual,
+            "expected_lo": round(lo, 1), "expected_hi": round(hi, 1),
+            "deviation": actual < lo or actual > hi,
+            "next_expected_lo": round(max(0.0, next_expected - band), 1),
+            "next_expected_hi": round(next_expected + band, 1),
+        })
+    forecasts.sort(key=lambda r: (not r["deviation"], r["topic_key"]))
+
+    return {"cusum": cusum, "change_points": change_points,
+            "lagged_correlations": lagged, "forecasts": forecasts,
+            "n_topics": len(series), "n_quarters": len(periods)}
+
+
 def citation_velocity(history_rows: list, min_delta: int = 2, top_n: int = 10,
                       sleeper_max_total: int = 30) -> dict:
     """Week-over-week citation movement from the snapshotted count history (#37).
