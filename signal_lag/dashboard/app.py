@@ -101,6 +101,29 @@ def explained_risks(snap):
     return [r for r in (fg.get("risks") or []) if r.get("plain_explanation")]
 
 
+def provenance_line(meta: dict) -> str:
+    """Compact one-line provenance/trust metadata from the snapshot meta (#21)."""
+    n_papers = meta.get("n_papers") or 0
+    n_tagged = meta.get("n_tagged")
+    s2 = meta.get("s2_enriched") or 0
+    pct = round(100 * s2 / n_papers) if n_papers else 0
+    parts = []
+    if n_tagged:
+        parts.append(f"🏷️ {n_tagged:,} of {n_papers:,} papers tagged")
+    elif n_papers:
+        parts.append(f"📦 {n_papers:,} papers")
+    if n_papers:
+        parts.append(f"🔬 {pct}% Semantic-Scholar enriched")
+    if meta.get("topics_tracked"):
+        parts.append(f"🧭 {meta['topics_tracked']} topics · {meta.get('n_pairings', 0)} pairings")
+    cats = meta.get("categories") or []
+    if cats:
+        parts.append("📚 " + ", ".join(cats))
+    if meta.get("refreshed_at"):
+        parts.append(f"🗓️ refreshed {meta['refreshed_at']}")
+    return " · ".join(parts)
+
+
 def plain_language_brief_md(snap) -> str:
     """Downloadable markdown of the plain-language 'how the tool reasoned' walkthroughs."""
     date = snap.get("meta", {}).get("refreshed_at", "")
@@ -118,6 +141,41 @@ def plain_language_brief_md(snap) -> str:
                 lines.append(f"- **{label}:** {pe[key]}")
         lines.append("")
     return "\n".join(lines)
+
+
+# ------------------------------------------------- structured data exports (#41)
+def register_csv(register) -> str:
+    """Flatten the evergreen risk register to CSV for analyst reuse."""
+    rows = []
+    for e in register or []:
+        lt = e.get("latest") or {}
+        rows.append({
+            "id": e.get("id"), "risk": e.get("risk"),
+            "first_seen": e.get("first_seen"), "last_seen": e.get("last_seen"),
+            "n_appearances": e.get("n_appearances"),
+            "priority": lt.get("priority"), "severity": lt.get("severity"),
+            "likelihood": lt.get("likelihood"), "exposure": lt.get("exposure"),
+            "trajectory": lt.get("trajectory"),
+            "leading_indicator": lt.get("leading_indicator"),
+        })
+    return pd.DataFrame(rows).to_csv(index=False)
+
+
+def incidents_csv(snap) -> str:
+    """Incident benchmark records to CSV (with the credibility fields)."""
+    recs = (snap.get("incidents") or {}).get("records") or []
+    cols = ["date", "title", "harm_key", "confidence", "severity", "affected_sector",
+            "ai_involvement_confidence", "attribution_confidence", "source_quality",
+            "deployer", "summary", "source_url"]
+    return pd.DataFrame([{c: r.get(c) for c in cols} for r in recs]).to_csv(index=False)
+
+
+def velocity_csv(snap) -> str:
+    """Per-topic velocity inflections to CSV."""
+    rows = [{"topic": lbl(snap, r.get("topic_key")), **{k: r.get(k) for k in
+            ("recent_mean", "prior_mean", "change", "direction")}}
+            for r in (snap.get("inflections") or [])]
+    return pd.DataFrame(rows).to_csv(index=False)
 
 
 def weekly_block(snap):
@@ -161,6 +219,8 @@ if snap is None or snap.get("meta", {}).get("mode") != "live":
     st.stop()
 
 meta = snap["meta"]
+st.caption("🔎 " + provenance_line(meta) + "  ·  _all figures trace to this snapshot; "
+           "no page-load API calls_")
 
 with st.expander("ℹ️ New here? How to read this dashboard", expanded=False):
     # Analyst's note — the core framing for reading everything below.
@@ -1648,11 +1708,42 @@ def render_incidents_section():
                 _render_incident(r)
 
 
+def render_plain_terms_section():
+    st.subheader("🧩 Risks in plain terms — the policy-facing briefing")
+    st.info(
+        "The top foresight risks explained for a **non-specialist or executive**: what the "
+        "research shows, the real-world context, why the gap matters, what the tool itself "
+        "doubts, and the bottom line separating **observed** from **projected**. This is the "
+        "same reasoning as the risk cards, in plain language.", icon="🧩",
+    )
+    risks = explained_risks(snap)
+    if not risks:
+        st.warning("No plain-language explanations in this snapshot. They populate on a "
+                   "refresh with explainers enabled (`analysis.foresight.explainers`).",
+                   icon="🔌")
+        return
+    st.download_button("⬇️ Download plain-terms briefing (markdown)",
+                       data=plain_language_brief_md(snap),
+                       file_name="signal_lag_risks_in_plain_terms.md", mime="text/markdown")
+    for i, r in enumerate(risks, 1):
+        pe = r["plain_explanation"]
+        with st.container(border=True):
+            st.markdown(f"### {i}. {r.get('risk','')}")
+            for label, key in (("📄 What the research shows", "technical_evidence"),
+                               ("🌍 The real-world context", "societal_evidence"),
+                               ("🔗 Why the gap matters", "the_gap"),
+                               ("🤔 What the tool itself doubts", "skepticism")):
+                if pe.get(key):
+                    st.markdown(f"**{label}:** {pe[key]}")
+            if pe.get("bottom_line"):
+                st.success(f"**✅ Bottom line:** {pe['bottom_line']}")
+
+
 with tab_foresight:
     _fmode = st.radio(
         "Foresight view",
         ["🔮 Cross-domain risks", "⚠️ Harm vectors (dual-use)", "📋 Risk register",
-         "🎬 Scenarios", "🌐 Incidents"],
+         "🎬 Scenarios", "🌐 Incidents", "🧩 Plain terms"],
         horizontal=True, label_visibility="collapsed",
     )
     if _fmode.startswith("⚠️"):
@@ -1663,6 +1754,8 @@ with tab_foresight:
         render_scenarios_section()
     elif _fmode.startswith("🌐"):
         render_incidents_section()
+    elif _fmode.startswith("🧩"):
+        render_plain_terms_section()
     else:
         render_foresight_section()
     # Analyst-ready exports (Step 4) — templated, available under every view.
@@ -1762,6 +1855,35 @@ with tab_method:
                     "this tool tracks, so the rest of the dashboard is legible even if "
                     "you don't live in AI-safety jargon.")
         render_glossary(snap)
+
+    with st.expander("📤 Structured data exports — CSV / JSON for your own analysis"):
+        st.caption("The same data behind the dashboard, in machine-readable form for memos, "
+                   "notebooks, and downstream tooling. Everything is from the current snapshot.")
+        date = meta.get("refreshed_at", "")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            if risk_register:
+                st.download_button("⬇️ Risk register (CSV)", data=register_csv(risk_register),
+                                   file_name=f"risk_register_{date}.csv", mime="text/csv",
+                                   width="stretch")
+            st.download_button("⬇️ Topic velocity (CSV)", data=velocity_csv(snap),
+                               file_name=f"topic_velocity_{date}.csv", mime="text/csv",
+                               width="stretch")
+        with c2:
+            if (snap.get("incidents") or {}).get("records"):
+                st.download_button("⬇️ Incidents (CSV)", data=incidents_csv(snap),
+                                   file_name=f"incidents_{date}.csv", mime="text/csv",
+                                   width="stretch")
+            if snap.get("harm"):
+                st.download_button("⬇️ Harm vectors (JSON)",
+                                   data=json.dumps(snap["harm"], ensure_ascii=False, indent=2),
+                                   file_name=f"harm_vectors_{date}.json",
+                                   mime="application/json", width="stretch")
+        with c3:
+            st.download_button("⬇️ Full snapshot (JSON)",
+                               data=json.dumps(snap, ensure_ascii=False),
+                               file_name=f"snapshot_{date}.json", mime="application/json",
+                               width="stretch")
 
     cats = ", ".join(meta.get("categories", []) or [])
     srcs = meta.get("source_counts") or {}

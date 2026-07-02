@@ -145,6 +145,7 @@ def build_snapshot(
         "mode": mode,  # "live" | "fixtures"
         "backend": results["meta"]["backend"],
         "n_papers": results["meta"]["n_papers"],
+        "n_tagged": len(tax_tags),
         "date_start": min(dates).isoformat(),
         "date_end": max(dates).isoformat(),
         "categories": settings.arxiv_categories,
