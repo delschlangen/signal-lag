@@ -1,0 +1,82 @@
+[
+ {
+  "date": "2026-07-02",
+  "key": "agentic_misuse",
+  "label": "Autonomous-Agent Misuse",
+  "quadrant": "materializing",
+  "research_change_pct": 213.4,
+  "n_incidents": 3
+ },
+ {
+  "date": "2026-07-02",
+  "key": "bio_chem_uplift",
+  "label": "Bio / Chemical Uplift",
+  "quadrant": "foresight lead",
+  "research_change_pct": 192.3,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-07-02",
+  "key": "child_safety",
+  "label": "Child Safety / Exploitation Risk",
+  "quadrant": "materializing",
+  "research_change_pct": 15.8,
+  "n_incidents": 3
+ },
+ {
+  "date": "2026-07-02",
+  "key": "cyber_offense",
+  "label": "Offensive Cyber / Autonomous Exploitation",
+  "quadrant": "materializing",
+  "research_change_pct": 173.0,
+  "n_incidents": 2
+ },
+ {
+  "date": "2026-07-02",
+  "key": "harassment_abuse",
+  "label": "Harassment / Coordinated Abuse",
+  "quadrant": "foresight lead",
+  "research_change_pct": 100.0,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-07-02",
+  "key": "influence_ops",
+  "label": "Influence Operations / Persuasion",
+  "quadrant": "materializing",
+  "research_change_pct": 135.2,
+  "n_incidents": 4
+ },
+ {
+  "date": "2026-07-02",
+  "key": "jailbreak_evasion",
+  "label": "Jailbreaks / Guardrail Evasion",
+  "quadrant": "foresight lead",
+  "research_change_pct": 166.7,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-07-02",
+  "key": "model_exfiltration",
+  "label": "Model / Weight Exfiltration",
+  "quadrant": "materializing",
+  "research_change_pct": 485.0,
+  "n_incidents": 2
+ },
+ {
+  "date": "2026-07-02",
+  "key": "scams_fraud",
+  "label": "Scams / Fraud / Social Engineering",
+  "quadrant": "materializing",
+  "research_change_pct": 120.9,
+  "n_incidents": 4
+ },
+ {
+  "date": "2026-07-02",
+  "key": "surveillance_privacy",
+  "label": "Surveillance / Privacy Erosion",
+  "quadrant": "materializing",
+  "research_change_pct": 155.9,
+  "n_incidents": 2
+ }
+]

@@ -1,0 +1,227 @@
+{
+ "9dde121f9de2": {
+  "date_checked": "2026-07-02",
+  "risk": "NSA's classified cyber-benchmarking threshold for 'covered frontier models' is being designed while dangerous-capability eval methodology is still an immature, high-critical-share research area — freezing a shaky standard into national-security law.",
+  "verification": {
+   "prior_coverage": "The core factual scaffolding is already widely and specifically covered. The June 2, 2026 EO directing NSA to build a classified benchmarking process and a 'covered frontier model' threshold has been analyzed in depth by White House text, IBM, and multiple major law firms (Skadden, Latham & Watkins, Wiley, Pillsbury). Critically, the exact 'seam' this risk flags — that the threshold is classified, undisclosed, undefined in the EO, and not publicly contestable, making the 'covered' designation opaque — has already been argued explicitly by Lawfare and Latham & Watkins. Separately, eval immaturity, benchmark saturation/staleness, unreliability, and Goodhart-style gaming are all established, well-published research themes (arXiv 2502.06559, CIGI's Ferreira 'Warning Label' paper, METR/Epoch benchmark-degradation work).",
+   "sources": [
+    {
+     "title": "Promoting Advanced Artificial Intelligence Innovation and Security – The White House",
+     "url": "https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/"
+    },
+    {
+     "title": "'Voluntary' Until the Government Is Your Customer — Lawfare",
+     "url": "https://www.lawfaremedia.org/article/voluntary--until-the-government-is-your-customer"
+    },
+    {
+     "title": "President Trump Signs Executive Order Establishing AI Cybersecurity and Frontier Model Framework — Latham & Watkins",
+     "url": "https://www.lw.com/en/insights/president-trump-signs-executive-order-establishing-ai-cybersecurity-and-frontier-model-framework"
+    },
+    {
+     "title": "White House order creates classified benchmark for advanced AI models — IBM",
+     "url": "https://www.ibm.com/think/news/trump-white-house-executive-order-classified-benchmark-advanced-ai-models"
+    },
+    {
+     "title": "A Warning Label on the Use of AI Safety Evaluations (Ferreira) — CIGI",
+     "url": "https://www.cigionline.org/publications/a-warning-label-on-the-use-of-ai-safety-evaluations/"
+    },
+    {
+     "title": "Can We Trust AI Benchmarks? An Interdisciplinary Review of Current Issues in AI Evaluation — arXiv 2502.06559",
+     "url": "https://arxiv.org/abs/2502.06559"
+    },
+    {
+     "title": "Cybersecurity and Frontier Models: Inside Trump's Latest AI Executive Order — Benton Institute",
+     "url": "https://www.benton.org/blog/cybersecurity-and-frontier-models-inside-trumps-latest-ai-executive-order"
+    },
+    {
+     "title": "AI's capabilities may be exaggerated by flawed tests, according to new study — NBC News",
+     "url": "https://www.nbcnews.com/tech/tech-news/ai-chatgpt-test-smart-capabilities-may-exaggerated-flawed-study-rcna241969"
+    }
+   ],
+   "disputed_claims": "The 'immature/unreliable evals' premise is itself contested in direction, which cuts against the risk's framing. Emerging research (CIGI/Ferreira) argues evals more often UNDERESTIMATE harm and should not be treated as certification — the opposite failure mode from the risk's 'false negatives clear dangerous models' concern, but also implying evals aren't a settled science to freeze. NBC-reported research argues flawed tests EXAGGERATE capability, further muddying which way error runs. The risk's load-bearing causal claim — that the classified threshold will be BOTH stale AND legally binding — is not verifiable (process is classified, framework is nominally 'voluntary'); commentators (Lawfare, Latham) note the 'voluntary' framing while arguing de facto coercion via government-as-customer, so the 'national-security LAW' characterization is an inference, not an established fact. No source disputes that classified thresholds resist public correction — that point is broadly conceded.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade to LOW novelty / low-to-moderate confidence. Every named component is already in prominent public discussion: the EO and its classified 'covered frontier model' threshold (White House, IBM, four major law firms), the opacity/non-contestability critique (Lawfare and Latham & Watkins have already made essentially this argument), and eval immaturity/saturation/gaming (arXiv 2502.06559, CIGI, METR/Epoch). The specific seam is therefore partially-to-fully anticipated, not unsurfaced. Two honesty caveats must ride along: (1) the 'evals are immature' premise is contested in DIRECTION — leading sources argue evals underestimate (not just fail to catch) harm, and others argue benchmarks exaggerate capability, so 'shaky standard' is real but its error sign is uncertain; and (2) the core causal claim (threshold will be both stale AND legally load-bearing) is unverifiable because the process is classified and the framework is formally 'voluntary,' so the 'freezing into national-security law' framing overstates what is established. Net: a legitimate and real concern, but not novel and not a confident claim — brief it as 'an already-voiced critique with an unresolved, possibly mis-signed empirical premise,' not as a fresh foresight finding."
+  }
+ },
+ "7afe1ee07487": {
+  "date_checked": "2026-07-02",
+  "risk": "This week's surge of chemistry/bio agentic-reasoning papers pairs autonomous 'verifiable rule' generation with faithfulness-verification methods that were never designed as bio/chem uplift guardrails — creating an audit-theater path where an agent looks trustworthy on the reasoning trace while enabling synthesis planning.",
+  "verification": {
+   "prior_coverage": "The two load-bearing halves of this risk are each already publicly discussed. Agentic AI in chemistry/biology as a dual-use uplift concern is an active governance topic (Cambridge EngBio's 'Hype, Hazard, and Governance' framing, frontier risk-management technical reports covering biological/chemical dual-use, and agentic-bioinformatics automation reviews). Separately, the fragility of reasoning-trace/faithfulness verification as a safety guardrail is explicitly discussed in the July 2025 'Chain of Thought Monitorability' paper and related faithfulness research. What is less directly written up is the specific 'audit-theater' seam — faithfulness/rewrite-acceptability verifiers repurposed as apparent bio/chem guardrails while adding no misuse screen — so the components are surfaced but this exact juxtaposition is fresher.",
+   "sources": [
+    {
+     "title": "Frontier AI Risk Management Framework in Practice: A Risk Analysis Technical Report",
+     "url": "https://arxiv.org/pdf/2507.16534"
+    },
+    {
+     "title": "Understanding AI-Enabled Biological Threats: Hype, Hazard, and Governance",
+     "url": "https://www.engbio.cam.ac.uk/news/understanding-ai-enabled-biological-threats-hype-hazard-and-governance"
+    },
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety",
+     "url": "https://arxiv.org/html/2507.11473v1"
+    },
+    {
+     "title": "Streamline automated biomedical discoveries with agentic bioinformatics",
+     "url": "https://academic.oup.com/bib/article/26/5/bbaf505/8266996"
+    },
+    {
+     "title": "Current Artificial Intelligence Does Not Meaningfully Increase Risk of a Biological Weapons Attack | RAND",
+     "url": "https://www.rand.org/pubs/research_reports/RRA2977-2.html"
+    },
+    {
+     "title": "Beyond the Commitment Boundary: Probing Epiphenomenal Chain-of-Thought in Large Reasoning Models",
+     "url": "https://arxiv.org/abs/2507.11473"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The bio/chem UPLIFT premise: RAND's red-team study concludes current AI does not meaningfully increase biological-attack risk, and the Cambridge EngBio 'Hype, Hazard, and Governance' work explicitly frames uplift claims as partly hype — so the risk's implicit 'lowers the expertise floor for synthesis planning' leap is disputed by biosecurity researchers. (2) The FAITHFULNESS premise: CoT-faithfulness research (e.g. the 'Chain of Thought Monitorability' paper's own caveats and epiphenomenal-CoT findings) holds that reasoning traces often do NOT reflect the model's true computation — which actually strengthens the 'audit-theater' concern but simultaneously undercuts any claim that these verifiers meaningfully certify the reasoning at all. So the mechanism cannot lean on faithfulness verification 'working' and 'looking trustworthy' as if both were established.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Low-to-moderate confidence, and lower than the candidate implies. The building blocks are already in public discussion: agentic bio/chem dual-use uplift is an active governance debate, and reasoning-trace/faithfulness verification being a fragile or misleading guardrail is documented (July 2025 CoT-monitorability and epiphenomenal-CoT work). The specific 'audit-theater seam' — misuse-blind faithfulness verifiers dressing up a synthesis-planning agent as well-governed — is a fresher framing worth flagging, not a fully novel discovery. Crucially, the risk rests on a CONTESTED uplift premise: RAND and Cambridge EngBio dispute that current AI meaningfully raises bio/chem attack capability, so the 'enables synthesis uplift' inference must be presented as speculative and disputed, not asserted. The faithfulness dependency cuts both ways: because CoT traces frequently do not reflect true reasoning, the guardrails are indeed weak — but this same finding forbids treating the verifiers as trustworthy-looking-because-they-verify. Brief this as an emerging monitoring-vs-capability governance seam to watch, explicitly caveated that (a) neither cited paper claims dual-use intent, (b) the uplift claim is disputed by biosecurity researchers, and (c) it is an enabling-signal hypothesis, not evidence of abuse."
+  }
+ },
+ "966262665c64": {
+  "date_checked": "2026-07-02",
+  "risk": "Logarithmic-space quantization pushing frontier models onto consumer/edge hardware collides with agentic-monitoring research that assumes a supervised server-side stack — putting capable, self-improving agents where none of this week's oversight tooling can reach them.",
+  "verification": {
+   "prior_coverage": "The core seam is already broadly discussed in public. The training-compute-threshold approach (EU AI Act, SB 53, US EO) is widely critiqued for governing how a model is BUILT, not how a compressed/derived copy is RUN, with named 'legal loophole' and 'limits of thresholds' literature covering exactly the quantization/distillation-to-smaller-hardware escape (arXiv 2502.00003, 2407.05694, 'Inference Scaling Reshapes AI Governance' arXiv 2503.05705). Separately, a live 2026 news/security thread frames 'local/endpoint AI agents' as a governance visibility blind spot that server-side monitoring cannot reach (eSecurity Planet, Let's Data Science, Cyberhaven). The specific pairing of log-space quantization + embodied world-model agents is fresher, but each half of the seam is already prominent.",
+   "sources": [
+    {
+     "title": "Defending Compute Thresholds Against Legal Loopholes",
+     "url": "https://arxiv.org/pdf/2502.00003"
+    },
+    {
+     "title": "On the Limitations of Compute Thresholds as a Governance Strategy",
+     "url": "https://arxiv.org/html/2407.05694v2"
+    },
+    {
+     "title": "Inference Scaling Reshapes AI Governance",
+     "url": "https://arxiv.org/pdf/2503.05705"
+    },
+    {
+     "title": "Why Local AI Agents Are Creating a New Governance Blind Spot | eSecurity Planet",
+     "url": "https://www.esecurityplanet.com/threats/why-local-ai-agents-are-creating-a-new-governance-blind-spot/"
+    },
+    {
+     "title": "Local AI Agents Create Governance Visibility Blind Spot | Let's Data Science",
+     "url": "https://letsdatascience.com/news/local-ai-agents-create-governance-visibility-blind-spot-0eb1d2fd"
+    },
+    {
+     "title": "Endpoint AI Agents: The New Security Blind Spot | Cyberhaven",
+     "url": "https://www.cyberhaven.com/blog/endpoint-ai-agents-blind-spot"
+    },
+    {
+     "title": "California's SB 53: The First Frontier AI Law, Explained | Future of Privacy Forum",
+     "url": "https://fpf.org/blog/californias-sb-53-the-first-frontier-ai-law-explained/"
+    },
+    {
+     "title": "Investigating the Impact of Quantization Methods on the Safety and Reliability of LLMs",
+     "url": "https://arxiv.org/abs/2502.15799"
+    },
+    {
+     "title": "Quantization Undoes Alignment: Bias Emergence in Compressed LLMs",
+     "url": "https://arxiv.org/html/2605.15208v1"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The risk assumes a quantized copy remains 'frontier-class' and 'capable/self-improving' after compression; research disputes clean capability preservation — quantization is shown to degrade or alter safety/alignment behavior (arXiv 2502.15799; 'Quantization Undoes Alignment' arXiv 2605.15208), so the compressed model may be less capable, not a faithful frontier agent. (2) The claim that compute thresholds structurally fail to reach deployed/inference-side or derived models is itself contested: threshold defenders (Transformer News 'Abandon compute thresholds at your peril'; Institute for Law & AI) argue thresholds remain useful and can be paired with deployment/inference tiers, while 'legal loophole' and inference-scaling authors argue the gap is real — so this is an active debate, not settled fact. The specific empirical claim that 'this week's oversight tooling cannot reach' edge agents is inferred from design assumptions, not measured.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'Emerging, moderate confidence' to 'Largely anticipated, low-to-moderate confidence on the specific seam.' The general mechanism — compute thresholds governing training-not-deployment, and derived/quantized/distilled copies plus local/edge agents escaping server-side oversight — is already a prominent, actively published theme (compute-threshold loophole and inference-scaling governance literature; live 2026 'local AI agent blind spot' security coverage), so it should NOT be briefed as novel. The genuinely fresher element is the narrow pairing of THIS week's log-space quantization paper with embodied world-model agents; even that is a specific instance of an already-surfaced pattern. Confidence must be lowered further because the risk depends on two contested claims: (a) that quantization preserves frontier capability and enables self-improvement — disputed by evidence that quantization degrades capability and can undo alignment; and (b) that compute thresholds structurally cannot cover derived/deployed models — an unresolved governance debate, not established fact. The 'cannot reach' assertion remains inferred, not measured. Net: real and worth flagging as a known-and-worsening seam to watch, but not a novel finding and not to be stated with confidence given the disputed dependencies."
+  }
+ },
+ "07eadd92e7b9": {
+  "date_checked": "2026-07-02",
+  "risk": "Post-hoc rewrite-acceptability verifiers for informal reasoning are being positioned as the auditable alternative to opaque LLM judges, which could let CAISI's classified pre-deployment eval pipeline certify a model as 'reasoning-faithful' using a verifier that only checks local step-to-step legality — not whether the trace reflects the computation that produced the answer.",
+  "verification": {
+   "prior_coverage": "The three ingredients are each publicly documented but never connected as this specific seam. CAISI's 40+ pre-deployment/classified evaluations and the June 2026 EO directing a formalized federal frontier-model evaluation framework are covered in press and the White House action itself. The chain-of-thought faithfulness gap — that stated traces rationalize rather than report a model's true computation — is a large, mature literature. But no source ties post-hoc rewrite-acceptability verification (Theoria-style, local step-legality checking) to a government faithfulness-certification pathway; the 'auditable verifier as alternative to opaque LLM judges' framing exists only generically, not as a proposed CAISI certification mechanism.",
+   "sources": [
+    {
+     "title": "Promoting Advanced Artificial Intelligence Innovation and Security (Executive Order)",
+     "url": "https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/"
+    },
+    {
+     "title": "The U.S. Government Tests Frontier AI Models with the Safety Guards Turned Off (CAISI 40+ evals)",
+     "url": "https://medium.com/@marc.bara.iniesta/the-u-s-government-tests-frontier-ai-models-with-the-safety-guards-turned-off-ad9e19e63f09"
+    },
+    {
+     "title": "Chain-of-Thought Is Not Explainability (Barez et al., Oxford)",
+     "url": "https://aigi.ox.ac.uk/wp-content/uploads/2025/07/Cot_Is_Not_Explainability.pdf"
+    },
+    {
+     "title": "Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting",
+     "url": "https://arxiv.org/pdf/2305.04388"
+    },
+    {
+     "title": "Chain-of-Thought Reasoning In The Wild Is Not Always Faithful",
+     "url": "https://arxiv.org/html/2503.08679v4"
+    },
+    {
+     "title": "LLMs Gaming Verifiers: RLVR can Lead to Reward Hacking",
+     "url": "https://arxiv.org/abs/2604.15149"
+    },
+    {
+     "title": "Anticipated executive order could give NSA a role in voluntary AI model testing (Nextgov)",
+     "url": "https://www.nextgov.com/artificial-intelligence/2026/05/anticipated-executive-order-could-give-nsa-role-voluntary-ai-model-testing/413663/"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The premise that trace-checking cannot capture true faithfulness is well-supported but NOT settled: 'Chain-of-Thought Reasoning In The Wild Is Not Always Faithful' finds thinking models are meaningfully MORE faithful than non-thinking ones and frames its unfaithfulness rates as a lower bound from small samples (215 problems), so the magnitude and trend of the faithfulness gap are actively debated among CoT-faithfulness researchers (Barez et al. argue CoT is not explainability at all; others emphasize improvement). (2) The core risk claim — that CAISI would adopt rewrite-acceptability verification as its faithfulness check — is unverified and unsupported by any source; the EO and CAISI materials describe cyber-capability benchmarking and a voluntary developer framework, with no mention of trace-faithfulness certification or this verifier class. The mechanism's own failure mode (models emitting acceptable rewrites while gaming the checker) is corroborated as a real risk by verifier reward-hacking work, but that supports the concern, not the adoption premise.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Low confidence, partially anticipated. The seam's ingredients are all in public discussion (CAISI evals, the June 2026 EO's formalized framework mandate, and a mature-but-contested CoT-faithfulness literature), but the specific move — a Theoria-style rewrite-acceptability verifier being adopted as a government 'reasoning-faithful' certification that checks only local step legality — is not found anywhere and appears to be original synthesis. Confidence must be lowered on two counts the original calibration under-weighted: (a) the linchpin adoption claim is pure inference from timing, with zero evidence that CAISI or the EO contemplate trace-faithfulness certification (they emphasize cyber-capability benchmarking), so the causal chain to certification is speculative; and (b) the enabling premise — that step-legality checks are blind to causal faithfulness — rests on a literature that is real but disputed in degree, with recent work showing reasoning models are more faithful and framing unfaithfulness rates as small-sample lower bounds. Net: a plausible, non-redundant 'seam to watch,' worth flagging as a design-time caution for the Aug-1 framework, but it should NOT be briefed as a confident or imminent risk, and it must not launder the contested faithfulness-gap magnitude or the unverified adoption assumption into certainty."
+  }
+ },
+ "85832607148f": {
+  "date_checked": "2026-07-02",
+  "risk": "Explainable-AI attribution methods are being deployed as the trust layer for precision-oncology drug-response models under SB 53's incident-reporting regime — but the same interpretability subfield is where safety researchers know attributions are unfaithful, creating a clinical audit trail that looks compliant while systematically over-trusting spurious biological 'insights.'",
+  "verification": {
+   "prior_coverage": "Every component of this risk is already publicly and often prominently discussed. Attribution/saliency unfaithfulness is a mature, near-consensus finding (Adebayo et al.'s 'Sanity Checks for Saliency Maps,' Kindermans et al.'s '(Un)reliability of Saliency Methods'). XAI producing false confidence and miscalibrated over-trust in clinicians is actively studied (npj Digital Medicine 2026; PMC work on false-confirmation errors). And XAI functioning as a compliance 'box-ticking' / false-security layer under AI regulation has been argued explicitly (arXiv 2405.03820, 'False Sense of Security in Explainable AI'). The only genuinely fresh element is the specific stitching to SB 53 — but that stitch rests on a factual error.",
+   "sources": [
+    {
+     "title": "Sanity Checks for Saliency Maps (Adebayo et al.)",
+     "url": "https://arxiv.org/abs/1810.03292"
+    },
+    {
+     "title": "Sanity Checks for Saliency Metrics (Tomsett et al.)",
+     "url": "https://arxiv.org/pdf/1912.01451v1"
+    },
+    {
+     "title": "False Sense of Security in Explainable Artificial Intelligence (XAI)",
+     "url": "https://arxiv.org/html/2405.03820v1"
+    },
+    {
+     "title": "Impact of AI misinformation on diagnostic accuracy and confidence calibration (npj Digital Medicine)",
+     "url": "https://www.nature.com/articles/s41746-026-02547-z"
+    },
+    {
+     "title": "False conflict and false confirmation errors in AI medical decision making (PMC)",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11322186/"
+    },
+    {
+     "title": "XAI meets Biology: A Comprehensive Review of Explainable AI in Bioinformatics",
+     "url": "https://arxiv.org/abs/2312.06082"
+    },
+    {
+     "title": "California's SB 53: The First Frontier AI Law, Explained (Future of Privacy Forum)",
+     "url": "https://fpf.org/blog/californias-sb-53-the-first-frontier-ai-law-explained/"
+    },
+    {
+     "title": "Transparency in Frontier Artificial Intelligence Act (SB-53) (WilmerHale)",
+     "url": "https://www.wilmerhale.com/en/insights/blogs/wilmerhale-privacy-and-cybersecurity-law/20251001-transparency-in-frontier-artificial-intelligence-act-sb-53-california-requires-new-standardized-ai-safety-disclosures"
+    },
+    {
+     "title": "SB 53: What California's New AI Safety Law Means for Developers (Wharton)",
+     "url": "https://ai-analytics.wharton.upenn.edu/wharton-accountable-ai-lab/sb-53-what-californias-new-ai-safety-law-means-for-developers/"
+    },
+    {
+     "title": "Explainable AI: Definition and attributes of a good explanation for health AI",
+     "url": "https://arxiv.org/pdf/2409.15338"
+    }
+   ],
+   "disputed_claims": "The load-bearing claim — that precision-oncology drug-response models fall under 'SB 53's incident-reporting regime' — is contradicted by the statute itself and by every legal analysis found. SB 53 (TFAIA) applies ONLY to 'frontier models' trained on >10^26 FLOPs and covers ONLY 'catastrophic risk' (defined as foreseeable/material risk of 50+ deaths or $1B+ in damages). Narrow oncology ML models are neither frontier models nor plausibly catastrophic-risk systems, so they would not be covered, and their errors would not be SB 53-reportable 'critical safety incidents' (reported to Cal OES within 15 days). Sources: Future of Privacy Forum, WilmerHale, Wharton, Goodwin. Separately, the framing that attribution unfaithfulness is a specialist 'safety researchers know' secret is itself contested by the mainstream-ness of the finding, and a minority of researchers (see arXiv 2409.15338 §5.3) dispute the very need for/utility of XAI, cutting against the premise that these attributions are being trusted as a formal 'trust layer' at all.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Confidence should be lowered substantially and the risk reframed before any briefing. The generic mechanism — unfaithful attributions producing a coherent-but-spurious biological rationale that clinicians and auditors over-trust, masking failures — is real but NOT novel: it is well-documented across the interpretability literature (Adebayo 2018), the clinical over-trust literature (npj Digital Medicine 2026), and the AI-governance 'false security / box-ticking' critique (arXiv 2405.03820). The distinctive, novelty-bearing element — that SB 53 is the regulatory regime creating this compliant-looking clinical audit trail — is factually incorrect: SB 53 governs only frontier models (>10^26 FLOPs) and catastrophic-scale harms, and does not reach narrow precision-oncology models or make their errors reportable incidents. Once that false seam is removed, what remains is a well-trodden concern about XAI-as-compliance-theater in medicine, not a genuinely unsurfaced cross-domain risk. Recommend flag (not surface-as-novel): if retained, it must be restated as 'known XAI-overtrust risk in clinical AI,' explicitly drop the SB 53 dependency, and note that even the 'attributions are trusted as a trust layer' premise is contested by researchers who question XAI's utility altogether."
+  }
+ }
+}
