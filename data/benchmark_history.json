@@ -78,5 +78,85 @@
   "quadrant": "materializing",
   "research_change_pct": 155.9,
   "n_incidents": 2
+ },
+ {
+  "date": "2026-07-06",
+  "key": "agentic_misuse",
+  "label": "Autonomous-Agent Misuse",
+  "quadrant": "materializing",
+  "research_change_pct": 152.5,
+  "n_incidents": 4
+ },
+ {
+  "date": "2026-07-06",
+  "key": "bio_chem_uplift",
+  "label": "Bio / Chemical Uplift",
+  "quadrant": "materializing",
+  "research_change_pct": 130.0,
+  "n_incidents": 1
+ },
+ {
+  "date": "2026-07-06",
+  "key": "child_safety",
+  "label": "Child Safety / Exploitation Risk",
+  "quadrant": "active / known",
+  "research_change_pct": 2.6,
+  "n_incidents": 3
+ },
+ {
+  "date": "2026-07-06",
+  "key": "cyber_offense",
+  "label": "Offensive Cyber / Autonomous Exploitation",
+  "quadrant": "materializing",
+  "research_change_pct": 118.0,
+  "n_incidents": 1
+ },
+ {
+  "date": "2026-07-06",
+  "key": "harassment_abuse",
+  "label": "Harassment / Coordinated Abuse",
+  "quadrant": "materializing",
+  "research_change_pct": 75.0,
+  "n_incidents": 1
+ },
+ {
+  "date": "2026-07-06",
+  "key": "influence_ops",
+  "label": "Influence Operations / Persuasion",
+  "quadrant": "materializing",
+  "research_change_pct": 89.6,
+  "n_incidents": 2
+ },
+ {
+  "date": "2026-07-06",
+  "key": "jailbreak_evasion",
+  "label": "Jailbreaks / Guardrail Evasion",
+  "quadrant": "materializing",
+  "research_change_pct": 113.5,
+  "n_incidents": 1
+ },
+ {
+  "date": "2026-07-06",
+  "key": "model_exfiltration",
+  "label": "Model / Weight Exfiltration",
+  "quadrant": "materializing",
+  "research_change_pct": 360.0,
+  "n_incidents": 2
+ },
+ {
+  "date": "2026-07-06",
+  "key": "scams_fraud",
+  "label": "Scams / Fraud / Social Engineering",
+  "quadrant": "materializing",
+  "research_change_pct": 84.3,
+  "n_incidents": 3
+ },
+ {
+  "date": "2026-07-06",
+  "key": "surveillance_privacy",
+  "label": "Surveillance / Privacy Erosion",
+  "quadrant": "materializing",
+  "research_change_pct": 110.6,
+  "n_incidents": 2
  }
 ]

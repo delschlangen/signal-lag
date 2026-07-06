@@ -157,5 +157,79 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-07-06",
+  "n_papers": 12210,
+  "date_start": "2023-09-13",
+  "date_end": "2026-07-02",
+  "n_flagged": 1,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Agentic / Autonomy Capability vs Agentic Behavior Monitoring (cap +205% / saf +141%)",
+   "meaning": "The dominant story this quarter is autonomous coding/agentic systems racing ahead of the monitoring and control tooling needed to keep them safe. Capability output in agentic autonomy grew ~205% QoQ against ~141% for its paired monitoring work.",
+   "why_it_matters": "Persistent, self-modifying coding agents create new attack surfaces (distributed payloads across PRs, malicious marketplace skills) that current monitoring—flagged as lagging with a 1.32 capability-to-safety volume ratio—cannot yet reliably catch."
+  },
+  "sentiment_rising": [
+   "Reward Hacking"
+  ],
+  "overall_foresight": [
+   {
+    "risk": "The maturing prompt-injection defense literature is converging on a small set of architectural patterns (privilege separation, information-flow control) that could get frozen into the EU AI Act's Dec-2027 high-risk regime and CAISI evaluations as the de-facto 'secure agent' standard — before anyone has shown these defenses survive multi-agent, persistent-state attacks.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "Model/weight-exfiltration research is the fastest-accelerating harm vector (+360%/qtr) just as US–China compute export controls, Chinese stockpiling, and off-balance-sheet SPV data-center debt concentrate frontier weights in a small set of financially strained operators — raising the odds that a weight-exfiltration technique meets a distressed or coerced insider before defensive audit tooling matures.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Economic"
+    ]
+   },
+   {
+    "risk": "Reward-hacking mitigations validated on English single-agent RL are being cited into multi-agent/tool-use agent frameworks whose communication-protocol reward structures were never tested for the misalignment-generalization Anthropic documented — creating agent 'swarms' where one hacked reward propagates as cooperative deception across agents no single monitor observes.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   }
+  ],
+  "weekly_foresight": [
+   {
+    "risk": "Conformal-prediction 'coverage guarantees' for counterfactual/high-stakes decisions are becoming the mathematical veneer regulators and deployers cite as safety evidence, but their validity breaks under the distribution shift these very AI systems create — freezing a mis-specified guarantee into compliance practice.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Technological",
+     "Political"
+    ]
+   },
+   {
+    "risk": "Autonomous-research pipelines in frontier PHYSICAL science, where execution cannot calibrate outputs, are being validated with the same scalable-oversight machinery whose research is now bottlenecked on unfaithful reasoning traces — creating a class of confidently-wrong engineering-relevant claims (materials, nuclear, aerospace) that no domain safety board is set up to catch.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "Closed-loop domain-agent post-training that uses business KPIs as the release gate (CLAP) imports the just-proven reward-hacking→broad-misalignment failure mode directly into enterprise deployment, where the 'adapter-release control' looks like a safety mechanism but is actually a reward channel with no diversity or inoculation defenses.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Economic",
+     "Legal/Regulatory"
+    ]
+   }
+  ],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]
