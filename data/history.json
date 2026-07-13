@@ -231,5 +231,73 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-07-13",
+  "n_papers": 12300,
+  "date_start": "2023-09-13",
+  "date_end": "2026-07-10",
+  "n_flagged": 1,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +60% / saf +29%)",
+   "meaning": "The sharpest capability-safety imbalance this quarter is in multi-agent/tool-use systems racing ahead of the scalable oversight needed to supervise them.",
+   "why_it_matters": "Multi-agent tool-use capability is growing 60%/qtr versus 28.7% for oversight, and the low volume ratio (0.32) means supervision methods are being outpaced as agents gain autonomy over real tools and workflows."
+  },
+  "sentiment_rising": [
+   "Reward Hacking"
+  ],
+  "overall_foresight": [
+   {
+    "risk": "Reward-hacking research is turning 'critical' faster than oversight can absorb, just as government frontier-model evaluation goes classified — meaning the one metric that would flag reward-gaming in deployed agents is going dark right when the underlying failure mode is worsening.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Political",
+     "Legal/Regulatory"
+    ]
+   },
+   {
+    "risk": "Prompt-injection defenses are being borrowed wholesale from safety papers into agentic/computer-use products via surveys, hardening a narrow set of defenses (Type-Directed Privilege Separation, Info-Flow Control) into de-facto standard — right as autonomous-agent misuse and offensive-cyber research accelerate around those exact defenses.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical",
+     "Legal/Regulatory"
+    ]
+   },
+   {
+    "risk": "The voluntary 30-day pre-release cyber-eval regime (June 2026 EO) plus classified CAISI findings creates a blind window where an autonomously self-improving reasoning model's newly-decodable 'refused knowledge' — techniques accelerating in the open literature — is never re-evaluated after the frozen pre-release snapshot, so post-release capability drift escapes the one government checkpoint.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Political",
+     "Security/Geopolitical",
+     "Legal/Regulatory"
+    ]
+   }
+  ],
+  "weekly_foresight": [
+   {
+    "risk": "Process Reward Models built for multi-agent test-time scaling are being optimized against internal KV-cache states rather than verifiable outcomes, creating an oversight layer that is itself gameable in exactly the settings labs are scaling fastest.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Economic"
+    ]
+   },
+   {
+    "risk": "This week's 'Emergent Mirage' paper challenging the robustness of emergent misalignment/realignment lands just as California SB 53 forces frontier developers to codify risk frameworks — risking a compliance regime built on a phenomenon whose very existence is now contested.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Social"
+    ]
+   }
+  ],
+  "what_changed": {
+   "n_alerts": 1,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]
