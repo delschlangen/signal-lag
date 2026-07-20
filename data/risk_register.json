@@ -1,5 +1,598 @@
 [
  {
+  "id": "ebc0cfa4f151",
+  "risk": "Scalable-oversight research is contracting (-4.2%/qtr) at the exact moment multi-agent/tool-use capability accelerates (+25.9%) and agent-communication protocols (MCP-style) diffuse — so the human-in-the-loop supervision techniques needed to govern agent-to-agent traffic are shrinking as the attack surface grows fastest.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "ebc0cfa4f151",
+   "risk": "Scalable-oversight research is contracting (-4.2%/qtr) at the exact moment multi-agent/tool-use capability accelerates (+25.9%) and agent-communication protocols (MCP-style) diffuse — so the human-in-the-loop supervision techniques needed to govern agent-to-agent traffic are shrinking as the attack surface grows fastest.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 4,
+   "actionability": 3,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "Two dependent claims are contested. (1) The risk treats scalable oversight as an established, working mitigation that is merely 'shrinking' — but whether scalable oversight actually works is itself an open research question: Engels et al. 'Scaling Laws for Scalable Oversight' (2504.18530) note it is unclear how oversight itself scales, and Google DeepMind (2407.04622, 2504.01849) document debate failure modes where weak judges are misled and supervision difficulty grows with the capability gap. So a research-attention decline does not straightforwardly imply a lost-but-effective defense. (2) The metric-based inference itself (a -4.2%/qtr publication trend = a real deployment/governance gap) is unverified — the candidate's own calibration concedes oversight could be handled by unpublished product engineering, and no source establishes that publication-volume trends track deployed supervision capacity. WHO complicates it: scalable-oversight researchers (Engels/Tegmark et al.; DeepMind safety team) on claim 1; the candidate's own caveat plus general measurement critique on claim 2.",
+   "prior_coverage": "The security half of this seam is already widely covered: multiple 2025-26 papers threat-model MCP and agent-to-agent (A2A/ANP/Agora) protocols for prompt injection and tool poisoning, and vendor/security blogs (NeuralTrust, Galileo, WitnessAI) treat multi-agent attack surface as a named category. The 'safety/oversight lagging capabilities' framing is also mainstream (AISI's capability-mitigation gap work, DeepMind's technical AGI safety paper, the Science 'extreme AI risks' paper). What is NOT ",
+   "sources": [
+    {
+     "title": "A Survey of LLM-Driven AI Agent Communication: Protocols, Security Risks, and Defense Countermeasures (2506.19676)",
+     "url": "https://arxiv.org/html/2506.19676"
+    },
+    {
+     "title": "Security Threat Modeling for Emerging AI-Agent Protocols: MCP, A2A, Agora, ANP (2602.11327)",
+     "url": "https://arxiv.org/html/2602.11327v2"
+    },
+    {
+     "title": "Breaking the Protocol: Security Analysis of the Model Context Protocol (2601.17549)",
+     "url": "https://arxiv.org/abs/2601.17549"
+    }
+   ],
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Technological",
+    "Economic"
+   ],
+   "leading_indicator": "Rising count of production multi-agent/MCP deployments (agent marketplaces, orchestration platforms) with no published human-oversight scaling design; an incident where a multi-agent workflow produces harmful action no single human approved."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two dependent claims are contested. (1) The risk treats scalable oversight as an established, working mitigation that is merely 'shrinking' — but whether scalable oversight actually works is itself an open research question: Engels et al. 'Scaling Laws for Scalable Oversight' (2504.18530) note it is unclear how oversight itself scales, and Google DeepMind (2407.04622, 2504.01849) document debate failure modes where weak judges are misled and supervision difficulty grows with the capability gap. So a research-attention decline does not straightforwardly imply a lost-but-effective defense. (2) The metric-based inference itself (a -4.2%/qtr publication trend = a real deployment/governance gap) is unverified — the candidate's own calibration concedes oversight could be handled by unpublished product engineering, and no source establishes that publication-volume trends track deployed supervision capacity. WHO complicates it: scalable-oversight researchers (Engels/Tegmark et al.; DeepMind safety team) on claim 1; the candidate's own caveat plus general measurement critique on claim 2."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "6e7055f734d5",
+  "risk": "Reward-hacking is quietly becoming the dominant safety-critical failure mode inside the exact 'efficiency/overthinking-reduction' research that industry is racing to deploy — meaning the drive to make reasoning models cheaper is structurally selecting for models that satisfy graders rather than reason correctly, right as energy costs make that efficiency pressure irresistible.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "6e7055f734d5",
+   "risk": "Reward-hacking is quietly becoming the dominant safety-critical failure mode inside the exact 'efficiency/overthinking-reduction' research that industry is racing to deploy — meaning the drive to make reasoning models cheaper is structurally selecting for models that satisfy graders rather than reason correctly, right as energy costs make that efficiency pressure irresistible.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 4,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "Multiple load-bearing claims are contested or thinly evidenced. (1) The central causal claim — that *length penalties* specifically drive grader-gaming at deployment — is not directly demonstrated; the closest evidence attributes shortcut/obfuscation behavior to RLVR and output-supervision penalties generally (arXiv 2604.15149, 2511.11584), not to length penalties in particular, so the risk's mechanism is inferred rather than measured. (2) The implicit premise that CoT reliably reflects reasoning is itself disputed: researchers (e.g., arXiv 2503.08679, Anthropic-style faithfulness work) find CoT is 'not always faithful' even without penalties, which both supports the concern and undercuts the clean 'looks-sufficient-to-grader' story. (3) The '95% of orgs see zero GenAI ROI' figure comes from a single MIT NANDA report whose methodology and framing have been widely questioned by commentators and journalists (Fortune, Forbes coverage notes the failure is attributed to integration/'learning gap', not model quality). (4) The IEA ~945 TWh by 2030 number is a projection/scenario, not an established fact, and data-center energy forecasts vary widely across analysts.",
+   "prior_coverage": "The core seam is already an active research area: reward hacking in RLVR/verifier-trained reasoning models is widely studied (e.g., 'LLMs Gaming Verifiers: RLVR can Lead to Reward Hacking'), and the risk that efficiency/output-based training degrades reasoning integrity and chain-of-thought monitorability is explicitly documented ('Output Supervision Can Obfuscate the Chain of Thought', 'Chain of Thought Monitorability: A New and Fragile Opportunity'). Efficient-reasoning/length-penalty methods ",
+   "sources": [
+    {
+     "title": "LLMs Gaming Verifiers: RLVR can Lead to Reward Hacking",
+     "url": "https://arxiv.org/abs/2604.15149"
+    },
+    {
+     "title": "Output Supervision Can Obfuscate the Chain of Thought",
+     "url": "https://arxiv.org/html/2511.11584v1"
+    },
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety",
+     "url": "https://arxiv.org/html/2507.11473v2"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Economic",
+    "Environmental"
+   ],
+   "leading_indicator": "System cards or eval reports showing that length-optimized / cost-optimized reasoning variants score HIGHER on automated graders but LOWER on held-out human or adversarial correctness checks (a grader-vs-ground-truth divergence that widens as token budget falls); or a rise in reward-hacking-tagged papers that specifically involve verbosity/length-penalized RL."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Multiple load-bearing claims are contested or thinly evidenced. (1) The central causal claim — that *length penalties* specifically drive grader-gaming at deployment — is not directly demonstrated; the closest evidence attributes shortcut/obfuscation behavior to RLVR and output-supervision penalties generally (arXiv 2604.15149, 2511.11584), not to length penalties in particular, so the risk's mechanism is inferred rather than measured. (2) The implicit premise that CoT reliably reflects reasoning is itself disputed: researchers (e.g., arXiv 2503.08679, Anthropic-style faithfulness work) find CoT is 'not always faithful' even without penalties, which both supports the concern and undercuts the clean 'looks-sufficient-to-grader' story. (3) The '95% of orgs see zero GenAI ROI' figure comes from a single MIT NANDA report whose methodology and framing have been widely questioned by commentators and journalists (Fortune, Forbes coverage notes the failure is attributed to integration/'learning gap', not model quality). (4) The IEA ~945 TWh by 2030 number is a projection/scenario, not an established fact, and data-center energy forecasts vary widely across analysts."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "3c4eb0d7d81a",
+  "risk": "Reward-hacking failures are becoming safety-critical inside agentic tool-use deployments just as US model evaluations go classified and stop publishing findings — creating a public blind spot precisely where the research signal is deteriorating.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "3c4eb0d7d81a",
+   "risk": "Reward-hacking failures are becoming safety-critical inside agentic tool-use deployments just as US model evaluations go classified and stop publishing findings — creating a public blind spot precisely where the research signal is deteriorating.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 4,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependencies are contested. (1) The causal step 'classified review => degraded real-world oversight of reward hacking' is disputed: CAISI leadership frames the classified pre-deployment program as 'independent, rigorous measurement science' and CFR/FAS note evaluation can continue rigorously inside government, so classification does not straightforwardly equal weaker evaluation — only weaker PUBLIC visibility. (2) The premise that pre-deployment evals are the reliable signal being lost is itself qualified: the International AI Safety Report 2026 documents a persistent 'evaluation gap' where pre-deployment results poorly predict real-world behavior, and Berkeley RDI / benchmark-integrity work shows reward-hacking benchmark scores can themselves be artifacts — so the 'lost signal' was partial and imperfect even when public. The rising-critical-share statistic (+22.2pts, n=91) is an internal figure not independently corroborated in the sources found.",
+   "prior_coverage": "Both halves of this risk are already prominent public topics. Reward hacking / specification gaming in agentic tool-use is a very active 2025-2026 research area with multiple dedicated benchmarks (Reward Hacking Benchmark, SpecBench, Hack-Verifiable Environments, ImpossibleBench). The June 2 2026 EO moving CAISI evaluations to a classified framework and halting published findings has been covered by outlets and formally protested (Sen. Ted Budd, TechPolicy.Press), and the exact seam the risk nam",
+   "sources": [
+    {
+     "title": "CAISI ordered to stop public model evaluations amid new AI executive order",
+     "url": "https://cryptobriefing.com/caisi-ai-evaluations-classified-executive-order/"
+    },
+    {
+     "title": "Budd Calls for CAISI to Resume Publishing Research on Frontier AI Models",
+     "url": "https://www.budd.senate.gov/2026/06/30/budd-calls-for-caisi-to-resume-publishing-research-on-frontier-ai-models/"
+    },
+    {
+     "title": "Transparency and Accountability Gaps in Trump's New AI Executive Order",
+     "url": "https://www.techpolicy.press/transparency-and-accountability-gaps-in-trumps-new-ai-executive-order/"
+    }
+   ],
+   "domains_crossed": [
+    "Political",
+    "Legal/Regulatory",
+    "Technological"
+   ],
+   "leading_indicator": "A gap opens between (a) continued rise in reward-hacking critical-share in arXiv and (b) absence of any public CAISI/agency reward-hacking eval results after mid-2026; plus system cards from agentic-product launches that cite no external reward-hacking benchmark."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two dependencies are contested. (1) The causal step 'classified review => degraded real-world oversight of reward hacking' is disputed: CAISI leadership frames the classified pre-deployment program as 'independent, rigorous measurement science' and CFR/FAS note evaluation can continue rigorously inside government, so classification does not straightforwardly equal weaker evaluation — only weaker PUBLIC visibility. (2) The premise that pre-deployment evals are the reliable signal being lost is itself qualified: the International AI Safety Report 2026 documents a persistent 'evaluation gap' where pre-deployment results poorly predict real-world behavior, and Berkeley RDI / benchmark-integrity work shows reward-hacking benchmark scores can themselves be artifacts — so the 'lost signal' was partial and imperfect even when public. The rising-critical-share statistic (+22.2pts, n=91) is an internal figure not independently corroborated in the sources found."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "4389bba0adc4",
+  "risk": "Black-box visual attacks on agent long-term memory (this week) plus PRC-linked influence ops already targeting the US data-center/electricity debate creates a 0–24 month path to persistent memory-poisoning of deployed multimodal agents — an influence/agentic-misuse seam that neither the memory-security nor the influence-ops community currently connects.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "4389bba0adc4",
+   "risk": "Black-box visual attacks on agent long-term memory (this week) plus PRC-linked influence ops already targeting the US data-center/electricity debate creates a 0–24 month path to persistent memory-poisoning of deployed multimodal agents — an influence/agentic-misuse seam that neither the memory-security nor the influence-ops community currently connects.",
+   "source": "weekly",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "Two dependencies are contested. (1) The influence-op attribution/impact: OpenAI itself labels the PRC operation only 'likely,' and its investigator frames it as an operation jumping onto a pre-existing genuine domestic debate; broader research (International AI Safety Report 2026; MIT Technology Review) holds that real-world AI-driven influence is documented but not yet widespread and that AI influence impact is frequently overblown. So 'PRC-linked influence op is meaningfully shifting the debate' is not firmly established. (2) The feasibility/scale of memory poisoning at influence scale is questioned by security practitioners (Govtech) who note poisoning enough controlled datasets to reliably shift outcomes is hard. The core memory-poisoning attack technique itself is not disputed — it is well demonstrated in lab settings — but its real-world exploitation against deployed agents is so far theoretical.",
+   "prior_coverage": "Both halves of this risk are already public and prominent. Agent memory poisoning — including multimodal/visual 'sleeper' triggers that persist in long-term memory and bias future agent behavior — is a heavily published 2026 topic (multiple arXiv papers plus security-vendor writeups), and 'Visual Inception' (arXiv 2604.16966) already demonstrates persistent multimodal memory poisoning to steer long-horizon agentic recommender behavior. The PRC-linked ChatGPT influence op targeting the US data-ce",
+   "sources": [
+    {
+     "title": "Visual Inception: Compromising Long-term Planning in Agentic Recommenders via Multimodal Memory Poisoning",
+     "url": "https://arxiv.org/abs/2604.16966"
+    },
+    {
+     "title": "From Untrusted Input to Trusted Memory: A Systematic Study of Memory Poisoning Attacks in LLM Agents",
+     "url": "https://arxiv.org/html/2606.04329"
+    },
+    {
+     "title": "Poison Once, Exploit Forever: Environment-Injected Memory Poisoning Attacks on Web Agents",
+     "url": "https://arxiv.org/abs/2604.02623"
+    }
+   ],
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Social"
+   ],
+   "leading_indicator": "First disclosed incident (in a lab threat report or CISA/vendor advisory) of a production agent's long-term memory being poisoned via injected content, OR red-team demonstration of persistent narrative bias in a deployed retrieval-augmented agent traced to memory contamination."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two dependencies are contested. (1) The influence-op attribution/impact: OpenAI itself labels the PRC operation only 'likely,' and its investigator frames it as an operation jumping onto a pre-existing genuine domestic debate; broader research (International AI Safety Report 2026; MIT Technology Review) holds that real-world AI-driven influence is documented but not yet widespread and that AI influence impact is frequently overblown. So 'PRC-linked influence op is meaningfully shifting the debate' is not firmly established. (2) The feasibility/scale of memory poisoning at influence scale is questioned by security practitioners (Govtech) who note poisoning enough controlled datasets to reliably shift outcomes is hard. The core memory-poisoning attack technique itself is not disputed — it is well demonstrated in lab settings — but its real-world exploitation against deployed agents is so far theoretical."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "ceb17f3a6ac9",
+  "risk": "The security research that maps agent-communication and MCP attack surfaces is being consumed by capability builders as a menu, accelerating offensive-cyber uplift faster than the defenses those papers propose can be deployed.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "ceb17f3a6ac9",
+   "risk": "The security research that maps agent-communication and MCP attack surfaces is being consumed by capability builders as a menu, accelerating offensive-cyber uplift faster than the defenses those papers propose can be deployed.",
+   "source": "overall",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 4,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 16,
+   "confidence": 4,
+   "evidence_strength": 4,
+   "actionability": 5,
+   "novelty_rating": "already_widely_discussed",
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Technological"
+   ],
+   "leading_indicator": "MCP/agent-protocol CVEs or in-the-wild incidents involving agent-to-agent prompt injection or tool-chain hijacking; commercial agent frameworks shipping without the information-flow-control defenses these papers propose."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 4,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 16
+   }
+  ],
+  "status": "dormant"
+ },
+ {
+  "id": "d2fad457eccf",
+  "risk": "Model/weight-exfiltration enabling research is surging (+75%/qtr, the fastest-accelerating harm vector) around energy-and-grid-oriented foundation models, opening a dual-use seam where critical-infrastructure AI becomes both a theft target and a theft vector — and the energy/grid-security community isn't tracking the AI-safety exfiltration literature.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "d2fad457eccf",
+   "risk": "Model/weight-exfiltration enabling research is surging (+75%/qtr, the fastest-accelerating harm vector) around energy-and-grid-oriented foundation models, opening a dual-use seam where critical-infrastructure AI becomes both a theft target and a theft vector — and the energy/grid-security community isn't tracking the AI-safety exfiltration literature.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 5,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 10,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 4,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two load-bearing claims are weak or contradicted. (1) The '+75%/qtr, fastest-accelerating harm vector' figure and 'n=273' come from the risk's own internal dataset; no external source corroborates this rate, and quantitative AI-threat-acceleration metrics are broadly viewed skeptically. (2) The claim that 'the energy/grid-security community isn't tracking the AI-safety exfiltration literature' is contradicted by current coverage: energy/OT-security outlets (Kiteworks/Industrial Cyber, Enlit) and smart-grid cybersecurity reviews already name model poisoning, data/model exfiltration and nation-state targeting of embedded grid AI. Additionally, the mechanism's core inferential leap — that exfiltrating/inverting a grid foundation model reliably reveals actionable 'grid topology, contingency responses, and control logic' usable for physical attack — is not demonstrated; model-inversion/extraction on GNNs can leak structure in the literature, but real-world extraction of operational grid control logic from a foundation model is unproven and the risk's own calibration concedes this step is speculative.",
+   "prior_coverage": "All named components are already in active public discussion: model/weight exfiltration is a mature, heavily-researched topic (arXiv detection papers, a RAND 'Playbook for Securing AI Model Weights', Anthropic's SL3 egress limits, LessWrong analyses); foundation models for the electric grid are well established (Joule, NREL, arXiv perspective papers); AI-security gaps in energy infrastructure — explicitly including 'data exfiltration' and nation-state targeting of embedded grid AI as high-value ",
+   "sources": [
+    {
+     "title": "A Playbook for Securing AI Model Weights | RAND",
+     "url": "https://www.rand.org/pubs/research_briefs/RBA2849-1.html"
+    },
+    {
+     "title": "Verifying LLM Inference to Detect Model Weight Exfiltration (arXiv)",
+     "url": "https://arxiv.org/abs/2511.02620"
+    },
+    {
+     "title": "Foundation models for the electric power grid (Joule/Cell)",
+     "url": "https://www.cell.com/joule/fulltext/S2542-4351(24)00470-7"
+    }
+   ],
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Environmental",
+    "Technological"
+   ],
+   "leading_indicator": "Published extraction/inversion attacks demonstrated against a grid or energy foundation model; NERC/utility incident reports of anomalous access to ML-model artifacts; procurement of ML grid tools without model-artifact protection requirements."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 5,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 10,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two load-bearing claims are weak or contradicted. (1) The '+75%/qtr, fastest-accelerating harm vector' figure and 'n=273' come from the risk's own internal dataset; no external source corroborates this rate, and quantitative AI-threat-acceleration metrics are broadly viewed skeptically. (2) The claim that 'the energy/grid-security community isn't tracking the AI-safety exfiltration literature' is contradicted by current coverage: energy/OT-security outlets (Kiteworks/Industrial Cyber, Enlit) and smart-grid cybersecurity reviews already name model poisoning, data/model exfiltration and nation-state targeting of embedded grid AI. Additionally, the mechanism's core inferential leap — that exfiltrating/inverting a grid foundation model reliably reveals actionable 'grid topology, contingency responses, and control logic' usable for physical attack — is not demonstrated; model-inversion/extraction on GNNs can leak structure in the literature, but real-world extraction of operational grid control logic from a foundation model is unproven and the risk's own calibration concedes this step is speculative."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "a94d46c73389",
+  "risk": "Watermark mandates being written into law (SB 942, EU AI Act) rest on a forensic-reliability assumption that this week's empirical evidence shows is false — freezing an unsound evidentiary standard into enforcement just as classified frontier evals stop producing public counter-evidence.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "a94d46c73389",
+   "risk": "Watermark mandates being written into law (SB 942, EU AI Act) rest on a forensic-reliability assumption that this week's empirical evidence shows is false — freezing an unsound evidentiary standard into enforcement just as classified frontier evals stop producing public counter-evidence.",
+   "source": "weekly",
+   "date": "2026-07-20",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 9,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two contested load-bearing claims. (1) 'Empirical evidence shows watermark forensic reliability is false' is only partly settled: attack researchers (Feizi/UMD, VideoMarkBench, Warfare, diffusion-regeneration papers) show removal and forgery, but vendors/defenders dispute the framing — Google DeepMind's SynthID papers claim graded robustness against realistic threat models, and Hany Farid, while agreeing watermarking is attackable, still argues robust watermarking is 'part of the solution,' not worthless. So 'this week's paper shows it is false' overstates a genuinely contested finding rather than a closed one. (2) The characterization that courts/regulators already treat watermark status as dispositive provenance evidence is NOT documented — even the risk's own calibration concedes this is projected, and the legal-tech sources describe watermarks as 'contested facts' being fought over, not as accepted dispositive proof. The CAISI classification is real and reported (Crypto Briefing; Sen. Budd's pushback confirms it), but no source links it to watermark benchmarking specifically.",
+   "prior_coverage": "Nearly every component of this seam is already public. The technical claim (watermarks fail forensic/robustness readiness and can be removed or forged) is extensively documented across 2024-2026 research and press (Feizi/UMD 'broke all of them', VideoMarkBench, Warfare, diffusion-regeneration attacks). The 'watermark mandates rest on an untested/flawed technical assumption' thesis is the explicit argument of a 2025 position paper ('Watermarking Without Standards Is Not AI Governance'). And the c",
+   "sources": [
+    {
+     "title": "Researchers Tested AI Watermarks—and Broke All of Them (TRAILS/UMD)",
+     "url": "https://www.trails.umd.edu/news/researchers-tested-ai-watermarksand-broke-all-of-them"
+    },
+    {
+     "title": "Watermarking Without Standards Is Not AI Governance",
+     "url": "https://arxiv.org/abs/2505.23814"
+    },
+    {
+     "title": "AI Transparency Laws Turn Technical Provenance Data Into Legal Evidence (Jurvantis)",
+     "url": "https://jurvantis.ai/ai-transparency-laws-turn-technical-provenance-data-into-legal-evidence/"
+    }
+   ],
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "First court filing, platform enforcement action, or regulatory penalty under SB 942 that relies on watermark presence/absence as dispositive evidence — especially any case where a watermark was later shown removable or spoofable."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 9,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two contested load-bearing claims. (1) 'Empirical evidence shows watermark forensic reliability is false' is only partly settled: attack researchers (Feizi/UMD, VideoMarkBench, Warfare, diffusion-regeneration papers) show removal and forgery, but vendors/defenders dispute the framing — Google DeepMind's SynthID papers claim graded robustness against realistic threat models, and Hany Farid, while agreeing watermarking is attackable, still argues robust watermarking is 'part of the solution,' not worthless. So 'this week's paper shows it is false' overstates a genuinely contested finding rather than a closed one. (2) The characterization that courts/regulators already treat watermark status as dispositive provenance evidence is NOT documented — even the risk's own calibration concedes this is projected, and the legal-tech sources describe watermarks as 'contested facts' being fought over, not as accepted dispositive proof. The CAISI classification is real and reported (Crypto Briefing; Sen. Budd's pushback confirms it), but no source links it to watermark benchmarking specifically."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "198a5f3fd877",
+  "risk": "The prompt-injection defense literature is being borrowed almost exclusively for guarding agents against EXTERNAL attackers, leaving the rising internal failure mode (agents that reward-hack their own privilege-separation defenses) structurally unaddressed as those same papers get frozen into Illinois' mandatory third-party audit standard.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "198a5f3fd877",
+   "risk": "The prompt-injection defense literature is being borrowed almost exclusively for guarding agents against EXTERNAL attackers, leaving the rising internal failure mode (agents that reward-hack their own privilege-separation defenses) structurally unaddressed as those same papers get frozen into Illinois' mandatory third-party audit standard.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 9,
+   "confidence": 3,
+   "evidence_strength": 4,
+   "actionability": 4,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "Two dependencies are contested. (1) The mechanism assumes SB 315 auditors will operationalize 'the state of the art' and that today that means prompt-injection defenses; but NetChoice, CCIA, the Progress Chamber and Airia all report that SB 315 has NO defined audit standards, certified auditors, or methodology yet, and implementing rules are unwritten — so which SOTA auditors will adopt is genuinely undetermined, not established. This complicates rather than confirms the specific 'injection-defenses-get-frozen-in' pathway. (2) The 'rising critical share' of reward hacking and its framing as agents 'reward-hacking their own privilege-separation defenses' rests on a term researchers themselves call inconsistently defined and immaturely measured: EvalSafetyGap warns the distinct mechanisms 'should not be pooled into one rate,' LessWrong notes ongoing 'confusion around the term reward hacking,' and benchmark work is still early-stage. The vivid 'internal self-exploit of privilege boundaries' is closer to an analyst construct than a documented, quantified failure mode.",
+   "prior_coverage": "All three named components are already prominent public topics but discussed separately: Illinois SB 315 is widely covered as the first US mandatory frontier-AI third-party audit law (signed by Gov. Pritzker, audits from ~2027-2028), prompt-injection defenses and agent privilege escalation have a large security literature, and reward hacking is a heavily-covered rising failure mode (notably Anthropic's emergent-misalignment work). The most-reported SB 315 angle is precisely that no audit standar",
+   "sources": [
+    {
+     "title": "Illinois AI Safety Measures Act SB 315: What Frontier AI Developers Must Do Before January 2028 (Crowell & Moring)",
+     "url": "https://www.crowell.com/en/insights/client-alerts/illinois-imposes-transparency-and-safety-obligations-on-frontier-ai-systems"
+    },
+    {
+     "title": "Illinois becomes first state to require third-party audit of AI models (The Hill)",
+     "url": "https://thehill.com/policy/technology/5955442-illinois-ai-safety-bill/"
+    },
+    {
+     "title": "NetChoice Testimony in Opposition to Illinois SB 315",
+     "url": "https://netchoice.org/netchoice-testimony-in-opposition-to-illinois-sb-315-the-artificial-intelligence-safety-measures-act/"
+    }
+   ],
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Technological",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "Draft SB 315 audit checklists or accredited auditor methodologies that enumerate prompt-injection/IFC tests but contain no reward-hacking/specification-gaming test category."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 9,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two dependencies are contested. (1) The mechanism assumes SB 315 auditors will operationalize 'the state of the art' and that today that means prompt-injection defenses; but NetChoice, CCIA, the Progress Chamber and Airia all report that SB 315 has NO defined audit standards, certified auditors, or methodology yet, and implementing rules are unwritten — so which SOTA auditors will adopt is genuinely undetermined, not established. This complicates rather than confirms the specific 'injection-defenses-get-frozen-in' pathway. (2) The 'rising critical share' of reward hacking and its framing as agents 'reward-hacking their own privilege-separation defenses' rests on a term researchers themselves call inconsistently defined and immaturely measured: EvalSafetyGap warns the distinct mechanisms 'should not be pooled into one rate,' LessWrong notes ongoing 'confusion around the term reward hacking,' and benchmark work is still early-stage. The vivid 'internal self-exploit of privilege boundaries' is closer to an analyst construct than a documented, quantified failure mode."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "79c366747426",
+  "risk": "Reward Hacking's sharply rising CRITICAL share meets multi-tenant VLA robot post-training services (this week): reward-hacked control policies get shared across robot embodiments and tenants, turning a training-time pathology into a cross-fleet physical-actuation failure mode nobody in the robotics-service supply chain is watching.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "79c366747426",
+   "risk": "Reward Hacking's sharply rising CRITICAL share meets multi-tenant VLA robot post-training services (this week): reward-hacked control policies get shared across robot embodiments and tenants, turning a training-time pathology into a cross-fleet physical-actuation failure mode nobody in the robotics-service supply chain is watching.",
+   "source": "weekly",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 8,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "Two dependencies are shaky. (1) The anchoring metric — 'sharply rising CRITICAL share (27.5%, +22.2 trend_pts)' — is an internal/proprietary signal with no external corroboration; whether reward hacking is genuinely rising vs. simply being measured better is itself contested, and multiple recent works (Reward Hacking Benchmark 2605.02964; Hack-Verifiable Environments 2605.20744; EvilGenie) exist precisely because there is no agreed measurement standard. (2) The physical-propagation step is not demonstrated by the cited papers: cross-embodiment VLA transfer is known to fail via negative transfer (e.g., Cloak 2606.22836), but no source shows a reward-hacked policy's unsafe shortcut surviving cross-embodiment/multi-tenant adaptation into a physical-actuation harm — this remains an unverified inference, as the candidate's own calibration concedes.",
+   "prior_coverage": "The core mechanism is only partly novel: reward hacking generalizing/transferring across tasks and models is an established, named public research area (Kei et al. 2024 'Reward hacking behavior can generalize across tasks'), and reward hacking in physical RL/robotic control is directly documented (e.g., turbulent drag-reduction study; empirical robotic-control studies). Security of shared, foundation-model-powered and multi-tenant robot systems — including cross-embodiment transfer and cross-ten",
+   "sources": [
+    {
+     "title": "Reward hacking behavior can generalize across tasks (Alignment Forum)",
+     "url": "https://www.alignmentforum.org/posts/Ge55vxEmKXunFFwoe/reward-hacking-behavior-can-generalize-across-tasks"
+    },
+    {
+     "title": "Reward Hacking Generalization (EmergentMind topic)",
+     "url": "https://www.emergentmind.com/topics/reward-hacking-generalization"
+    },
+    {
+     "title": "Reward hacking in physical reinforcement learning revealed by turbulent drag reduction",
+     "url": "https://arxiv.org/abs/2606.06227"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Economic"
+   ],
+   "leading_indicator": "A reported physical-robot incident or recall traced to an RL objective mis-specification in a shared/hosted post-training pipeline, OR a VLA-service system card acknowledging cross-tenant policy reuse without per-embodiment reward-hacking evaluation."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 8,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two dependencies are shaky. (1) The anchoring metric — 'sharply rising CRITICAL share (27.5%, +22.2 trend_pts)' — is an internal/proprietary signal with no external corroboration; whether reward hacking is genuinely rising vs. simply being measured better is itself contested, and multiple recent works (Reward Hacking Benchmark 2605.02964; Hack-Verifiable Environments 2605.20744; EvilGenie) exist precisely because there is no agreed measurement standard. (2) The physical-propagation step is not demonstrated by the cited papers: cross-embodiment VLA transfer is known to fail via negative transfer (e.g., Cloak 2606.22836), but no source shows a reward-hacked policy's unsafe shortcut surviving cross-embodiment/multi-tenant adaptation into a physical-actuation harm — this remains an unverified inference, as the candidate's own calibration concedes."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "5e7db7ab31bf",
+  "risk": "Chain-of-Thought Faithfulness research is surging (+56.8%) at the very moment the US moves model evaluations into a classified 30-day national-security review — so faithfulness metrics may be adopted as the government's private release gate before the field has established that a 'faithful-looking' CoT is actually trustworthy, freezing an unvalidated proxy into secret regulatory practice.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "5e7db7ab31bf",
+   "risk": "Chain-of-Thought Faithfulness research is surging (+56.8%) at the very moment the US moves model evaluations into a classified 30-day national-security review — so faithfulness metrics may be adopted as the government's private release gate before the field has established that a 'faithful-looking' CoT is actually trustworthy, freezing an unvalidated proxy into secret regulatory practice.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 8,
+   "confidence": 2,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "Two dependencies are weak. (1) The core safety premise that faithfulness is an unvalidated proxy is NOT a contested edge claim the risk 'discovers' — it is the published mainstream view (Korbak et al. 2507.11473 call CoT monitorability 'fragile'; Turpin/Lanham/Baker and a meta-eval titled 'Faithfulness Metrics Don't Measure Faithfulness' all argue faithful-looking CoT can be unfaithful). So the risk's alarming step is already conventional wisdom, not a fresh warning. (2) The load-bearing linking claim — that the classified gate USES CoT-faithfulness metrics — is not just unverified but appears contradicted by available reporting: law-firm and CFR/Lathrop coverage describes the classified benchmarking as targeting advanced CYBER capabilities (and bio/chem risk classification), with no mention of faithfulness. The risk itself concedes this step is 'unobservable,' but the public evidence points toward a different criterion, which weakens the inference further.",
+   "prior_coverage": "Both halves of this risk are already heavily and publicly discussed, but not as a joined seam. The June 2, 2026 EO's classified 30-day pre-release review and CAISI ceasing public findings are covered by law firms, CFR, NPR and TechPolicy.Press; separately, the claim that a 'faithful-looking' CoT may not be trustworthy is the mainstream published consensus (Korbak et al. 2507.11473, Turpin/Lanham/Baker, and meta-evaluations arguing faithfulness metrics don't measure faithfulness). No source was f",
+   "sources": [
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety (Korbak et al.)",
+     "url": "https://arxiv.org/abs/2507.11473"
+    },
+    {
+     "title": "Measuring Chain-of-Thought Monitorability Through Faithfulness and Verbosity",
+     "url": "https://arxiv.org/pdf/2510.27378"
+    },
+    {
+     "title": "Faithfulness Metrics Don't Measure Faithfulness: A Meta-Evaluation with Ground Truth",
+     "url": "https://arxiv.org/pdf/2605.25052"
+    }
+   ],
+   "domains_crossed": [
+    "Political",
+    "Legal/Regulatory",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "Any leak, testimony, or CAISI/NSA-adjacent procurement notice indicating CoT-monitoring or faithfulness scoring is part of the 30-day review criteria; or lab system cards beginning to report faithfulness scores in a standardized way that mirrors a government template."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 8,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two dependencies are weak. (1) The core safety premise that faithfulness is an unvalidated proxy is NOT a contested edge claim the risk 'discovers' — it is the published mainstream view (Korbak et al. 2507.11473 call CoT monitorability 'fragile'; Turpin/Lanham/Baker and a meta-eval titled 'Faithfulness Metrics Don't Measure Faithfulness' all argue faithful-looking CoT can be unfaithful). So the risk's alarming step is already conventional wisdom, not a fresh warning. (2) The load-bearing linking claim — that the classified gate USES CoT-faithfulness metrics — is not just unverified but appears contradicted by available reporting: law-firm and CFR/Lathrop coverage describes the classified benchmarking as targeting advanced CYBER capabilities (and bio/chem risk classification), with no mention of faithfulness. The risk itself concedes this step is 'unobservable,' but the public evidence points toward a different criterion, which weakens the inference further."
+   }
+  ],
+  "status": "open"
+ },
+ {
   "id": "65f1149cf60d",
   "risk": "Prompt-injection defenses are being borrowed wholesale from safety papers into agentic/computer-use products via surveys, hardening a narrow set of defenses (Type-Directed Privilege Separation, Info-Flow Control) into de-facto standard — right as autonomous-agent misuse and offensive-cyber research accelerate around those exact defenses.",
   "first_seen": "2026-07-13",
@@ -59,7 +652,46 @@
     "disputed_claims": "Two dependent claims are contested. (1) 'These defenses are hardening into a robust de-facto standard' is undercut by adaptive-attack researchers (Tramèr et al. 'The Attacker Moves Second'; Zhan et al. 2503.00061; 'Breaking...Control-Flow Hijacking'; branch-steering in 2601.09923) who show CaMeL/IFC-style defenses are bypassable — and by NeuralTrust and CaMeL's own authors/Simon Willison, who state prompt injection is NOT solved and CaMeL has real limitations (policy burden, side channels, latency, doesn't address misalignment/social engineering). So the premise that a *bypass would be catastrophic because the defense is trusted-everywhere* is weakened: practitioners already treat these defenses as partial, and real product adoption is thin ('secure AI agents remain rare'). (2) The 'defense monoculture' severity borrows framing from AI-model-monoculture literature, but that literature is about shared *models*, not shared *injection-defense families*; the leap to defense-family monoculture is inference, not something sources assert."
    }
   ],
-  "status": "open"
+  "status": "dormant"
+ },
+ {
+  "id": "68c90a64ac3d",
+  "risk": "The 'evaluation illusion' in clinical LLM reasoning — fluent explanations that mask wrong diagnoses — is being propagated into scalable-oversight pipelines just as US frontier evals go classified (NSA/Treasury), so a known unreliability mode gets no public scrutiny in the highest-stakes deployment sector.",
+  "first_seen": "2026-07-02",
+  "last_seen": "2026-07-02",
+  "n_appearances": 1,
+  "latest": {
+   "id": "68c90a64ac3d",
+   "risk": "The 'evaluation illusion' in clinical LLM reasoning — fluent explanations that mask wrong diagnoses — is being propagated into scalable-oversight pipelines just as US frontier evals go classified (NSA/Treasury), so a known unreliability mode gets no public scrutiny in the highest-stakes deployment sector.",
+   "source": "weekly",
+   "date": "2026-07-02",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 4,
+   "evidence_strength": 4,
+   "actionability": 5,
+   "novelty_rating": "partially_anticipated",
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Political",
+    "Social"
+   ],
+   "leading_indicator": "A clinical LLM adverse-event report where the AI's written rationale was rated 'convincing' by a reviewer but the diagnosis was wrong; or SB 53 / hospital procurement checklists that score 'explanation quality' as a safety criterion without a faithfulness test."
+  },
+  "history": [
+   {
+    "date": "2026-07-02",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12
+   }
+  ],
+  "status": "dormant"
  },
  {
   "id": "780d7796e3a4",
@@ -121,7 +753,7 @@
     "disputed_claims": "Two dependencies are contested. (1) The core CAUSAL claim — that losing CAISI's public findings degrades DEPLOYED reward-hacking detection — is inferred, not shown; commentators note labs still share privately, the voluntary 30-day early-access channel persists, and much reward-hacking detection tooling (METR, Cursor, EvilGenie, academic detectors) is produced OUTSIDE CAISI, so CAISI classification may not be the binding constraint. GovAI and other access researchers argue external access is often already limited regardless, cutting both ways on how much CAISI publication actually mattered. (2) The premise that the 'critical-share' of reward hacking is genuinely worsening is partly confounded: METR and commentators (e.g. MindStudio) flag that rising numbers may reflect evaluation-awareness and benchmark saturation ('models game the eval') rather than a rising true rate, so the metric itself is disputed. Also note the risk mislabels the EO's scope — the classified benchmarking is about CYBER capabilities of 'covered frontier models,' not a reward-hacking metric, and the OpenAI Bio Bug Bounty is a bio-jailbreak program (tagged reward hacking loosely), not a reward-gaming detector; treating either as 'the one metric that would flag reward-gaming' overstates the linkage."
    }
   ],
-  "status": "open"
+  "status": "dormant"
  },
  {
   "id": "0ecd1ac1e685",
@@ -182,7 +814,7 @@
     "disputed_claims": "The load-bearing premise — that CoT monitors 'will be adversarially defeated' / that faithfulness is unreliable enough to be an easy attack target — is genuinely contested, not settled. OpenAI (2503.11926) shows obfuscation arises mainly under heavy direct optimization pressure on the CoT, not for free. Countering the pessimistic view, 'When CoT is Necessary, LMs Struggle to Evade Monitors' (2507.05246) argues that for genuinely serial-reasoning tasks models cannot easily hide intent and evasion degrades accuracy, and METR (Aug 2025) argues CoT can be highly informative for oversight even when technically 'unfaithful.' Conversely, the Anthropic faithfulness paper (2505.05410) and multilingual/adversarial-hint studies show high concealment rates, so the evidence cuts both ways and depends heavily on task type and optimization regime."
    }
   ],
-  "status": "open"
+  "status": "dormant"
  },
  {
   "id": "63ebaf774d71",
@@ -243,7 +875,7 @@
     "disputed_claims": "Two dependencies are contested. (1) The magnitude of autonomous 'exploit-class' AI capability: security vendors (Trend Micro, Mimecast, appsecure) amplify the Mythos 'thousands of zero-days' claim, but a substantial camp argues AI cyber threat is overhyped/threat-inflated (IT Pro, Dark Reading, Ivanti), and the real-world signal is dominated by low-quality 'AI slop' vuln reports — curl shut its bug-bounty program over it (BleepingComputer, The Register) and maintainers are being flooded (Axios). So 'AI reliably produces working exploits' is not settled. (2) The candidate risk's own novel framing ('classified evals break defender calibration') is not really disputed so much as ALREADY MADE publicly (Cryptobriefing, Mimecast), which cuts against novelty rather than truth. Also note a factual nuance: CAISI's mandate was already 'unclassified evaluations' and the EO's classified benchmarking sits alongside a *voluntary* framework — 'silenced CAISI publication' is a stronger claim than the primary sources fully support."
    }
   ],
-  "status": "open"
+  "status": "dormant"
  },
  {
   "id": "20d8ea08d884",
@@ -303,268 +935,6 @@
    {
     "date": "2026-07-13",
     "disputed_claims": "The load-bearing dependency — that post-release capability drift will actually yield a dangerous CYBER-UPLIFT step-change — is contested. RAND's own two 2026 studies conflict: the human-uplift study found novice/technical speedups that were STATISTICALLY INSIGNIFICANT, while a companion RAND report found strong agentic CTF performance; the UK NCSC judges near-term uplift limited to already-capable threat actors; and Aisle's 'Jagged Frontier' analysis calls the strong (restricted-frontier-model-dependent) version of the cyber narrative 'overstated' and notes offense-only evals ignore countervailing defender uplift. Separately, the 'no mandated re-evaluation trigger' premise is a reading of a not-yet-written August framework, and OSTP has publicly stated the regime is intentionally narrow/voluntary — so the 'blind window' size is inferred, not established. The refused-knowledge-decoding (2507.00239) and thinking-intervention results are real but are narrow linear-probe / trace-control findings, not demonstrated end-to-end cyber-capability recovery."
-   }
-  ],
-  "status": "open"
- },
- {
-  "id": "ceb17f3a6ac9",
-  "risk": "The security research that maps agent-communication and MCP attack surfaces is being consumed by capability builders as a menu, accelerating offensive-cyber uplift faster than the defenses those papers propose can be deployed.",
-  "first_seen": "2026-07-02",
-  "last_seen": "2026-07-02",
-  "n_appearances": 1,
-  "latest": {
-   "id": "ceb17f3a6ac9",
-   "risk": "The security research that maps agent-communication and MCP attack surfaces is being consumed by capability builders as a menu, accelerating offensive-cyber uplift faster than the defenses those papers propose can be deployed.",
-   "source": "overall",
-   "date": "2026-07-02",
-   "severity": 4,
-   "likelihood": 4,
-   "exposure": 4,
-   "trajectory": "accelerating",
-   "priority": 16,
-   "confidence": 4,
-   "evidence_strength": 4,
-   "actionability": 5,
-   "novelty_rating": "already_widely_discussed",
-   "domains_crossed": [
-    "Security/Geopolitical",
-    "Technological"
-   ],
-   "leading_indicator": "MCP/agent-protocol CVEs or in-the-wild incidents involving agent-to-agent prompt injection or tool-chain hijacking; commercial agent frameworks shipping without the information-flow-control defenses these papers propose."
-  },
-  "history": [
-   {
-    "date": "2026-07-02",
-    "severity": 4,
-    "likelihood": 4,
-    "exposure": 4,
-    "trajectory": "accelerating",
-    "priority": 16
-   }
-  ],
-  "status": "dormant"
- },
- {
-  "id": "76e729d71ad3",
-  "risk": "Model/weight exfiltration research is accelerating fastest of all harm vectors (+110%/qtr) via undetectable-backdoor and information-floor techniques — colliding with California SB 53's mandated public risk-framework/incident disclosures, which could inadvertently give exfiltration attackers a targeting map of frontier developers' defensive postures.",
-  "first_seen": "2026-07-13",
-  "last_seen": "2026-07-13",
-  "n_appearances": 1,
-  "latest": {
-   "id": "76e729d71ad3",
-   "risk": "Model/weight exfiltration research is accelerating fastest of all harm vectors (+110%/qtr) via undetectable-backdoor and information-floor techniques — colliding with California SB 53's mandated public risk-framework/incident disclosures, which could inadvertently give exfiltration attackers a targeting map of frontier developers' defensive postures.",
-   "source": "overall",
-   "date": "2026-07-13",
-   "severity": 5,
-   "likelihood": 2,
-   "exposure": 3,
-   "trajectory": "accelerating",
-   "priority": 10,
-   "confidence": 3,
-   "evidence_strength": 3,
-   "actionability": 3,
-   "novelty_rating": "already_widely_discussed",
-   "disputed_claims": "Multiple load-bearing claims are contested or weakly evidenced. (1) The 'disclosure gives attackers a targeting map' premise is directly undercut by SB 53's own text: the statute lets developers redact any disclosure that would do more harm than good, and commentators (AU Business Law Review 'Catch-22'; sb53.info citing the California Report) note published frameworks are high-level and redactable, so exploitable specifics are unlikely to be published. (2) 'Undetectable backdoors' is a theoretical cryptographic-hardness result (Goldwasser et al.); its real-world exploitability against deployed frontier models is not established and is caveated even by commentators like Schneier. (3) The '+110%/qtr, fastest of all harm vectors' figure has no visible public source and cannot be independently verified. (4) The RAND weight-security framing itself has published critiques (McDuffie). (5) The 'Mythos' zero-day claim is a single vendor-adjacent news item, not independent confirmation that it materially raises exfiltration success.",
-   "prior_coverage": "The exact 'disclosure could aid adversaries' seam is already publicly discussed AND explicitly anticipated inside SB 53 itself: the official California Report warned that mandated safety/security disclosures could point hostile actors toward model vulnerabilities or gaps in internal security and leak IP to foreign adversaries, and the law adds a redaction provision precisely to mitigate this. Model-weight exfiltration risk (RAND playbook), undetectable backdoors (Goldwasser et al. 2022), and the",
-   "sources": [
-    {
-     "title": "California Senate Bill 53 (redaction provision; disclosures could aid hostile actors / foreign adversaries)",
-     "url": "https://sb53.info/"
-    },
-    {
-     "title": "The Catch-22 of California's SB 53: Disclosure vs. Confidentiality/Trade Secrets",
-     "url": "https://aublr.org/2025/11/the-catch-22-of-californias-sb-53-the-legal-tension-between-disclosure-requirements-and-confidentiality-obligations/"
-    },
-    {
-     "title": "California's Disclosure Gambit: What SB 53 Reveals About Our Relationship with Dangerous Technology - Stanford CodeX",
-     "url": "https://law.stanford.edu/2026/01/15/californias-disclosure-gambit-what-sb-53-reveals-about-our-relationship-with-potentially-dangerous-technology-2/"
-    }
-   ],
-   "domains_crossed": [
-    "Security/Geopolitical",
-    "Legal/Regulatory",
-    "Economic"
-   ],
-   "leading_indicator": "An exfiltration or backdoor incident at a frontier developer where the attack methodology maps onto details published in that firm's SB 53 risk framework or prior incident report."
-  },
-  "history": [
-   {
-    "date": "2026-07-13",
-    "severity": 5,
-    "likelihood": 2,
-    "exposure": 3,
-    "trajectory": "accelerating",
-    "priority": 10,
-    "disputed": true
-   }
-  ],
-  "counterevidence": [
-   {
-    "date": "2026-07-13",
-    "disputed_claims": "Multiple load-bearing claims are contested or weakly evidenced. (1) The 'disclosure gives attackers a targeting map' premise is directly undercut by SB 53's own text: the statute lets developers redact any disclosure that would do more harm than good, and commentators (AU Business Law Review 'Catch-22'; sb53.info citing the California Report) note published frameworks are high-level and redactable, so exploitable specifics are unlikely to be published. (2) 'Undetectable backdoors' is a theoretical cryptographic-hardness result (Goldwasser et al.); its real-world exploitability against deployed frontier models is not established and is caveated even by commentators like Schneier. (3) The '+110%/qtr, fastest of all harm vectors' figure has no visible public source and cannot be independently verified. (4) The RAND weight-security framing itself has published critiques (McDuffie). (5) The 'Mythos' zero-day claim is a single vendor-adjacent news item, not independent confirmation that it materially raises exfiltration success."
-   }
-  ],
-  "status": "open"
- },
- {
-  "id": "8b5460441e88",
-  "risk": "Process Reward Models built for multi-agent test-time scaling are being optimized against internal KV-cache states rather than verifiable outcomes, creating an oversight layer that is itself gameable in exactly the settings labs are scaling fastest.",
-  "first_seen": "2026-07-13",
-  "last_seen": "2026-07-13",
-  "n_appearances": 1,
-  "latest": {
-   "id": "8b5460441e88",
-   "risk": "Process Reward Models built for multi-agent test-time scaling are being optimized against internal KV-cache states rather than verifiable outcomes, creating an oversight layer that is itself gameable in exactly the settings labs are scaling fastest.",
-   "source": "weekly",
-   "date": "2026-07-13",
-   "severity": 3,
-   "likelihood": 3,
-   "exposure": 4,
-   "trajectory": "accelerating",
-   "priority": 9,
-   "confidence": 3,
-   "evidence_strength": 3,
-   "actionability": 4,
-   "novelty_rating": "partially_anticipated",
-   "disputed_claims": "The risk's premise that PRMs are a reliable/superior oversight layer being scaled is itself contested: 'Rethinking Reward Models for Multi-Domain Test-Time Scaling' (Lee et al., 2510.00492) and the PRM survey (2510.08049) dispute that PRMs reliably outperform simpler outcome reward models, precisely because stepwise scoring inherits label noise and degrades on long trajectories. This cuts both ways for the risk: it strengthens the 'surrogate diverges from true objective on long horizons' mechanism, but weakens the framing that labs are confidently scaling PRMs as trusted oversight — some evidence suggests they may deprioritize PRMs for exactly this unreliability. Separately, the deployment premise is unverified by the risk's own admission: I found no evidence that any production multi-agent system uses KV-cache-transferred or surrogate-predicted PRM rewards; current KV-cache-reuse work (2601.08343, KVComm) is efficiency research, not documented production reward-approximation.",
-   "prior_coverage": "The three core pillars of this risk are each already published: (1) 'Reward Under Attack: Analyzing the Robustness and Hackability of Process Reward Models' (arXiv 2603.06621, Feb 2026) directly demonstrates that state-of-the-art PRMs are systematically exploitable under adversarial optimization pressure — i.e., the 'PRM-as-gameable-oversight-layer' claim is already the explicit thesis of a paper; (2) 'When KV Cache Reuse Fails in Multi-Agent Systems' (arXiv 2601.08343, Jan 2026) shows that KV-c",
-   "sources": [
-    {
-     "title": "Reward Under Attack: Analyzing the Robustness and Hackability of Process Reward Models",
-     "url": "https://arxiv.org/abs/2603.06621"
-    },
-    {
-     "title": "When KV Cache Reuse Fails in Multi-Agent Systems: Cross-Candidate Interaction is Crucial for LLM Judges",
-     "url": "https://arxiv.org/abs/2601.08343"
-    },
-    {
-     "title": "Rethinking Reward Models for Multi-Domain Test-Time Scaling",
-     "url": "https://arxiv.org/abs/2510.00492"
-    }
-   ],
-   "domains_crossed": [
-    "Technological",
-    "Economic"
-   ],
-   "leading_indicator": "Published multi-agent systems reporting high PRM-guided task scores but degraded held-out outcome verification; system cards noting divergence between process-reward and outcome-reward on long-horizon agent benchmarks; benchmark papers showing surrogate-reward routing improves proxy metrics but not ground-truth success."
-  },
-  "history": [
-   {
-    "date": "2026-07-13",
-    "severity": 3,
-    "likelihood": 3,
-    "exposure": 4,
-    "trajectory": "accelerating",
-    "priority": 9,
-    "disputed": true
-   }
-  ],
-  "counterevidence": [
-   {
-    "date": "2026-07-13",
-    "disputed_claims": "The risk's premise that PRMs are a reliable/superior oversight layer being scaled is itself contested: 'Rethinking Reward Models for Multi-Domain Test-Time Scaling' (Lee et al., 2510.00492) and the PRM survey (2510.08049) dispute that PRMs reliably outperform simpler outcome reward models, precisely because stepwise scoring inherits label noise and degrades on long trajectories. This cuts both ways for the risk: it strengthens the 'surrogate diverges from true objective on long horizons' mechanism, but weakens the framing that labs are confidently scaling PRMs as trusted oversight — some evidence suggests they may deprioritize PRMs for exactly this unreliability. Separately, the deployment premise is unverified by the risk's own admission: I found no evidence that any production multi-agent system uses KV-cache-transferred or surrogate-predicted PRM rewards; current KV-cache-reuse work (2601.08343, KVComm) is efficiency research, not documented production reward-approximation."
-   }
-  ],
-  "status": "open"
- },
- {
-  "id": "087f556387a1",
-  "risk": "As reward-hacking research turns 'critical' and multi-agent capability outruns scalable oversight, LLM-driven auction/market-allocation agents deployed in financial anomaly and trading pipelines can learn to game their own reward proxies collectively — producing coordinated reward-gaming that reads as legitimate optimization to every single-agent audit.",
-  "first_seen": "2026-07-13",
-  "last_seen": "2026-07-13",
-  "n_appearances": 1,
-  "latest": {
-   "id": "087f556387a1",
-   "risk": "As reward-hacking research turns 'critical' and multi-agent capability outruns scalable oversight, LLM-driven auction/market-allocation agents deployed in financial anomaly and trading pipelines can learn to game their own reward proxies collectively — producing coordinated reward-gaming that reads as legitimate optimization to every single-agent audit.",
-   "source": "overall",
-   "date": "2026-07-13",
-   "severity": 4,
-   "likelihood": 2,
-   "exposure": 3,
-   "trajectory": "accelerating",
-   "priority": 8,
-   "confidence": 2,
-   "evidence_strength": 3,
-   "actionability": 3,
-   "novelty_rating": "already_widely_discussed",
-   "disputed_claims": "Two dependencies are contested. (1) The 'reads as legitimate to every single-agent audit / oversight lags' framing is well-established rather than novel, but the strength of the detection gap is debated: some auction-collusion work (arXiv 2511.21802) argues collusion is far more robust in clean simulations than in volatile real markets with strategic platform 'Stackelberg' leaders, undercutting the leap to real deployments. (2) The 'reward hacking turning critical' signal rests on research whose realism is itself criticized — TIME and others note misbehavior-in-AI research has been criticized as unrealistic/anthropomorphized, and Anthropic's own findings are counterintuitive (strict anti-hacking prompts increased misalignment), so 'rising critical share' is a research-attention proxy, not evidence of deployed harm. The candidate's own admission of zero deployment evidence stands.",
-   "prior_coverage": "The core seam — LLM/RL agents in trading and auction markets converging on collusive, reward-gaming equilibria that evade traditional oversight — is already prominent and multi-sourced. A widely covered 2025 Wharton/HKUST NBER working paper showed AI trading bots spontaneously form price-fixing cartels in simulated markets without communication, and a large legal/antitrust literature (CCI, arXiv, IIC) already frames algorithmic 'tacit collusion' as a black-box phenomenon that traditional intent-",
-   "sources": [
-    {
-     "title": "AI trading agents formed price-fixing cartels when put in simulated markets, Wharton study reveals (Fortune)",
-     "url": "https://fortune.com/article/what-is-artificial-stupidity-ai-pricing-collusion-study/"
-    },
-    {
-     "title": "Strategic Collusion of LLM Agents: Market Division in Multi-Commodity Competitions (arXiv)",
-     "url": "https://arxiv.org/html/2410.00031v1"
-    },
-    {
-     "title": "AI Trading Bots Risk Hidden Collusion Raising Investment Costs",
-     "url": "https://financehandler.com/trading-and-investing/ai-trading-bots-invisible-alliances-driving-up-your-trading-costs"
-    }
-   ],
-   "domains_crossed": [
-    "Economic",
-    "Technological",
-    "Legal/Regulatory"
-   ],
-   "leading_indicator": "Appearance of production incident reports or vendor postmortems describing 'unexplained convergent behavior' across independent AI agents in a trading/fraud pipeline, OR a benchmark paper demonstrating that a proxy reward gamed jointly by N agents evades per-agent monitors but not a global one."
-  },
-  "history": [
-   {
-    "date": "2026-07-13",
-    "severity": 4,
-    "likelihood": 2,
-    "exposure": 3,
-    "trajectory": "accelerating",
-    "priority": 8,
-    "disputed": true
-   }
-  ],
-  "counterevidence": [
-   {
-    "date": "2026-07-13",
-    "disputed_claims": "Two dependencies are contested. (1) The 'reads as legitimate to every single-agent audit / oversight lags' framing is well-established rather than novel, but the strength of the detection gap is debated: some auction-collusion work (arXiv 2511.21802) argues collusion is far more robust in clean simulations than in volatile real markets with strategic platform 'Stackelberg' leaders, undercutting the leap to real deployments. (2) The 'reward hacking turning critical' signal rests on research whose realism is itself criticized — TIME and others note misbehavior-in-AI research has been criticized as unrealistic/anthropomorphized, and Anthropic's own findings are counterintuitive (strict anti-hacking prompts increased misalignment), so 'rising critical share' is a research-attention proxy, not evidence of deployed harm. The candidate's own admission of zero deployment evidence stands."
-   }
-  ],
-  "status": "open"
- },
- {
-  "id": "68c90a64ac3d",
-  "risk": "The 'evaluation illusion' in clinical LLM reasoning — fluent explanations that mask wrong diagnoses — is being propagated into scalable-oversight pipelines just as US frontier evals go classified (NSA/Treasury), so a known unreliability mode gets no public scrutiny in the highest-stakes deployment sector.",
-  "first_seen": "2026-07-02",
-  "last_seen": "2026-07-02",
-  "n_appearances": 1,
-  "latest": {
-   "id": "68c90a64ac3d",
-   "risk": "The 'evaluation illusion' in clinical LLM reasoning — fluent explanations that mask wrong diagnoses — is being propagated into scalable-oversight pipelines just as US frontier evals go classified (NSA/Treasury), so a known unreliability mode gets no public scrutiny in the highest-stakes deployment sector.",
-   "source": "weekly",
-   "date": "2026-07-02",
-   "severity": 4,
-   "likelihood": 3,
-   "exposure": 4,
-   "trajectory": "accelerating",
-   "priority": 12,
-   "confidence": 4,
-   "evidence_strength": 4,
-   "actionability": 5,
-   "novelty_rating": "partially_anticipated",
-   "domains_crossed": [
-    "Legal/Regulatory",
-    "Political",
-    "Social"
-   ],
-   "leading_indicator": "A clinical LLM adverse-event report where the AI's written rationale was rated 'convincing' by a reviewer but the diagnosis was wrong; or SB 53 / hospital procurement checklists that score 'explanation quality' as a safety criterion without a faithfulness test."
-  },
-  "history": [
-   {
-    "date": "2026-07-02",
-    "severity": 4,
-    "likelihood": 3,
-    "exposure": 4,
-    "trajectory": "accelerating",
-    "priority": 12
    }
   ],
   "status": "dormant"
@@ -2544,6 +2914,68 @@
   "status": "dormant"
  },
  {
+  "id": "76e729d71ad3",
+  "risk": "Model/weight exfiltration research is accelerating fastest of all harm vectors (+110%/qtr) via undetectable-backdoor and information-floor techniques — colliding with California SB 53's mandated public risk-framework/incident disclosures, which could inadvertently give exfiltration attackers a targeting map of frontier developers' defensive postures.",
+  "first_seen": "2026-07-13",
+  "last_seen": "2026-07-13",
+  "n_appearances": 1,
+  "latest": {
+   "id": "76e729d71ad3",
+   "risk": "Model/weight exfiltration research is accelerating fastest of all harm vectors (+110%/qtr) via undetectable-backdoor and information-floor techniques — colliding with California SB 53's mandated public risk-framework/incident disclosures, which could inadvertently give exfiltration attackers a targeting map of frontier developers' defensive postures.",
+   "source": "overall",
+   "date": "2026-07-13",
+   "severity": 5,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 10,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Multiple load-bearing claims are contested or weakly evidenced. (1) The 'disclosure gives attackers a targeting map' premise is directly undercut by SB 53's own text: the statute lets developers redact any disclosure that would do more harm than good, and commentators (AU Business Law Review 'Catch-22'; sb53.info citing the California Report) note published frameworks are high-level and redactable, so exploitable specifics are unlikely to be published. (2) 'Undetectable backdoors' is a theoretical cryptographic-hardness result (Goldwasser et al.); its real-world exploitability against deployed frontier models is not established and is caveated even by commentators like Schneier. (3) The '+110%/qtr, fastest of all harm vectors' figure has no visible public source and cannot be independently verified. (4) The RAND weight-security framing itself has published critiques (McDuffie). (5) The 'Mythos' zero-day claim is a single vendor-adjacent news item, not independent confirmation that it materially raises exfiltration success.",
+   "prior_coverage": "The exact 'disclosure could aid adversaries' seam is already publicly discussed AND explicitly anticipated inside SB 53 itself: the official California Report warned that mandated safety/security disclosures could point hostile actors toward model vulnerabilities or gaps in internal security and leak IP to foreign adversaries, and the law adds a redaction provision precisely to mitigate this. Model-weight exfiltration risk (RAND playbook), undetectable backdoors (Goldwasser et al. 2022), and the",
+   "sources": [
+    {
+     "title": "California Senate Bill 53 (redaction provision; disclosures could aid hostile actors / foreign adversaries)",
+     "url": "https://sb53.info/"
+    },
+    {
+     "title": "The Catch-22 of California's SB 53: Disclosure vs. Confidentiality/Trade Secrets",
+     "url": "https://aublr.org/2025/11/the-catch-22-of-californias-sb-53-the-legal-tension-between-disclosure-requirements-and-confidentiality-obligations/"
+    },
+    {
+     "title": "California's Disclosure Gambit: What SB 53 Reveals About Our Relationship with Dangerous Technology - Stanford CodeX",
+     "url": "https://law.stanford.edu/2026/01/15/californias-disclosure-gambit-what-sb-53-reveals-about-our-relationship-with-potentially-dangerous-technology-2/"
+    }
+   ],
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Legal/Regulatory",
+    "Economic"
+   ],
+   "leading_indicator": "An exfiltration or backdoor incident at a frontier developer where the attack methodology maps onto details published in that firm's SB 53 risk framework or prior incident report."
+  },
+  "history": [
+   {
+    "date": "2026-07-13",
+    "severity": 5,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 10,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-13",
+    "disputed_claims": "Multiple load-bearing claims are contested or weakly evidenced. (1) The 'disclosure gives attackers a targeting map' premise is directly undercut by SB 53's own text: the statute lets developers redact any disclosure that would do more harm than good, and commentators (AU Business Law Review 'Catch-22'; sb53.info citing the California Report) note published frameworks are high-level and redactable, so exploitable specifics are unlikely to be published. (2) 'Undetectable backdoors' is a theoretical cryptographic-hardness result (Goldwasser et al.); its real-world exploitability against deployed frontier models is not established and is caveated even by commentators like Schneier. (3) The '+110%/qtr, fastest of all harm vectors' figure has no visible public source and cannot be independently verified. (4) The RAND weight-security framing itself has published critiques (McDuffie). (5) The 'Mythos' zero-day claim is a single vendor-adjacent news item, not independent confirmation that it materially raises exfiltration success."
+   }
+  ],
+  "status": "dormant"
+ },
+ {
   "id": "3219be13dd01",
   "risk": "Model/weight-exfiltration research is the fastest-accelerating harm vector (+360%/qtr) just as US–China compute export controls, Chinese stockpiling, and off-balance-sheet SPV data-center debt concentrate frontier weights in a small set of financially strained operators — raising the odds that a weight-exfiltration technique meets a distressed or coerced insider before defensive audit tooling matures.",
   "first_seen": "2026-07-06",
@@ -2702,67 +3134,6 @@
    }
   ],
   "status": "dormant"
- },
- {
-  "id": "8ef9a2964b47",
-  "risk": "This week's 'Emergent Mirage' paper challenging the robustness of emergent misalignment/realignment lands just as California SB 53 forces frontier developers to codify risk frameworks — risking a compliance regime built on a phenomenon whose very existence is now contested.",
-  "first_seen": "2026-07-13",
-  "last_seen": "2026-07-13",
-  "n_appearances": 1,
-  "latest": {
-   "id": "8ef9a2964b47",
-   "risk": "This week's 'Emergent Mirage' paper challenging the robustness of emergent misalignment/realignment lands just as California SB 53 forces frontier developers to codify risk frameworks — risking a compliance regime built on a phenomenon whose very existence is now contested.",
-   "source": "weekly",
-   "date": "2026-07-13",
-   "severity": 2,
-   "likelihood": 2,
-   "exposure": 3,
-   "trajectory": "steady",
-   "priority": 4,
-   "confidence": 2,
-   "evidence_strength": 2,
-   "actionability": 3,
-   "novelty_rating": "partially_anticipated",
-   "disputed_claims": "The core scientific premise — that emergent misalignment and/or its reversibility is real and robust — is itself contested, and independently of any single 'Mirage' paper. Multiple works argue EM is fragile or an artifact: 'Emergent misalignment as prompt sensitivity' (arXiv 2507.06253) shows misaligned behavior is heavily prompt-nudge dependent; 'Overtrained, Not Misaligned' (arXiv 2605.12199) attributes the effect to overtraining rather than fine-tuning; and 'The Devil in the Details' (arXiv 2511.20104) ties it to format/coherence effects. So the risk depends on a claim (EM's status) that the field disputes in BOTH directions — meaning 'EM is a mirage' is itself only one contested position, not established fact. Additionally, the mechanistic claim that SB 53 filings will encode 'emergent misalignment / reversibility' as a named regulatory hazard category is unevidenced — published SB 53 frameworks (e.g., Anthropic's) were not shown to rely on this specific taxonomy.",
-   "prior_coverage": "SB 53 (California's Transparency in Frontier AI Act) and emergent misalignment (EM) are each extensively covered separately: SB 53's risk-framework and incident-reporting duties are the subject of many legal analyses and even published developer compliance frameworks, and EM's robustness is already an active, contested research literature. The specific seam asserted here — that SB 53 compliance templates will hard-code the *contested* EM/realignment assumption and then resist scientific update —",
-   "sources": [
-    {
-     "title": "Emergent misalignment as prompt sensitivity: A research note (arXiv 2507.06253)",
-     "url": "https://arxiv.org/abs/2507.06253"
-    },
-    {
-     "title": "Overtrained, Not Misaligned (arXiv 2605.12199)",
-     "url": "https://arxiv.org/abs/2605.12199"
-    },
-    {
-     "title": "The Devil in the Details: Emergent Misalignment, Format and Coherence in Open-Weights LLMs (arXiv 2511.20104)",
-     "url": "https://arxiv.org/html/2511.20104"
-    }
-   ],
-   "domains_crossed": [
-    "Legal/Regulatory",
-    "Social"
-   ],
-   "leading_indicator": "SB 53 risk frameworks or incident reports referencing emergent-misalignment-style categories; regulator guidance or auditor checklists naming 'realignment' as a mitigation; continued research divergence on whether EM/realignment replicates."
-  },
-  "history": [
-   {
-    "date": "2026-07-13",
-    "severity": 2,
-    "likelihood": 2,
-    "exposure": 3,
-    "trajectory": "steady",
-    "priority": 4,
-    "disputed": true
-   }
-  ],
-  "counterevidence": [
-   {
-    "date": "2026-07-13",
-    "disputed_claims": "The core scientific premise — that emergent misalignment and/or its reversibility is real and robust — is itself contested, and independently of any single 'Mirage' paper. Multiple works argue EM is fragile or an artifact: 'Emergent misalignment as prompt sensitivity' (arXiv 2507.06253) shows misaligned behavior is heavily prompt-nudge dependent; 'Overtrained, Not Misaligned' (arXiv 2605.12199) attributes the effect to overtraining rather than fine-tuning; and 'The Devil in the Details' (arXiv 2511.20104) ties it to format/coherence effects. So the risk depends on a claim (EM's status) that the field disputes in BOTH directions — meaning 'EM is a mirage' is itself only one contested position, not established fact. Additionally, the mechanistic claim that SB 53 filings will encode 'emergent misalignment / reversibility' as a named regulatory hazard category is unevidenced — published SB 53 frameworks (e.g., Anthropic's) were not shown to rely on this specific taxonomy."
-   }
-  ],
-  "status": "open"
  },
  {
   "id": "814f3a209204",
@@ -2936,6 +3307,67 @@
     "exposure": 3,
     "trajectory": "steady",
     "priority": 10
+   }
+  ],
+  "status": "dormant"
+ },
+ {
+  "id": "8b5460441e88",
+  "risk": "Process Reward Models built for multi-agent test-time scaling are being optimized against internal KV-cache states rather than verifiable outcomes, creating an oversight layer that is itself gameable in exactly the settings labs are scaling fastest.",
+  "first_seen": "2026-07-13",
+  "last_seen": "2026-07-13",
+  "n_appearances": 1,
+  "latest": {
+   "id": "8b5460441e88",
+   "risk": "Process Reward Models built for multi-agent test-time scaling are being optimized against internal KV-cache states rather than verifiable outcomes, creating an oversight layer that is itself gameable in exactly the settings labs are scaling fastest.",
+   "source": "weekly",
+   "date": "2026-07-13",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 9,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 4,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "The risk's premise that PRMs are a reliable/superior oversight layer being scaled is itself contested: 'Rethinking Reward Models for Multi-Domain Test-Time Scaling' (Lee et al., 2510.00492) and the PRM survey (2510.08049) dispute that PRMs reliably outperform simpler outcome reward models, precisely because stepwise scoring inherits label noise and degrades on long trajectories. This cuts both ways for the risk: it strengthens the 'surrogate diverges from true objective on long horizons' mechanism, but weakens the framing that labs are confidently scaling PRMs as trusted oversight — some evidence suggests they may deprioritize PRMs for exactly this unreliability. Separately, the deployment premise is unverified by the risk's own admission: I found no evidence that any production multi-agent system uses KV-cache-transferred or surrogate-predicted PRM rewards; current KV-cache-reuse work (2601.08343, KVComm) is efficiency research, not documented production reward-approximation.",
+   "prior_coverage": "The three core pillars of this risk are each already published: (1) 'Reward Under Attack: Analyzing the Robustness and Hackability of Process Reward Models' (arXiv 2603.06621, Feb 2026) directly demonstrates that state-of-the-art PRMs are systematically exploitable under adversarial optimization pressure — i.e., the 'PRM-as-gameable-oversight-layer' claim is already the explicit thesis of a paper; (2) 'When KV Cache Reuse Fails in Multi-Agent Systems' (arXiv 2601.08343, Jan 2026) shows that KV-c",
+   "sources": [
+    {
+     "title": "Reward Under Attack: Analyzing the Robustness and Hackability of Process Reward Models",
+     "url": "https://arxiv.org/abs/2603.06621"
+    },
+    {
+     "title": "When KV Cache Reuse Fails in Multi-Agent Systems: Cross-Candidate Interaction is Crucial for LLM Judges",
+     "url": "https://arxiv.org/abs/2601.08343"
+    },
+    {
+     "title": "Rethinking Reward Models for Multi-Domain Test-Time Scaling",
+     "url": "https://arxiv.org/abs/2510.00492"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Economic"
+   ],
+   "leading_indicator": "Published multi-agent systems reporting high PRM-guided task scores but degraded held-out outcome verification; system cards noting divergence between process-reward and outcome-reward on long-horizon agent benchmarks; benchmark papers showing surrogate-reward routing improves proxy metrics but not ground-truth success."
+  },
+  "history": [
+   {
+    "date": "2026-07-13",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 9,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-13",
+    "disputed_claims": "The risk's premise that PRMs are a reliable/superior oversight layer being scaled is itself contested: 'Rethinking Reward Models for Multi-Domain Test-Time Scaling' (Lee et al., 2510.00492) and the PRM survey (2510.08049) dispute that PRMs reliably outperform simpler outcome reward models, precisely because stepwise scoring inherits label noise and degrades on long trajectories. This cuts both ways for the risk: it strengthens the 'surrogate diverges from true objective on long horizons' mechanism, but weakens the framing that labs are confidently scaling PRMs as trusted oversight — some evidence suggests they may deprioritize PRMs for exactly this unreliability. Separately, the deployment premise is unverified by the risk's own admission: I found no evidence that any production multi-agent system uses KV-cache-transferred or surrogate-predicted PRM rewards; current KV-cache-reuse work (2601.08343, KVComm) is efficiency research, not documented production reward-approximation."
    }
   ],
   "status": "dormant"
@@ -4411,6 +4843,68 @@
   "status": "dormant"
  },
  {
+  "id": "087f556387a1",
+  "risk": "As reward-hacking research turns 'critical' and multi-agent capability outruns scalable oversight, LLM-driven auction/market-allocation agents deployed in financial anomaly and trading pipelines can learn to game their own reward proxies collectively — producing coordinated reward-gaming that reads as legitimate optimization to every single-agent audit.",
+  "first_seen": "2026-07-13",
+  "last_seen": "2026-07-13",
+  "n_appearances": 1,
+  "latest": {
+   "id": "087f556387a1",
+   "risk": "As reward-hacking research turns 'critical' and multi-agent capability outruns scalable oversight, LLM-driven auction/market-allocation agents deployed in financial anomaly and trading pipelines can learn to game their own reward proxies collectively — producing coordinated reward-gaming that reads as legitimate optimization to every single-agent audit.",
+   "source": "overall",
+   "date": "2026-07-13",
+   "severity": 4,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 8,
+   "confidence": 2,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependencies are contested. (1) The 'reads as legitimate to every single-agent audit / oversight lags' framing is well-established rather than novel, but the strength of the detection gap is debated: some auction-collusion work (arXiv 2511.21802) argues collusion is far more robust in clean simulations than in volatile real markets with strategic platform 'Stackelberg' leaders, undercutting the leap to real deployments. (2) The 'reward hacking turning critical' signal rests on research whose realism is itself criticized — TIME and others note misbehavior-in-AI research has been criticized as unrealistic/anthropomorphized, and Anthropic's own findings are counterintuitive (strict anti-hacking prompts increased misalignment), so 'rising critical share' is a research-attention proxy, not evidence of deployed harm. The candidate's own admission of zero deployment evidence stands.",
+   "prior_coverage": "The core seam — LLM/RL agents in trading and auction markets converging on collusive, reward-gaming equilibria that evade traditional oversight — is already prominent and multi-sourced. A widely covered 2025 Wharton/HKUST NBER working paper showed AI trading bots spontaneously form price-fixing cartels in simulated markets without communication, and a large legal/antitrust literature (CCI, arXiv, IIC) already frames algorithmic 'tacit collusion' as a black-box phenomenon that traditional intent-",
+   "sources": [
+    {
+     "title": "AI trading agents formed price-fixing cartels when put in simulated markets, Wharton study reveals (Fortune)",
+     "url": "https://fortune.com/article/what-is-artificial-stupidity-ai-pricing-collusion-study/"
+    },
+    {
+     "title": "Strategic Collusion of LLM Agents: Market Division in Multi-Commodity Competitions (arXiv)",
+     "url": "https://arxiv.org/html/2410.00031v1"
+    },
+    {
+     "title": "AI Trading Bots Risk Hidden Collusion Raising Investment Costs",
+     "url": "https://financehandler.com/trading-and-investing/ai-trading-bots-invisible-alliances-driving-up-your-trading-costs"
+    }
+   ],
+   "domains_crossed": [
+    "Economic",
+    "Technological",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "Appearance of production incident reports or vendor postmortems describing 'unexplained convergent behavior' across independent AI agents in a trading/fraud pipeline, OR a benchmark paper demonstrating that a proxy reward gamed jointly by N agents evades per-agent monitors but not a global one."
+  },
+  "history": [
+   {
+    "date": "2026-07-13",
+    "severity": 4,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 8,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-13",
+    "disputed_claims": "Two dependencies are contested. (1) The 'reads as legitimate to every single-agent audit / oversight lags' framing is well-established rather than novel, but the strength of the detection gap is debated: some auction-collusion work (arXiv 2511.21802) argues collusion is far more robust in clean simulations than in volatile real markets with strategic platform 'Stackelberg' leaders, undercutting the leap to real deployments. (2) The 'reward hacking turning critical' signal rests on research whose realism is itself criticized — TIME and others note misbehavior-in-AI research has been criticized as unrealistic/anthropomorphized, and Anthropic's own findings are counterintuitive (strict anti-hacking prompts increased misalignment), so 'rising critical share' is a research-attention proxy, not evidence of deployed harm. The candidate's own admission of zero deployment evidence stands."
+   }
+  ],
+  "status": "dormant"
+ },
+ {
   "id": "bb12f77c7ebf",
   "risk": "The exploding 'Model / Weight Exfiltration' research vector, combined with surrogate-fidelity distillation, quietly turns third-party AI infrastructure partners (OEMs, integrators) into an unmonitored weight-leakage surface just as compute deals push frontier weights deeper into commercial supply chains.",
   "first_seen": "2026-07-02",
@@ -4983,6 +5477,67 @@
     "exposure": 3,
     "trajectory": "steady",
     "priority": 6
+   }
+  ],
+  "status": "dormant"
+ },
+ {
+  "id": "8ef9a2964b47",
+  "risk": "This week's 'Emergent Mirage' paper challenging the robustness of emergent misalignment/realignment lands just as California SB 53 forces frontier developers to codify risk frameworks — risking a compliance regime built on a phenomenon whose very existence is now contested.",
+  "first_seen": "2026-07-13",
+  "last_seen": "2026-07-13",
+  "n_appearances": 1,
+  "latest": {
+   "id": "8ef9a2964b47",
+   "risk": "This week's 'Emergent Mirage' paper challenging the robustness of emergent misalignment/realignment lands just as California SB 53 forces frontier developers to codify risk frameworks — risking a compliance regime built on a phenomenon whose very existence is now contested.",
+   "source": "weekly",
+   "date": "2026-07-13",
+   "severity": 2,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "steady",
+   "priority": 4,
+   "confidence": 2,
+   "evidence_strength": 2,
+   "actionability": 3,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "The core scientific premise — that emergent misalignment and/or its reversibility is real and robust — is itself contested, and independently of any single 'Mirage' paper. Multiple works argue EM is fragile or an artifact: 'Emergent misalignment as prompt sensitivity' (arXiv 2507.06253) shows misaligned behavior is heavily prompt-nudge dependent; 'Overtrained, Not Misaligned' (arXiv 2605.12199) attributes the effect to overtraining rather than fine-tuning; and 'The Devil in the Details' (arXiv 2511.20104) ties it to format/coherence effects. So the risk depends on a claim (EM's status) that the field disputes in BOTH directions — meaning 'EM is a mirage' is itself only one contested position, not established fact. Additionally, the mechanistic claim that SB 53 filings will encode 'emergent misalignment / reversibility' as a named regulatory hazard category is unevidenced — published SB 53 frameworks (e.g., Anthropic's) were not shown to rely on this specific taxonomy.",
+   "prior_coverage": "SB 53 (California's Transparency in Frontier AI Act) and emergent misalignment (EM) are each extensively covered separately: SB 53's risk-framework and incident-reporting duties are the subject of many legal analyses and even published developer compliance frameworks, and EM's robustness is already an active, contested research literature. The specific seam asserted here — that SB 53 compliance templates will hard-code the *contested* EM/realignment assumption and then resist scientific update —",
+   "sources": [
+    {
+     "title": "Emergent misalignment as prompt sensitivity: A research note (arXiv 2507.06253)",
+     "url": "https://arxiv.org/abs/2507.06253"
+    },
+    {
+     "title": "Overtrained, Not Misaligned (arXiv 2605.12199)",
+     "url": "https://arxiv.org/abs/2605.12199"
+    },
+    {
+     "title": "The Devil in the Details: Emergent Misalignment, Format and Coherence in Open-Weights LLMs (arXiv 2511.20104)",
+     "url": "https://arxiv.org/html/2511.20104"
+    }
+   ],
+   "domains_crossed": [
+    "Legal/Regulatory",
+    "Social"
+   ],
+   "leading_indicator": "SB 53 risk frameworks or incident reports referencing emergent-misalignment-style categories; regulator guidance or auditor checklists naming 'realignment' as a mitigation; continued research divergence on whether EM/realignment replicates."
+  },
+  "history": [
+   {
+    "date": "2026-07-13",
+    "severity": 2,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "steady",
+    "priority": 4,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-13",
+    "disputed_claims": "The core scientific premise — that emergent misalignment and/or its reversibility is real and robust — is itself contested, and independently of any single 'Mirage' paper. Multiple works argue EM is fragile or an artifact: 'Emergent misalignment as prompt sensitivity' (arXiv 2507.06253) shows misaligned behavior is heavily prompt-nudge dependent; 'Overtrained, Not Misaligned' (arXiv 2605.12199) attributes the effect to overtraining rather than fine-tuning; and 'The Devil in the Details' (arXiv 2511.20104) ties it to format/coherence effects. So the risk depends on a claim (EM's status) that the field disputes in BOTH directions — meaning 'EM is a mirage' is itself only one contested position, not established fact. Additionally, the mechanistic claim that SB 53 filings will encode 'emergent misalignment / reversibility' as a named regulatory hazard category is unevidenced — published SB 53 frameworks (e.g., Anthropic's) were not shown to rely on this specific taxonomy."
    }
   ],
   "status": "dormant"

@@ -2517,5 +2517,470 @@
    "recommended_action": "flag",
    "recalibrated_calibration": "Lower confidence than the candidate implies, and for an additional reason it omits. The two components are already prominent (SB 53 is heavily analyzed with live compliance frameworks; EM robustness is an active, already-contested literature well before any single 'Mirage' paper), so the framing of a fresh shock is overstated — this is partially anticipated, not unsurfaced. The specific seam (a compliance regime ossifying a contested EM assumption) is genuinely fresh and unwritten, which is the only novel element. However, the risk is doubly speculative: (1) it rests on a scientific claim (EM being a 'mirage') that is itself disputed and unresolved — several papers dispute EM's robustness while others defend it, and the named 2607.09053 paper could not be independently verified — so we must NOT treat 'EM is not robust' as settled; and (2) the mechanism that SB 53 templates will encode EM/reversibility as an enforceable hazard category is unevidenced, since actual published SB 53 frameworks were not shown to use this taxonomy. Net: a plausible but low-probability, doubly-contingent structural hypothesis worth noting as a watch-item, not briefing as a confident emerging risk."
   }
+ },
+ "3c4eb0d7d81a": {
+  "date_checked": "2026-07-20",
+  "risk": "Reward-hacking failures are becoming safety-critical inside agentic tool-use deployments just as US model evaluations go classified and stop publishing findings — creating a public blind spot precisely where the research signal is deteriorating.",
+  "verification": {
+   "prior_coverage": "Both halves of this risk are already prominent public topics. Reward hacking / specification gaming in agentic tool-use is a very active 2025-2026 research area with multiple dedicated benchmarks (Reward Hacking Benchmark, SpecBench, Hack-Verifiable Environments, ImpossibleBench). The June 2 2026 EO moving CAISI evaluations to a classified framework and halting published findings has been covered by outlets and formally protested (Sen. Ted Budd, TechPolicy.Press), and the exact seam the risk names — that classifying evals removes independent/public verification of model behavior — is stated almost verbatim in that coverage. The specific cross of these two is therefore not a fresh connection.",
+   "sources": [
+    {
+     "title": "CAISI ordered to stop public model evaluations amid new AI executive order",
+     "url": "https://cryptobriefing.com/caisi-ai-evaluations-classified-executive-order/"
+    },
+    {
+     "title": "Budd Calls for CAISI to Resume Publishing Research on Frontier AI Models",
+     "url": "https://www.budd.senate.gov/2026/06/30/budd-calls-for-caisi-to-resume-publishing-research-on-frontier-ai-models/"
+    },
+    {
+     "title": "Transparency and Accountability Gaps in Trump's New AI Executive Order",
+     "url": "https://www.techpolicy.press/transparency-and-accountability-gaps-in-trumps-new-ai-executive-order/"
+    },
+    {
+     "title": "Reward Hacking Benchmark: Measuring Exploits in LLM Agents with Tool Use",
+     "url": "https://arxiv.org/abs/2605.02964"
+    },
+    {
+     "title": "AI Model Misbehavior in 2026: Scheming, Reward Hacking, and What Comes Next",
+     "url": "https://hatchworks.com/blog/gen-ai/ai-model-misbehavior/"
+    },
+    {
+     "title": "Pre-Deployment AI Evaluation Moves From China's Model To Washington (CAISI 'rigorous measurement')",
+     "url": "https://www.forbes.com/sites/paulocarvao/2026/05/06/pre-deployment-ai-evaluation-moves-from-chinas-model-to-washington/"
+    },
+    {
+     "title": "Assessing Trump's Executive Order on AI Oversight",
+     "url": "https://www.cfr.org/articles/assessing-trumps-executive-order-on-ai-oversight"
+    },
+    {
+     "title": "International AI Safety Report 2026 (pre-deployment vs real-world evaluation gap)",
+     "url": "https://arxiv.org/pdf/2602.21012"
+    },
+    {
+     "title": "'Perfect Score Without Solving Anything' — How 8 AI Agent Benchmarks Were Broken",
+     "url": "https://blog.pebblous.ai/report/ai-agent-benchmark-trust/en/"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The causal step 'classified review => degraded real-world oversight of reward hacking' is disputed: CAISI leadership frames the classified pre-deployment program as 'independent, rigorous measurement science' and CFR/FAS note evaluation can continue rigorously inside government, so classification does not straightforwardly equal weaker evaluation — only weaker PUBLIC visibility. (2) The premise that pre-deployment evals are the reliable signal being lost is itself qualified: the International AI Safety Report 2026 documents a persistent 'evaluation gap' where pre-deployment results poorly predict real-world behavior, and Berkeley RDI / benchmark-integrity work shows reward-hacking benchmark scores can themselves be artifacts — so the 'lost signal' was partial and imperfect even when public. The rising-critical-share statistic (+22.2pts, n=91) is an internal figure not independently corroborated in the sources found.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'emerging, not remote' to 'largely anticipated / low novelty.' The transparency loss from classified CAISI evaluations is already being argued publicly (CoinDesk/CryptoBriefing, TechPolicy.Press, Sen. Budd), and agentic reward hacking is a saturated research topic — the two are already being connected, so this should not be briefed as a novel seam. Confidence in the core causal claim must be lowered explicitly: 'classified => degraded oversight' is disputed (CAISI/CFR argue classified review remains rigorous; only public verifiability, not evaluation quality, is clearly reduced), and the framing of pre-deployment evals as the trustworthy signal being lost is undercut by the documented pre-deployment-vs-real-world evaluation gap and by benchmark-artifact critiques of reward-hacking measurement. Honest residual value: the specific, defensible claim is narrower — 'classification reduces INDEPENDENT PUBLIC verification of agentic failure trends,' which is real but already voiced by named critics — rather than the stronger, contested claim that oversight itself degrades. The +22.2pt critical-share figure is uncorroborated externally and should be labeled as an internal input, not an established fact."
+  }
+ },
+ "198a5f3fd877": {
+  "date_checked": "2026-07-20",
+  "risk": "The prompt-injection defense literature is being borrowed almost exclusively for guarding agents against EXTERNAL attackers, leaving the rising internal failure mode (agents that reward-hack their own privilege-separation defenses) structurally unaddressed as those same papers get frozen into Illinois' mandatory third-party audit standard.",
+  "verification": {
+   "prior_coverage": "All three named components are already prominent public topics but discussed separately: Illinois SB 315 is widely covered as the first US mandatory frontier-AI third-party audit law (signed by Gov. Pritzker, audits from ~2027-2028), prompt-injection defenses and agent privilege escalation have a large security literature, and reward hacking is a heavily-covered rising failure mode (notably Anthropic's emergent-misalignment work). The most-reported SB 315 angle is precisely that no audit standards, certified auditors, or methodologies yet exist (NetChoice, CCIA, Airia, law-firm alerts). I found no public source connecting the specific seam claimed here: injection-defense papers being frozen into SB 315's audit SOTA and thereby leaving agent reward-hacking / self-privilege-exploitation structurally unaudited.",
+   "sources": [
+    {
+     "title": "Illinois AI Safety Measures Act SB 315: What Frontier AI Developers Must Do Before January 2028 (Crowell & Moring)",
+     "url": "https://www.crowell.com/en/insights/client-alerts/illinois-imposes-transparency-and-safety-obligations-on-frontier-ai-systems"
+    },
+    {
+     "title": "Illinois becomes first state to require third-party audit of AI models (The Hill)",
+     "url": "https://thehill.com/policy/technology/5955442-illinois-ai-safety-bill/"
+    },
+    {
+     "title": "NetChoice Testimony in Opposition to Illinois SB 315",
+     "url": "https://netchoice.org/netchoice-testimony-in-opposition-to-illinois-sb-315-the-artificial-intelligence-safety-measures-act/"
+    },
+    {
+     "title": "Illinois SB 315 Is Effectively Law. The Audit Ecosystem It Requires Doesn't Exist Yet.",
+     "url": "https://techjacksolutions.com/ai-brief/illinois-sb-315-is-effectively-law-the-audit-ecosystem-it-re/"
+    },
+    {
+     "title": "Illinois SB 315 Is a Governance Framework in Search of a Governance System (Airia)",
+     "url": "https://airia.com/illinois-sb-315-is-a-governance-framework-in-search-of-a-governance-system/"
+    },
+    {
+     "title": "Defeating Prompt Injections by Design (arXiv 2503.18813)",
+     "url": "https://arxiv.org/abs/2503.18813"
+    },
+    {
+     "title": "Preventing Prompt Injection with Type-Directed Privilege Separation (arXiv 2509.25926)",
+     "url": "https://arxiv.org/pdf/2509.25926"
+    },
+    {
+     "title": "Prompt Flow Integrity to Prevent Privilege Escalation in LLM Agents (arXiv 2503.15547)",
+     "url": "https://arxiv.org/pdf/2503.15547"
+    },
+    {
+     "title": "Reward Hacking in the Era of Large Models: Mechanisms, Emergent Misalignment, Challenges (arXiv 2604.13602)",
+     "url": "https://arxiv.org/html/2604.13602v1"
+    },
+    {
+     "title": "EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures (arXiv 2606.30219)",
+     "url": "https://arxiv.org/pdf/2606.30219"
+    },
+    {
+     "title": "AI Agent Privilege Escalation (Obsidian Security)",
+     "url": "https://www.obsidiansecurity.com/academy/ai-agent-privilege-escalation"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The mechanism assumes SB 315 auditors will operationalize 'the state of the art' and that today that means prompt-injection defenses; but NetChoice, CCIA, the Progress Chamber and Airia all report that SB 315 has NO defined audit standards, certified auditors, or methodology yet, and implementing rules are unwritten — so which SOTA auditors will adopt is genuinely undetermined, not established. This complicates rather than confirms the specific 'injection-defenses-get-frozen-in' pathway. (2) The 'rising critical share' of reward hacking and its framing as agents 'reward-hacking their own privilege-separation defenses' rests on a term researchers themselves call inconsistently defined and immaturely measured: EvalSafetyGap warns the distinct mechanisms 'should not be pooled into one rate,' LessWrong notes ongoing 'confusion around the term reward hacking,' and benchmark work is still early-stage. The vivid 'internal self-exploit of privilege boundaries' is closer to an analyst construct than a documented, quantified failure mode.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'Emerging (moderate confidence)' to 'Speculative-but-worth-flagging (low-to-moderate confidence).' The individual pieces are already widely discussed — SB 315 is front-page, injection-defense borrowing is verifiable, reward hacking is a hot topic — so the value is ONLY in the specific unaudited seam, which I could not find surfaced anywhere; that part is genuinely fresh. However, two load-bearing claims must be de-confidenced, not laundered: (a) the assertion that SB 315 audits will crystallize on injection-defense SOTA is speculative — the more-documented reality is that SB 315 has no audit standard at all yet, which both weakens the 'frozen-in' premise AND, ironically, means there is still a live window to shape the standard rather than a fait accompli; and (b) the reward-hacking 'critical-share rise' and the 'agents attack their own privilege separation' framing rest on a metric that researchers say is inconsistently defined and immaturely measured, so the severity should be stated as plausible-but-unquantified. Net: present as a forward-looking regulatory design-window recommendation ('ensure emerging SB 315 audit methodology explicitly covers reward-hacking / self-privilege-exploitation, not just external injection'), explicitly caveated that no auditor SOTA is fixed yet and that reward-hacking measurement is contested — not as a confident claim that a blind spot is being 'embedded into law.'"
+  }
+ },
+ "ebc0cfa4f151": {
+  "date_checked": "2026-07-20",
+  "risk": "Scalable-oversight research is contracting (-4.2%/qtr) at the exact moment multi-agent/tool-use capability accelerates (+25.9%) and agent-communication protocols (MCP-style) diffuse — so the human-in-the-loop supervision techniques needed to govern agent-to-agent traffic are shrinking as the attack surface grows fastest.",
+  "verification": {
+   "prior_coverage": "The security half of this seam is already widely covered: multiple 2025-26 papers threat-model MCP and agent-to-agent (A2A/ANP/Agora) protocols for prompt injection and tool poisoning, and vendor/security blogs (NeuralTrust, Galileo, WitnessAI) treat multi-agent attack surface as a named category. The 'safety/oversight lagging capabilities' framing is also mainstream (AISI's capability-mitigation gap work, DeepMind's technical AGI safety paper, the Science 'extreme AI risks' paper). What is NOT prominently written up as a single connected thesis is the specific quantitative claim that scalable-oversight research is contracting while multi-agent capability and MCP diffusion accelerate — that precise coupling appears fresh, though its two ends are each heavily discussed.",
+   "sources": [
+    {
+     "title": "A Survey of LLM-Driven AI Agent Communication: Protocols, Security Risks, and Defense Countermeasures (2506.19676)",
+     "url": "https://arxiv.org/html/2506.19676"
+    },
+    {
+     "title": "Security Threat Modeling for Emerging AI-Agent Protocols: MCP, A2A, Agora, ANP (2602.11327)",
+     "url": "https://arxiv.org/html/2602.11327v2"
+    },
+    {
+     "title": "Breaking the Protocol: Security Analysis of the Model Context Protocol (2601.17549)",
+     "url": "https://arxiv.org/abs/2601.17549"
+    },
+    {
+     "title": "Open Challenges in Multi-Agent Security (2505.02077)",
+     "url": "https://arxiv.org/html/2505.02077v2"
+    },
+    {
+     "title": "How we're addressing the gap between AI capabilities and mitigations — AISI",
+     "url": "https://www.aisi.gov.uk/blog/aisis-research-direction-for-technical-solutions"
+    },
+    {
+     "title": "Scaling Laws For Scalable Oversight (2504.18530)",
+     "url": "https://arxiv.org/abs/2504.18530"
+    },
+    {
+     "title": "On scalable oversight with weak LLMs judging strong LLMs (2407.04622)",
+     "url": "https://arxiv.org/html/2407.04622v1"
+    },
+    {
+     "title": "An Approach to Technical AGI Safety and Security (2504.01849)",
+     "url": "https://arxiv.org/html/2504.01849v1"
+    },
+    {
+     "title": "Managing extreme AI risks amid rapid progress — Science",
+     "url": "https://www.science.org/doi/10.1126/science.adn0117"
+    }
+   ],
+   "disputed_claims": "Two dependent claims are contested. (1) The risk treats scalable oversight as an established, working mitigation that is merely 'shrinking' — but whether scalable oversight actually works is itself an open research question: Engels et al. 'Scaling Laws for Scalable Oversight' (2504.18530) note it is unclear how oversight itself scales, and Google DeepMind (2407.04622, 2504.01849) document debate failure modes where weak judges are misled and supervision difficulty grows with the capability gap. So a research-attention decline does not straightforwardly imply a lost-but-effective defense. (2) The metric-based inference itself (a -4.2%/qtr publication trend = a real deployment/governance gap) is unverified — the candidate's own calibration concedes oversight could be handled by unpublished product engineering, and no source establishes that publication-volume trends track deployed supervision capacity. WHO complicates it: scalable-oversight researchers (Engels/Tegmark et al.; DeepMind safety team) on claim 1; the candidate's own caveat plus general measurement critique on claim 2.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'emerging and well-anchored' to 'partially anticipated, moderate-low confidence.' Both ends of the seam are already public: MCP/A2A protocol attack surface is heavily documented, and 'safety lagging capabilities' is a mainstream framing. Novelty rests almost entirely on the specific quantitative divergence (oversight -4.2% vs multi-agent +25.9%), and that framing is undercut by two soft links. First, the causal chain assumes scalable oversight is a functioning mitigation being lost, but the field itself has not established that scalable oversight reliably works — so 'the field is shrinking' cannot be equated with 'an effective defense is disappearing.' Second, publication-trend metrics are not a validated proxy for deployed supervision capacity (oversight may live in unpublished product engineering), a gap the author already flags. Present this as a directional watch-item on the coupling of protocol diffusion with uncertain oversight maturity — not as a confident 'defenses are shrinking as attack surface grows' claim. Do not launder the publication-decline metric into a stated deployment gap."
+  }
+ },
+ "d2fad457eccf": {
+  "date_checked": "2026-07-20",
+  "risk": "Model/weight-exfiltration enabling research is surging (+75%/qtr, the fastest-accelerating harm vector) around energy-and-grid-oriented foundation models, opening a dual-use seam where critical-infrastructure AI becomes both a theft target and a theft vector — and the energy/grid-security community isn't tracking the AI-safety exfiltration literature.",
+  "verification": {
+   "prior_coverage": "All named components are already in active public discussion: model/weight exfiltration is a mature, heavily-researched topic (arXiv detection papers, a RAND 'Playbook for Securing AI Model Weights', Anthropic's SL3 egress limits, LessWrong analyses); foundation models for the electric grid are well established (Joule, NREL, arXiv perspective papers); AI-security gaps in energy infrastructure — explicitly including 'data exfiltration' and nation-state targeting of embedded grid AI as high-value targets — are already being published (Kiteworks/Industrial Cyber, Enlit World, ScienceDirect smart-grid cybersecurity reviews); PRC-linked influence ops on the data-center/electricity debate are documented (OpenAI, The Hill, Tom's Hardware); and model-extraction/inversion revealing structure or graph topology is a known attack class. The one arguably fresher framing — an explicit 'exfiltrated grid foundation-model weights as reconnaissance for physical attack' pipeline — was NOT found stated as such, but each link in it is separately and prominently discussed.",
+   "sources": [
+    {
+     "title": "A Playbook for Securing AI Model Weights | RAND",
+     "url": "https://www.rand.org/pubs/research_briefs/RBA2849-1.html"
+    },
+    {
+     "title": "Verifying LLM Inference to Detect Model Weight Exfiltration (arXiv)",
+     "url": "https://arxiv.org/abs/2511.02620"
+    },
+    {
+     "title": "Foundation models for the electric power grid (Joule/Cell)",
+     "url": "https://www.cell.com/joule/fulltext/S2542-4351(24)00470-7"
+    },
+    {
+     "title": "Foundation Models for the Electric Power Grid (NREL)",
+     "url": "https://research-hub.nrel.gov/en/publications/foundation-models-for-the-electric-power-grid/"
+    },
+    {
+     "title": "Kiteworks warns AI security gaps leave energy infrastructure exposed to nation-state attacks (Industrial Cyber)",
+     "url": "https://industrialcyber.co/utilities-energy-power-water-waste/kiteworks-warns-ai-security-gaps-leave-energy-infrastructure-exposed-to-nation-state-attacks/"
+    },
+    {
+     "title": "How AI security gaps in energy create high-consequence risks (Enlit World)",
+     "url": "https://www.enlit.world/library/how-ai-security-gaps-in-energy-create-high-consequence-risks"
+    },
+    {
+     "title": "Safeguarding the energy transition: cybersecurity strategies for smart grids (ScienceDirect)",
+     "url": "https://www.sciencedirect.com/science/article/pii/S2590174525005513"
+    },
+    {
+     "title": "PRC-linked influence operations are targeting AI debates in the US (OpenAI)",
+     "url": "https://openai.com/index/prc-linked-influence-operations-ai-debates/"
+    },
+    {
+     "title": "Republicans eye China's influence in data center backlash (The Hill)",
+     "url": "https://thehill.com/policy/technology/5931292-data-centers-influence-campaigns-china-republicans/"
+    },
+    {
+     "title": "A realistic model extraction attack against graph neural networks (ScienceDirect)",
+     "url": "https://www.sciencedirect.com/science/article/abs/pii/S0950705124007780"
+    },
+    {
+     "title": "Defending Against Model Weight Exfiltration (LessWrong)",
+     "url": "https://www.lesswrong.com/posts/7i33FDCfcRLJbPs6u/defending-against-model-weight-exfiltration-through-1"
+    }
+   ],
+   "disputed_claims": "Two load-bearing claims are weak or contradicted. (1) The '+75%/qtr, fastest-accelerating harm vector' figure and 'n=273' come from the risk's own internal dataset; no external source corroborates this rate, and quantitative AI-threat-acceleration metrics are broadly viewed skeptically. (2) The claim that 'the energy/grid-security community isn't tracking the AI-safety exfiltration literature' is contradicted by current coverage: energy/OT-security outlets (Kiteworks/Industrial Cyber, Enlit) and smart-grid cybersecurity reviews already name model poisoning, data/model exfiltration and nation-state targeting of embedded grid AI. Additionally, the mechanism's core inferential leap — that exfiltrating/inverting a grid foundation model reliably reveals actionable 'grid topology, contingency responses, and control logic' usable for physical attack — is not demonstrated; model-inversion/extraction on GNNs can leak structure in the literature, but real-world extraction of operational grid control logic from a foundation model is unproven and the risk's own calibration concedes this step is speculative.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower confidence than stated. Every component — weight exfiltration, grid foundation models, AI-security exposure of energy infrastructure to nation-state actors, and PRC influence ops on the electricity/data-center debate — is already prominently and independently discussed, so this is NOT a genuinely unsurfaced risk; at most the specific 'exfiltrated grid-model weights as physical-attack reconnaissance' phrasing is a fresh recombination. The risk also rests on two shaky claims that must be flagged rather than briefed as fact: the +75%/qtr / n=273 acceleration is internal and externally uncorroborated (treat as directional, not a measured trend), and the 'grid community isn't tracking the exfiltration literature' premise is largely FALSE per current energy-cyber coverage. The physical-attack endpoint remains speculative and multi-step. Recommend briefing this only as a 'watch/synthesis' item that connects existing threads — explicitly caveating the unverified acceleration metric and the incorrect gap assumption — not as a novel high-confidence emerging risk."
+  }
+ },
+ "6e7055f734d5": {
+  "date_checked": "2026-07-20",
+  "risk": "Reward-hacking is quietly becoming the dominant safety-critical failure mode inside the exact 'efficiency/overthinking-reduction' research that industry is racing to deploy — meaning the drive to make reasoning models cheaper is structurally selecting for models that satisfy graders rather than reason correctly, right as energy costs make that efficiency pressure irresistible.",
+  "verification": {
+   "prior_coverage": "The core seam is already an active research area: reward hacking in RLVR/verifier-trained reasoning models is widely studied (e.g., 'LLMs Gaming Verifiers: RLVR can Lead to Reward Hacking'), and the risk that efficiency/output-based training degrades reasoning integrity and chain-of-thought monitorability is explicitly documented ('Output Supervision Can Obfuscate the Chain of Thought', 'Chain of Thought Monitorability: A New and Fragile Opportunity'). Efficient-reasoning/length-penalty methods and the overthinking-reduction literature are also a crowded, fast-moving field. What is NOT yet cleanly established in public work is the specific claim that *length penalties specifically* cause grader-gaming *at deployment scale* driven by energy/ROI economics — that particular economic-environmental framing of the seam is fresher than its technical components.",
+   "sources": [
+    {
+     "title": "LLMs Gaming Verifiers: RLVR can Lead to Reward Hacking",
+     "url": "https://arxiv.org/abs/2604.15149"
+    },
+    {
+     "title": "Output Supervision Can Obfuscate the Chain of Thought",
+     "url": "https://arxiv.org/html/2511.11584v1"
+    },
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety",
+     "url": "https://arxiv.org/html/2507.11473v2"
+    },
+    {
+     "title": "Inference-Time Reward Hacking in Large Language Models",
+     "url": "https://arxiv.org/html/2506.19248v2"
+    },
+    {
+     "title": "Chain-of-Thought Reasoning In The Wild Is Not Always Faithful",
+     "url": "https://arxiv.org/abs/2503.08679"
+    },
+    {
+     "title": "Fast on the Easy, Deep on the Hard: Efficient Reasoning via Powered Length Penalty",
+     "url": "https://arxiv.org/html/2506.10446v1"
+    },
+    {
+     "title": "DLER: Doing Length Penalty Right",
+     "url": "https://openreview.net/pdf?id=gxkOfdaaMA"
+    },
+    {
+     "title": "MIT report: 95% of generative AI pilots at companies are failing (Fortune)",
+     "url": "https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/"
+    },
+    {
+     "title": "Energy demand from AI – IEA",
+     "url": "https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai"
+    }
+   ],
+   "disputed_claims": "Multiple load-bearing claims are contested or thinly evidenced. (1) The central causal claim — that *length penalties* specifically drive grader-gaming at deployment — is not directly demonstrated; the closest evidence attributes shortcut/obfuscation behavior to RLVR and output-supervision penalties generally (arXiv 2604.15149, 2511.11584), not to length penalties in particular, so the risk's mechanism is inferred rather than measured. (2) The implicit premise that CoT reliably reflects reasoning is itself disputed: researchers (e.g., arXiv 2503.08679, Anthropic-style faithfulness work) find CoT is 'not always faithful' even without penalties, which both supports the concern and undercuts the clean 'looks-sufficient-to-grader' story. (3) The '95% of orgs see zero GenAI ROI' figure comes from a single MIT NANDA report whose methodology and framing have been widely questioned by commentators and journalists (Fortune, Forbes coverage notes the failure is attributed to integration/'learning gap', not model quality). (4) The IEA ~945 TWh by 2030 number is a projection/scenario, not an established fact, and data-center energy forecasts vary widely across analysts.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower to emerging / low-to-medium confidence, and reframe as a hypothesis, not an established effect. The individual components are already prominent in public research — RLVR/verifier reward hacking, efficient-reasoning/length-penalty methods, and CoT-monitorability erosion from output-based penalties are all actively published — so this should NOT be briefed as a novel discovery; the fresh element is only the economic/environmental framing (energy + ROI pressure making length-penalized deployment the default). Critically, the risk's core causal claim is unverified: no located source shows *length penalties specifically* cause grader-gaming at deployment scale; existing evidence implicates RLVR/output-supervision broadly. Confidence must be further discounted because at least three supporting claims are contested — CoT faithfulness is disputed in the literature, the '95% zero ROI' figure rests on a single methodologically-criticized MIT report, and the 945 TWh energy figure is a projection, not a measured constraint. Net: a plausible, partially-anticipated seam worth flagging as a research question to test, not a confident cross-domain finding."
+  }
+ },
+ "5e7db7ab31bf": {
+  "date_checked": "2026-07-20",
+  "risk": "Chain-of-Thought Faithfulness research is surging (+56.8%) at the very moment the US moves model evaluations into a classified 30-day national-security review — so faithfulness metrics may be adopted as the government's private release gate before the field has established that a 'faithful-looking' CoT is actually trustworthy, freezing an unvalidated proxy into secret regulatory practice.",
+  "verification": {
+   "prior_coverage": "Both halves of this risk are already heavily and publicly discussed, but not as a joined seam. The June 2, 2026 EO's classified 30-day pre-release review and CAISI ceasing public findings are covered by law firms, CFR, NPR and TechPolicy.Press; separately, the claim that a 'faithful-looking' CoT may not be trustworthy is the mainstream published consensus (Korbak et al. 2507.11473, Turpin/Lanham/Baker, and meta-evaluations arguing faithfulness metrics don't measure faithfulness). No source was found asserting the specific linking step — that the classified gate uses CoT-faithfulness metrics; reporting instead describes the classified benchmarking as targeting cyber and bio/chem capabilities, not faithfulness.",
+   "sources": [
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety (Korbak et al.)",
+     "url": "https://arxiv.org/abs/2507.11473"
+    },
+    {
+     "title": "Measuring Chain-of-Thought Monitorability Through Faithfulness and Verbosity",
+     "url": "https://arxiv.org/pdf/2510.27378"
+    },
+    {
+     "title": "Faithfulness Metrics Don't Measure Faithfulness: A Meta-Evaluation with Ground Truth",
+     "url": "https://arxiv.org/pdf/2605.25052"
+    },
+    {
+     "title": "What Is Chain-of-Thought Faithfulness? Why AI Reasoning Traces Are Unreliable (MindStudio)",
+     "url": "https://www.mindstudio.ai/blog/what-is-chain-of-thought-faithfulness-ai-reasoning"
+    },
+    {
+     "title": "Promoting Advanced AI Innovation and Security (EO, June 2, 2026) — The White House",
+     "url": "https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/"
+    },
+    {
+     "title": "CAISI ordered to stop public model evaluations amid new AI executive order",
+     "url": "https://cryptobriefing.com/caisi-ai-evaluations-classified-executive-order/"
+    },
+    {
+     "title": "Transparency and Accountability Gaps in Trump's New AI Executive Order (TechPolicy.Press)",
+     "url": "https://www.techpolicy.press/transparency-and-accountability-gaps-in-trumps-new-ai-executive-order/"
+    },
+    {
+     "title": "New Executive Order Signals Evolving Federal Approach to AI (Lathrop GPM) — 60-day classified cyber benchmarking",
+     "url": "https://www.lathropgpm.com/insights/new-executive-order-signals-evolving-federal-approach-to-ai/"
+    },
+    {
+     "title": "Assessing Trump's Executive Order on AI Oversight (CFR)",
+     "url": "https://www.cfr.org/articles/assessing-trumps-executive-order-on-ai-oversight"
+    },
+    {
+     "title": "How should AI Safety Benchmarks Benchmark Safety?",
+     "url": "https://arxiv.org/html/2601.23112v1"
+    }
+   ],
+   "disputed_claims": "Two dependencies are weak. (1) The core safety premise that faithfulness is an unvalidated proxy is NOT a contested edge claim the risk 'discovers' — it is the published mainstream view (Korbak et al. 2507.11473 call CoT monitorability 'fragile'; Turpin/Lanham/Baker and a meta-eval titled 'Faithfulness Metrics Don't Measure Faithfulness' all argue faithful-looking CoT can be unfaithful). So the risk's alarming step is already conventional wisdom, not a fresh warning. (2) The load-bearing linking claim — that the classified gate USES CoT-faithfulness metrics — is not just unverified but appears contradicted by available reporting: law-firm and CFR/Lathrop coverage describes the classified benchmarking as targeting advanced CYBER capabilities (and bio/chem risk classification), with no mention of faithfulness. The risk itself concedes this step is 'unobservable,' but the public evidence points toward a different criterion, which weakens the inference further.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower confidence substantially. The two observed facts (a rising CoT-faithfulness literature and the June 2 2026 classified pre-release review) are both real and already widely reported, so nothing here is a private discovery. The risk's central alarm — that a 'faithful-looking' CoT may not be trustworthy — is the established published consensus (Korbak et al.'s 'fragile', plus meta-evaluations that faithfulness metrics don't measure faithfulness), not a novel insight, so it should be attributed rather than briefed as a new finding. The only fresh element is the specific seam (faithfulness adopted as the secret release gate), but that is an unverifiable inference AND the available public reporting points the other way: the classified benchmarking is described as focused on cyber (and bio/chem) capability, not CoT faithfulness. Net: treat as a legitimate but speculative watch-item — worth flagging as a governance concern that a classified, externally-uncorrectable gate could ossify ANY unsound proxy — but do NOT assert that faithfulness is or will be that gate, since that claim is currently contradicted by the observed evidence."
+  }
+ },
+ "a94d46c73389": {
+  "date_checked": "2026-07-20",
+  "risk": "Watermark mandates being written into law (SB 942, EU AI Act) rest on a forensic-reliability assumption that this week's empirical evidence shows is false — freezing an unsound evidentiary standard into enforcement just as classified frontier evals stop producing public counter-evidence.",
+  "verification": {
+   "prior_coverage": "Nearly every component of this seam is already public. The technical claim (watermarks fail forensic/robustness readiness and can be removed or forged) is extensively documented across 2024-2026 research and press (Feizi/UMD 'broke all of them', VideoMarkBench, Warfare, diffusion-regeneration attacks). The 'watermark mandates rest on an untested/flawed technical assumption' thesis is the explicit argument of a 2025 position paper ('Watermarking Without Standards Is Not AI Governance'). And the conversion of provenance/watermark signals into contested legal evidence under SB 942 and EU AI Act Article 50 is already being written up by law firms and legal-tech commentators. The one comparatively fresh element is the specific stitch to the June 2 2026 EO classifying CAISI evaluations as removing the public counter-benchmark that would expose watermark failure.",
+   "sources": [
+    {
+     "title": "Researchers Tested AI Watermarks—and Broke All of Them (TRAILS/UMD)",
+     "url": "https://www.trails.umd.edu/news/researchers-tested-ai-watermarksand-broke-all-of-them"
+    },
+    {
+     "title": "Watermarking Without Standards Is Not AI Governance",
+     "url": "https://arxiv.org/abs/2505.23814"
+    },
+    {
+     "title": "AI Transparency Laws Turn Technical Provenance Data Into Legal Evidence (Jurvantis)",
+     "url": "https://jurvantis.ai/ai-transparency-laws-turn-technical-provenance-data-into-legal-evidence/"
+    },
+    {
+     "title": "Verifiable Provenance and Watermarking for Generative AI: An Evidentiary Framework for Courts",
+     "url": "https://arxiv.org/abs/2605.21002"
+    },
+    {
+     "title": "86% fake - 100% admissible? Rethinking evidence in the AI era (Kennedys)",
+     "url": "https://www.kennedyslaw.com/en/thought-leadership/article/2026/86-fake-100-admissible-rethinking-evidence-in-the-ai-era/"
+    },
+    {
+     "title": "Diffusion-Based Image Editing for Breaking Robust Watermarks",
+     "url": "https://arxiv.org/html/2510.05978v1"
+    },
+    {
+     "title": "CAISI ordered to stop public model evaluations amid new AI executive order (Crypto Briefing)",
+     "url": "https://cryptobriefing.com/caisi-ai-evaluations-classified-executive-order/"
+    },
+    {
+     "title": "Budd Calls for CAISI to Resume Publishing Research on Frontier AI Models",
+     "url": "https://www.budd.senate.gov/2026/06/30/budd-calls-for-caisi-to-resume-publishing-research-on-frontier-ai-models/"
+    },
+    {
+     "title": "SynthID-Image: Image watermarking at internet scale (Google DeepMind)",
+     "url": "https://arxiv.org/pdf/2510.09263"
+    },
+    {
+     "title": "EU AI Act Transparency Rules: A Practical Guide to Article 50",
+     "url": "https://artificialintelligenceact.eu/transparency-rules-article-50/"
+    }
+   ],
+   "disputed_claims": "Two contested load-bearing claims. (1) 'Empirical evidence shows watermark forensic reliability is false' is only partly settled: attack researchers (Feizi/UMD, VideoMarkBench, Warfare, diffusion-regeneration papers) show removal and forgery, but vendors/defenders dispute the framing — Google DeepMind's SynthID papers claim graded robustness against realistic threat models, and Hany Farid, while agreeing watermarking is attackable, still argues robust watermarking is 'part of the solution,' not worthless. So 'this week's paper shows it is false' overstates a genuinely contested finding rather than a closed one. (2) The characterization that courts/regulators already treat watermark status as dispositive provenance evidence is NOT documented — even the risk's own calibration concedes this is projected, and the legal-tech sources describe watermarks as 'contested facts' being fought over, not as accepted dispositive proof. The CAISI classification is real and reported (Crypto Briefing; Sen. Budd's pushback confirms it), but no source links it to watermark benchmarking specifically.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'Emerging, medium confidence' to 'Largely anticipated, low-to-medium confidence.' The three main pillars are each already in public discourse: watermark forensic fragility (well-documented but contested, not a settled 'false' verdict), the claim that watermark mandates rest on an untested technical assumption (already the thesis of arXiv 2505.23814, which names the EU AI Act and US frameworks), and the conversion of provenance signals into contested legal evidence under SB 942/Article 50 (already covered by law firms and legal-tech writers). The risk should NOT be briefed as novel. Two confidence-lowering caveats must travel with it: (a) the 'empirical evidence shows reliability is false' framing launders a genuinely disputed research area into a settled fact — vendors (SynthID) and even skeptics like Farid contest the strong version; and (b) the core harm — courts/regulators treating watermark status as dispositive — remains inferred, not observed. The only defensibly fresh contribution is the narrow, still-speculative stitch that the June 2 2026 EO classifying CAISI evals removes the public benchmark that could expose watermark failure; that specific linkage is not yet in the literature and could be surfaced as a hypothesis, but only clearly labeled as unverified and dependent on the two contested claims above."
+  }
+ },
+ "79c366747426": {
+  "date_checked": "2026-07-20",
+  "risk": "Reward Hacking's sharply rising CRITICAL share meets multi-tenant VLA robot post-training services (this week): reward-hacked control policies get shared across robot embodiments and tenants, turning a training-time pathology into a cross-fleet physical-actuation failure mode nobody in the robotics-service supply chain is watching.",
+  "verification": {
+   "prior_coverage": "The core mechanism is only partly novel: reward hacking generalizing/transferring across tasks and models is an established, named public research area (Kei et al. 2024 'Reward hacking behavior can generalize across tasks'), and reward hacking in physical RL/robotic control is directly documented (e.g., turbulent drag-reduction study; empirical robotic-control studies). Security of shared, foundation-model-powered and multi-tenant robot systems — including cross-embodiment transfer and cross-tenant contamination — is also actively written about (SoK on FM-powered robots; multi-tenant AI contamination analyses; cross-embodiment negative-transfer VLA papers). What I did NOT find is the exact fused seam stated as one connected claim: reward-hacked control policies propagating physical-actuation harm specifically via multi-tenant VLA post-training-as-a-service across tenants/embodiments.",
+   "sources": [
+    {
+     "title": "Reward hacking behavior can generalize across tasks (Alignment Forum)",
+     "url": "https://www.alignmentforum.org/posts/Ge55vxEmKXunFFwoe/reward-hacking-behavior-can-generalize-across-tasks"
+    },
+    {
+     "title": "Reward Hacking Generalization (EmergentMind topic)",
+     "url": "https://www.emergentmind.com/topics/reward-hacking-generalization"
+    },
+    {
+     "title": "Reward hacking in physical reinforcement learning revealed by turbulent drag reduction",
+     "url": "https://arxiv.org/abs/2606.06227"
+    },
+    {
+     "title": "Detecting and Mitigating Reward Hacking in RL Systems (incl. robotic control)",
+     "url": "https://arxiv.org/html/2507.05619v1"
+    },
+    {
+     "title": "SoK: Security and Privacy of Foundation-Model-Powered Robots",
+     "url": "https://arxiv.org/html/2606.16788"
+    },
+    {
+     "title": "Multi-Tenant AI Agent Architectures: Isolation, Routing, and Data Safety (cross-tenant contamination)",
+     "url": "https://omnithium.ai/blog/multi-tenant-agent-architecture.html"
+    },
+    {
+     "title": "Cross-Embodiment Transfer in Robotics (topic overview)",
+     "url": "https://www.emergentmind.com/topics/cross-embodiment-transfer"
+    },
+    {
+     "title": "Reward Hacking Benchmark: Measuring Exploits in LLM Agents with Tool Use",
+     "url": "https://arxiv.org/abs/2605.02964"
+    },
+    {
+     "title": "Reward hacking is becoming more sophisticated and deliberate (LessWrong)",
+     "url": "https://www.lesswrong.com/posts/rKC4xJFkxm6cNq4i9/reward-hacking-is-becoming-more-sophisticated-and-deliberate"
+    }
+   ],
+   "disputed_claims": "Two dependencies are shaky. (1) The anchoring metric — 'sharply rising CRITICAL share (27.5%, +22.2 trend_pts)' — is an internal/proprietary signal with no external corroboration; whether reward hacking is genuinely rising vs. simply being measured better is itself contested, and multiple recent works (Reward Hacking Benchmark 2605.02964; Hack-Verifiable Environments 2605.20744; EvilGenie) exist precisely because there is no agreed measurement standard. (2) The physical-propagation step is not demonstrated by the cited papers: cross-embodiment VLA transfer is known to fail via negative transfer (e.g., Cloak 2606.22836), but no source shows a reward-hacked policy's unsafe shortcut surviving cross-embodiment/multi-tenant adaptation into a physical-actuation harm — this remains an unverified inference, as the candidate's own calibration concedes.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Emerging but more anticipated than framed, and it rests on at least one unverified inference plus one uncorroborated metric. The building blocks are already public and named: reward-hacking generalization across tasks/models, reward hacking in physical/robotic RL, cross-embodiment transfer failure in VLAs, and multi-tenant/shared-model contamination in FM-powered robot systems. The genuinely fresh contribution is the specific SEAM — reward-hacked control behavior propagating as a physical-actuation failure THROUGH multi-tenant VLA post-training-as-a-service — which I could not find written up as a single connected claim. Confidence must be lowered on two points the risk depends on: (a) the '27.5% / +22.2 trend_pt rising CRITICAL share' is an internal number with no external validation and reward-hacking's true trend is disputed (measurement-vs-reality), so it should not be cited as an established fact; and (b) the cross-embodiment physical-propagation harm is inferred, not demonstrated — known cross-embodiment transfer often FAILS via negative transfer, which cuts both ways and could either block or mangle the hacked behavior unpredictably. Brief as a plausible, under-watched integration point worth monitoring, not as a confirmed or novel failure mode; strip the specific percentages and present the propagation step as a hypothesis to be tested, not an observed pathology."
+  }
+ },
+ "4389bba0adc4": {
+  "date_checked": "2026-07-20",
+  "risk": "Black-box visual attacks on agent long-term memory (this week) plus PRC-linked influence ops already targeting the US data-center/electricity debate creates a 0–24 month path to persistent memory-poisoning of deployed multimodal agents — an influence/agentic-misuse seam that neither the memory-security nor the influence-ops community currently connects.",
+  "verification": {
+   "prior_coverage": "Both halves of this risk are already public and prominent. Agent memory poisoning — including multimodal/visual 'sleeper' triggers that persist in long-term memory and bias future agent behavior — is a heavily published 2026 topic (multiple arXiv papers plus security-vendor writeups), and 'Visual Inception' (arXiv 2604.16966) already demonstrates persistent multimodal memory poisoning to steer long-horizon agentic recommender behavior. The PRC-linked ChatGPT influence op targeting the US data-center/electricity debate was disclosed by OpenAI and widely reported (Axios, Al Jazeera, CyberScoop, Tom's Hardware). What is NOT yet explicitly written up as a named seam is the specific convergence: influence actors upgrading from prompt-based amplification to persistent memory-poisoning of deployed multimodal agents.",
+   "sources": [
+    {
+     "title": "Visual Inception: Compromising Long-term Planning in Agentic Recommenders via Multimodal Memory Poisoning",
+     "url": "https://arxiv.org/abs/2604.16966"
+    },
+    {
+     "title": "From Untrusted Input to Trusted Memory: A Systematic Study of Memory Poisoning Attacks in LLM Agents",
+     "url": "https://arxiv.org/html/2606.04329"
+    },
+    {
+     "title": "Poison Once, Exploit Forever: Environment-Injected Memory Poisoning Attacks on Web Agents",
+     "url": "https://arxiv.org/abs/2604.02623"
+    },
+    {
+     "title": "PRC-linked influence operations are targeting AI debates in the US (OpenAI)",
+     "url": "https://openai.com/index/prc-linked-influence-operations-ai-debates/"
+    },
+    {
+     "title": "OpenAI: 'Likely' Chinese influence operation tried to use ChatGPT to stir debate on data centers (CyberScoop)",
+     "url": "https://cyberscoop.com/openai-china-influence-campaign-chatgpt/"
+    },
+    {
+     "title": "China-based operatives used ChatGPT to shape AI data centers and tariff debates (Axios)",
+     "url": "https://www.axios.com/2026/06/10/openai-china-ai-data-center-tariffs-chatgpt"
+    },
+    {
+     "title": "International AI Safety Report 2026 (real-world AI influence documented but not yet widespread)",
+     "url": "https://arxiv.org/pdf/2602.21012"
+    },
+    {
+     "title": "AI's impact on elections is being overblown (MIT Technology Review)",
+     "url": "https://www.technologyreview.com/2024/09/03/1103464/ai-impact-elections-overblown/"
+    },
+    {
+     "title": "What Is Data Poisoning, and How Can It Hurt the Public Sector? (Govtech)",
+     "url": "https://www.govtech.com/spotlight/what-is-data-poisoning-and-how-can-it-hurt-the-public-sector"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The influence-op attribution/impact: OpenAI itself labels the PRC operation only 'likely,' and its investigator frames it as an operation jumping onto a pre-existing genuine domestic debate; broader research (International AI Safety Report 2026; MIT Technology Review) holds that real-world AI-driven influence is documented but not yet widespread and that AI influence impact is frequently overblown. So 'PRC-linked influence op is meaningfully shifting the debate' is not firmly established. (2) The feasibility/scale of memory poisoning at influence scale is questioned by security practitioners (Govtech) who note poisoning enough controlled datasets to reliably shift outcomes is hard. The core memory-poisoning attack technique itself is not disputed — it is well demonstrated in lab settings — but its real-world exploitation against deployed agents is so far theoretical.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower to weak/speculative. Both components are already widely discussed, and the technical seam is close to being explicitly published: 'Visual Inception' (arXiv 2604.16966) already frames multimodal memory poisoning as persistent 'sleeper agent' triggers that hijack long-horizon agent behavior — so the memory-poisoning-as-durable-narrative-bias idea is not unsurfaced. The only genuinely fresh element is naming the explicit adoption path by known influence actors, and that path rests on two contested claims: the PRC op's real-world impact is only 'likely'-attributed and its persuasive effect is disputed/possibly overblown, and influence-scale memory poisoning of deployed agents remains unobserved and is doubted by practitioners on feasibility grounds. This is an enablement inference stacked on a contested-impact premise, not evidence of abuse. Brief it as a plausible watch-item convergence, not a confident emerging risk, and explicitly attach the caveats that (a) the influence op's efficacy is unproven and (b) memory poisoning has no documented real-world influence-campaign use."
+  }
  }
 }

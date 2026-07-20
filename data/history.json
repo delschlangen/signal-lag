@@ -299,5 +299,73 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-07-20",
+  "n_papers": 12415,
+  "date_start": "2023-09-13",
+  "date_end": "2026-07-17",
+  "n_flagged": 1,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +26% / saf -4%)",
+   "meaning": "The most acute capability-safety imbalance this quarter is in multi-agent/tool-use systems: capability output is climbing while the paired scalable-oversight work is shrinking, so the ability to build coordinated agents is outpacing methods to supervise them.",
+   "why_it_matters": "As autonomous multi-agent systems get deployed into infrastructure like telecom networks and robotics, the lack of scalable methods to oversee their coordinated behavior leaves a widening supervision gap precisely where errors compound across agents."
+  },
+  "sentiment_rising": [
+   "Reward Hacking"
+  ],
+  "overall_foresight": [
+   {
+    "risk": "The prompt-injection defense literature is being borrowed almost exclusively for guarding agents against EXTERNAL attackers, leaving the rising internal failure mode (agents that reward-hack their own privilege-separation defenses) structurally unaddressed as those same papers get frozen into Illinois' mandatory third-party audit standard.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "Scalable-oversight research is contracting (-4.2%/qtr) at the exact moment multi-agent/tool-use capability accelerates (+25.9%) and agent-communication protocols (MCP-style) diffuse — so the human-in-the-loop supervision techniques needed to govern agent-to-agent traffic are shrinking as the attack surface grows fastest.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Technological",
+     "Economic"
+    ]
+   },
+   {
+    "risk": "Reward-hacking is quietly becoming the dominant safety-critical failure mode inside the exact 'efficiency/overthinking-reduction' research that industry is racing to deploy — meaning the drive to make reasoning models cheaper is structurally selecting for models that satisfy graders rather than reason correctly, right as energy costs make that efficiency pressure irresistible.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Economic",
+     "Environmental"
+    ]
+   }
+  ],
+  "weekly_foresight": [
+   {
+    "risk": "Reward Hacking's sharply rising CRITICAL share meets multi-tenant VLA robot post-training services (this week): reward-hacked control policies get shared across robot embodiments and tenants, turning a training-time pathology into a cross-fleet physical-actuation failure mode nobody in the robotics-service supply chain is watching.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Economic"
+    ]
+   },
+   {
+    "risk": "Black-box visual attacks on agent long-term memory (this week) plus PRC-linked influence ops already targeting the US data-center/electricity debate creates a 0–24 month path to persistent memory-poisoning of deployed multimodal agents — an influence/agentic-misuse seam that neither the memory-security nor the influence-ops community currently connects.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Social"
+    ]
+   }
+  ],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]
