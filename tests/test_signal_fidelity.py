@@ -374,6 +374,52 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ----------------------------------- weekly context curation guardrails
+_CTX = ("""# Societal Context — current real-world state
+#
+# Last updated: June 2026
+
+## Social
+- A 2026 poll found things. """ + "Detail sentence about the state of the world. " * 12
+        + """
+
+## Technological
+- Capability moves fast (2026). """ + "More verifiable dated background here. " * 12
+        + "\n")
+
+
+def test_context_split_and_validate():
+    from signal_lag.analysis import context_update as cu
+    header, body = cu.split_context(_CTX)
+    assert header.startswith("# Societal Context") and body.startswith("## Social")
+    good = body.replace("things", "updated things (July 2026)")
+    assert cu.validate_body(good, body, "2026") is None
+    assert "missing sections" in cu.validate_body("## Social\n- x (2026)" + "x" * 900,
+                                                  body, "2026")
+    assert "short" in cu.validate_body("## Social\n## Technological\n- 2026",
+                                       body, "2026")
+    assert "2027" in cu.validate_body(good, body, "2027")   # wrong-year dates rejected
+
+
+def test_update_context_stamps_header_and_survives_fences(monkeypatch):
+    from signal_lag.analysis import context_update as cu
+    body = cu.split_context(_CTX)[1]
+    reply = "Here you go:\n" + body.replace("things", "new things (July 2026)") + "\n```"
+    monkeypatch.setattr(cu.llm, "call_claude", lambda *a, **k: reply)
+    out = cu.update_context(_CTX, ["Agents vs. Oversight"], "k", today="2026-07-06")
+    assert out is not None
+    assert "# Last updated: July 2026" in out          # header stamped
+    assert "new things (July 2026)" in out             # body updated
+    assert "Here you go" not in out and "```" not in out  # preamble/fence stripped
+
+
+def test_update_context_rejects_bad_reply_and_failsoft(monkeypatch):
+    from signal_lag.analysis import context_update as cu
+    monkeypatch.setattr(cu.llm, "call_claude", lambda *a, **k: "## Social\nlol")
+    assert cu.update_context(_CTX, [], "k", today="2026-07-06") is None
+    assert cu.update_context(_CTX, [], api_key=None) is None
+
+
 # ----------------------------------- foresight synthesis parse-retry regression
 def test_synthesize_risks_retries_unparseable_reply(monkeypatch):
     calls = {"n": 0}
