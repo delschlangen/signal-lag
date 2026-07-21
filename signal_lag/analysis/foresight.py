@@ -40,8 +40,10 @@ SCANNING_FRAMEWORK: dict[str, str] = {
 def load_context(path: str | Path) -> str:
     """Read the living societal-context file. Fail-soft: returns '' if missing/empty.
 
-    HTML comments (the instructional header) are stripped so only the analyst's actual
-    content is sent to the model.
+    The instructional header is stripped so only the analyst's actual content is sent
+    to the model (and later displayed): both HTML comment blocks and the file's actual
+    convention — leading ``#``-prefixed comment lines (single ``#``, which markdown
+    would otherwise render as giant H1 headings) before the first ``## `` section.
     """
     p = Path(path)
     if not p.exists():
@@ -52,10 +54,19 @@ def load_context(path: str | Path) -> str:
     except Exception as e:
         log.warning("Could not read context file %s: %s", p, e)
         return ""
-    # Strip HTML comment blocks (the how-to-use header).
     import re
-    body = re.sub(r"<!--.*?-->", "", raw, flags=re.DOTALL).strip()
-    return body
+    body = re.sub(r"<!--.*?-->", "", raw, flags=re.DOTALL)
+    return strip_context_header(body)
+
+
+def strip_context_header(text: str) -> str:
+    """Drop the leading single-``#`` comment header, keeping ``## `` sections onward."""
+    lines = (text or "").splitlines()
+    for i, line in enumerate(lines):
+        s = line.strip()
+        if s and not (s.startswith("#") and not s.startswith("##")):
+            return "\n".join(lines[i:]).strip()
+    return ""
 
 
 def _lbl(snap: dict, key):
@@ -632,7 +643,7 @@ you cannot verify something, omit it. Do NOT propose risks — this is ground tr
 
 def fetch_live_context(
     context: str, digest: dict, api_key: str | None, model: str = "claude-opus-4-8",
-    tool_version: str = "web_search_20260209",
+    tool_version: str = "web_search_20260209", today: str = "",
 ) -> str | None:
     """One web-search pass that returns a short, dated 'current real-world brief'.
 
@@ -654,7 +665,13 @@ def fetch_live_context(
         "FLAGGED_TOPICS": flagged_topics,
         "SOCIETAL_CONTEXT": context or "(none provided)",
     }
-    user = LIVE_CONTEXT_INSTRUCTIONS + "\n\nINPUT:\n" + json.dumps(payload, ensure_ascii=False)
+    user = LIVE_CONTEXT_INSTRUCTIONS
+    if today:
+        # Anchor the brief to the refresh date, or the model dates it off whatever the
+        # search results imply ("as of late June" appearing in a late-July brief).
+        user += (f"\n\nTODAY IS {today}. Anchor the brief to this date (title it 'as of "
+                 f"{today}') and treat recency relative to it.")
+    user += "\n\nINPUT:\n" + json.dumps(payload, ensure_ascii=False)
     for tv in (tool_version, "web_search_20250305"):
         text = llm.call_claude(
             LIVE_CONTEXT_SYSTEM, user, api_key, model,

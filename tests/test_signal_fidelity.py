@@ -374,6 +374,46 @@ def test_sort_register_downgrades_stale_risks():
     assert snap_mod.register_is_stale(reg[0], snap_mod.register_newest_date(reg)) is True
 
 
+# ----------------------------------- web-pass output hygiene
+class _B:
+    def __init__(self, type_, text=""):
+        self.type = type_
+        self.text = text
+
+
+def test_final_text_drops_search_narration():
+    from signal_lag.analysis.llm import final_text
+    blocks = [_B("text", "Let me run targeted searches."),
+              _B("server_tool_use"), _B("web_search_tool_result"),
+              _B("text", "Let me search once more."),
+              _B("server_tool_use"), _B("web_search_tool_result"),
+              _B("text", "The actual "), _B("text", "brief.")]
+    assert final_text(blocks) == "The actual brief."          # narration dropped
+    assert final_text([_B("text", "a"), _B("text", "b")]) == "ab"  # no tools -> all text
+
+
+def test_live_context_prompt_is_date_anchored(monkeypatch):
+    captured = {}
+
+    def fake_call(system, user, api_key, model="x", max_tokens=8000, tools=None):
+        captured["user"] = user
+        return "brief text"
+
+    monkeypatch.setattr(foresight.llm, "call_claude", fake_call)
+    foresight.fetch_live_context("ctx", {}, api_key="k", today="2026-07-21")
+    assert "TODAY IS 2026-07-21" in captured["user"]
+
+
+def test_load_context_strips_hash_comment_header(tmp_path):
+    p = tmp_path / "context.md"
+    p.write_text("# Societal Context\n#\n# Last updated: July 2026\n\n"
+                 "## Social\n- a fact (2026).\n", encoding="utf-8")
+    body = foresight.load_context(p)
+    assert body.startswith("## Social")                 # header gone
+    assert "Last updated" not in body
+    assert foresight.strip_context_header("## Social\n- x") == "## Social\n- x"
+
+
 # ----------------------------------- weekly context curation guardrails
 _CTX = ("""# Societal Context — current real-world state
 #

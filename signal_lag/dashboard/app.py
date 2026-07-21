@@ -22,6 +22,7 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from signal_lag.analysis import alerts  # noqa: E402
+from signal_lag.analysis.foresight import strip_context_header  # noqa: E402
 from signal_lag.glossary import CAPABILITY_KEYS, GLOSSARY, SAFETY_KEYS  # noqa: E402
 from signal_lag.snapshot import (  # noqa: E402
     arxiv_url, diff_snapshots, load_snapshot, register_is_stale, register_newest_date,
@@ -1699,7 +1700,7 @@ def render_foresight_section():
             for dom, desc in (fg.get("framework") or {}).items():
                 st.markdown(f"- **{dom}** — {desc}")
             st.divider()
-            ctx = fg.get("context") or ""
+            ctx = strip_context_header(fg.get("context") or "")
             st.markdown("**Societal context** (the living, analyst-maintained "
                         "`config/context.md` — the current real-world state crossed "
                         "against the signals):")

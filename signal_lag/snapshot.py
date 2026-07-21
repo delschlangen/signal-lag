@@ -354,7 +354,8 @@ def build_weekly(
     live_ctx = ((snapshot.get("analysis") or {}).get("foresight_gap") or {}).get("live_context")
     if live_ctx is None and fcfg.get("live_context"):
         live_ctx = foresight.fetch_live_context(
-            ctx, foresight.build_signal_digest(snapshot, diff), api_key, model, tool_version)
+            ctx, foresight.build_signal_digest(snapshot, diff), api_key, model,
+            tool_version, today=snapshot.get("meta", {}).get("refreshed_at", ""))
     lens = (
         f"Reason about what THESE SPECIFIC papers from the last {window_days} days imply. "
         "Focus on what is newly emerging THIS WEEK, not the long-run quarterly trend (given "
@@ -742,7 +743,9 @@ def augment_foresight(settings: Settings, snapshot: dict, prev_snapshot: dict | 
     # topics so synthesis doesn't anchor on a stale context.md. Fail-soft (-> None).
     live_ctx = None
     if fcfg.get("live_context"):
-        live_ctx = foresight.fetch_live_context(ctx, digest, api_key, model, tool_version)
+        live_ctx = foresight.fetch_live_context(
+            ctx, digest, api_key, model, tool_version,
+            today=snapshot.get("meta", {}).get("refreshed_at", ""))
     # Synthesize -> verify each candidate against current web coverage -> backfill with
     # fresh seams until enough survive (quality over quantity). All baked into the
     # snapshot, so the searches are cached (run once per refresh, never at page load).

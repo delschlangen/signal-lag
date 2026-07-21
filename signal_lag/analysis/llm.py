@@ -80,6 +80,25 @@ def extract_json(text: str) -> dict | None:
 _extract_json = extract_json
 
 
+def final_text(blocks) -> str:
+    """The model's FINAL answer: text blocks after the last tool block.
+
+    With server-side tools (web search), the response interleaves the model's
+    thinking-aloud narration ("Let me run a few searches...") between tool calls,
+    with the real answer in the trailing text blocks. Naively joining every text
+    block leaked that narration into displayed briefs. If no tool blocks are
+    present, all text blocks are the answer.
+    """
+    last_tool = -1
+    for i, b in enumerate(blocks):
+        if getattr(b, "type", None) != "text":
+            last_tool = i
+    return "".join(
+        b.text for i, b in enumerate(blocks)
+        if i > last_tool and getattr(b, "type", None) == "text"
+    )
+
+
 def call_claude(
     system: str, user: str, api_key: str | None,
     model: str = "claude-opus-4-8", max_tokens: int = 8000,
@@ -109,7 +128,7 @@ def call_claude(
         if tools:
             kwargs["tools"] = tools
         resp = client.messages.create(**kwargs)
-        return "".join(b.text for b in resp.content if getattr(b, "type", None) == "text")
+        return final_text(resp.content)
     except Exception as e:  # any API failure -> fail soft
         log.warning("Claude call failed: %s", e)
         return None
