@@ -11,6 +11,7 @@ Run: streamlit run signal_lag/dashboard/app.py
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -102,6 +103,21 @@ def explained_risks(snap):
     """Overall foresight risks that carry a plain-language walkthrough."""
     fg = get_analysis(snap).get("foresight_gap") or {}
     return [r for r in (fg.get("risks") or []) if r.get("plain_explanation")]
+
+
+def clean_brief(text: str) -> str:
+    """Strip leading model meta-chatter from a web-pass brief before display.
+
+    Older snapshots' briefs open with narration ("Let me run targeted searches...",
+    "Here is the brief.") before the real content. Cut everything before the first
+    line that looks like content: a heading, bold lead, bullet, or dated line.
+    """
+    lines = (text or "").splitlines()
+    for i, ln in enumerate(lines):
+        s = ln.strip()
+        if s.startswith(("#", "**", "- ", "* ")) or re.match(r"^\*?\*?20\d\d", s):
+            return "\n".join(lines[i:]).strip()
+    return (text or "").strip()
 
 
 def tag_confidence(score, threshold) -> str:
@@ -1652,6 +1668,7 @@ def render_foresight_section():
         # date/policy claims against (complements the static context.md).
         live_ctx = fg.get("live_context")
         if live_ctx:
+            live_ctx = clean_brief(live_ctx)
             with st.expander("🛰️ Live web brief (current real-world status, web-verified)"):
                 st.caption("A pre-synthesis web search pulled the CURRENT, dated status of "
                            "the flagged topics' real-world developments, so the synthesis "

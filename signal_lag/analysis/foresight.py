@@ -638,7 +638,9 @@ the handful of policy/market/geopolitical developments most relevant to the flag
 state the CURRENT status WITH DATES as of now, and explicitly note where this differs from \
 or updates the standing context (e.g. a law's actual current stage, an enforcement date, a \
 funding/market shift). Plain prose, lead each item with its date. Only verifiable facts; if \
-you cannot verify something, omit it. Do NOT propose risks — this is ground truth only."""
+you cannot verify something, omit it. Do NOT propose risks — this is ground truth only. \
+Return ONLY the brief itself, starting directly with its heading — no preamble, no \
+meta-commentary about your process."""
 
 
 def fetch_live_context(
