@@ -317,10 +317,11 @@
   ],
   "overall_foresight": [
    {
-    "risk": "Prompt-injection defenses maturing inside the reasoning/agent-capability literature quietly assume a legible chain-of-thought that the same capability push is eroding",
+    "risk": "Scalable-oversight research is DECELERATING (-4.2%/qtr) precisely as multi-agent/tool-use capability accelerates (+25.9%/qtr) into enterprise deployment where 65% of firms already report agent security incidents — the oversight methods being deployed are borrowed from a shrinking, prompt-injection-narrowed literature.",
     "novelty_rating": "partially_anticipated",
     "domains_crossed": [
      "Technological",
+     "Economic",
      "Security/Geopolitical"
     ]
    }

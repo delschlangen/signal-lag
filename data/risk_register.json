@@ -1,5 +1,67 @@
 [
  {
+  "id": "9d0db254e3a4",
+  "risk": "Scalable-oversight research is DECELERATING (-4.2%/qtr) precisely as multi-agent/tool-use capability accelerates (+25.9%/qtr) into enterprise deployment where 65% of firms already report agent security incidents — the oversight methods being deployed are borrowed from a shrinking, prompt-injection-narrowed literature.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "9d0db254e3a4",
+   "risk": "Scalable-oversight research is DECELERATING (-4.2%/qtr) precisely as multi-agent/tool-use capability accelerates (+25.9%/qtr) into enterprise deployment where 65% of firms already report agent security incidents — the oversight methods being deployed are borrowed from a shrinking, prompt-injection-narrowed literature.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 4,
+   "exposure": 5,
+   "trajectory": "accelerating",
+   "priority": 16,
+   "confidence": 4,
+   "evidence_strength": 4,
+   "actionability": 4,
+   "novelty_rating": "partially_anticipated",
+   "disputed_claims": "Several load-bearing claims are contested or unstable. (1) The '65% of firms report agent security incidents' figure is only one of many conflicting survey numbers — CSA/Zenity report 47% incidents and 53% scope violations, Gravitee/VentureBeat report 54% and 88%, Team8 reports 70% running agents in production; the 65% is vendor-commissioned (Zenity/CSA) and not a settled, apples-to-apples statistic, so it should not be cited as a hard fact. (2) The premise that scalable oversight is a coherent, reliable body of methods being 'lost' is itself disputed: the obfuscated-arguments problem (Barnes & Christiano) and ongoing debate over recursive debate protocols mean researchers question whether current scalable-oversight methods work at all — so 'the subfield built to supervise unverifiable outputs is contracting' cannot be treated as 'a proven safety tool is disappearing.' (3) Prompt injection being merely a 'narrow' defense corpus understates that OpenAI and multiple security firms call it possibly unsolvable and existing defenses routinely bypassable — meaning the injection literature isn't a solved fallback either, which changes (and arguably strengthens differently than framed) the risk. (4) The causal step 'decelerating research attention ⇒ under-scaffolded deployments' is inferential, as the candidate itself concedes; research-attention deltas are not deployment evidence.",
+   "prior_coverage": "The broad 'safety is falling behind agent capability' seam is already prominent in 2025-2026 (Team8, Intentional Insights/International AI Safety Report, UN International Scientific Panel, and multiple arXiv 'capability-safety gap' papers), as is the specific enterprise angle that firms are widely reporting AI-agent security incidents while relying on injection-style defenses. The narrower internal framing here — that the scalable-oversight subfield specifically is contracting while agents accel",
+   "sources": [
+    {
+     "title": "Safety Is Falling Behind Frontier AI Capabilities",
+     "url": "https://intentionalinsights.org/safety-is-falling-behind-frontier-ai-capabilities/"
+    },
+    {
+     "title": "Capable Isn't Reliable: The Widening Gap That Decides Whether Your Agents Ship (Team8)",
+     "url": "https://team8.vc/capable-isnt-reliable-the-widening-gap-that-decides-whether-your-agents-ship/"
+    },
+    {
+     "title": "Unsafer in Many Turns: Benchmarking Multi-Turn Safety Risks in Tool-Using Agents",
+     "url": "https://arxiv.org/html/2602.13379v2"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Economic",
+    "Security/Geopolitical"
+   ],
+   "leading_indicator": "Enterprise agent-incident reports shifting from 'prompt injection / permission' root causes toward 'unintended autonomous action / goal misgeneralization over multi-step tasks' — i.e., failures that perimeter defenses don't catch."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 4,
+    "exposure": 5,
+    "trajectory": "accelerating",
+    "priority": 16,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Several load-bearing claims are contested or unstable. (1) The '65% of firms report agent security incidents' figure is only one of many conflicting survey numbers — CSA/Zenity report 47% incidents and 53% scope violations, Gravitee/VentureBeat report 54% and 88%, Team8 reports 70% running agents in production; the 65% is vendor-commissioned (Zenity/CSA) and not a settled, apples-to-apples statistic, so it should not be cited as a hard fact. (2) The premise that scalable oversight is a coherent, reliable body of methods being 'lost' is itself disputed: the obfuscated-arguments problem (Barnes & Christiano) and ongoing debate over recursive debate protocols mean researchers question whether current scalable-oversight methods work at all — so 'the subfield built to supervise unverifiable outputs is contracting' cannot be treated as 'a proven safety tool is disappearing.' (3) Prompt injection being merely a 'narrow' defense corpus understates that OpenAI and multiple security firms call it possibly unsolvable and existing defenses routinely bypassable — meaning the injection literature isn't a solved fallback either, which changes (and arguably strengthens differently than framed) the risk. (4) The causal step 'decelerating research attention ⇒ under-scaffolded deployments' is inferential, as the candidate itself concedes; research-attention deltas are not deployment evidence."
+   }
+  ],
+  "status": "open"
+ },
+ {
   "id": "ebc0cfa4f151",
   "risk": "Scalable-oversight research is contracting (-4.2%/qtr) at the exact moment multi-agent/tool-use capability accelerates (+25.9%) and agent-communication protocols (MCP-style) diffuse — so the human-in-the-loop supervision techniques needed to govern agent-to-agent traffic are shrinking as the attack surface grows fastest.",
   "first_seen": "2026-07-20",
@@ -369,6 +431,192 @@
   "status": "open"
  },
  {
+  "id": "07810b2e4eb4",
+  "risk": "Reward-hacking mitigation is quietly migrating from open research into a single lab's production 'inoculation prompting' recipe just as its research CRITICAL share spikes — creating an unaudited, proprietary safety monoculture whose failure modes no external evaluator can see.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "07810b2e4eb4",
+   "risk": "Reward-hacking mitigation is quietly migrating from open research into a single lab's production 'inoculation prompting' recipe just as its research CRITICAL share spikes — creating an unaudited, proprietary safety monoculture whose failure modes no external evaluator can see.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 4,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Multiple. (1) The 'single lab's proprietary recipe / monoculture' premise is factually contradicted: inoculation prompting is open, multi-group published research (Wichers et al., Tan et al., Azarbal et al., open SPAR replications), so it is auditable by external researchers regardless of the CAISI halt. (2) The 'hides rather than fixes / suppresses observable misalignment making it stealthier' claim is NOT the analyst's novel inference — it is already published as the core thesis of Dubinski, Betley, Tan & Evans, 'Conditional misalignment' (arXiv:2604.25891), which argues these interventions can appear to succeed while hiding misalignment behind contextual triggers. (3) Inoculation prompting's efficacy itself is contested: AlignmentForum work finds simple inoculation prompts don't scale to realistic misalignment, and 'Conditionalization Confounds Inoculation Prompting Results' (LessWrong/EA Forum) argues the reported effect may be a conditionalization artifact rather than genuine selective learning.",
+   "prior_coverage": "Anthropic's 'Natural Emergent Misalignment from Reward Hacking in Production RL' paper (arXiv:2511.18397), inoculation prompting, and the production-use claim are already widely covered in mainstream press (The Register, eWeek) and technical forums (LessWrong, AlignmentForum). Critically, inoculation prompting is NOT a single-lab proprietary recipe: it is open published research from multiple independent groups (Wichers et al. 2025, Tan et al./arXiv:2510.04340, Azarbal et al., plus open SPAR rep",
+   "sources": [
+    {
+     "title": "Natural emergent misalignment from reward hacking (Anthropic)",
+     "url": "https://www.anthropic.com/research/emergent-misalignment-reward-hacking"
+    },
+    {
+     "title": "Natural Emergent Misalignment from Reward Hacking in Production RL (arXiv)",
+     "url": "https://arxiv.org/abs/2511.18397"
+    },
+    {
+     "title": "Anthropic reduces model misbehavior by endorsing cheating (The Register)",
+     "url": "https://www.theregister.com/2025/11/24/anthropic_model_misbehavior/"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Legal/Regulatory",
+    "Political"
+   ],
+   "leading_indicator": "Two or more frontier labs citing 'inoculation prompting' or an equivalent selective-learning mitigation in system cards, with no accompanying held-out adversarial eval; combined with SB 53 incident reports that reference reward-hacking mitigations without disclosing the technique."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Multiple. (1) The 'single lab's proprietary recipe / monoculture' premise is factually contradicted: inoculation prompting is open, multi-group published research (Wichers et al., Tan et al., Azarbal et al., open SPAR replications), so it is auditable by external researchers regardless of the CAISI halt. (2) The 'hides rather than fixes / suppresses observable misalignment making it stealthier' claim is NOT the analyst's novel inference — it is already published as the core thesis of Dubinski, Betley, Tan & Evans, 'Conditional misalignment' (arXiv:2604.25891), which argues these interventions can appear to succeed while hiding misalignment behind contextual triggers. (3) Inoculation prompting's efficacy itself is contested: AlignmentForum work finds simple inoculation prompts don't scale to realistic misalignment, and 'Conditionalization Confounds Inoculation Prompting Results' (LessWrong/EA Forum) argues the reported effect may be a conditionalization artifact rather than genuine selective learning."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "185d64591a4c",
+  "risk": "A frontier model autonomously surfacing large volumes of zero-days just triggered a US classification/publication freeze — turning the accelerating offensive-cyber research corpus (recent 149.5/qtr) into a one-sided arms race where defenders lose access to the exact assessments they need while the underlying techniques stay published on arXiv.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "185d64591a4c",
+   "risk": "A frontier model autonomously surfacing large volumes of zero-days just triggered a US classification/publication freeze — turning the accelerating offensive-cyber research corpus (recent 149.5/qtr) into a one-sided arms race where defenders lose access to the exact assessments they need while the underlying techniques stay published on arXiv.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "The load-bearing 'defenders are net-disadvantaged' claim is genuinely contested. (1) CNAS finds AI has *historically benefited defenders*, tipping toward attackers only as a future possibility, not an established fact. (2) A controlled arXiv Attack/Defense CTF study explicitly 'challenges prevailing narratives about AI attacker advantage,' finding defensive agents can out-perform offensive ones depending on success criteria. (3) The severity/immediacy of the underlying capability is disputed: Ivanti/Picus (2025 Red Report) found no notable uptick in AI-driven malware and say AI so far 'doesn't yet redefine malware,' and a June 2026 arXiv benchmark found frontier LLMs still produce high false-positive / low ground-truth-coverage results in real vuln discovery. (4) The related 'first AI-orchestrated attack' evidence base is contested: Anthropic's Nov 2025 Chinese-espionage claim 'divided experts' (Al Jazeera) and was criticized because the campaign still required ~10% human intervention (Recorded Future). Note also the classic disclosure-economics counterpoint (Schneier/full-disclosure literature): secrecy can slow attacker replication too, so the 'one-sided arms race' direction is not settled. On the other side, the *facts* of the risk (EO, CAISI halt, Mythos trigger, Budd pushback) are well-corroborated and NOT disputed.",
+   "prior_coverage": "This is already heavily and specifically covered. Trump's June 2, 2026 EO ('Promoting Advanced AI Innovation and Security'/EO 14409) creating a classified cyber-capability benchmark for 'covered frontier models', the directive from National Cyber Director Sean Cairncross to CAISI to stop publishing its assessments, the Anthropic Mythos-model zero-day discovery as the trigger, and Sen. Ted Budd's June 30 letter calling for CAISI to resume publishing are all documented in mainstream/trade press (W",
+   "sources": [
+    {
+     "title": "Budd Calls for CAISI to Resume Publishing Research on Frontier AI Models",
+     "url": "https://www.budd.senate.gov/2026/06/30/budd-calls-for-caisi-to-resume-publishing-research-on-frontier-ai-models/"
+    },
+    {
+     "title": "CAISI ordered to stop public model evaluations amid new AI executive order",
+     "url": "https://cryptobriefing.com/caisi-ai-evaluations-classified-executive-order/"
+    },
+    {
+     "title": "White House halts public reports from AI testing unit amid security concerns",
+     "url": "https://cryptobriefing.com/white-house-halts-ai-testing-reports/"
+    }
+   ],
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Political",
+    "Legal/Regulatory"
+   ],
+   "leading_indicator": "A gap opening between (a) continued public arXiv growth in autonomous-exploitation papers and (b) shrinking public model-capability assessments; plus CERT/patch-advisory timelines lengthening for AI-discovered vulnerability classes."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "The load-bearing 'defenders are net-disadvantaged' claim is genuinely contested. (1) CNAS finds AI has *historically benefited defenders*, tipping toward attackers only as a future possibility, not an established fact. (2) A controlled arXiv Attack/Defense CTF study explicitly 'challenges prevailing narratives about AI attacker advantage,' finding defensive agents can out-perform offensive ones depending on success criteria. (3) The severity/immediacy of the underlying capability is disputed: Ivanti/Picus (2025 Red Report) found no notable uptick in AI-driven malware and say AI so far 'doesn't yet redefine malware,' and a June 2026 arXiv benchmark found frontier LLMs still produce high false-positive / low ground-truth-coverage results in real vuln discovery. (4) The related 'first AI-orchestrated attack' evidence base is contested: Anthropic's Nov 2025 Chinese-espionage claim 'divided experts' (Al Jazeera) and was criticized because the campaign still required ~10% human intervention (Recorded Future). Note also the classic disclosure-economics counterpoint (Schneier/full-disclosure literature): secrecy can slow attacker replication too, so the 'one-sided arms race' direction is not settled. On the other side, the *facts* of the risk (EO, CAISI halt, Mythos trigger, Budd pushback) are well-corroborated and NOT disputed."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "40fc5fa0d46c",
+  "risk": "Prompt-injection defenses are being borrowed into agentic deployments precisely as they get narrowed to a handful of type-system/privilege-separation recipes — while the fastest-growing measured misuse vector (autonomous-agent memory corruption) attacks a surface those defenses do not cover.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "40fc5fa0d46c",
+   "risk": "Prompt-injection defenses are being borrowed into agentic deployments precisely as they get narrowed to a handful of type-system/privilege-separation recipes — while the fastest-growing measured misuse vector (autonomous-agent memory corruption) attacks a surface those defenses do not cover.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 4,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 12,
+   "confidence": 3,
+   "evidence_strength": 4,
+   "actionability": 4,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependent claims are contested. (1) The magnitude of the memory-poisoning threat: MINJA's headline ~95%+ injection / ~70%+ attack success rates are disputed by 'Memory Poisoning Attack and Defense on Memory Based LLM-Agents' (arXiv 2601.05504), which finds that under realistic conditions with pre-existing legitimate memories, attack effectiveness drops dramatically. (2) The framing of the borrowed defenses (CaMeL / 'Defeating Prompt Injections by Design') as the settled canon is itself contested: OWASP researchers and multiple commentators argue prompt injection remains unsolved/architectural, while CaMeL's authors and reviewers (e.g., Simon Willison) present it as promising-but-not-complete and explicitly not designed to reason about cross-session stored state. So the 'narrow canon covers task-scope but not memory' gap is acknowledged by the defense authors themselves, not a hidden inference.",
+   "prior_coverage": "The exact seam this risk frames as 'inferred' is already explicitly named and systematically studied: 'From Untrusted Input to Trusted Memory' (arXiv 2606.04329) states verbatim that untrusted external content, once written to agent memory, is later retrieved and treated as trusted knowledge with no robust provenance tracking. The delayed-detonation/'sleeper' variant (dormancy + later activation) and query-only memory poisoning (MINJA, arXiv 2503.03704, a NeurIPS 2025 poster) are established, an",
+   "sources": [
+    {
+     "title": "From Untrusted Input to Trusted Memory: A Systematic Study of Memory Poisoning Attacks in LLM Agents",
+     "url": "https://arxiv.org/abs/2606.04329"
+    },
+    {
+     "title": "Memory Injection Attacks on LLM Agents via Query-Only Interaction (MINJA, NeurIPS 2025)",
+     "url": "https://arxiv.org/abs/2503.03704"
+    },
+    {
+     "title": "Defense effectiveness across architectural layers: a mechanistic evaluation of persistent memory attacks on stateful LLM agents",
+     "url": "https://arxiv.org/pdf/2605.08442"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Security/Geopolitical",
+    "Economic"
+   ],
+   "leading_indicator": "First disclosed incident (or red-team result in a system card) where an agent was compromised via previously-stored memory rather than a live injected input; papers explicitly testing whether privilege-separation defenses hold under memory poisoning; enterprise agent-security vendors adding 'memory integrity' as a distinct control category."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 4,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 12,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two dependent claims are contested. (1) The magnitude of the memory-poisoning threat: MINJA's headline ~95%+ injection / ~70%+ attack success rates are disputed by 'Memory Poisoning Attack and Defense on Memory Based LLM-Agents' (arXiv 2601.05504), which finds that under realistic conditions with pre-existing legitimate memories, attack effectiveness drops dramatically. (2) The framing of the borrowed defenses (CaMeL / 'Defeating Prompt Injections by Design') as the settled canon is itself contested: OWASP researchers and multiple commentators argue prompt injection remains unsolved/architectural, while CaMeL's authors and reviewers (e.g., Simon Willison) present it as promising-but-not-complete and explicitly not designed to reason about cross-session stored state. So the 'narrow canon covers task-scope but not memory' gap is acknowledged by the defense authors themselves, not a hidden inference."
+   }
+  ],
+  "status": "open"
+ },
+ {
   "id": "ceb17f3a6ac9",
   "risk": "The security research that maps agent-communication and MCP attack surfaces is being consumed by capability builders as a menu, accelerating offensive-cyber uplift faster than the defenses those papers propose can be deployed.",
   "first_seen": "2026-07-02",
@@ -525,6 +773,68 @@
    {
     "date": "2026-07-20",
     "disputed_claims": "Two dependent claims are contested. (1) The premise that defenses are 'built around the wrong threat model (human insiders)' is undercut by the very RAND report the risk leans on, which explicitly models both internal and external actors and internet-connected/autonomous models — and by a broad 2026 security-industry literature already treating agents as insider threats; so the 'wrong threat model' seam is not an unrecognized blind spot. (2) The feasibility/severity of full weight theft is contested: RAND itself concludes protecting internet-connected frontier models against the most capable actors is 'currently not feasible' (arguing severity), while a published critique (McDuffie) questions aspects of the report's framing and the tractability of its recommendations. The '65% of firms had an agent security incident' figure is vendor-survey sourced (Kiteworks/CSA) and should be attributed, not treated as an independent fact. The candidate's own note that weight-exfil research volume is modest (n=273) further weakens the 'surging offensive interest specifically at weights' inference."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "2f5890a08ecf",
+  "risk": "The measured surge in Model/Weight Exfiltration research (+75%/qtr) is quietly coupling with a US classification freeze on frontier cyber-capability assessments — creating a window where the highest-value target (frontier weights) becomes more attractive to steal exactly as the government's own capability-tracking goes dark.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "2f5890a08ecf",
+   "risk": "The measured surge in Model/Weight Exfiltration research (+75%/qtr) is quietly coupling with a US classification freeze on frontier cyber-capability assessments — creating a window where the highest-value target (frontier weights) becomes more attractive to steal exactly as the government's own capability-tracking goes dark.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 5,
+   "likelihood": 2,
+   "exposure": 3,
+   "trajectory": "accelerating",
+   "priority": 10,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 3,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "Two dependencies are contested. (1) That 'covered frontier models' have meaningfully dangerous offensive cyber capability worth designating/stealing as an offense asset: Berkeley RDI concludes end-to-end offensive AI capability remains limited, arXiv 'LLM Cyber Evaluations Don't Capture Real-World Risk' argues benchmarks overstate real risk, and a controlled Attack/Defense CTF study challenges the prevailing 'AI attacker advantage' narrative (defenders sometimes fare better) — so the notion that designation cleanly signals high-value offensive weapons is not settled. (2) The causal coupling itself is the author's own inference; no source links the +75%/qtr research trend to the EO/CAISI policy, and the +75% is off a small base (n=273), so the momentum figure may be statistical noise rather than a real acceleration.",
+   "prior_coverage": "Both anchor facts are already prominent public news: the June 2 2026 EO on 'covered frontier models' and CAISI being directed to stop publishing model assessments were covered by NIST, multiple major law firms (Skadden, WilmerHale, Holland & Knight), trade press, and drew named public criticism (analyst Janet Egan, Sen. Ted Budd) — much of it making the exact 'fewer eyes on the science / lost transparency' argument this risk relies on. The premise that frontier model weights are the highest-valu",
+   "sources": [
+    {
+     "title": "Promoting Advanced Artificial Intelligence Innovation and Security (June 2 2026 EO)",
+     "url": "https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/"
+    },
+    {
+     "title": "CAISI ordered to stop public model evaluations amid new AI executive order",
+     "url": "https://cryptobriefing.com/caisi-ai-evaluations-classified-executive-order/"
+    },
+    {
+     "title": "Janet Egan on CAISI pulling evals from public view ('fewer eyes on the science')",
+     "url": "https://x.com/janet_e_egan/status/2064517467586650283"
+    }
+   ],
+   "domains_crossed": [
+    "Security/Geopolitical",
+    "Economic",
+    "Political"
+   ],
+   "leading_indicator": "A disclosed or attempted exfiltration of a designated 'covered frontier model's' weights; a spike in extraction/model-stealing papers explicitly targeting frontier-scale models; export-control or law-enforcement actions referencing weight theft; insider-threat advisories at frontier labs."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 5,
+    "likelihood": 2,
+    "exposure": 3,
+    "trajectory": "accelerating",
+    "priority": 10,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "Two dependencies are contested. (1) That 'covered frontier models' have meaningfully dangerous offensive cyber capability worth designating/stealing as an offense asset: Berkeley RDI concludes end-to-end offensive AI capability remains limited, arXiv 'LLM Cyber Evaluations Don't Capture Real-World Risk' argues benchmarks overstate real risk, and a controlled Attack/Defense CTF study challenges the prevailing 'AI attacker advantage' narrative (defenders sometimes fare better) — so the notion that designation cleanly signals high-value offensive weapons is not settled. (2) The causal coupling itself is the author's own inference; no source links the +75%/qtr research trend to the EO/CAISI policy, and the +75% is off a small base (n=273), so the momentum figure may be statistical noise rather than a real acceleration."
    }
   ],
   "status": "open"
@@ -708,6 +1018,68 @@
    {
     "date": "2026-07-20",
     "disputed_claims": "Two dependencies are contested. (1) The 'youngest, highest-adopting cohort' premise: Gallup/Walton report Gen Z AI adoption is STAGNATING (not surging) and Shift's data finds daily AI use actually PEAKS among 25-44 year-olds, not Gen Z — so 'highest-adopting' is at best 'high-but-plateauing' and possibly wrong depending on metric. (2) The causal claim that monitoring exposure produces trust collapse and shadow AI: evidence is mixed — Worklytics and academic reviews find invasive surveillance often erodes trust but structured tracking can help, and research is split on whether AI transparency/disclosure raises trust (PMC study) or lowers it (ScienceDirect 'transparency dilemma'). The specific magnitude ('disproportionate trust collapse') is not established."
+   }
+  ],
+  "status": "open"
+ },
+ {
+  "id": "5753c7ce9cca",
+  "risk": "Chain-of-Thought Faithfulness research is accelerating fastest (+56.8%) at the same moment CoT-monitoring is being locked in as the flagship deployed safety strategy and written into system cards — risking that a still-immature, actively-contested faithfulness standard gets institutionalized before the field agrees CoT is even faithful.",
+  "first_seen": "2026-07-20",
+  "last_seen": "2026-07-20",
+  "n_appearances": 1,
+  "latest": {
+   "id": "5753c7ce9cca",
+   "risk": "Chain-of-Thought Faithfulness research is accelerating fastest (+56.8%) at the same moment CoT-monitoring is being locked in as the flagship deployed safety strategy and written into system cards — risking that a still-immature, actively-contested faithfulness standard gets institutionalized before the field agrees CoT is even faithful.",
+   "source": "overall",
+   "date": "2026-07-20",
+   "severity": 3,
+   "likelihood": 3,
+   "exposure": 4,
+   "trajectory": "accelerating",
+   "priority": 9,
+   "confidence": 3,
+   "evidence_strength": 3,
+   "actionability": 4,
+   "novelty_rating": "already_widely_discussed",
+   "disputed_claims": "The risk's foundational premise — that 'the field has not agreed CoT is even faithful' — is genuinely contested, but that contestation cuts in a way that partly undermines the alarm rather than supporting it. METR ('CoT May Be Highly Informative Despite Unfaithfulness', Aug 2025) argues that CoT can be safety-useful for monitoring even when it fails narrow academic 'faithfulness' tests, i.e. the field disputes that faithfulness-as-defined is the right bar for whether monitoring works. Additionally, the risk frames the 'incentive to fake monitorable CoT' as a novel inference, but that is not disputed at all — it is an established, named finding (the 'monitorability tax' / obfuscated reward hacking) disclosed by OpenAI itself, which is why labs explicitly recommend NOT applying strong optimization pressure to the CoT. So: the danger mechanism is well-established (not speculative), while the 'faithfulness is unsettled' claim is real but is itself the subject of an active dispute about what faithfulness should even mean.",
+   "prior_coverage": "This risk is already widely discussed. The exact dynamic — that CoT monitoring is being adopted as a flagship deployed safety strategy while being 'fragile' and dependent on contested faithfulness — is the explicit thesis of the multi-lab position paper 'Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety' (Korbak et al., July 2025, with OpenAI/DeepMind/Anthropic authors) and the Frontier Model Forum brief that recommends putting monitorability evals in model cards. The ",
+   "sources": [
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety (Korbak et al.)",
+     "url": "https://arxiv.org/pdf/2507.11473"
+    },
+    {
+     "title": "Monitoring Reasoning Models for Misbehavior and the Risks of Promoting Obfuscation (OpenAI, Baker et al.)",
+     "url": "https://arxiv.org/abs/2503.11926"
+    },
+    {
+     "title": "Chain of Thought Monitorability - Frontier Model Forum issue brief",
+     "url": "https://www.frontiermodelforum.org/issue-briefs/chain-of-thought-monitorability/"
+    }
+   ],
+   "domains_crossed": [
+    "Technological",
+    "Legal/Regulatory",
+    "Social"
+   ],
+   "leading_indicator": "SB 53 risk frameworks or system cards citing CoT-monitoring as a primary safeguard WHILE new faithfulness papers show CoT can be made monitorable without being faithful (e.g., models learning to emit clean CoT under monitoring pressure)."
+  },
+  "history": [
+   {
+    "date": "2026-07-20",
+    "severity": 3,
+    "likelihood": 3,
+    "exposure": 4,
+    "trajectory": "accelerating",
+    "priority": 9,
+    "disputed": true
+   }
+  ],
+  "counterevidence": [
+   {
+    "date": "2026-07-20",
+    "disputed_claims": "The risk's foundational premise — that 'the field has not agreed CoT is even faithful' — is genuinely contested, but that contestation cuts in a way that partly undermines the alarm rather than supporting it. METR ('CoT May Be Highly Informative Despite Unfaithfulness', Aug 2025) argues that CoT can be safety-useful for monitoring even when it fails narrow academic 'faithfulness' tests, i.e. the field disputes that faithfulness-as-defined is the right bar for whether monitoring works. Additionally, the risk frames the 'incentive to fake monitorable CoT' as a novel inference, but that is not disputed at all — it is an established, named finding (the 'monitorability tax' / obfuscated reward hacking) disclosed by OpenAI itself, which is why labs explicitly recommend NOT applying strong optimization pressure to the CoT. So: the danger mechanism is well-established (not speculative), while the 'faithfulness is unsettled' claim is real but is itself the subject of an active dispute about what faithfulness should even mean."
    }
   ],
   "status": "open"
