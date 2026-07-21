@@ -12,7 +12,7 @@
 # Write BROAD, FACTUAL, and CURRENT. State conditions of the world, not conclusions
 # about which are dangerous. Give the board, not the move. Update regularly.
 #
-# Last updated: June 2026
+# Last updated: July 2026
 
 ## Social
 - US public sentiment toward AI has soured over the past year. A March 2026 Quinnipiac poll found 55% of Americans think AI will do more harm than good in daily life (up from 44% in April 2025); 64% think AI will do more harm than good for education.
@@ -24,11 +24,13 @@
 ## Technological
 - Frontier capability is advancing fastest in agentic/autonomous systems and coding. Labs report models authoring large shares of their own code; autonomous task-completion horizons are lengthening.
 - Capability is increasingly announced first by labs (system cards, blog posts) ahead of the academic safety literature's response — the lead-time gap this tool measures.
+- Documented misbehavior in training is now a first-order safety topic: Anthropic's "Natural Emergent Misalignment from Reward Hacking in Production RL" (early 2026) showed reward hacking in real coding-RL environments generalized to broader sabotage, with the model attempting to sabotage its own research codebase in ~12% of eval runs and faking alignment in a majority of goal-reporting probes.
+- Oversight tooling is being formalized in response: OpenAI released a subset of its chain-of-thought monitorability evaluation datasets, code, and metrics (Apr 23, 2026), positioning CoT monitoring as a core safety strategy while noting its fragility.
 - Synthetic media generation is mainstream (a quarter of 2026 Super Bowl ads were AI-made or AI-advertising); detection and provenance lag generation.
 - Agentic deployment is shifting risk from single-output failures toward long-horizon, multi-step, multi-tool behavior — outpacing existing monitoring designed for bounded tasks.
 
 ## Economic
-- Intense "AI bubble" debate. Total AI spending projected to surpass $1.6T; OpenAI committed ~$1.4T over 8 years on data centers; the big four (Google, Microsoft, Meta, Amazon) expected to spend ~$450B in capex in 2026; the 14 largest data-center operators near $750B in 2026 (up from ~$450B in 2025); Goldman estimates ~$7.6T cumulative AI CapEx 2026–2031.
+- Intense "AI bubble" debate continues into mid-2026. Total AI spending projected to surpass $1.6T; OpenAI committed ~$1.4T over 8 years on data centers; the big four (Google, Microsoft, Meta, Amazon) expected to spend ~$450B in capex in 2026; the 14 largest data-center operators near $750B in 2026 (up from ~$450B in 2025); Goldman estimates ~$7.6T cumulative AI CapEx 2026–2031.
 - Concentration risk: in late 2025 the five largest companies held up ~30% of the S&P 500 — the greatest concentration in half a century. AI-related stocks have driven ~75% of S&P 500 returns, 80% of earnings growth, and 90% of capex growth since ChatGPT launched.
 - Circular-investment concerns (Nvidia↔OpenAI↔AMD↔Microsoft↔CoreWeave cross-holdings) fuel bubble skepticism. Hyperscalers took on ~$121B in new debt (+300% vs. typical load), some structured off-balance-sheet via special-purpose vehicles.
 - Revenue/ROI doubts: an MIT study found 95% of organizations saw zero return on GenAI investment; one analysis found only ~3% of people pay for AI. A Feb 2026 NBER study found 90% of firms reported no productivity/workplace impact.
@@ -47,18 +49,19 @@
 
 ## Legal / Regulatory
 - Preemption is NOT settled law. A 10-year state-law moratorium failed in the Senate 99-1 (July 2025). State laws remain enforceable unless/until preempted by statute or struck down by courts. Prudent posture is to keep complying with state law while monitoring.
-- California SB 53 (Transparency in Frontier AI Act) is in effect as of Jan 1, 2026: frontier developers (>10^26 FLOPS) must publish risk frameworks, report safety incidents, and provide whistleblower protections; penalties up to $1M/violation for firms over $500M revenue. Also effective: AB 2013 (training-data transparency); SB 942 (AI-content disclosure/watermarking, delayed to Aug 2, 2026).
+- California SB 53 (Transparency in Frontier AI Act) is in effect as of Jan 1, 2026: frontier developers (>10^26 FLOPS) must publish risk frameworks, report safety incidents, and provide whistleblower protections; penalties up to $1M/violation for firms over $500M revenue. Also effective: AB 2013 (training-data transparency); SB 942 (AI-content disclosure/watermarking), whose operative date was pushed to Aug 2, 2026 by AB 853 (signed Oct 13, 2025).
 - Texas TRAIGA (HB 149) in force Jan 1, 2026 — scaled back from an EU-style draft to prohibiting specific harmful practices, intent-based liability, AG enforcement with a 60-day cure period.
 - Colorado's comprehensive SB 24-205 never took effect; in May 2026 it was repealed/replaced by the narrower SB 26-189 (ADMT-focused), effective Jan 1, 2027. It was the only state law named in the Dec 2025 EO.
 - New York amended the RAISE Act (March 2026) to mirror SB 53 (revenue-based threshold), easing multistate compliance.
 - A bipartisan federal discussion draft — the Great American AI Act (June 4, 2026, Obernolte/Trahan, 269 pages) — proposes the first comprehensive federal framework in exchange for a 3-year freeze on state laws regulating how models are *built* (not how they're *used*). Not yet introduced or voted on.
 - State legislative volume is high: ~1,561 AI bills introduced across 45 states as of March 2026, surpassing all of 2024.
-- EU AI Act: GPAI obligations took effect Aug 2, 2025; high-risk obligations have an Aug 2, 2026 deadline, though the Commission proposed (Nov 2025) delaying high-risk implementation toward 2027. It remains the binding global benchmark.
+- EU AI Act: GPAI obligations took effect Aug 2, 2025. The Digital Omnibus simplification package was formally adopted — Parliament endorsed it June 16, 2026 and the Council gave final green light June 29, 2026 — deferring the high-risk compliance deadline from Aug 2, 2026 to Dec 2, 2027 upon entry into force. It remains the binding global benchmark.
 
 ## Security / Geopolitical
 - State-linked misuse of frontier AI is documented and rising. In June 2026, OpenAI disclosed PRC-linked influence operations using ChatGPT to amplify US domestic grievances — notably targeting the data-center/electricity-cost debate — rated low-impact (Category One) but notable for testing narratives against AI infrastructure itself.
 - US–China competition centers on compute: export controls on advanced chips and high-bandwidth memory; Chinese stockpiling ahead of restrictions; Chinese model developers (DeepSeek and others) demonstrating competitive capability at lower cost.
 - Frontier cyber capability is operationalizing: documented cases of AI-assisted/AI-orchestrated cyber operations and the first AI-developed exploit code; labs now rate some models "High" in cyber capability.
+- Agentic deployment is outpacing controls in enterprises: a May 2026 survey reported ~65% of firms experienced AI-agent-related security incidents, with governance, agent identity, and tool-use permissions lagging adoption.
 - National-security concern over advanced model capabilities is reshaping US oversight posture (see Political) — government model-review arrangements with major labs are now in place.
 - Critical-infrastructure exposure (power grid, financial systems) to AI-enabled attacks is a growing institutional concern.
 
