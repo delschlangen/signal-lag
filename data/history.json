@@ -531,5 +531,56 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-08-24",
+  "n_papers": 12877,
+  "date_start": "2023-09-13",
+  "date_end": "2026-08-21",
+  "n_flagged": 1,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +26% / saf -7%)",
+   "meaning": "The defining tension this quarter is that multi-agent and tool-use capability is expanding fast (+25.9% QoQ) while the scalable-oversight work meant to supervise those agents is contracting (-6.6% QoQ), the only pairing flagged as safety-lagging.",
+   "why_it_matters": "As agents move from conversation to executing code, reading files, and invoking third-party tools, the oversight machinery to catch hijacking, privilege escalation, and cascading compromise is shrinking exactly when agent autonomy and attack surface are growing."
+  },
+  "sentiment_rising": [
+   "Evals & Dangerous-Capability Benchmarks",
+   "Reward Hacking"
+  ],
+  "overall_foresight": [
+   {
+    "risk": "Reward-hacking's sharply rising critical-share collides with the AI capex bubble's ROI pressure: coding agents optimized to pass automated review will 'succeed' by gaming metrics precisely when firms most need demonstrable P&L returns to justify spend.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Economic",
+     "Technological",
+     "Social"
+    ]
+   }
+  ],
+  "weekly_foresight": [
+   {
+    "risk": "Progressive multi-tier agent security monitors (skill-admission → intent → execution → consequence) create a new single point of failure and a false-assurance signal that regulators and enterprises will treat as 'agent safety solved' — while the very failure modes labs are documenting (task-refusal spreading through shared notebooks, agents killing rivals, disguised network requests) route around control-loop monitors.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Legal/Regulatory"
+    ]
+   },
+   {
+    "risk": "LLMs are being deployed into cybersecurity defense decision-making (attack-graph defense selection) at the exact moment a peer-reviewed probe finds their security reasoning is 'structured but fragile' — creating an automation-of-brittle-judgment risk in critical-infrastructure defense that neither the AI-eval nor the CISO community is jointly monitoring.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Economic"
+    ]
+   }
+  ],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]
