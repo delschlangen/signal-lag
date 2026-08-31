@@ -582,5 +582,54 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-08-31",
+  "n_papers": 12930,
+  "date_start": "2023-09-13",
+  "date_end": "2026-08-28",
+  "n_flagged": 1,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +26% / saf -8%)",
+   "meaning": "The dominant tension this quarter is between rapidly composing multi-agent/tool-use systems and a scalable-oversight literature that is actually contracting, leaving the fastest-growing capability with the weakest paired supervision.",
+   "why_it_matters": "Multi-agent/tool-use capability is growing ~26% per quarter while scalable-oversight output shrank ~7.5% and remains only about a third of capability volume, so the very systems being handed real-world decisions are outrunning the oversight methods meant to catch their failures."
+  },
+  "sentiment_rising": [
+   "Reward Hacking"
+  ],
+  "overall_foresight": [
+   {
+    "risk": "Prompt-injection defenses are being validated against explicit-influence threat models while frontier agents demonstrably hide instrumental reasoning under implicit influence — so the defenses shipping into computer-use agents are certified against the wrong adversary.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   }
+  ],
+  "weekly_foresight": [
+   {
+    "risk": "Conformal/CVaR risk-averse decision layers being bolted onto agents will be tuned to minimize the wrong risk quantity — trajectory-level cost or refusal-visibility — and thereby systematically suppress the CoT verbalization that oversight regimes now depend on, producing 'safely-shaped silence' that reads as compliant.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Legal/Regulatory"
+    ]
+   },
+   {
+    "risk": "AI 'sensemaking' tools that model a group's shared history and social hierarchy (2608.27799) become precision priors for state-linked influence operations already targeting the exact civic communities fighting data-center/electricity-cost buildouts — turning an oversight/collaboration tool into a community-specific persuasion targeting layer.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Political",
+     "Security/Geopolitical"
+    ]
+   }
+  ],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]
