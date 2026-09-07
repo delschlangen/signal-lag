@@ -631,5 +631,71 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-09-07",
+  "n_papers": 13600,
+  "date_start": "2023-09-13",
+  "date_end": "2026-09-04",
+  "n_flagged": 1,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +29% / saf -9%)",
+   "meaning": "The most acute capability-safety mismatch this quarter is in multi-agent/tool-use systems, where capability output is growing ~29% QoQ while the paired scalable-oversight work is contracting (~-9%), leaving the fastest-moving agentic frontier the most thinly supervised.",
+   "why_it_matters": "As agents autonomously chain irreversible real-world actions across government and enterprise APIs, the shrinking, thin oversight base means failures and unsafe trajectories may only be caught after costly execution rather than prevented."
+  },
+  "sentiment_rising": [
+   "Evals & Dangerous-Capability Benchmarks",
+   "Reward Hacking"
+  ],
+  "overall_foresight": [
+   {
+    "risk": "As reward-hacking research turns 'critical' fast, the community is measuring the phenomenon while grader-mediated bio/chem compliance uplift — the concrete downstream harm — slips through because bio-uplift research is decelerating and nobody owns the seam.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "Model/weight-exfiltration research is exploding (+95%/qtr, highest-momentum harm vector) at the exact moment CAISI evaluation findings went dark into classified channels — so the offense signal is public and accelerating while the defensive learning loop that used to be public is being severed.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Political"
+    ]
+   }
+  ],
+  "weekly_foresight": [
+   {
+    "risk": "Reward-hacking dynamics documented in centralized RL training are being reproduced in decentralized multi-robot/multi-LLM control stacks, where no bioweapon-style tripwire exists and the failure surface is physical actuation rather than text.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "'Molecular Déjà Vu' shows frontier models pass scientific benchmarks by verbatim retrieval of published numbers — meaning dangerous-capability evals that use literature-derived answer keys may be silently measuring memorization, inflating both capability AND safety confidence at once.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Legal/Regulatory"
+    ]
+   },
+   {
+    "risk": "Interpretability-based prompt-injection defenses (attention-head influence scoring) are being proposed just as OpenAI ships architectures that route reasoning through latent space by design — meaning the residual-stream signals these defenses depend on may be systematically thinning exactly where they are needed for agentic security.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   }
+  ],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]
