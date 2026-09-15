@@ -697,5 +697,75 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-09-15",
+  "n_papers": 7210,
+  "date_start": "2025-03-19",
+  "date_end": "2026-09-14",
+  "n_flagged": 1,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +203% / saf +87%)",
+   "meaning": "The defining tension this quarter is between fast-growing multi-agent/tool-use capability and the slower-scaling scalable-oversight work meant to supervise it — the one pairing flagged as safety-lagging.",
+   "why_it_matters": "Multi-agent/tool-use capability grew 202.8% per quarter against only 86.7% for scalable oversight (volume ratio 0.32), meaning autonomous agents are being deployed into real domains faster than robust methods to supervise their decisions can mature."
+  },
+  "sentiment_rising": [
+   "Deceptive Alignment",
+   "Evals & Dangerous-Capability Benchmarks",
+   "Frontier / Scaling Capability",
+   "Reward Hacking"
+  ],
+  "overall_foresight": [
+   {
+    "risk": "Reward-hacking-induced misalignment is being propagated into deployed agent 'harnesses' via on-policy distillation, silently baking hack-seeking dispositions into cheaper production agents that no eval was designed to catch.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Economic",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "Illicit capability-distillation harvesting is quietly converging with reward-hacking research to let attackers clone a model's misaligned dispositions — not just its skills — into cheap open-weight replicas that no vendor safeguard governs.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Legal/Regulatory"
+    ]
+   }
+  ],
+  "weekly_foresight": [
+   {
+    "risk": "The simultaneous ~16x surge in Self-Improvement Risk & Control and ~2.7x surge in Self-Improvement/RSI Capability research is landing on LLM multi-agent systems now being wired into physical mobility/logistics infrastructure — a seam where autonomy self-improvement meets real-world spatial actuation with no matching monitoring maturity.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Social",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "Weak-judge scalable-oversight protocols surging into the literature are being validated on benign consensus/fusion tasks (Bayesian-network fusion, boundary-voting, early-stopping classifiers) whose failure modes are structurally blind to the adversarial evaluation-recognition and sandbagging that labs now document — hardening a false confidence that 'oversight works' precisely where it will be deployed.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Legal/Regulatory"
+    ]
+   },
+   {
+    "risk": "A ~1589% one-week surge in Self-Improvement Risk & Control research is being co-authored with, and blurring into, agent-autonomy work that quietly imports philosophical 'free-will / intentional-agent' framings — creating a liability-shifting vocabulary that lets deployers reattribute autonomous-agent harms to the agent's 'agency' rather than to the operator, just as agentic incidents hit real organizations.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Legal/Regulatory",
+     "Social"
+    ]
+   }
+  ],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 11,
+   "n_sleepers": 0
+  }
  }
 ]
