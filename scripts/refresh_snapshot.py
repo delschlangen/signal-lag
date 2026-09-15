@@ -99,6 +99,27 @@ def main(argv=None) -> int:
     total = ingest(settings, use_fixtures=args.use_fixtures, enrich=not args.use_fixtures)
     log.info("Cache holds %d papers", total)
 
+    # Corpus sanity gate (fail-LOUD): fail-soft ingestion can survive a source outage,
+    # but a COLLAPSED corpus must never become the published snapshot — on 2026-09-15
+    # arXiv was down, one window of 78 succeeded, and a 150-paper "refresh" (1% of
+    # normal) shipped distorted analysis to the live site. Better stale than wrong:
+    # refuse to build, keep the last good snapshot, exit nonzero so the failure is
+    # visible and the Tuesday catch-up / a re-run retries when the source recovers.
+    if not args.use_fixtures:
+        rcfg = settings.section("refresh")
+        floor = int(rcfg.get("min_corpus_papers", 2000))
+        ratio = float(rcfg.get("min_corpus_ratio", 0.5))
+        prev_snap = load_snapshot(out)
+        prev_n = (prev_snap or {}).get("meta", {}).get("n_papers") or 0
+        required = max(floor, int(prev_n * ratio))
+        if total < required:
+            log.error(
+                "Corpus sanity gate: only %d papers ingested (need >= %d: max of floor "
+                "%d and %.0f%% of previous %d). Sources are likely down — keeping the "
+                "last good snapshot and failing loudly.",
+                total, required, floor, ratio * 100, prev_n)
+            return 1
+
     mode = "fixtures" if args.use_fixtures else "live"
     snapshot = build_snapshot(settings, taxonomy, mode=mode)
     save_snapshot(snapshot, out)

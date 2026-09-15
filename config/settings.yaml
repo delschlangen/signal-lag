@@ -160,6 +160,13 @@ sentiment:
 # Citation-flow verification (#2): does an applied/capability paper ACTUALLY CITE core
 # safety work (via OpenAlex referenced_works), not merely share its vocabulary? Local,
 # no network; positive-only (absence is inconclusive, never "no borrowing").
+# Corpus sanity gate: refuse to publish a snapshot whose ingested corpus collapsed
+# (source outage). Better stale than wrong — the last good snapshot stays live and the
+# run fails visibly; the Tuesday catch-up retries once sources recover.
+refresh:
+  min_corpus_papers: 2000
+  min_corpus_ratio: 0.5
+
 citation_flow:
   enabled: true
   # Max verified-borrower examples to surface in the digest.
