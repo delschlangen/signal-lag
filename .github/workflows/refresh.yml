@@ -7,6 +7,10 @@ name: Weekly data refresh
 on:
   schedule:
     - cron: "0 6 * * 1"   # Mondays 06:00 UTC
+    # Tuesday catch-up: self-heals a missed Monday (runner failure, timeout, GitHub
+    # scheduler drought). A freshness guard below makes this a no-op whenever the
+    # Monday run succeeded, so it costs nothing in normal weeks.
+    - cron: "0 6 * * 2"
   workflow_dispatch:
     inputs:
       max_per_period:
@@ -33,17 +37,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Freshness guard (Tuesday catch-up is a no-op when Monday succeeded)
+        id: guard
+        run: |
+          skip=false
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%u)" != "1" ]; then
+            age=$(python3 -c "import json,datetime;d=json.load(open('data/snapshot.json'))['meta']['refreshed_at'];print((datetime.date.today()-datetime.date.fromisoformat(d)).days)" 2>/dev/null || echo 999)
+            if [ "$age" -lt 3 ]; then skip=true; fi
+            echo "Snapshot age: ${age} day(s) -> skip=${skip}"
+          fi
+          echo "skip=$skip" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-python@v5
+        if: steps.guard.outputs.skip != 'true'
         with:
           python-version: "3.11"
           cache: "pip"
 
       - name: Install dependencies
+        if: steps.guard.outputs.skip != 'true'
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-full.txt
 
       - name: Refresh snapshot (real arXiv + OpenAlex)
+        if: steps.guard.outputs.skip != 'true'
         env:
           SIGNAL_LAG_MAX_PER_PERIOD: ${{ github.event.inputs.max_per_period || '150' }}
           SIGNAL_LAG_OPENALEX_MAX: ${{ github.event.inputs.openalex_max || '500' }}
@@ -57,6 +75,7 @@ jobs:
           python scripts/refresh_snapshot.py --fresh
 
       - name: Commit updated snapshot
+        if: steps.guard.outputs.skip != 'true'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

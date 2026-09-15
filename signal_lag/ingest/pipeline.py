@@ -8,6 +8,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import logging
+import time
 from pathlib import Path
 
 from ..config import Settings
@@ -76,11 +77,28 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
     # are preserved, which is what the velocity/divergence trends rely on.)
     windows = _quarter_windows(start_date, end_date)
     max_per_period = settings.max_per_period
-    log.info("Sampling %d quarters x %d categories, up to %d papers each",
-             len(windows), len(settings.arxiv_categories), max_per_period)
+    # Time budget (fail-soft ingestion): arXiv throttling is bursty — the same pull has
+    # taken 25 minutes or 2.5 hours, and twice a slow day pushed the whole refresh past
+    # the workflow timeout, losing the ENTIRE run. A partial corpus beats no refresh:
+    # when the budget runs out we stop pulling and proceed with what we have. Windows
+    # are iterated NEWEST-FIRST with categories interleaved, so exhaustion costs the
+    # oldest quarters uniformly — never recent data, never whole categories.
+    budget_s = float(settings.section("ingestion").get("time_budget_minutes", 0) or 0) * 60
+    start_t = time.monotonic()
+    log.info("Sampling %d quarters x %d categories, up to %d papers each%s",
+             len(windows), len(settings.arxiv_categories), max_per_period,
+             f" (budget {budget_s/60:.0f} min)" if budget_s else "")
     failures = 0
-    for category in settings.arxiv_categories:
-        for (qs, qe) in windows:
+    budget_hit = False
+    for (qs, qe) in reversed(windows):                 # newest quarters first
+        if budget_s and time.monotonic() - start_t > budget_s:
+            budget_hit = True
+            log.warning(
+                "Ingestion time budget (%.0f min) reached at window %s..%s; proceeding "
+                "with the partial corpus (%d papers). Oldest quarters were sacrificed.",
+                budget_s / 60, qs, qe, store.count_papers())
+            break
+        for category in settings.arxiv_categories:
             try:
                 batch: list[Paper] = list(
                     client.search_category(category, qs, qe, max_per_period)

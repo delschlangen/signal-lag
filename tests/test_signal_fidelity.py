@@ -1089,3 +1089,42 @@ def test_synthesize_preserves_change_of_mind_and_action_map(monkeypatch):
     assert risks and risks[0]["priority"] == 12                 # 4 × 3, scoring still runs
     assert risks[0]["change_of_mind"]["invalidate_if"] == "i"   # falsification preserved
     assert risks[0]["action_map"]["owner_community"] == "o"     # action map preserved
+
+
+# ----------------------------------- ingestion time budget (partial corpus > no refresh)
+def test_ingest_time_budget_yields_partial_corpus_newest_first(tmp_path, monkeypatch):
+    from signal_lag.ingest import pipeline
+    from signal_lag.config import Settings
+
+    calls = []
+
+    class SlowClient:
+        def __init__(self, **kw):
+            pass
+
+        def search_category(self, category, qs, qe, max_results):
+            calls.append((category, qs))
+            import time as _t
+            _t.sleep(0.03)
+            return [_p(f"{category[-1]}{qs:%y%m}", qs.year, (qs.month - 1) // 3 + 1)]
+
+    monkeypatch.setattr(pipeline, "ArxivClient", SlowClient)
+    raw = {
+        "ingestion": {
+            "date_range": {"start": "2025-01-01", "end": "2025-12-31"},
+            "arxiv_page_size": 100, "arxiv_request_delay_seconds": 0,
+            "backoff_schedule": [], "max_per_period": 5,
+            # ~0.0005 min = 30ms: enough for roughly one window of 2 categories.
+            "time_budget_minutes": 0.0005,
+            "semantic_scholar": {"enabled": False},
+            "openreview": {"enabled": False}, "blogs": {"enabled": False},
+        },
+        "paths": {"db_path": "db.sqlite"},
+    }
+    settings = Settings(raw=raw, root=tmp_path)
+    settings.raw["ingestion"]["arxiv_categories"] = ["cs.AI", "cs.LG"]
+    total = pipeline.ingest(settings, use_fixtures=False, enrich=False)
+    # Budget cut it short: not all 4 quarters x 2 categories ran, but we got papers
+    # and no exception — and the FIRST window pulled was the NEWEST quarter.
+    assert 0 < total < 8
+    assert calls[0][1].month >= 10                       # newest quarter first

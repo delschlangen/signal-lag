@@ -13,6 +13,12 @@ ingestion:
   # we pull up to `max_per_period` papers per category per quarter, giving even
   # coverage across the whole date window (so velocity has a real time axis).
   max_per_period: 150
+  # Wall-clock budget for the stratified arXiv pull (minutes; 0 = unlimited). arXiv
+  # throttling is bursty — the same pull has taken 25 minutes or 2.5 hours, and a slow
+  # day used to push the whole refresh past the workflow timeout, losing the entire run.
+  # When the budget runs out, ingestion stops and the pipeline proceeds with the partial
+  # corpus; windows are pulled newest-first, so only the OLDEST quarters are sacrificed.
+  time_budget_minutes: 90
   # Legacy overall per-category cap (no longer the primary control).
   max_results_per_category: 1500
   # arXiv asks for <= 1 request / 3s; we page in chunks of this size.
