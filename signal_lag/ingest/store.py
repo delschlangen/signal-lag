@@ -225,6 +225,15 @@ class Store:
                 )
         self.conn.commit()
 
+    def update_counts(self, paper: Paper) -> None:
+        """Update only the citation counts (weekly refresh pass in incremental mode)."""
+        self.conn.execute(
+            "UPDATE papers SET cited_by_count=?, "
+            "s2_influential=COALESCE(?, s2_influential) WHERE arxiv_id=?",
+            (paper.cited_by_count, paper.s2_influential_citations, paper.arxiv_id),
+        )
+        self.conn.commit()
+
     def replace_tags(self, source: str, rows: Iterable[tuple[str, str, float]]) -> None:
         """rows = (arxiv_id, topic_key, score). Replaces all tags for `source`."""
         self.conn.execute("DELETE FROM topic_tags WHERE source=?", (source,))

@@ -77,6 +77,19 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
     # are preserved, which is what the velocity/divergence trends rely on.)
     windows = _quarter_windows(start_date, end_date)
     max_per_period = settings.max_per_period
+    # Incremental mode: when a warm DB survives from the previous run (persisted via
+    # the workflow's actions/cache), history is already ingested and unchanged — only
+    # pull windows overlapping the recent past. A cache miss or --fresh rebuild leaves
+    # the DB empty and this naturally falls back to the full pull. Cuts the weekly
+    # refresh by ~40 minutes and removes the main timeout risk.
+    n_existing = store.count_papers()
+    inc_days = int(settings.section("ingestion").get("incremental_window_days", 120) or 0)
+    if n_existing > 2000 and inc_days > 0:
+        cutoff = end_date - dt.timedelta(days=inc_days)
+        n_all = len(windows)
+        windows = [w for w in windows if w[1] >= cutoff]
+        log.info("Warm cache (%d papers): incremental pull, %d/%d windows since %s",
+                 n_existing, len(windows), n_all, cutoff)
     # Time budget (fail-soft ingestion): arXiv throttling is bursty — the same pull has
     # taken 25 minutes or 2.5 hours, and twice a slow day pushed the whole refresh past
     # the workflow timeout, losing the ENTIRE run. A partial corpus beats no refresh:
@@ -152,10 +165,45 @@ def ingest(settings: Settings, use_fixtures: bool = False, enrich: bool = True) 
             enrich_semantic_scholar(settings, store)
         except Exception as e:  # fully optional, never block ingestion
             log.warning("Semantic Scholar enrichment skipped: %s", e)
+        # Incremental mode only enriches NEW papers, which would freeze existing
+        # papers' citation counts and stall the week-over-week citation-velocity
+        # feature — so refresh counts for the whole corpus (cheap: counts-only
+        # fields, batched). Fail-soft + time-budgeted like everything else.
+        if n_existing > 2000:
+            try:
+                refresh_citation_counts(settings, store)
+            except Exception as e:
+                log.warning("Citation-count refresh skipped: %s", e)
 
     total = store.count_papers()
     store.close()
     return total
+
+
+def refresh_citation_counts(settings: Settings, store: Store,
+                            time_budget_s: float = 300.0) -> int:
+    """Refresh cited_by_count / influential counts for the WHOLE corpus (incremental runs).
+
+    Uses the S2 batch endpoint with counts-only fields, so ~12k papers is ~60 requests.
+    Returns the number of papers updated; fail-soft.
+    """
+    cfg = settings.semantic_scholar
+    if not cfg.get("enabled"):
+        return 0
+    from .semantic_scholar_client import SemanticScholarClient
+
+    client = SemanticScholarClient(
+        api_key=cfg.get("api_key"),
+        batch_size=int(cfg.get("batch_size", 200)),
+        request_delay=float(cfg.get("request_delay_seconds", 1.0)),
+    )
+    papers = store.get_papers()
+    n = client.refresh_counts(papers, time_budget_s=time_budget_s)
+    for p in papers:
+        if p.cited_by_count is not None:
+            store.update_counts(p)
+    log.info("Citation-count refresh: %d papers updated", n)
+    return n
 
 
 def enrich_specific_citations(settings: Settings, papers: list[Paper]) -> int:

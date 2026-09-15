@@ -51,14 +51,14 @@ class SemanticScholarClient:
         if api_key:
             self.session.headers.update({"x-api-key": api_key})
 
-    def _post_batch(self, ids: list[str]) -> list[dict] | None:
+    def _post_batch(self, ids: list[str], fields: str = FIELDS) -> list[dict] | None:
         for attempt, wait in enumerate([0, 3, 8]):
             if wait:
                 time.sleep(wait)
             try:
                 resp = self.session.post(
                     S2_BATCH,
-                    params={"fields": FIELDS},
+                    params={"fields": fields},
                     json={"ids": ids},
                     timeout=60,
                 )
@@ -71,6 +71,42 @@ class SemanticScholarClient:
                 log.warning("S2 batch error: %s", e)
                 continue
         return None
+
+    COUNT_FIELDS = "externalIds,citationCount,influentialCitationCount"
+
+    def refresh_counts(self, papers: list[Paper], time_budget_s: float = 300.0) -> int:
+        """Update ONLY citation counts in place (cheap weekly pass for incremental runs).
+
+        Keeps the week-over-week citation-velocity feature moving when the corpus
+        isn't fully re-enriched. Same batching/backoff/budget discipline as enrich().
+        """
+        import time as _time
+
+        by_id = {p.arxiv_id: p for p in papers}
+        ids = [f"ARXIV:{aid}" for aid in by_id]
+        updated = 0
+        start = _time.monotonic()
+        for i in range(0, len(ids), self.batch_size):
+            if _time.monotonic() - start > time_budget_s:
+                log.warning("Count-refresh time budget reached; updated %d so far", updated)
+                break
+            data = self._post_batch(ids[i : i + self.batch_size], fields=self.COUNT_FIELDS)
+            time.sleep(self.request_delay)
+            if not data:
+                continue
+            for rec in data:
+                if not rec:
+                    continue
+                aid = (rec.get("externalIds") or {}).get("ArXiv")
+                p = by_id.get(aid)
+                if p is None:
+                    continue
+                if rec.get("citationCount") is not None:
+                    p.cited_by_count = rec["citationCount"]
+                if rec.get("influentialCitationCount") is not None:
+                    p.s2_influential_citations = rec["influentialCitationCount"]
+                updated += 1
+        return updated
 
     def enrich(self, papers: list[Paper], time_budget_s: float = 480.0) -> int:
         """Enrich papers in place by arXiv id. Returns count enriched.
