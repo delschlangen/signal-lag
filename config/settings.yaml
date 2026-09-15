@@ -33,6 +33,11 @@ ingestion:
   # arXiv throttles bursts hard, so we back off generously.
   backoff_schedule: [5, 15, 30, 60]
   # OpenAlex "polite pool" contact (faster, friendlier rate limits).
+  # OpenAlex enrichment is OFF: Semantic Scholar supplies all its signals, and OpenAlex
+  # went from unreachable-in-CI (harmless instant no-op) to rate-limiting (429), which
+  # turned the dormant pass into an hours-long backoff grind that killed two refreshes
+  # (2026-09-14/15). Re-enabling also gets a time budget + failure breaker.
+  openalex_enabled: false
   openalex_mailto: "delschlangen@gmail.com"
   # Cap OpenAlex enrichment calls per run (0 = enrich all cached papers).
   openalex_max_enrich: 0

@@ -320,8 +320,19 @@ def _quarter_windows(start: dt.date, end: dt.date) -> list[tuple[dt.date, dt.dat
     return windows
 
 
-def enrich_citations(settings: Settings, store: Store | None = None) -> int:
-    """Fill OpenAlex citation/affiliation data for papers lacking it."""
+def enrich_citations(settings: Settings, store: Store | None = None,
+                     time_budget_s: float = 600.0) -> int:
+    """Fill OpenAlex citation/affiliation data for papers lacking it.
+
+    DISABLED BY DEFAULT (ingestion.openalex_enabled): Semantic Scholar supplies all of
+    these signals now, and OpenAlex went from cleanly-unreachable in CI (instant no-op)
+    to rate-limiting (429) — which turned this dormant pass into an hours-long
+    per-paper backoff grind that killed two refresh runs. If re-enabled, it now runs
+    under a wall-clock budget and a consecutive-failure breaker.
+    """
+    if not settings.section("ingestion").get("openalex_enabled", False):
+        log.info("OpenAlex enrichment disabled (Semantic Scholar supplies these signals)")
+        return 0
     own = store is None
     store = store or Store(settings.path("db_path"))
     client = OpenAlexClient(
@@ -331,9 +342,23 @@ def enrich_citations(settings: Settings, store: Store | None = None) -> int:
     todo = store.papers_needing_enrichment(limit=settings.openalex_max_enrich)
     log.info("Enriching %d papers via OpenAlex", len(todo))
     done = 0
+    consecutive_failures = 0
+    start = time.monotonic()
     for i, paper in enumerate(todo, 1):
-        store.update_enrichment(client.enrich(paper))
-        done += 1
+        if time.monotonic() - start > time_budget_s:
+            log.warning("OpenAlex time budget reached; enriched %d/%d", done, len(todo))
+            break
+        enriched = client.enrich(paper)
+        store.update_enrichment(enriched)
+        if enriched.openalex_id is None and enriched.cited_by_count is None:
+            consecutive_failures += 1
+            if consecutive_failures >= 5:
+                log.warning("OpenAlex unavailable (%d consecutive failures); stopping "
+                            "after %d/%d", consecutive_failures, done, len(todo))
+                break
+        else:
+            consecutive_failures = 0
+            done += 1
         if i % 50 == 0:
             log.info("  enriched %d/%d", i, len(todo))
     if own:

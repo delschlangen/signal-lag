@@ -34,10 +34,10 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    # arXiv throttling is bursty: ingestion normally takes ~25 min but has taken 80+ on a
-    # bad night (2026-07-02 run was killed by a 90-min cap while still ingesting). The cap
-    # is a runaway guard, not a target — size it for the bad nights.
-    timeout-minutes: 150
+    # The cap is a runaway guard, not a target — size it for the bad nights: a cold-cache
+    # full pull can hit the 90-min ingest budget, and the analysis/LLM tail has grown to
+    # ~60 min. Warm-cache incremental weeks run ~30-45 min total.
+    timeout-minutes: 210
     steps:
       - uses: actions/checkout@v4
 
