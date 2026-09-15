@@ -51,19 +51,19 @@ safety_topics:
     label: "Scalable Oversight"
     kind: safety
     seeds:
-      - "scalable oversight of AI systems"
-      - "debate and recursive reward modeling for supervision"
-      - "weak-to-strong generalization and supervising superhuman models"
-      - "AI-assisted evaluation of hard-to-judge outputs"
+      - "scalable oversight: supervising AI systems beyond human evaluation ability"
+      - "debate between AI systems as an alignment supervision method"
+      - "recursive reward modeling and iterated amplification"
+      - "weak-to-strong generalization: weak supervisors training stronger models"
 
   - key: deceptive_alignment
     label: "Deceptive Alignment"
     kind: safety
     seeds:
-      - "deceptive alignment and scheming in AI models"
-      - "sandbagging and strategic deception by language models"
-      - "models that behave differently under observation"
-      - "sleeper agents and hidden backdoored behaviors"
+      - "deceptive alignment: models faking alignment during training to preserve goals"
+      - "scheming AI that conceals misaligned objectives from overseers"
+      - "sandbagging: models strategically underperforming on capability evaluations"
+      - "sleeper agents with hidden backdoored behaviors activated by triggers"
 
   - key: reward_hacking
     label: "Reward Hacking"
@@ -85,9 +85,9 @@ safety_topics:
     label: "Self-Improvement Risk & Control"
     kind: safety
     seeds:
-      - "AI control protocols for untrusted models"
+      - "AI control protocols for monitoring and restricting untrusted models"
       - "containment and control of recursively self-improving AI"
-      - "preventing escape and unsafe autonomous self-modification"
+      - "preventing AI escape, exfiltration, and unsafe autonomous self-modification"
 
   - key: agentic_monitoring
     label: "Agentic Behavior Monitoring"
@@ -126,9 +126,9 @@ capability_topics:
     label: "Frontier / Scaling Capability"
     kind: capability
     seeds:
-      - "scaling laws for large language models"
-      - "pretraining ever larger frontier foundation models"
-      - "emergent capabilities from scale"
+      - "scaling laws governing frontier model pretraining compute"
+      - "pretraining next-generation frontier foundation models at massive scale"
+      - "emergent capabilities appearing only at frontier model scale"
 
   - key: multiagent_tooluse
     label: "Multi-Agent / Tool-Use Capability"
@@ -142,9 +142,9 @@ capability_topics:
     label: "Self-Improvement / RSI Capability"
     kind: capability
     seeds:
-      - "self-improving language models that refine themselves"
-      - "recursive self-improvement and self-training"
-      - "models generating their own training data and curricula"
+      - "recursive self-improvement: AI improving its own architecture or training process"
+      - "autonomous AI research: models designing and running their own experiments"
+      - "self-modifying agents that rewrite and improve their own code"
 
 # Harm / misuse "vectors": a parallel DUAL-USE lens. Where safety/capability topics
 # track the research itself, these track which real-world MISUSE a paper could enable

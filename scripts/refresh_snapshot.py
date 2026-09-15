@@ -24,9 +24,9 @@ import json  # noqa: E402
 from signal_lag.config import load_all  # noqa: E402
 from signal_lag.ingest.pipeline import ingest  # noqa: E402
 from signal_lag.snapshot import (  # noqa: E402
-    append_benchmark_history, append_citation_history, append_history,
-    append_risk_register, augment_foresight, build_snapshot, load_snapshot,
-    save_snapshot,
+    append_audit_history, append_benchmark_history, append_citation_history,
+    append_history, append_risk_register, augment_foresight, build_snapshot,
+    load_snapshot, save_snapshot,
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s",
@@ -106,6 +106,7 @@ def main(argv=None) -> int:
     append_history(snapshot, history_path, load_snapshot(out.with_name("snapshot_prev.json")))
     append_risk_register(snapshot, register_path)
     append_benchmark_history(snapshot, benchmark_path)
+    append_audit_history(snapshot, ROOT / "data" / "audit_history.json")
     # Citation-velocity history (#37): snapshot per-paper citation totals so
     # week-over-week deltas (adoption velocity) are computable next refresh.
     from signal_lag.ingest.store import Store

@@ -587,6 +587,46 @@ def register_status(entry: dict, newest_date: str) -> str:
     return "open"
 
 
+_STOPWORDS = frozenset(
+    "the a an and or of to in for with on by is are as at from that this its their "
+    "be been being was were will would could than then into over under between "
+    "while when where which who whose what how why not no nor but if because so "
+    "such via per each both more most other same own just also can may might must "
+    "should about against during before after above below out off again further "
+    "these those there here all any some few it they them he she we you i".split())
+
+
+def _salient_tokens(text: str) -> set:
+    import re
+    return {w for w in re.findall(r"[a-z]{3,}", (text or "").lower())
+            if w not in _STOPWORDS}
+
+
+def statement_similarity(a: str, b: str) -> float:
+    """Jaccard similarity over salient tokens — cheap reword-detection for risk text."""
+    ta, tb = _salient_tokens(a), _salient_tokens(b)
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / len(ta | tb)
+
+
+def match_register_entry(statement: str, register: list, threshold: float = 0.45):
+    """Find the existing register entry this statement is a REWORDING of, if any.
+
+    The weekly synthesis re-describes persistent seams in fresh language; exact-hash
+    identity made every rewording a new register entry (and sent the old one dormant).
+    Token-Jaccard at 0.45 is strict enough that two DIFFERENT risks about the same
+    topic don't merge (statements are long and specific), loose enough to catch
+    rephrasings. Returns the best-matching entry or None.
+    """
+    best, best_sim = None, threshold
+    for entry in register or []:
+        sim = statement_similarity(statement, entry.get("risk") or "")
+        if sim >= best_sim:
+            best, best_sim = entry, sim
+    return best
+
+
 def append_risk_register(snapshot: dict, path: Path) -> None:
     """Upsert this refresh's scored risks into an evergreen register (idempotent per date).
 
@@ -620,6 +660,16 @@ def append_risk_register(snapshot: dict, path: Path) -> None:
                  "exposure": e["exposure"], "trajectory": e["trajectory"],
                  "priority": e["priority"], "disputed": _is_disputed(e.get("disputed_claims"))}
         rec = by_id.get(rid)
+        if rec is None:
+            # Identity matching: each week's synthesis REWORDS risks, so an exact-hash
+            # id treats "the same seam, new sentence" as a brand-new risk — the register
+            # ran ~80% dormant because of it. Fuzzy-match the statement against existing
+            # entries; a match means this risk RE-SURFACED: keep the original stable id
+            # (and its history/evidence), refresh the wording to the latest phrasing.
+            matched = match_register_entry(e["risk"], list(by_id.values()))
+            if matched is not None:
+                rec = matched
+                rid = rec["id"]
         if rec is None:
             by_id[rid] = rec = {"id": rid, "risk": e["risk"], "first_seen": date,
                                 "last_seen": date, "n_appearances": 1, "latest": e,
@@ -677,6 +727,33 @@ def append_benchmark_history(snapshot: dict, path: Path) -> None:
     rows.sort(key=lambda r: (r.get("date") or "", r.get("key") or ""))
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(rows, indent=1, ensure_ascii=False), encoding="utf-8")
+
+
+def append_audit_history(snapshot: dict, path: Path) -> None:
+    """Persist each refresh's tagging-audit precision per topic (idempotent per date).
+
+    A single week's precision at 30-50 samples/topic carries ±0.1+ sampling noise; the
+    TREND is the trustworthy signal. Same compact JSON-list pattern as the other
+    histories; fail-soft.
+    """
+    audit = snapshot.get("tag_audit") or {}
+    date = snapshot.get("meta", {}).get("refreshed_at")
+    if not audit.get("topics") or not date:
+        return
+    path = Path(path)
+    try:
+        rows = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    except Exception:
+        rows = []
+    if not isinstance(rows, list):
+        rows = []
+    rows = [r for r in rows if r.get("date") != date]
+    for t in audit["topics"]:
+        rows.append({"date": date, "key": t.get("key"), "label": t.get("label"),
+                     "precision": t.get("precision"), "n_sampled": t.get("n_sampled")})
+    rows.sort(key=lambda r: (r.get("date") or "", r.get("key") or ""))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
 
 
 def append_citation_history(counts: dict, date: str, path: Path, keep: int = 8) -> None:

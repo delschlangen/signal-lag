@@ -13,6 +13,10 @@ on:
     - cron: "0 6 * * 2"
   workflow_dispatch:
     inputs:
+      rebuild:
+        description: "Full rebuild (wipe the DB cache and re-ingest everything)"
+        type: boolean
+        default: false
       max_per_period:
         description: "Max papers per arXiv category per quarter"
         default: "150"
@@ -37,7 +41,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Freshness guard (Tuesday catch-up is a no-op when Monday succeeded)
+      # Warm ingestion cache (incremental mode): the SQLite DB persists between runs so
+      # the weekly pull only fetches recent windows. A cache miss just means a full pull
+      # (the pipeline detects the empty DB) — never a failure.
+      - name: Restore ingestion DB cache
+        uses: actions/cache/restore@v4
+        with:
+          path: data/signal_lag.sqlite
+          key: ingest-db-v1-${{ github.run_id }}
+          restore-keys: |
+            ingest-db-v1-
+
+      - name: Freshness guard + rebuild decision
         id: guard
         run: |
           skip=false
@@ -47,6 +62,15 @@ jobs:
             echo "Snapshot age: ${age} day(s) -> skip=${skip}"
           fi
           echo "skip=$skip" >> "$GITHUB_OUTPUT"
+          # Full rebuild: manual request, or the first scheduled Monday of each month
+          # (consistency backstop for the incremental cache: drift, retracted papers,
+          # rolling the 3-year window forward).
+          rebuild=false
+          if [ "${{ github.event.inputs.rebuild }}" = "true" ]; then rebuild=true; fi
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%u)" = "1" ] \
+             && [ "$(date -u +%-d)" -le 7 ]; then rebuild=true; fi
+          echo "rebuild=$rebuild" >> "$GITHUB_OUTPUT"
+          echo "Rebuild this run: $rebuild"
 
       - uses: actions/setup-python@v5
         if: steps.guard.outputs.skip != 'true'
@@ -72,7 +96,17 @@ jobs:
           # analysis layer (genuine analytical narrative baked into the snapshot).
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          python scripts/refresh_snapshot.py --fresh
+          FLAGS=""
+          if [ "${{ steps.guard.outputs.rebuild }}" = "true" ]; then FLAGS="--fresh"; fi
+          echo "Running refresh ${FLAGS:+(full rebuild)}"
+          python scripts/refresh_snapshot.py $FLAGS
+
+      - name: Save ingestion DB cache
+        if: always() && steps.guard.outputs.skip != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: data/signal_lag.sqlite
+          key: ingest-db-v1-${{ github.run_id }}
 
       - name: Commit updated snapshot
         if: steps.guard.outputs.skip != 'true'
@@ -86,6 +120,7 @@ jobs:
           [ -f data/verify_cache.json ] && git add data/verify_cache.json || true
           [ -f data/benchmark_history.json ] && git add data/benchmark_history.json || true
           [ -f data/citation_history.json ] && git add data/citation_history.json || true
+          [ -f data/audit_history.json ] && git add data/audit_history.json || true
           if git diff --cached --quiet; then
             echo "No snapshot changes."
           else

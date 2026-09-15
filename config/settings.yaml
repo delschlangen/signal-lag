@@ -19,6 +19,11 @@ ingestion:
   # When the budget runs out, ingestion stops and the pipeline proceeds with the partial
   # corpus; windows are pulled newest-first, so only the OLDEST quarters are sacrificed.
   time_budget_minutes: 90
+  # Incremental mode: when the previous run's DB survives (persisted via the workflow's
+  # actions/cache), only windows overlapping the last N days are re-pulled — history is
+  # already ingested and unchanged. First scheduled Monday of each month does a full
+  # rebuild as a consistency backstop; a cache miss also falls back to a full pull.
+  incremental_window_days: 120
   # Legacy overall per-category cap (no longer the primary control).
   max_results_per_category: 1500
   # arXiv asks for <= 1 request / 3s; we page in chunks of this size.
@@ -85,14 +90,17 @@ taxonomy:
   # <0.45 -> 0.31; agentic_capability (0.65, healthiest) keeps the global default.
   # The audit re-runs every refresh, so the next one measures the improvement.
   topic_thresholds:
-    rsi_control: 0.36          # audit precision 0.03 — swept in generic self-training work
-    interpretability: 0.36     # 0.07
-    deceptive_alignment: 0.36  # 0.08
+    # Topics re-seeded 2026-09-15 (sharper centroids aimed at the intended concepts)
+    # start back at a moderate cutoff — the old aggressive overrides were tuned for the
+    # OLD centroids; the weekly audit re-measures and re-tunes from here.
+    rsi_control: 0.31
+    deceptive_alignment: 0.31
+    self_improvement: 0.31
+    scalable_oversight: 0.31
+    frontier_scaling: 0.31
+    interpretability: 0.36     # audit precision 0.07 at 0.28 (centroid unchanged)
     reward_hacking: 0.36       # 0.10
-    self_improvement: 0.36     # 0.10
     reasoning_cot: 0.36        # 0.13
-    scalable_oversight: 0.33   # 0.22
-    frontier_scaling: 0.33     # 0.27
     cot_faithfulness: 0.33     # 0.28
     evals_benchmarks: 0.31     # 0.32
     rl_rlhf: 0.31              # 0.37
@@ -201,7 +209,9 @@ analysis:
   # taxonomy.topic_thresholds; the audit never changes tagging by itself.
   tag_audit:
     enabled: true
-    sample_per_topic: 30
+    # 50 samples/topic keeps single-week noise near ±0.1; the Methodology trend chart
+    # (data/audit_history.json) is the trustworthy read, not any one week.
+    sample_per_topic: 50
     batch_size: 25
   # How many representative papers per pairing side to send for grounding.
   papers_per_side: 3

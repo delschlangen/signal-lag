@@ -496,6 +496,20 @@ def _load_cite_history(_cache_key: float):
 cite_history = _load_cite_history(
     CITE_HISTORY_PATH.stat().st_mtime if CITE_HISTORY_PATH.exists() else 0.0)
 
+AUDIT_HISTORY_PATH = SNAPSHOT.with_name("audit_history.json")
+
+
+@st.cache_data(ttl=1800)
+def _load_audit_history(_cache_key: float):
+    try:
+        return json.loads(AUDIT_HISTORY_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+
+audit_history = _load_audit_history(
+    AUDIT_HISTORY_PATH.stat().st_mtime if AUDIT_HISTORY_PATH.exists() else 0.0)
+
 
 def topic_links(snap, topic_key, n=3):
     """Markdown bullet list of recent papers for a topic, each with a short blurb."""
@@ -2744,6 +2758,13 @@ with tab_method:
                 for t in audit["topics"]
             ])
             st.dataframe(adf, width="stretch", hide_index=True)
+            _ah = pd.DataFrame(audit_history)
+            if not _ah.empty and _ah["date"].nunique() >= 2:
+                st.markdown("**Precision over time** — single weeks carry ±0.1+ sampling "
+                            "noise at this sample size; trust the trend, not one reading:")
+                _piv = (_ah.dropna(subset=["precision"])
+                        .pivot_table(index="date", columns="label", values="precision"))
+                st.line_chart(_piv, height=260)
 
     cats = ", ".join(meta.get("categories", []) or [])
     srcs = meta.get("source_counts") or {}

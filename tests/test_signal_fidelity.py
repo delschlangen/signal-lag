@@ -1128,3 +1128,87 @@ def test_ingest_time_budget_yields_partial_corpus_newest_first(tmp_path, monkeyp
     # and no exception — and the FIRST window pulled was the NEWEST quarter.
     assert 0 < total < 8
     assert calls[0][1].month >= 10                       # newest quarter first
+
+
+# ----------------------------------- register identity matching (rewordings re-surface)
+def test_register_matches_reworded_risk_to_existing_entry(tmp_path):
+    from signal_lag import snapshot as snap_mod
+
+    def _snap(date, stmt):
+        risk = foresight._attach_scores([{
+            "risk": stmt, "severity": 4, "likelihood": 3, "exposure": 3,
+            "trajectory": "steady",
+        }])[0]
+        return {"meta": {"refreshed_at": date},
+                "analysis": {"foresight_gap": {"risks": [risk]}}, "weekly": {}}
+
+    path = tmp_path / "register.json"
+    snap_mod.append_risk_register(_snap(
+        "2026-09-07",
+        "Reward hacking generalization in production RL combined with decelerating "
+        "oversight research creates an unmonitored blind spot in agentic deployment."), path)
+    # Same seam, freshly reworded a week later.
+    snap_mod.append_risk_register(_snap(
+        "2026-09-14",
+        "Decelerating oversight research while reward hacking generalizes in production "
+        "RL leaves agentic deployment with an unmonitored blind spot."), path)
+    reg = json.loads(path.read_text())
+    assert len(reg) == 1                                  # matched, not duplicated
+    e = reg[0]
+    assert e["n_appearances"] == 2 and e["status"] == "open"
+    assert e["last_seen"] == "2026-09-14"
+    assert e["risk"].startswith("Decelerating oversight")  # wording refreshed
+    # A genuinely different risk does NOT merge.
+    snap_mod.append_risk_register(_snap(
+        "2026-09-14",
+        "Voice-cloning fraud infrastructure is commoditizing faster than bank "
+        "authentication systems can deploy liveness countermeasures."), path)
+    assert len(json.loads(path.read_text())) == 2
+
+
+def test_statement_similarity_thresholds():
+    from signal_lag.snapshot import statement_similarity
+    a = "Reward hacking generalization creates monitoring blind spots in agents"
+    assert statement_similarity(a, a) == 1.0
+    assert statement_similarity(a, "Bank fraud via voice cloning surges") < 0.1
+
+
+def test_ingest_incremental_pulls_only_recent_windows_when_db_warm(tmp_path, monkeypatch):
+    from signal_lag.ingest import pipeline
+    from signal_lag.config import Settings
+
+    calls = []
+
+    class FakeClient:
+        def __init__(self, **kw):
+            pass
+
+        def search_category(self, category, qs, qe, max_results):
+            calls.append(qs)
+            return []
+
+    monkeypatch.setattr(pipeline, "ArxivClient", FakeClient)
+    raw = {
+        "ingestion": {
+            "date_range": {"start": "2025-01-01", "end": "2025-12-31"},
+            "arxiv_page_size": 100, "arxiv_request_delay_seconds": 0,
+            "backoff_schedule": [], "max_per_period": 5,
+            "incremental_window_days": 120,
+            "semantic_scholar": {"enabled": False},
+            "openreview": {"enabled": False}, "blogs": {"enabled": False},
+        },
+        "paths": {"db_path": "db.sqlite"},
+    }
+    settings = Settings(raw=raw, root=tmp_path)
+    settings.raw["ingestion"]["arxiv_categories"] = ["cs.AI"]
+
+    # Warm DB: seed >2000 papers so incremental mode engages.
+    from signal_lag.ingest.store import Store
+    store = Store(tmp_path / "db.sqlite")
+    store.upsert_papers([_p(f"w{i}", 2025, 1) for i in range(2001)])
+    store.close()
+
+    pipeline.ingest(settings, use_fixtures=False, enrich=False)
+    # Only windows ending within ~120 days of 2025-12-31 pulled: Q3 + Q4, not Q1/Q2.
+    assert calls and min(calls).month >= 7
+    assert len(calls) == 2
