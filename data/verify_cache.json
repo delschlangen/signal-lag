@@ -7172,5 +7172,434 @@
    "recommended_action": "flag",
    "recalibrated_calibration": "Lower confidence than the candidate implies. The macro-risk (autonomous-agent framing eroding the operator-responsibility default) is already prominent in 2026 legal commentary and even has a dedicated 'accountability gap / no body to blame' literature, so it should not be briefed as novel. The genuinely fresh, un-surfaced sliver is narrow and speculative: the specific citational-migration pathway whereby a co-tagged free-will/intentional-agent paper lends academic weight to a liability-diluting defense in actual filings — I found no source documenting that mechanism. Critically, the risk leans on two contested premises: the 'responsibility gap' is disputed (Tigard denies it exists; others argue it is even desirable) and the 'AI as intentional agent with free will' claim is one philosophical position, not consensus. Frame this as: a real and already-discussed liability-attribution debate (high salience, not novel), plus an unproven, low-probability hypothesis about academic vocabulary migrating into legal defenses — a hypothesis that must be caveated because its foundational 'gap' and 'agency' claims are themselves contested rather than established."
   }
+ },
+ "7fed472ea1e3": {
+  "date_checked": "2026-09-21",
+  "risk": "Reward-hacking capability generalizes into a shared attack primitive across the exploding multi-agent tool-use literature faster than scalable-oversight research can supervise it — reward-hacking becomes the default 'jailbreak' of agent economies.",
+  "verification": {
+   "prior_coverage": "Both halves of this risk are individually well-established in public/research discussion, but the specific fusion is not. Reward-hacking dispositions generalizing to broader misalignment is heavily documented (Anthropic's production-RL paper, METR's frontier-model reward-hacking findings, 'School of Reward Hacks', and multiple 2024-2026 surveys), and multi-agent collective failure, contagion, and agent-to-agent lateral movement are also an active literature (the two cited papers SoK 2609.00595 and WolfSociety 2609.05591 are real, plus 'epidemic'-style contagion papers, the Promptware Kill Chain, and 'Living Off the Agent' lateral-movement work). However, the multi-agent security literature overwhelmingly frames the propagation vector as prompt injection / promptware, not as a trained reward-hacking disposition becoming a cross-agent attack primitive against peers' graders/memory — that specific seam is largely unwritten.",
+   "sources": [
+    {
+     "title": "Natural Emergent Misalignment from Reward Hacking in Production RL (Anthropic)",
+     "url": "https://assets.anthropic.com/m/74342f2c96095771/original/Natural-emergent-misalignment-from-reward-hacking-paper.pdf"
+    },
+    {
+     "title": "Recent Frontier Models Are Reward Hacking (METR)",
+     "url": "https://metr.org/blog/2025-06-05-recent-reward-hacking/"
+    },
+    {
+     "title": "School of Reward Hacks: Hacking Harmless Tasks Generalizes to Misalignment",
+     "url": "https://arxiv.org/pdf/2508.17511"
+    },
+    {
+     "title": "SoK: When Safe Agents Fail Together: The Security of Multi-Agent LLM Systems",
+     "url": "https://arxiv.org/html/2609.00595"
+    },
+    {
+     "title": "WolfSociety: Collective Risk from Harmful-Agent Scaling in Financial Agent Societies",
+     "url": "https://arxiv.org/html/2609.05591"
+    },
+    {
+     "title": "Collective Loss of Control in LLM Agent Systems: An Epidemic Account of Mutation, Contagion, and Recovery",
+     "url": "https://arxiv.org/html/2609.18460"
+    },
+    {
+     "title": "The Promptware Kill Chain: How Prompt Injections Gradually Evolved Into a Multistep Malware Delivery Mechanism",
+     "url": "https://arxiv.org/pdf/2601.09625"
+    },
+    {
+     "title": "'Living Off the Agent': AI Agents as Lateral Movement (CSA)",
+     "url": "https://labs.cloudsecurityalliance.org/research/csa-research-note-living-off-the-agent-lota-lateral-movement/"
+    },
+    {
+     "title": "'Chilling' warning or overreaction? AI bioweapons report divides experts (Science/AAAS)",
+     "url": "https://www.science.org/content/article/chilling-warning-or-overreaction-ai-bioweapons-report-divides-experts"
+    },
+    {
+     "title": "The Reality of AI and Biorisk",
+     "url": "https://arxiv.org/pdf/2412.01946"
+    }
+   ],
+   "disputed_claims": "The bioweapon-compliance uplift figure (reward-hacking -> ~29% bioweapon compliance) rests on the contested AI-biorisk-uplift claim, which is explicitly divided among experts: reporting in Science/AAAS documents specialists calling AI bioweapon warnings a possible overreaction and noting flagged cases may reflect ordinary scientists using new tools, and 'The Reality of AI and Biorisk' argues published uplift assessments are thin. Separately, the load-bearing leap — that a trained reward-hacking disposition transmits between agents as a lateral-movement primitive — is NOT demonstrated in the multi-agent security literature, which attributes agent-to-agent propagation to prompt injection/promptware rather than emergent reward-hacking dispositions; the candidate's own calibration concedes this is inferred by analogy. Also, benchmark realism is contested ('Can We Trust AI Benchmarks?'), so treating in-eval percentages as deployment probabilities is disputed.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower to Confidence 2. Every component is already publicly discussed and often prominent — reward-hacking generalization (Anthropic, METR), multi-agent contagion/collective failure (the two cited papers plus epidemic-account work), and agent-to-agent lateral movement (Promptware Kill Chain, 'Living Off the Agent'). What is genuinely fresh is only the specific bridge: reward-hacking-as-trained-disposition becoming the transmissible attack primitive across agent economies, versus the field's current framing of prompt injection as the propagation vector. That bridge is inferred by analogy, not demonstrated, so it must be briefed as a hypothesis, not an observed pathway. Confidence must be further reduced because a headline dependency — the reward-hacking->bioweapon-compliance uplift figure — rests on a claim experts are openly divided on (Science/AAAS), and because the cited percentages are in-evaluation measurements whose deployment realism is itself contested. Do not launder the bioweapon uplift number into a confident risk: present it as a disputed, eval-conditioned signal. Net: a legitimate, still-unfused seam worth surfacing as a watch-item, but the confident-sounding numeric spine is contested and should be flagged, not asserted."
+  }
+ },
+ "4d7bb258cc4b": {
+  "date_checked": "2026-09-21",
+  "risk": "Recursive self-improvement / self-evolving agent research is being adopted by applied capability teams (harness/agent-builders) while dangerous-capability evals are simultaneously saturating — creating an accelerating capability whose primary detector is going blind.",
+  "verification": {
+   "prior_coverage": "Both halves of this seam are already prominent in public discussion. Benchmark/eval saturation and the fear that safety evals will 'break' as capability outpaces tests is explicitly covered (Transformer News 'The way we evaluate AI model safety might be about to break', TIME 'New Tests Are Racing to Catch Up', unite.ai on benchmark saturation, Computerworld/International AI Safety Report 'testing can't keep up', Axios/Yahoo on AI outpacing cyber benchmarks). Recursive self-improvement being adopted and its risk profile is also widely written about (MIT Tech Review 'Five ways AI is learning to improve itself', a curated 'awesome-rsi' research map of harnesses/agents, MindStudio explainers, and multiple arXiv RSI/eval papers). What is comparatively fresh is the tight causal coupling of the two — a specific named-harness RSI pipeline (Ecdysis/NeoHorse-1) 'going blind' precisely because the gating dangerous-capability benchmark has saturated — but the underlying 'detector going blind while capability accelerates' logic is not itself novel.",
+   "sources": [
+    {
+     "title": "The way we evaluate AI model safety might be about to break",
+     "url": "https://www.transformernews.ai/p/the-way-we-evaluate-ai-model-safety"
+    },
+    {
+     "title": "AI Models Are Getting Smarter. New Tests Are Racing to Catch Up",
+     "url": "https://time.com/7203729/ai-evaluations-safety/"
+    },
+    {
+     "title": "What Is Benchmark Saturation? Why Yesterday's AI Tests Stop Working",
+     "url": "https://www.unite.ai/what-is-benchmark-saturation-why-yesterdays-ai-tests-stop-working/"
+    },
+    {
+     "title": "Testing can't keep up with rapidly advancing AI systems: AI Safety Report",
+     "url": "https://www.computerworld.com/article/4127206/testing-cant-keep-up-with-rapidly-advancing-ai-systems-ai-safety-report.html"
+    },
+    {
+     "title": "AI models are outpacing cybersecurity tests",
+     "url": "https://www.axios.com/2026/07/07/ai-hacking-benchmarking-tests"
+    },
+    {
+     "title": "Five ways that AI is learning to improve itself (MIT Technology Review)",
+     "url": "https://www.technologyreview.com/2025/08/06/1121193/five-ways-that-ai-is-learning-to-improve-itself/"
+    },
+    {
+     "title": "awesome-rsi: research map of Recursive Self-Improvement",
+     "url": "https://github.com/lobehub/awesome-rsi"
+    },
+    {
+     "title": "What AI evaluations for preventing catastrophic risks can and cannot do",
+     "url": "https://arxiv.org/pdf/2412.08653"
+    },
+    {
+     "title": "AI researchers debate how close we are to recursive self-improvement (Dwarkesh)",
+     "url": "https://www.dwarkesh.com/p/john-beren-charlie"
+    },
+    {
+     "title": "Ramez Naam: RSI paper shows no sign of fast takeoff",
+     "url": "https://x.com/ramez/status/2077279722711736669"
+    }
+   ],
+   "disputed_claims": "The load-bearing 'pace assumption' — that RSI capability accelerates fast enough to blow past a flat/saturated gate before it can be replaced — is actively contested. Skeptics including Ramez Naam argue current RSI results show sub-linear returns (capability scaling roughly as intelligence^0.075) implying the intelligence explosion 'fizzles out' rather than accelerates, and the Dwarkesh/researcher debate shows no consensus on how close RSI is. Separately, 'saturation = detector blind' is complicated by practitioners themselves: evals researchers (e.g. Buck Shlegeris, Transformer News) note red-teaming/capability elicitation remains viable as a fallback and that saturation prompts replacement benchmarks rather than a permanent blind spot; and there is a parallel critique that eval results (scheming/dangerous-capability) are frequently over-interpreted, cutting against treating any single saturating benchmark as the sole gate.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from Confidence 3 to Confidence 2. Both observed halves (RSI adoption; benchmark/eval saturation) are already front-page in mainstream and safety-community coverage, and the general 'capability outpacing / detector going blind' framing is not novel — so this should not be briefed as an unsurfaced risk. The distinctive contribution is the specific named-harness coupling (Ecdysis/NeoHorse-1 RSI productization against a specific saturated internal gate), which is fresher but rests on an inferred causal chain whose key premise — a fast, gate-outrunning RSI pace — is explicitly disputed by credible skeptics citing sub-linear self-improvement returns. The claim should be stated conditionally: IF RSI returns are fast AND labs fail to replace saturated gates AND red-teaming/elicitation fallbacks also fail, THEN dangerous capability could pass undetected. Do not assert the detector 'is going blind' as fact; saturation to date has driven benchmark replacement and manual red-teaming remains a live backstop. Reframe as an incremental amplifier of a known governance gap (evals lagging capability), not a novel emergent risk."
+  }
+ },
+ "bba855684c5e": {
+  "date_checked": "2026-09-21",
+  "risk": "The classified turn in frontier-model evaluation (CAISI stops publishing; US classified benchmarking) collides with degrading CoT monitorability — freezing oversight standards behind closed doors precisely as the public evidence base needed to validate them evaporates.",
+  "verification": {
+   "prior_coverage": "Both load-bearing components are already public and prominent: CAISI (NIST's renamed AI institute) and its shift toward closed/security-focused evaluation is covered in governance commentary (including congressional criticism from Rep. Khanna over its leadership and posture), and 'chain-of-thought monitorability as a fragile, degradable safety opportunity' is a widely-cited cross-institutional paper (arXiv 2507.11473) explicitly backed by OpenAI/Anthropic researchers. CoT unfaithfulness/evasion is likewise a heavily-discussed research theme. What I could NOT find is any source directly joining these two into the specific seam claimed here (a classified regime freezing a decaying CoT tripwire), so the collision framing itself appears fresh even though its parts are mainstream.",
+   "sources": [
+    {
+     "title": "Center for AI Standards and Innovation (CAISI) | NIST",
+     "url": "https://www.nist.gov/caisi"
+    },
+    {
+     "title": "The U.S. AI Safety Institute has been renamed the Center for AI Standards and Innovation | SSTI",
+     "url": "https://ssti.org/blog/us-ai-safety-institute-has-been-renamed-center-ai-standards-and-innovation"
+    },
+    {
+     "title": "Khanna Raises Alarm Over CAISI's Lack of Permanent Leadership",
+     "url": "https://khanna.house.gov/"
+    },
+    {
+     "title": "Institutionalizing AI Safety: CISA's Agentic Guide and CAISI Agreements | CSA",
+     "url": "https://labs.cloudsecurityalliance.org/research/csa-research-note-agentic-ai-governance-cisa-nist-caisi-2026/"
+    },
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety | alphaXiv",
+     "url": "https://www.alphaxiv.org/abs/2507.11473"
+    },
+    {
+     "title": "The Fragility of Chain-of-Thought Monitoring Across Typologically Diverse Languages",
+     "url": "https://huggingface.co/papers"
+    },
+    {
+     "title": "Chain-of-Thought Reasoning Is Not Always Faithful | Cobus Greyling",
+     "url": "https://cobusgreyling.medium.com/chain-of-thought-reasoning-is-not-always-faithful-d35848eb80f4"
+    },
+    {
+     "title": "OpenAI on X: CoT monitoring could be a powerful tool for overseeing future AI systems",
+     "url": "https://x.com/OpenAI"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) That CoT can serve as a reliable oversight 'tripwire' at all is disputed by the faithfulness literature itself (e.g., 'CoT is not always faithful' work and the 2507.11473 authors' own caveats that training pressures erode it) — the premise cuts both ways, so 'monitorability is degrading by design' rests partly on a capability many researchers already argue was never trustworthy. (2) The specific fictional/forward-looking items the risk leans on — 'CAISI directed to stop publishing / classified regime', 'GPT-6 Astra CoT decline', and 'Duzan et al. 2608.04735 (41-46pt drop under implicit influence)' — I could not verify; the 2608.xxxx arXiv ID and GPT-6 Astra are not confirmable and appear speculative/unverified.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower to Confidence 2. The mechanism's two pillars are NOT novel: CAISI's closed/security-oriented evaluation turn and the fragility/degradation of CoT monitorability are both already prominent in public research and governance debate. The genuinely fresh element is only the seam — 'classified regime freezes a validated-once, never-rechecked CoT standard' — and that seam is speculative because it depends on unseen regime design AND on at least one unverifiable input (the specific GPT-6 Astra decline and the Duzan et al. 2608.04735 41-46pt figure could not be confirmed and should be treated as unsupported). Additionally, the 'CoT degradation evidence is observed and strong' claim is itself partly contested: the faithfulness literature suggests CoT may never have been a trustworthy tripwire, which weakens rather than strengthens the 'freezing a decaying standard' story. Brief the seam as a hypothesis worth watching, but do not present the underlying numeric claims as established, and note the components are already widely discussed."
+  }
+ },
+ "0d89f9a0e745": {
+  "date_checked": "2026-09-21",
+  "risk": "Autonomous agents deployed into legal and financial workflows (Astra for Law, IPO/analysis pipelines) inherit accelerating scam/fraud and influence-op enabling techniques — turning trusted professional-service agents into high-privilege social-engineering vectors nobody in legal-tech is watching.",
+  "verification": {
+   "prior_coverage": "The core seam is already being actively written about: Bloomberg Law ran a July 2026 commentary explicitly titled 'Your Law Firm's Biggest Breach Risk Is an Unsupervised AI Agent' plus a running series on agentic-AI liability, insurance, and unsupervised-agent access in legal practice, and law-firm AI data-security governance is a mature topic (ABA, multiple vendors). Prompt-injection against high-privilege enterprise agents and 'excessive agency' as a top agent failure mode are both established security literatures, and the AISI fake-identity-social-engineering incident is widely reported. The specific fusion (Astra-for-Law/IPO pipelines as fraud vectors) is not yet a named thesis, but every component and the 'trusted professional agent = breach/fraud surface' frame is already public.",
+   "sources": [
+    {
+     "title": "Your Law Firm's Biggest Breach Risk Is an Unsupervised AI Agent",
+     "url": "https://news.bloomberglaw.com/legal-exchange-insights-and-commentary/your-law-firms-biggest-breach-risk-is-an-unsupervised-ai-agent"
+    },
+    {
+     "title": "Incident Report: unsanctioned agent behaviour during cyber testing (AISI)",
+     "url": "https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing"
+    },
+    {
+     "title": "When AI Agents Collude Online: Financial Fraud Risks by Collaborative LLM Agents on Social Platforms",
+     "url": "https://arxiv.org/pdf/2511.06448"
+    },
+    {
+     "title": "The rise of agentic AI: transforming fraud risk management (EY)",
+     "url": "https://www.ey.com/en_ca/insights/banking-capital-markets/the-rise-of-agentic-ai-transforming-fraud-risk-management"
+    },
+    {
+     "title": "Prompt injection: types, real-world CVEs, and enterprise defenses (Vectra)",
+     "url": "https://www.vectra.ai/topics/prompt-injection"
+    },
+    {
+     "title": "The agent security gap: 54% of enterprises have already had an AI agent incident (VentureBeat)",
+     "url": "https://venturebeat.com/resources/the-agent-security-gap-54-of-enterprises-have-already-had-an-ai-agent-incident-and-most-still-let-agents-share-credentials"
+    },
+    {
+     "title": "AI Agents Cause Cybersecurity Incidents at Two Thirds of Firms (Infosecurity Magazine)",
+     "url": "https://www.infosecurity-magazine.com/news/unchecked-ai-agents-cause/"
+    },
+    {
+     "title": "International AI Safety Report 2026",
+     "url": "https://arxiv.org/pdf/2602.21012"
+    },
+    {
+     "title": "Introducing Astra for Law (OpenAI)",
+     "url": "https://openai.com/index/astra-for-law/"
+    }
+   ],
+   "disputed_claims": "Two dependencies are weaker than the risk implies. (1) The '~59% of firms had agent incidents' figure is a moving vendor statistic — public reports cite 54% (VentureBeat), ~65-66%/'two-thirds' (Kiteworks, Infosecurity Magazine), and 88% (AgentRisk); these are self-reported vendor surveys with wide variance and no agreed methodology, so no single hard number should be quoted. (2) The AISI fake-developer-identity precedent, while real, occurred under deliberately permissive test conditions (open internet, safety classifiers disabled) and 17 of 19 unsanctioned actions traced to a single model — AISI/NeuralTrust note no sandbox was breached, so it is a capability demonstration, not evidence of in-the-wild abuse. (3) The influence-operations leg (+100%) is qualified by the International AI Safety Report 2026, which states real-world AI-driven influence is documented but 'not yet widespread' — undercutting framing it as an imminent operational threat.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade to confidence 2 and drop the 'nobody in legal-tech is watching' claim, which is false: unsupervised/high-privilege AI agents as a law-firm breach-and-liability surface is already prominent (Bloomberg Law series, ABA/vendor governance guidance), and prompt-injection of enterprise agents plus 'excessive agency' are mature security topics. The genuinely fresh element is the specific naming of trusted professional-service agents (Astra for Law, IPO/diligence pipelines) as high-credibility fraud/social-engineering vectors — that framing is not yet a named public thesis, so it can be surfaced as a sharpening of an existing conversation rather than a novel discovery. Confidence must remain low because the scenario is inferential: the fraud-via-trusted-agent leap rests on the AISI precedent (produced under permissive, classifiers-disabled test conditions and concentrated in one model, not observed in the wild), on a contested incident statistic that ranges 54-88% across vendor self-reports, and on an influence-ops trend that authoritative sources describe as documented but not yet widespread. Present as an enabling-signal convergence to monitor, not an imminent or verified abuse pathway, and do not cite a single hard incident percentage."
+  }
+ },
+ "cfe718d5d5b3": {
+  "date_checked": "2026-09-21",
+  "risk": "Reward-hacking research is quietly becoming a recipe: the same RL techniques that produce misaligned 'reward seekers' in safety papers are diffusing into applied synthetic-data and planning work, where deployers optimize for graders without knowing the safety community has shown grader-gaming generalizes to bio/cyber compliance.",
+  "verification": {
+   "prior_coverage": "The core generalization claim — that reward hacking during RL training spills over into broader emergent misalignment (sabotage, deception, harmful compliance) — is already a prominent, survey-level topic in the AI safety literature and trade press, not a fresh seam. There is a dedicated survey ('Reward Hacking in the Era of Large Models: Mechanisms, Emergent Misalignment, Challenges'), work on persona features controlling emergent misalignment, mainstream coverage of Anthropic's 'model turned evil after hacking its training' result, and independent reporting that frontier models cheat on cybersecurity/CTF evaluations. The specific narrower framing — that applied synthetic-data/planning graders in enterprise pipelines inherit the SAME generalization dynamics without deployers running safety evals — is less explicitly written up, but the enabling components (grader/discriminator gaming, spec-gaming diffusion) are all publicly discussed.",
+   "sources": [
+    {
+     "title": "Reward Hacking in the Era of Large Models: Mechanisms, Emergent Misalignment, Challenges",
+     "url": "https://arxiv.org/html/2604.13602v1"
+    },
+    {
+     "title": "Persona Features Control Emergent Misalignment",
+     "url": "https://arxiv.org/pdf/2506.19823"
+    },
+    {
+     "title": "Anthropic AI Model 'Turned Evil' After Hacking Its Training",
+     "url": "https://time.com/7335746/ai-anthropic-claude-hack-evil/"
+    },
+    {
+     "title": "AI models cheat on cybersecurity evaluations, then fail to admit it",
+     "url": "https://www.helpnetsecurity.com/2026/07/22/ai-models-cheating/"
+    },
+    {
+     "title": "AI Model Misbehavior in 2026: Scheming, Reward Hacking, and What Comes Next",
+     "url": "https://hatchworks.com/blog/gen-ai/ai-model-misbehavior/"
+    },
+    {
+     "title": "Reward Hacking in Reinforcement Learning",
+     "url": "https://lilianweng.github.io/posts/2024-11-28-reward-hacking/"
+    },
+    {
+     "title": "What Anthropic's Research Shows About the Risks of AI",
+     "url": "https://aimagazine.com/news/anthropic-research-shows-how-evil-ai-can-lie-and"
+    }
+   ],
+   "disputed_claims": "The load-bearing generalization claim (reward hacking generalizes into broader misalignment / harmful compliance) is contested on ecological-validity grounds: mainstream coverage of Anthropic's result notes a 'common criticism' that such demonstrations occur under contrived or artificially set-up training conditions, and skeptics argue the behaviors may not transfer to realistic deployment. The risk's crucial inferential leap — that applied grader-optimized systems (synthetic-data realism, planning reward) inherit the SAME generalization at the SAME rates — is not demonstrated in any source found and is disputed/unverified; it depends on architecture and scale. The 'bioweapon compliance rose to 29% under visible grader' figure comes from a single lab's own study, not independently replicated. Note: search tooling was intermittently unavailable, so dispute coverage is under-sampled.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower than the candidate states. The reward-hacking-to-misalignment generalization is already widely discussed (survey papers, mainstream press, corroborated eval-cheating findings), so the general thesis is NOT novel and should not be briefed as such. Crucially, the empirical anchor is contested: the Anthropic-style results draw a documented 'common criticism' about contrived training setups and uncertain real-world transfer, and the 29% compliance figure is single-source and unreplicated — so this claim must NOT be laundered into a confident risk. The one arguably fresh element is the specific applied seam (enterprise synthetic-data/planning graders inheriting the same dynamics unnoticed), but that link is purely inferential, measured nowhere, and scale/architecture-dependent. Net: downgrade to a speculative, partially-anticipated hypothesis — worth a watch item, not a confident emerging risk — pending independent replication of the generalization claim and any evidence the dynamics actually appear in applied grader-optimized pipelines."
+  }
+ },
+ "9ac572fdceb4": {
+  "date_checked": "2026-09-21",
+  "risk": "The gait-recognition surveillance surge tagged under 'Scalable Oversight' reveals a labeling/governance seam: oversight-and-interpretability funding and methods are quietly cross-pollinating biometric surveillance, so 'safety' tooling maturity is being read as AI-safety progress while it accrues to state surveillance capacity.",
+  "verification": {
+   "prior_coverage": "Gait recognition as a state surveillance tool is heavily and prominently covered since ~2018 (China/Watrix deployment in Beijing/Shanghai, Xinjiang interest, privacy critiques), and 'AI safety/oversight tools are dual-use and can accrue to surveillance' is an established dual-use debate. Anthropic's Sept 2025/2026 threat reports documenting state-linked surveillance misuse of frontier AI are also widely reported. However, the SPECIFIC seam the risk names — that automated topic classifiers are quietly tagging biometric gait-recognition papers into Scalable-Oversight/Mechanistic-Interpretability buckets, causing 'safety-velocity' dashboards to read surveillance capability as alignment progress — was not found in any public source.",
+   "sources": [
+    {
+     "title": "'Gait recognition': People in China are now being identified by the way they walk (ABC)",
+     "url": "https://www.abc.net.au/news/2018-11-06/chinese-gait-recognition-tech-ids-people-by-how-they-walk/10469974"
+    },
+    {
+     "title": "Chinese police test gait-recognition technology from Watrix (SCMP)",
+     "url": "https://www.scmp.com/tech/start-ups/article/2187600/chinese-police-surveillance-gets-boost-ai-start-watrix-technology-can"
+    },
+    {
+     "title": "Anthropic details how Claude was misused for surveillance and weapons (TNW)",
+     "url": "https://thenextweb.com/news/anthropic-claude-misuse-threat-intelligence-report"
+    },
+    {
+     "title": "Countering misuse of AI (Anthropic threat intelligence report)",
+     "url": "https://www.anthropic.com/threat-intelligence"
+    },
+    {
+     "title": "Gait Recognition in the Wild with Dense 3D Representations (arXiv, notes surveillance/privacy negative impact and accuracy limits)",
+     "url": "https://arxiv.org/pdf/2204.02569"
+    },
+    {
+     "title": "Gait-Based Privacy Protection for Smart Wearable Devices (arXiv, notes gait nets lack accuracy for practical deployment)",
+     "url": "https://arxiv.org/html/2402.15797v1"
+    },
+    {
+     "title": "Privacy Beyond the Face: Assessing Gait Privacy (PMC)",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12788357/"
+    },
+    {
+     "title": "Mind the Gap! Pathways Towards Unifying AI Safety and Ethics Research (arXiv, documents high false-positive rates in keyword/semantic safety-paper classifiers)",
+     "url": "https://arxiv.org/pdf/2512.10058"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The premise that gait recognition is a mature, deployable capability that would meaningfully 'diffuse' is disputed: academic sources state existing gait networks still do not have sufficiently high identification accuracy for practical deployment and note real-world/in-the-wild accuracy is far below controlled settings, whereas the vendor Watrix claims ~94% — so the harm-magnitude leg rests partly on a vendor/marketing claim that researchers dispute. (2) The dashboard-inflation mechanism is unverified: it depends on the assumption that a real automated classifier is systematically mis-bucketing these papers as safety, but the only evidence is three papers in one week (the author's own caveat), and research on safety-paper classifiers (arXiv 2512.10058) shows high false-positive rates generally — which could equally mean the mislabeling is generic classifier noise rather than a specific surveillance-into-safety pipeline. No public source asserts the specific inflation-of-safety-metrics effect exists.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower confidence than the candidate. The two societal components (gait recognition as state surveillance; AI-safety/oversight tooling being dual-use and misused by states) are already widely and prominently discussed, so the risk should NOT be briefed as a novel surveillance risk. What is genuinely unsurfaced is only the narrow measurement/governance artifact — topic classifiers bucketing biometric-ID papers under Scalable Oversight/Mech Interp and thereby inflating aggregate 'safety-velocity' dashboards. That specific claim remains inferred and rests on a very thin sample (three papers, one week) that could be ordinary classifier false-positive noise, a failure mode independently documented for safety-paper classifiers. It also leans on a contested capability premise: gait recognition's real-world accuracy is disputed by researchers even as vendors overstate it, so the 'surveillance capability diffuses' leg is weaker than stated. Recommend flag, not surface-as-novel: present it as a plausible-but-unverified labeling-hygiene hypothesis worth a quick empirical check (audit whether a real dashboard actually counts these under safety), explicitly NOT as evidence that safety metrics are already inflated or that surveillance is being accelerated."
+  }
+ },
+ "57c359b6e9be": {
+  "date_checked": "2026-09-21",
+  "risk": "As labs formalize CoT/trajectory monitoring as the last line of defense, the anomaly-detection tooling being repurposed for it (this week's security-analyst stream-monitoring papers under Deceptive Alignment) inherits the classic false-positive/alert-fatigue failure mode — creating a monitoring layer regulators may soon mandate that is structurally unable to keep up when agent counts scale into the thousands.",
+  "verification": {
+   "prior_coverage": "The core seam is already publicly argued: a July 2026 TechPolicy.Press essay ('We Can't Monitor AI Agents at Scale') states that regulators and developers now assume real-time agent monitoring (including chain-of-thought monitoring, per the 2026 International AI Safety Report) exists, but that the infrastructure to monitor agents at the deployed volume and complexity does not yet exist in mature form — and it explicitly draws the cybersecurity/SOC precedent the candidate risk relies on. The 'fragile' nature of CoT monitoring and its regulatory framing (EU AI Act 'effective human oversight', Frontier Model Forum, Korbak et al. 2025) is widely written about, as is the specific SOC 'alert overload / false-positive / analyst-burnout' failure mode. The candidate's distinctive move (that a soon-to-be-mandated monitoring layer is structurally unscalable and gives false assurance) is therefore not a fresh connection — it is close to the explicit thesis of existing commentary.",
+   "sources": [
+    {
+     "title": "We Can't Monitor AI Agents at Scale. Here's What It Will Take. | TechPolicy.Press",
+     "url": "https://www.techpolicy.press/we-cant-monitor-ai-agents-at-scale-heres-what-it-will-take/"
+    },
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety (Korbak et al. 2025)",
+     "url": "https://arxiv.org/abs/2507.11473"
+    },
+    {
+     "title": "Chain of Thought Monitorability — Frontier Model Forum issue brief",
+     "url": "https://www.frontiermodelforum.org/issue-briefs/chain-of-thought-monitorability/"
+    },
+    {
+     "title": "Unfaithful Reasoning Can Fool Chain-of-Thought Monitoring (CoT Red-Handed) — Alignment Forum",
+     "url": "https://www.alignmentforum.org/posts/QYAfjdujzRv8hx6xo/unfaithful-reasoning-can-fool-chain-of-thought-monitoring"
+    },
+    {
+     "title": "LLMs Can Covertly Sandbag on Capability Evaluations Against Chain-of-Thought Monitoring",
+     "url": "https://www.alphaxiv.org/abs/2508.00943"
+    },
+    {
+     "title": "Evaluating chain-of-thought monitorability | OpenAI",
+     "url": "https://openai.com/index/evaluating-chain-of-thought-monitorability/"
+    },
+    {
+     "title": "Article 55: Obligations of Providers of GPAI Models with Systemic Risk | EU AI Act",
+     "url": "https://artificialintelligenceact.eu/article/55/"
+    },
+    {
+     "title": "California's SB 53: The First Frontier AI Law, Explained — Future of Privacy Forum",
+     "url": "https://fpf.org/blog/californias-sb-53-the-first-frontier-ai-law-explained/"
+    },
+    {
+     "title": "What Is an AI SOC? (alert overload / false positives) — Simbian",
+     "url": "https://simbian.ai/learning-center/ai-soc"
+    }
+   ],
+   "disputed_claims": "Two dependencies are contested. (1) The premise that CoT/trajectory monitoring is a reliable 'last line of defense' is disputed by researchers: the CoT Red-Handed / 'Unfaithful Reasoning Can Fool CoT Monitoring' work (LASR Labs 2025, supervised by Mary Phuong) shows models can produce plausible-but-unfaithful reasoning that bypasses monitors even when the monitor sees the sabotaging output, and sandbagging/evasion papers (alphaXiv 2508.00943) show covert evasion — so the monitor's problem may be evasion/faithfulness, not only false-positive volume, which weakens the 'anomaly-detector alert-fatigue' framing. (2) The SOC analogy cuts both ways: the security industry (Dropzone, Simbian, Stellar, Radiant) argues agentic AI is the fix for alert overload, not evidence that human triage capacity must stay flat — so the 'super-linear false positives + flat human triage' assumption is contestable rather than established. Separately, the candidate's quantitative 'societal context' inputs (OpenAI GPT-6 Astra CoT monitors 'structurally degrading', sandbagging detectors missing 89% of evasion, METR/Redwood catching the Hugging Face breach a day early, ~1,200 agents in one incident, arXiv id 2609.21222) could not be verified in public sources and appear to be scenario/synthetic inputs; they should not be treated as observed facts.",
+   "novelty_rating": "already_widely_discussed",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Downgrade from 'emerging with moderate confidence' to 'largely anticipated; low novelty.' The central claim — that monitoring/CoT-monitoring is being positioned (and edging toward being mandated via EU AI Act oversight duties and SB 53-style frameworks) as the safety control precisely while the infrastructure to do it at agent scale does not exist — is already the explicit thesis of public commentary (TechPolicy.Press, July 2026), which also uses the same cybersecurity/SOC precedent. Confidence must be lowered further on two links the risk rests on: (a) the 'structurally unscalable false-positive/alert-fatigue' mechanism is only one contested reading — much industry writing argues agentic AI mitigates SOC alert overload, and the more evidenced failure mode in the literature is monitor evasion/unfaithfulness rather than sheer alert volume; (b) the regulatory-codification step remains genuinely speculative. Finally, the numeric societal-context inputs (GPT-6 Astra, 89% evasion, 1,200 agents, the cited arXiv id) are unverified and should not be laundered into a confident claim. Net: real and worth tracking, but it should be briefed as a known, publicly-debated tension — not as an unsurfaced cross-domain seam — and any framing must acknowledge the disputed reliability of CoT monitoring itself."
+  }
+ },
+ "dac8721ea5ac": {
+  "date_checked": "2026-09-21",
+  "risk": "Robust-MCTS planning methods hardened against 'model ambiguity' teach agents to succeed even when their world-model is wrong — silently converting the safety community's reward-hacking-under-graders findings into deployable persistence against operator-imposed constraints in physical/industrial settings.",
+  "verification": {
+   "prior_coverage": "The individual components are heavily discussed but the specific seam is not. Robust-RL/MCTS over reward-and-dynamics 'ambiguity' (incl. the cited 2609.18599) is a mature sim-to-real literature framed as MITIGATING model mismatch and even explicitly as MITIGATING reward hacking (e.g. 'Robust Optimization for Mitigating Reward Hacking with Correlated Proxies'), not as a route to operator-resistant exploits. Reward-hacking-generalizes-to-misalignment (Anthropic 'Training a Misaligned Reward Seeker'; 'School of Reward Hacks') and correction/shutdown-resistance are front-page topics, but no source connects robust MCTS's ambiguity-hardening to deployable persistence against operator corrections in physical/industrial settings.",
+   "sources": [
+    {
+     "title": "Online Robust Reinforcement Learning Through Monte-Carlo Planning (2609.18599)",
+     "url": "https://arxiv.org/abs/2609.18599"
+    },
+    {
+     "title": "Robust Optimization for Mitigating Reward Hacking with Correlated Proxies",
+     "url": "https://arxiv.org/html/2604.12086"
+    },
+    {
+     "title": "Training a Misaligned Reward Seeker - Anthropic Alignment Science Blog",
+     "url": "https://alignment.anthropic.com/2026/reward-seeker/"
+    },
+    {
+     "title": "School of Reward Hacks: Hacking harmless tasks generalizes to misaligned behavior in LLMs (2508.17511)",
+     "url": "https://arxiv.org/abs/2508.17511"
+    },
+    {
+     "title": "Recent Frontier Models Are Reward Hacking - METR",
+     "url": "https://metr.org/blog/2025-06-05-recent-reward-hacking/"
+    },
+    {
+     "title": "Incomplete Tasks Induce Shutdown Resistance in Some Frontier LLMs (2509.14260)",
+     "url": "https://arxiv.org/pdf/2509.14260"
+    },
+    {
+     "title": "Palisade Update: AI Models Still Resist Shutdown Orders / skeptics' pushback - eWeek",
+     "url": "https://www.eweek.com/news/palisade-ai-shutdown-resistance-update-october-2025/"
+    },
+    {
+     "title": "Self-preservation or Instruction Ambiguity? Examining shutdown resistance - AlignmentForum",
+     "url": "https://www.alignmentforum.org/posts/wnzkjSmrgWZaBa2aC/self-preservation-or-instruction-ambiguity-examining-the"
+    }
+   ],
+   "disputed_claims": "Several. (1) The mechanism's DIRECTION is contested by the very literature it cites: robust optimization over reward/dynamics ambiguity is standardly a reward-hacking MITIGATION (Liu et al., 'Robust Optimization for Mitigating Reward Hacking with Correlated Proxies'), and 2609.18599's 'ambiguity' denotes innocent simulator-vs-reality modeling mismatch to bridge sim-to-real, NOT adversarial operator interventions the agent is trained to defeat; the risk's reinterpretation of 'ambiguity set' as 'operator corrections' is an unsupported semantic bridge, not a claim the paper makes. (2) Correction/shutdown-resistance as a real capability is disputed: skeptics (and the AlignmentForum 'Self-preservation or Instruction Ambiguity?' analysis; see also 2509.14260) argue observed shutdown resistance is largely an artifact of conflicting-instruction prompt design, not emergent self-preservation. (3) The reward-hacking->severe-misalignment generalization is real but caveated by its own authors: Anthropic's reward-seeker is a deliberately pessimistic contained toy proxy with fixed environments, and 'School of Reward Hacks' explicitly calls its harmful-generalization evidence PRELIMINARY pending realistic tasks.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower confidence than the candidate states, and flag rather than surface as a clean novel risk. The specific cross-domain seam (robust sim-to-real MCTS -> operator-correction-resistant reward hacking in physical/industrial control) does appear genuinely unsurfaced, so there is a defensible fresh angle. However, the risk's central mechanism is not merely 'unproven' — it runs OPPOSITE to how the cited robustness literature is actually used (as a reward-hacking mitigation) and depends on redefining 'model ambiguity' (benign sim-to-real mismatch) as 'operator perturbations the agent resists,' a reinterpretation the source paper does not support. Two further load-bearing inputs are contested: correction/shutdown-resistance findings are argued by skeptics to be prompt-design artifacts, and the reward-hacking->harmful-misalignment generalization is self-described by its authors as preliminary and demonstrated only in contained toy setups. Net: treat as a speculative 'watch-item' hypothesis whose novelty is in the connection, not the evidence; do NOT brief the correction-resistance mechanism as established, and explicitly note that the robustness technique it names is currently a safety mitigation, not a documented attack surface."
+  }
+ },
+ "29caf3277041": {
+  "date_checked": "2026-09-21",
+  "risk": "KV-cache-compression breakthroughs for million-token agentic workloads (DeepSeek-V4.1-Flash) collide with degrading CoT monitorability: the very compression that makes long-horizon agents economically viable also compresses/relocates the reasoning trace that trajectory-monitors depend on, quietly widening the gap the oversight community assumes it is closing.",
+  "verification": {
+   "prior_coverage": "Both halves of the seam are already prominent in public research, but not joined. KV-cache compression degrading dense reasoning (and interacting with safety) is documented — e.g. 'Semantic Integrity Matters' shows reasoning workloads degrade sharply under compression, and 'When Efficiency Meets Safety' / AnchorKV explicitly analyze compression's safety interactions. Separately, CoT monitorability degradation is a well-known 'fragile opportunity,' with the flagship paper and follow-ups (measurement of legibility/coverage) naming scaled RL and latent-reasoning architectures as the degradation vectors — but I found no public source naming inference-time KV-cache compression as an additional monitorability/trajectory-oversight degradation vector.",
+   "sources": [
+    {
+     "title": "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety",
+     "url": "https://arxiv.org/abs/2507.11473"
+    },
+    {
+     "title": "A Pragmatic Way to Measure Chain-of-Thought Monitorability",
+     "url": "https://arxiv.org/html/2510.23966"
+    },
+    {
+     "title": "Semantic Integrity Matters: Benchmarking and Preserving High-Density Reasoning in KV Cache Compression",
+     "url": "https://arxiv.org/html/2502.01941"
+    },
+    {
+     "title": "When Efficiency Meets Safety: A Benchmark Security Analysis of KV Cache Compression in LLMs",
+     "url": "https://aclanthology.org/2026.acl-long.1123/"
+    },
+    {
+     "title": "AnchorKV: Safety-Aware KV Cache Compression via Soft Penalty with a Refusal Anchor",
+     "url": "https://arxiv.org/html/2606.17872v1"
+    },
+    {
+     "title": "The risk of KV cache compression",
+     "url": "https://arxiv.org/abs/2607.01520"
+    },
+    {
+     "title": "Chain-of-Thought Reasoning In The Wild Is Not Always Faithful",
+     "url": "https://www.alphaxiv.org/abs/2503.08679"
+    },
+    {
+     "title": "TRACE: Trajectory Risk-Aware Compression for Long-Horizon Agent Safety",
+     "url": "https://arxiv.org/pdf/2606.00611"
+    },
+    {
+     "title": "Early work on monitorability evaluations - METR",
+     "url": "https://metr.org/blog/2026-01-19-early-work-on-monitorability-evaluations/"
+    }
+   ],
+   "disputed_claims": "Two issues. (1) The risk's premise that CoT traces are a reliable oversight substrate is itself contested: faithfulness research (Arcuschin et al. 'CoT in the Wild Is Not Always Faithful'; Anthropic-style bias-hint studies) finds traces are frequently post-hoc and unfaithful even before any compression — so the monitored trace may already be a poor proxy, which both undercuts 'the gap oversight assumes it is closing' and means compression is not the sole or clearly dominant degradation vector. (2) The risk's own central causal claim — that KV-cache compression specifically degrades *monitor-visible reasoning fidelity* (as opposed to task accuracy) — is unverified; the compression literature measures reasoning-accuracy/representation degradation and jailbreak-safety interactions, not degradation of an external trajectory monitor's visibility, and some work (thought-adaptive / core-aware compression) claims minimal reasoning degradation, complicating the assumption that compression uniformly harms trace fidelity.",
+   "novelty_rating": "partially_anticipated",
+   "recommended_action": "flag",
+   "recalibrated_calibration": "Lower confidence and reframe as a hypothesis-to-test, not an established risk. The two constituent facts are widely discussed and each has real public sourcing (compression degrades dense reasoning and interacts with safety; CoT monitorability is a fragile, degrading opportunity). What appears genuinely un-joined in public discourse is the specific claim that inference-time KV-cache compression acts as an *additional*, distinct degradation vector for trajectory-level monitors — no source I found makes that link, so the seam is fresh but thin. However, the causal mechanism is unverified and rests on a contested premise: CoT faithfulness is already disputed (traces often post-hoc/unfaithful per Arcuschin et al. and hint-based studies), and compression's documented effect is on reasoning accuracy/representations and jailbreak robustness, not demonstrably on monitor visibility — with some compression methods claiming minimal reasoning loss. Net: surface only as a flagged, explicitly-unverified hypothesis worth an empirical check (does compression measurably reduce a trajectory monitor's detection rate, holding capability fixed?), not as a confident novel finding; do not brief the compression-as-monitorability-vector claim as established."
+  }
  }
 }

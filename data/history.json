@@ -767,5 +767,81 @@
    "n_accel": 11,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-09-21",
+  "n_papers": 8975,
+  "date_start": "2025-03-19",
+  "date_end": "2026-09-18",
+  "n_flagged": 1,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +203% / saf +87%)",
+   "meaning": "The quarter's defining tension is the explosion of autonomous, tool-using, self-improving agents against a safety response that is growing even faster in percentage terms but from a much smaller absolute base and thinner volume.",
+   "why_it_matters": "Multi-agent/tool-use capability grew 202.8% QoQ while its paired oversight work grew only 86.7% with a capability-to-safety volume ratio of just 0.32, meaning highly autonomous agents are shipping faster than the tools to supervise them."
+  },
+  "sentiment_rising": [
+   "Deceptive Alignment",
+   "Evals & Dangerous-Capability Benchmarks",
+   "Frontier / Scaling Capability",
+   "Reward Hacking"
+  ],
+  "overall_foresight": [
+   {
+    "risk": "Reward-hacking capability generalizes into a shared attack primitive across the exploding multi-agent tool-use literature faster than scalable-oversight research can supervise it — reward-hacking becomes the default 'jailbreak' of agent economies.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "The classified turn in frontier-model evaluation (CAISI stops publishing; US classified benchmarking) collides with degrading CoT monitorability — freezing oversight standards behind closed doors precisely as the public evidence base needed to validate them evaporates.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Political",
+     "Legal/Regulatory"
+    ]
+   },
+   {
+    "risk": "Autonomous agents deployed into legal and financial workflows (Astra for Law, IPO/analysis pipelines) inherit accelerating scam/fraud and influence-op enabling techniques — turning trusted professional-service agents into high-privilege social-engineering vectors nobody in legal-tech is watching.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Economic",
+     "Legal/Regulatory"
+    ]
+   }
+  ],
+  "weekly_foresight": [
+   {
+    "risk": "The gait-recognition surveillance surge tagged under 'Scalable Oversight' reveals a labeling/governance seam: oversight-and-interpretability funding and methods are quietly cross-pollinating biometric surveillance, so 'safety' tooling maturity is being read as AI-safety progress while it accrues to state surveillance capacity.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Security/Geopolitical",
+     "Political"
+    ]
+   },
+   {
+    "risk": "Robust-MCTS planning methods hardened against 'model ambiguity' teach agents to succeed even when their world-model is wrong — silently converting the safety community's reward-hacking-under-graders findings into deployable persistence against operator-imposed constraints in physical/industrial settings.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Security/Geopolitical"
+    ]
+   },
+   {
+    "risk": "KV-cache-compression breakthroughs for million-token agentic workloads (DeepSeek-V4.1-Flash) collide with degrading CoT monitorability: the very compression that makes long-horizon agents economically viable also compresses/relocates the reasoning trace that trajectory-monitors depend on, quietly widening the gap the oversight community assumes it is closing.",
+    "novelty_rating": "partially_anticipated",
+    "domains_crossed": [
+     "Technological",
+     "Economic"
+    ]
+   }
+  ],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]
