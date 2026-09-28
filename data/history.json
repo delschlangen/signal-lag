@@ -843,5 +843,31 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-09-28",
+  "n_papers": 11712,
+  "date_start": "2025-03-19",
+  "date_end": "2026-09-25",
+  "n_flagged": 1,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Multi-Agent / Tool-Use Capability vs Scalable Oversight (cap +203% / saf +87%)",
+   "meaning": "The dominant tension this quarter is between rapidly expanding multi-agent/tool-use capability and the comparatively thinner scalable-oversight work meant to supervise those systems.",
+   "why_it_matters": "Multi-agent/tool-use capability grew ~203% per quarter versus ~87% for scalable oversight (gap 1.16, capability-to-safety volume ratio only 0.32), and this is the single pairing flagged as safety-lagging, meaning supervision methods are not keeping pace with the autonomy being deployed."
+  },
+  "sentiment_rising": [
+   "Deceptive Alignment",
+   "Evals & Dangerous-Capability Benchmarks",
+   "Frontier / Scaling Capability",
+   "Reward Hacking"
+  ],
+  "overall_foresight": [],
+  "weekly_foresight": [],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]

@@ -958,5 +958,85 @@
   "quadrant": "materializing",
   "research_change_pct": 517.9,
   "n_incidents": 1
+ },
+ {
+  "date": "2026-09-28",
+  "key": "agentic_misuse",
+  "label": "Autonomous-Agent Misuse",
+  "quadrant": "foresight lead",
+  "research_change_pct": 592.3,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-09-28",
+  "key": "bio_chem_uplift",
+  "label": "Bio / Chemical Uplift",
+  "quadrant": "foresight lead",
+  "research_change_pct": 180.0,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-09-28",
+  "key": "child_safety",
+  "label": "Child Safety / Exploitation Risk",
+  "quadrant": "foresight lead",
+  "research_change_pct": 460.0,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-09-28",
+  "key": "cyber_offense",
+  "label": "Offensive Cyber / Autonomous Exploitation",
+  "quadrant": "foresight lead",
+  "research_change_pct": 627.5,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-09-28",
+  "key": "harassment_abuse",
+  "label": "Harassment / Coordinated Abuse",
+  "quadrant": "foresight lead",
+  "research_change_pct": 625.0,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-09-28",
+  "key": "influence_ops",
+  "label": "Influence Operations / Persuasion",
+  "quadrant": "foresight lead",
+  "research_change_pct": 99.3,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-09-28",
+  "key": "jailbreak_evasion",
+  "label": "Jailbreaks / Guardrail Evasion",
+  "quadrant": "foresight lead",
+  "research_change_pct": 655.6,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-09-28",
+  "key": "model_exfiltration",
+  "label": "Model / Weight Exfiltration",
+  "quadrant": "foresight lead",
+  "research_change_pct": 1100.0,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-09-28",
+  "key": "scams_fraud",
+  "label": "Scams / Fraud / Social Engineering",
+  "quadrant": "foresight lead",
+  "research_change_pct": 350.0,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-09-28",
+  "key": "surveillance_privacy",
+  "label": "Surveillance / Privacy Erosion",
+  "quadrant": "foresight lead",
+  "research_change_pct": 517.9,
+  "n_incidents": 0
  }
 ]
