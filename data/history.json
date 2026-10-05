@@ -869,5 +869,34 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-10-05",
+  "n_papers": 14197,
+  "date_start": "2023-12-15",
+  "date_end": "2026-10-02",
+  "n_flagged": 2,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Frontier / Scaling Capability vs Evals & Dangerous-Capability Benchmarks (cap +379% / saf +285%)",
+   "meaning": null,
+   "why_it_matters": null
+  },
+  "sentiment_rising": [
+   "Agentic / Autonomy Capability",
+   "Agentic Behavior Monitoring",
+   "Deceptive Alignment",
+   "Evals & Dangerous-Capability Benchmarks",
+   "Multi-Agent / Tool-Use Capability",
+   "Reward Hacking",
+   "Self-Improvement / RSI Capability"
+  ],
+  "overall_foresight": [],
+  "weekly_foresight": [],
+  "what_changed": {
+   "n_alerts": 2,
+   "n_accel": 2,
+   "n_sleepers": 0
+  }
  }
 ]
