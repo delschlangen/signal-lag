@@ -955,5 +955,35 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-10-26",
+  "n_papers": 25615,
+  "date_start": "2023-12-15",
+  "date_end": "2026-10-23",
+  "n_flagged": 2,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "Agentic / Autonomy Capability vs Agentic Behavior Monitoring (cap +314% / saf +226%)",
+   "meaning": null,
+   "why_it_matters": null
+  },
+  "sentiment_rising": [
+   "Agentic / Autonomy Capability",
+   "Agentic Behavior Monitoring",
+   "Chain-of-Thought Faithfulness",
+   "Deceptive Alignment",
+   "Evals & Dangerous-Capability Benchmarks",
+   "Multi-Agent / Tool-Use Capability",
+   "Reward Hacking",
+   "Self-Improvement / RSI Capability"
+  ],
+  "overall_foresight": [],
+  "weekly_foresight": [],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]

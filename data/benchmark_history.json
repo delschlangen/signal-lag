@@ -1278,5 +1278,85 @@
   "quadrant": "foresight lead",
   "research_change_pct": 160.4,
   "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "agentic_misuse",
+  "label": "Autonomous-Agent Misuse",
+  "quadrant": "foresight lead",
+  "research_change_pct": 270.1,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "bio_chem_uplift",
+  "label": "Bio / Chemical Uplift",
+  "quadrant": "foresight lead",
+  "research_change_pct": 162.0,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "child_safety",
+  "label": "Child Safety / Exploitation Risk",
+  "quadrant": "foresight lead",
+  "research_change_pct": 66.7,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "cyber_offense",
+  "label": "Offensive Cyber / Autonomous Exploitation",
+  "quadrant": "foresight lead",
+  "research_change_pct": 196.0,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "harassment_abuse",
+  "label": "Harassment / Coordinated Abuse",
+  "quadrant": "foresight lead",
+  "research_change_pct": 140.4,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "influence_ops",
+  "label": "Influence Operations / Persuasion",
+  "quadrant": "foresight lead",
+  "research_change_pct": 178.4,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "jailbreak_evasion",
+  "label": "Jailbreaks / Guardrail Evasion",
+  "quadrant": "foresight lead",
+  "research_change_pct": 238.4,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "model_exfiltration",
+  "label": "Model / Weight Exfiltration",
+  "quadrant": "foresight lead",
+  "research_change_pct": 480.8,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "scams_fraud",
+  "label": "Scams / Fraud / Social Engineering",
+  "quadrant": "foresight lead",
+  "research_change_pct": 157.9,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-10-26",
+  "key": "surveillance_privacy",
+  "label": "Surveillance / Privacy Erosion",
+  "quadrant": "foresight lead",
+  "research_change_pct": 160.4,
+  "n_incidents": 0
  }
 ]
