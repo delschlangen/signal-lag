@@ -1358,5 +1358,85 @@
   "quadrant": "foresight lead",
   "research_change_pct": 160.4,
   "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "agentic_misuse",
+  "label": "Autonomous-Agent Misuse",
+  "quadrant": "foresight lead",
+  "research_change_pct": 22.5,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "bio_chem_uplift",
+  "label": "Bio / Chemical Uplift",
+  "quadrant": "quiet",
+  "research_change_pct": -14.6,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "child_safety",
+  "label": "Child Safety / Exploitation Risk",
+  "quadrant": "quiet",
+  "research_change_pct": 0.0,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "cyber_offense",
+  "label": "Offensive Cyber / Autonomous Exploitation",
+  "quadrant": "foresight lead",
+  "research_change_pct": 6.2,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "harassment_abuse",
+  "label": "Harassment / Coordinated Abuse",
+  "quadrant": "foresight lead",
+  "research_change_pct": 9.6,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "influence_ops",
+  "label": "Influence Operations / Persuasion",
+  "quadrant": "quiet",
+  "research_change_pct": -11.2,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "jailbreak_evasion",
+  "label": "Jailbreaks / Guardrail Evasion",
+  "quadrant": "foresight lead",
+  "research_change_pct": 19.2,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "model_exfiltration",
+  "label": "Model / Weight Exfiltration",
+  "quadrant": "foresight lead",
+  "research_change_pct": 103.8,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "scams_fraud",
+  "label": "Scams / Fraud / Social Engineering",
+  "quadrant": "quiet",
+  "research_change_pct": -8.7,
+  "n_incidents": 0
+ },
+ {
+  "date": "2026-11-02",
+  "key": "surveillance_privacy",
+  "label": "Surveillance / Privacy Erosion",
+  "quadrant": "quiet",
+  "research_change_pct": -7.7,
+  "n_incidents": 0
  }
 ]
