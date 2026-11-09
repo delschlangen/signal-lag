@@ -1015,5 +1015,35 @@
    "n_accel": 0,
    "n_sleepers": 0
   }
+ },
+ {
+  "date": "2026-11-09",
+  "n_papers": 17457,
+  "date_start": "2023-12-15",
+  "date_end": "2026-11-06",
+  "n_flagged": 0,
+  "n_pairings": 6,
+  "headline": {
+   "biggest_gap_line": "No pairing crosses the safety-lag threshold this week.",
+   "meaning": null,
+   "why_it_matters": null
+  },
+  "sentiment_rising": [
+   "Agentic / Autonomy Capability",
+   "Agentic Behavior Monitoring",
+   "Chain-of-Thought Faithfulness",
+   "Deceptive Alignment",
+   "Evals & Dangerous-Capability Benchmarks",
+   "Reward Hacking",
+   "RL / RLHF Capability",
+   "Self-Improvement / RSI Capability"
+  ],
+  "overall_foresight": [],
+  "weekly_foresight": [],
+  "what_changed": {
+   "n_alerts": 0,
+   "n_accel": 0,
+   "n_sleepers": 0
+  }
  }
 ]
